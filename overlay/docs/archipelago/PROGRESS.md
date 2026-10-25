@@ -405,3 +405,12 @@ Seed 18246537981234658761, local server, TopScreen launcher:
 - Not tried in the game: neither a death nor the goal. The goal condition
   is inferred from the game's flow, not observed; loading a savestate out of
   Ganon's battle would count as winning.
+
+### Play test 3: DeathLink (2026-10-25, by the user)
+
+Seed 89757102641179993453 (death_link on), local server, a second DeathLink
+client (`private/deathlink-peer.py`):
+
+- Link died in the game: the second client received "Link3D fell in Hyrule."
+- The second client sent a death: Link's health went to 0 and he died; the
+  game over that followed was not sent back.
