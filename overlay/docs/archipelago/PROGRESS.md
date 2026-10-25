@@ -362,3 +362,20 @@ Design and the user's decision: ARCHITECTURE.md, "Items in the game".
   Dampe race and minigame phases.
 - Host test of both settings. Not tried in the game; whether the intro skip
   lands before the scene reads the index is open.
+
+### Play test 2 (2026-10-25, by the user)
+
+Seed 18246537981234658761, local server, TopScreen launcher:
+
+- Override: Mido's four chests gave what the spoiler places there; "KF Mido
+  Bottom Left Chest" showed the Light Arrow with its own model and text.
+- No doubles: 4 checks sent, 4 items echoed by the server, 4 skipped as
+  given at their location (sidecar `given_at_location` 4).
+- Receiving: a Progressive Hookshot sent with `!getitem` reached Link through
+  Player's own get-item (`Item_Give` 0x0A with `player_gi` 0x08 and no
+  location key); applied count 5.
+- Cutscene skips: 10 flags and the intro skip set on a new file.
+- Fix after the test: items without a location (starting inventory,
+  `!getitem`) no longer count as this world's location items.
+- Still open: reloading a save after receiving, a new file receiving
+  everything again (blocked by the invisible file selection, KNOWN_ISSUES).

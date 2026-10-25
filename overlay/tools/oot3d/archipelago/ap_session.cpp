@@ -265,8 +265,9 @@ void Session::GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory) {
     return;
   while (mSidecar->AppliedItems < static_cast<std::int64_t>(mServerItems.size())) {
     const ReceivedItem &item = mServerItems[static_cast<std::size_t>(mSidecar->AppliedItems)];
-    // Items of this world come from this slot's own locations.
-    const bool ours = item.Player == mSlot->Slot;
+    // Items of this world come from this slot's own locations; the starting
+    // inventory and !getitem have none (negative location ids).
+    const bool ours = item.Player == mSlot->Slot && item.Location > 0;
     const std::string name = ItemName(item.Item);
     if (ours && mSidecar->GivenAtLocation.count(item.Location) != 0U) {
       const auto *location = mLocations ? mLocations->ById(item.Location) : nullptr;

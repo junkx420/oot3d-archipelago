@@ -112,3 +112,15 @@ on this machine, so the product build and its equivalence suite have not run.
   magic) show a recovery heart at their location until Phase 5.
 - The client page at `0x06200000` is assumed unused by the title; mapping it
   fails loudly ("Cannot give items in the game") if it is not.
+
+## File selection invisible in the developer TopScreen build
+
+Seen 2026-10-25: with `--ui-profile topscreen` the file selection shows only
+the sky; the file boards are missing, so files are chosen blind. Reproduced
+headless with the play launcher's arguments and an input timeline to the
+file selection (`private/probe-file-select.ps1`), after 1,264 guest frames:
+the same with Archipelago off and with typed gameplay on, so it is not caused
+by this branch. TriAevum draws this screen through its "Reframed" file
+selection port, which works at hook sites inside functions; 7 of its 9 sites
+are not in `whole_aot_observed_sites.json`. Whether that is the cause is not
+verified. Not investigated further.

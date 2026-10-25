@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-25",
-  "now": "Phase 4: item override and receiving are built and host-tested; next is a play test in the game, then goal and DeathLink.",
+  "now": "Phase 4: item override and receiving work in the game; next are the save reload test, the goal and DeathLink.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -39,15 +39,16 @@
       ]
     },
     {
-      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 35,
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 50,
       "items": [
         {"text": "Design: server stays the only item source, own items show their model when found", "done": true},
         {"text": "Structure offsets from the z3D headers compiled for the 3DS", "done": true},
         {"text": "Item table: progressive items resolved against the save, custom items written into it", "done": true},
         {"text": "All locations of the slot scouted and cached per save", "done": true},
-        {"text": "Locations give the multiworld item instead of their own (built, not yet tried in the game)", "done": true},
-        {"text": "Received items given to Link at a safe moment (built, not yet tried in the game)", "done": true},
-        {"text": "Play test: chests, received items, reloaded save", "done": false},
+        {"text": "Locations give the multiworld item instead of their own (seen in the game)", "done": true},
+        {"text": "Received items given to Link at a safe moment (seen in the game)", "done": true},
+        {"text": "Play test: chests and received items", "done": true},
+        {"text": "Play test: reloaded save and a new file receiving everything", "done": false},
         {"text": "Applied-item count in savestates", "done": false},
         {"text": "Goal (Ganon) reported to the server", "done": false},
         {"text": "DeathLink", "done": false}
@@ -63,6 +64,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "First real play test of Phase 4: chests gave the multiworld items with their real models (the Light Arrow from Mido's chest), nothing came twice, and an item sent by the server reached Link with the normal animation."},
     {"date": "2026-10-25", "text": "Optional cutscene skips: story, boss and owl cutscenes can be skipped from the F1 panel, plus an experimental intro skip. Only skips that change nothing in the logic."},
     {"date": "2026-10-25", "text": "Phase 4: locations now give the multiworld item (your own items with their real model), and received items reach Link through the game's own get-item animation. Host tests pass; the play test is next."},
     {"date": "2026-10-25", "text": "Phase 4 started: design decided with the user (server stays the source of items; own items show their real model when found), game structure offsets extracted."},
