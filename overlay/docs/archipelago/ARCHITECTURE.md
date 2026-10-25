@@ -104,3 +104,43 @@ region and rule structure under the game name "Ocarina of Time 3D":
 The logic is checked against OoT3D_Randomizer's own C++ logic by
 `recon/compare_logic.py` with the host build in `recon/logic_oracle/`. The
 apworld may be stricter than that logic, never more permissive.
+
+## Items in the game (Phase 4 design)
+
+Decision by the user on 2026-10-25: the server stays the only source of
+items (items handling 0b111, so nothing is lost with a save), and a location
+holding an item of this world shows that item's own model when found.
+
+**Override.** At the entry of `Actor_OfferGetItem` the observer already forms
+the location key. The client looks the key up in the scouted placement of
+its slot (LocationScouts on connect, cached in the sidecar) and rewrites the
+get-item argument (`r2`; register writes r0–r14 are honoured at block
+entries) before the function runs:
+
+| Placed item | Given at the location |
+| --- | --- |
+| this world's item | its get-item id, resolved for progressive items against the save (the hookshot shows as the hookshot) |
+| another player's item | a placeholder get-item until Phase 5 adds names and models |
+
+**Exactly once.** An item of this world found at a location takes effect
+there, with the game's own animation. When the server sends it back, the
+client skips it if the save already records that location as collected
+(chest, collectible or event flag); otherwise, for example on a new or lost
+save, it gives the item. Items from other worlds and the starting inventory
+are always given.
+
+**Receiving.** As OoT3D_Randomizer's pending-item queue does: a minimal
+actor (`update` non-null, `parent` null) in a region the client maps at an
+unused guest address; once per frame, when Link is ready (no blocking state
+flags, on the ground or about to surface, no title card or scene load), the
+client sets `player->interactRangeActor` to it and `player->getItemId` to the
+item. Player's own code then plays the get-item and calls `Item_Give`; the
+actor's `parent` turning non-null confirms it, and the applied count advances.
+
+**Layout.** Structure offsets come from OoT3D_Randomizer's z3D headers
+compiled for the 3DS target (`recon/guest_layout/guest_layout.ps1`), not
+from reading the header comments.
+
+Not covered by this design: locations that do not pass through
+`Actor_OfferGetItem` (most songs and about 75 NPC special cases); each needs
+its own hook site.

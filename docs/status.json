@@ -39,8 +39,10 @@
       ]
     },
     {
-      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 0,
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 5,
       "items": [
+        {"text": "Design: server stays the only item source, own items show their model when found", "done": true},
+        {"text": "Structure offsets from the z3D headers compiled for the 3DS", "done": true},
         {"text": "Locations give the multiworld item instead of their own", "done": false},
         {"text": "Received items given to Link at a safe moment", "done": false},
         {"text": "Applied-item count in savestates", "done": false},
@@ -57,6 +59,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "Phase 4 started: design decided with the user (server stays the source of items; own items show their real model when found), game structure offsets extracted."},
     {"date": "2026-10-25", "text": "Project published. Logic port finished and checked against OoT3D_Randomizer: 6 rules made stricter, no location more permissive than 3D across 7 seeds."},
     {"date": "2026-10-25", "text": "Phase 2: the client reaches a local Archipelago server, sends a check and receives an item."},
     {"date": "2026-10-25", "text": "Phase 1: first play test, 19 checks logged; chests and NPC offers detected."}
