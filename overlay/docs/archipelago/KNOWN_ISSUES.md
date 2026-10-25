@@ -100,3 +100,15 @@ on this machine, so the product build and its equivalence suite have not run.
   must report the Light Medallion from Rauru as that location (Phase 4).
 - Ship of Harkinian adjusts some options during generation (for example
   `start_with_links_pocket`), after the client's option check has run.
+
+## Item override and receiving (Phase 4)
+
+- Untested in the game. The readiness check is the randomizer's standing
+  case only; items wait while Link swims.
+- Play while connected: until a slot is connected in the session, locations
+  give their own items, and an item found that way also arrives from the
+  server later.
+- Another player's items and this world's custom items (dungeon keys, songs,
+  magic) show a recovery heart at their location until Phase 5.
+- The client page at `0x06200000` is assumed unused by the title; mapping it
+  fails loudly ("Cannot give items in the game") if it is not.

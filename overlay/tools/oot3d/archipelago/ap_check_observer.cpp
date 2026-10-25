@@ -131,6 +131,16 @@ void CheckObserver::OnOffer(GuestState &state, MemoryBus &memory) {
   if (offer.Source.ActorId == kActorEnItem00)
     offer.Source.CollectibleFlag = Read16(memory, actor + kEnItem00CollectibleFlag);
   offer.Source.RespawnReturnScene = Read8(memory, kSaveRespawnReturnData);
+  if (mOverride && offer.Source.GetItemId != 0U) {
+    if (const auto key = KeyForOffer(offer.Source)) {
+      if (const auto replacement = mOverride(*key, memory); replacement.has_value() && *replacement != 0U) {
+        const auto value = static_cast<std::int32_t>(*replacement & 0xFFU);
+        const bool negative = static_cast<std::int32_t>(state.r[2]) < 0;
+        state.r[2] = static_cast<std::uint32_t>(negative ? -value : value);
+        offer.OverrideGetItemId = static_cast<std::uint8_t>(value);
+      }
+    }
+  }
   mLastOffer = offer;
 }
 
@@ -153,12 +163,14 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
   const bool offerAccepted =
       mLastOffer.has_value() &&
       (interactActor == mLastOffer->Actor || tokenFromOffer ||
-       (event.PlayerGetItemId != 0U && event.PlayerGetItemId == mLastOffer->Source.GetItemId));
+       (event.PlayerGetItemId != 0U && (event.PlayerGetItemId == mLastOffer->Source.GetItemId ||
+                                        event.PlayerGetItemId == mLastOffer->OverrideGetItemId)));
   if (offerAccepted) {
     event.Source = "offer";
     event.ActorId = mLastOffer->Source.ActorId;
     event.ActorParams = mLastOffer->Source.ActorParams;
     event.OfferGetItemId = mLastOffer->Source.GetItemId;
+    event.OverrideGetItemId = mLastOffer->OverrideGetItemId;
     event.Key = KeyForOffer(mLastOffer->Source);
     // One offer, one check: a later give without its own offer must not
     // inherit this one.
@@ -172,13 +184,13 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
 }
 
 std::string FormatEvent(const CheckEvent &event) {
-  char text[224];
+  char text[256];
   std::snprintf(text, sizeof(text),
                 "[archipelago] check #%llu source=%s scene=0x%02X item=0x%02X "
-                "player_gi=0x%02X actor=0x%04X params=0x%04X offer_gi=0x%02X",
+                "player_gi=0x%02X actor=0x%04X params=0x%04X offer_gi=0x%02X override_gi=0x%02X",
                 static_cast<unsigned long long>(event.Sequence), event.Source, event.Scene,
                 event.ItemId, event.PlayerGetItemId, event.ActorId, event.ActorParams,
-                event.OfferGetItemId);
+                event.OfferGetItemId, event.OverrideGetItemId);
   std::string line = text;
   line += event.Key.has_value() ? " " + Describe(*event.Key) : " key=none";
   return line;

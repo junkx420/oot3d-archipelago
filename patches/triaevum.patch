@@ -174,10 +174,10 @@ index b6cfceec..fc68bbb7 100644
    std::optional<Oot3dNativeGame::Menu::MenuFontTextureProvider> menuFontProviderStorage;
    std::optional<oot3d::ui::N64UiFast3dRenderer> n64UiRendererStorage;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-index 81150d82..56306256 100644
+index 81150d82..78658a83 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-@@ -228,6 +228,42 @@ void NativeA32WindowSession::Setup() {
+@@ -228,6 +228,48 @@ void NativeA32WindowSession::Setup() {
                           objectBankHooks.end());
    const auto rainHooks = Oot3dNativeGame::TopScreenRainAdapter::HookPcs();
    blockEntryHooks.insert(blockEntryHooks.end(), rainHooks.begin(), rainHooks.end());
@@ -199,13 +199,19 @@ index 81150d82..56306256 100644
 +    const auto configDirectory = std::filesystem::path(launch.Host.ConfigurationPath).parent_path();
 +    archipelagoSession = std::make_unique<Oot3dArchipelago::Session>(Oot3dArchipelago::Session::Paths{
 +        configDirectory / "archipelago.json", saveDataDirectory / "archipelago",
-+        std::filesystem::path(launch.Host.ResourceRoot) / "archipelago" / "locations.json"});
++        std::filesystem::path(launch.Host.ResourceRoot) / "archipelago" / "locations.json",
++        std::filesystem::path(launch.Host.ResourceRoot) / "archipelago" / "items.json"});
 +    archipelago.SetSink([writeLine, session = archipelagoSession.get()](
 +                            const Oot3dArchipelago::CheckEvent &event) {
 +      writeLine(Oot3dArchipelago::FormatEvent(event));
 +      session->OnCheck(event);
 +    });
 +    archipelago.SetReportSink(writeLine);
++    archipelago.SetOverride([session = archipelagoSession.get()](
++                                const Oot3dArchipelago::LocationKey &key,
++                                oot3d::recomp::a32::MemoryBus &memory) {
++      return session->OverrideGetItem(key, memory);
++    });
 +    widescreenProjection.Archipelago = &archipelago;
 +    std::optional<uint32_t> probePc;
 +    if (const char *probe = std::getenv("TRIAEVUM_ARCHIPELAGO_PROBE");
@@ -220,7 +226,21 @@ index 81150d82..56306256 100644
    widescreenProjection.ActorVisibility.Diagnostics =
        std::getenv("OOT3D_ACTOR_VISIBILITY_DIAGNOSTICS") != nullptr;
    picaCompositionHooks =
-@@ -856,6 +892,10 @@ void NativeA32WindowSession::Setup() {
+@@ -643,6 +685,13 @@ void NativeA32WindowSession::Setup() {
+       Oot3dNativeGame::Oot3dNativeA32Registry(), hostServices);
+   widescreenProjection.TraceMemory = &process.Memory();
+   widescreenProjection.ActorVisibility.HostMemory = &process.Memory();
++#ifdef TRIAEVUM_ENABLE_ARCHIPELAGO
++  if (archipelagoSession)
++    archipelagoSession->SetGuestRegionMapper(
++        [memory = &process.Memory()](uint32_t base, uint32_t size, std::string *error) {
++          return memory->MapRegion({"archipelago_client", base, size, true, false, {}}, error);
++        });
++#endif
+   process.Memory().EnableWriteTraceFingerprint(
+       widescreenProjection.TraceA32Blocks);
+   auto &uiLifecycleBridge = uiLifecycleBridgeStorage.emplace(
+@@ -856,6 +905,10 @@ void NativeA32WindowSession::Setup() {
    }
    applicationSettingsTabs.push_back(
        Oot3dNativeGame::CreateSavestatePanel(savestateLibrary));

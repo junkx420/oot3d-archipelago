@@ -2,6 +2,8 @@
 // memory is a small fake bus.
 
 #include "ap_check_observer.h"
+#include "ap_item_receiver.h"
+#include "ap_item_table.h"
 #include "ap_location_key.h"
 #include "ap_location_table.h"
 #include "ap_session.h"
@@ -19,6 +21,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 using namespace Oot3dArchipelago;
@@ -195,6 +198,44 @@ void TestObserverReportsAcceptedOffer() {
   Expect(observer.Hits().ActorOfferGetItem == 3U && observer.Hits().ItemGive == 1U,
          "hook hits are counted");
   Expect(state.r[0] == kPlay && state.r[1] == 0x3BU, "the observer leaves registers unchanged");
+}
+
+// Phase 4: the override rewrites the get-item argument, keeps its sign, and
+// the give still matches the offer through the replaced id.
+void TestObserverOverridesOffer() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kChest = 0x08100000U;
+  constexpr std::uint32_t kPlayer = 0x08200000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, 0x55U);
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  memory.Write16(kChest + kActorId, kActorChest);
+  memory.Write16(kChest + kActorParams, 0x0760U);
+  memory.Write8(kSaveRespawnReturnData, 0U);
+  memory.Write8(kPlayer + kPlayerGetItemId, 0x09U); // Player holds the replaced id
+  memory.Write32(kPlayer + kPlayerInteractRangeActor, 0U);
+
+  CheckObserver observer{false};
+  std::vector<CheckEvent> events;
+  std::vector<LocationKey> asked;
+  observer.SetSink([&](const CheckEvent &event) { events.push_back(event); });
+  observer.SetOverride([&](const LocationKey &key, oot3d::recomp::a32::MemoryBus &) {
+    asked.push_back(key);
+    return std::optional<std::uint16_t>(0x09U); // GI_LONGSHOT
+  });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[0] = kChest;
+  state.r[1] = kPlay;
+  state.r[2] = static_cast<std::uint32_t>(-0x3B);
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  Expect(static_cast<std::int32_t>(state.r[2]) == -0x09, "the override replaces r2 and keeps its sign");
+  Expect(asked.size() == 1U && asked[0] == LocationKey{0x55U, OverrideType::Chest, 0x00U},
+         "the override is asked with the original key");
+  state.r[0] = kPlay;
+  state.r[1] = 0x0AU; // ITEM_LONGSHOT
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(events.size() == 1U && events[0].Key.has_value() && events[0].OverrideGetItemId == 0x09U,
+         "the give of the replaced item is the location's check");
 }
 
 // Play test 2026-10-25: Item_Give(ITEM_SKULL_TOKEN) arrives with
@@ -407,12 +448,18 @@ void TestSidecarRoundTripAndMismatch() {
          "a missing sidecar is a fresh state");
   fresh->AppliedItems = 7;
   fresh->ReportedLocations = {1000, 1001};
+  fresh->Placements[1000] = Placement{3997700, 2, 1U};
+  fresh->GivenAtLocation = {1000};
+  fresh->GivenByServer = {1001};
   Expect(SaveSidecar(directory, *fresh, &error), error.c_str());
   Expect(SidecarPath(directory, identity).filename() == "AP_1234_x-0-2-save1.json",
          "the seed is reduced to a safe file name");
   const auto loaded = LoadSidecar(directory, identity, &error);
   Expect(loaded.has_value() && loaded->AppliedItems == 7 &&
-             loaded->ReportedLocations == std::set<std::int64_t>{1000, 1001},
+             loaded->ReportedLocations == std::set<std::int64_t>{1000, 1001} &&
+             loaded->Placements.at(1000) == Placement{3997700, 2, 1U} &&
+             loaded->GivenAtLocation == std::set<std::int64_t>{1000} &&
+             loaded->GivenByServer == std::set<std::int64_t>{1001},
          "the sidecar round-trips");
 
   // Another seed whose name reduces to the same file must not be adopted.
@@ -427,18 +474,176 @@ void TestSidecarRoundTripAndMismatch() {
   std::filesystem::remove_all(directory);
 }
 
+// An empty save as the game starts one: item slots hold ITEM_NONE and the
+// dungeon key counters -1.
+void FillFreshSave(FakeMemory &memory) {
+  for (std::uint32_t offset = 0; offset < 0x15C4U; ++offset)
+    memory.Write8(kSaveContext + offset, 0U);
+  for (std::uint32_t slot = 0; slot < 24U; ++slot)
+    memory.Write8(kSaveContext + kSaveItems + slot, kItemNone);
+  for (std::uint32_t dungeon = 0; dungeon < 19U; ++dungeon)
+    memory.Write8(kSaveContext + kSaveDungeonKeys + dungeon, 0xFFU);
+}
+
+std::map<std::string, std::int64_t> ItemIds(const char *path) {
+  std::ifstream input(path);
+  const auto document = nlohmann::json::parse(input);
+  std::map<std::string, std::int64_t> ids;
+  for (const auto &item : document.at("items"))
+    ids[item.at("name").get<std::string>()] = item.at("id").get<std::int64_t>();
+  return ids;
+}
+
+// The generated item table against the randomizer's upgrades and effects.
+void TestGeneratedItemTable(const char *path) {
+  std::string error;
+  const auto table = ItemTable::Load(path, &error);
+  Expect(table.has_value(), error.c_str());
+  const auto ids = ItemIds(path);
+  FakeMemory memory;
+  FillFreshSave(memory);
+
+  const auto getItem = [&](const char *name) -> std::optional<std::uint16_t> {
+    const auto plan = table->Plan(ids.at(name), memory);
+    if (const auto *give = std::get_if<GiveGetItem>(&plan))
+      return give->GetItemId;
+    return std::nullopt;
+  };
+  Expect(getItem("Kokiri Sword") == 0x27U, "the Kokiri Sword is its own get-item");
+  Expect(getItem("Progressive Hookshot") == 0x08U, "the first hookshot is the Hookshot");
+  memory.Write8(kSaveContext + kSaveItems + kSlotHookshot, 0x0AU);
+  Expect(getItem("Progressive Hookshot") == 0x09U, "with the Hookshot it is the Longshot");
+  Expect(getItem("Progressive Strength Upgrade") == 0x54U, "the first strength is the Goron Bracelet");
+  memory.Write32(kSaveContext + kSaveUpgrades, 1U << 6U);
+  Expect(getItem("Progressive Strength Upgrade") == 0x35U, "then the Silver Gauntlets");
+
+  const auto direct = [&](const char *name) -> std::optional<GiveDirect> {
+    const auto plan = table->Plan(ids.at(name), memory);
+    if (const auto *give = std::get_if<GiveDirect>(&plan))
+      return *give;
+    return std::nullopt;
+  };
+  const auto key = direct("Forest Temple Small Key");
+  Expect(key.has_value() && key->Effect == ItemEffect::GiveSmallKey && key->Arg1 == 3,
+         "a dungeon key counts for its own dungeon (DUNGEON_FOREST_TEMPLE)");
+  Expect(ApplyDirect(*key, memory) && ApplyDirect(*key, memory), "keys are written");
+  std::uint8_t keys = 0;
+  memory.Read8(kSaveContext + kSaveDungeonKeys + 3U, &keys);
+  Expect(keys == 2U, "the counter starts at -1 and counts from 0");
+
+  const auto magic = direct("Progressive Magic Meter");
+  Expect(magic.has_value() && magic->Effect == ItemEffect::GiveMagic, "the first magic is the meter");
+  Expect(ApplyDirect(*magic, memory), "magic is written");
+  const auto doubleMagic = direct("Progressive Magic Meter");
+  Expect(doubleMagic.has_value() && doubleMagic->Effect == ItemEffect::GiveDoubleMagic,
+         "with magic, the next is double magic");
+
+  const auto lullaby = direct("Zelda's Lullaby");
+  Expect(lullaby.has_value() && lullaby->Effect == ItemEffect::GiveSong, "songs are quest bits");
+  Expect(ApplyDirect(*lullaby, memory) && ApplyDirect(*lullaby, memory), "songs are written");
+  std::uint32_t quest = 0;
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(quest == (1U << static_cast<std::uint32_t>(lullaby->Arg1)), "a song sets its bit once");
+
+  const auto bugs = direct("Bottle with Bugs");
+  Expect(bugs.has_value() && bugs->Effect == ItemEffect::GiveBottle && ApplyDirect(*bugs, memory),
+         "a filled bottle goes into the first free bottle slot");
+  std::uint8_t bottle = 0;
+  memory.Read8(kSaveContext + kSaveItems + kSlotBottle1, &bottle);
+  Expect(bottle == static_cast<std::uint8_t>(bugs->Arg1), "the bottle holds the bugs");
+
+  const auto soul = table->Plan(ids.at("Gohma Soul"), memory);
+  Expect(std::holds_alternative<GiveUnsupported>(soul), "enemy souls are outside the client");
+}
+
+// Link stands ready; the receiver offers its actor, Player takes it.
+void TestReceiverGivesThroughPlayer() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kPlayer = 0x08200000U;
+  FakeMemory memory;
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  for (const std::uint32_t offset : {kPlayTitleDelay, kPlayTitleDuration, kPlayTitleAlpha, kPlaySceneLoadFlag})
+    memory.Write8(kPlay + offset, 0U);
+  memory.Write32(kPlayer + kPlayerStateFlags1, 0U);
+  memory.Write32(kPlayer + kPlayerStateFlags2, 0U);
+  memory.Write32(kPlayer + kPlayerInteractRangeActor, 0U);
+  memory.Write8(kPlayer + kPlayerGetItemId, 0U);
+  memory.Write32(kPlayer + kActorDraw, 0x00123456U);
+  memory.Write16(kPlayer + kActorBgCheckFlags, kBgCheckGround);
+
+  int maps = 0;
+  ItemReceiver receiver([&](std::uint32_t base, std::uint32_t, std::string *) {
+    ++maps;
+    memory.Write8(base, 0U);
+    return true;
+  });
+  std::string error;
+  memory.Write32(kPlayer + kPlayerStateFlags1, 0x20000000U); // a busy state
+  Expect(receiver.Give(0x08U, memory, &error) == ItemReceiver::Result::Waiting, "a busy Link waits");
+  std::uint32_t interacting = 0;
+  memory.Read32(kPlayer + kPlayerInteractRangeActor, &interacting);
+  Expect(interacting == 0U && maps == 1, "nothing is offered while busy; the page is mapped once");
+
+  memory.Write32(kPlayer + kPlayerStateFlags1, 0U);
+  Expect(receiver.Give(0x08U, memory, &error) == ItemReceiver::Result::Waiting, "offered");
+  std::uint8_t getItem = 0;
+  memory.Read32(kPlayer + kPlayerInteractRangeActor, &interacting);
+  memory.Read8(kPlayer + kPlayerGetItemId, &getItem);
+  Expect(interacting == kClientRegionBase && getItem == 0x08U, "the item actor is offered to Player");
+  Expect(receiver.Give(0x08U, memory, &error) == ItemReceiver::Result::Waiting,
+         "a standing offer is renewed");
+
+  memory.Write32(kClientRegionBase + kActorParent, kPlayer); // Player took it
+  Expect(receiver.Give(0x08U, memory, &error) == ItemReceiver::Result::Given, "the take is seen");
+  std::uint32_t parent = 1;
+  memory.Read32(kClientRegionBase + kActorParent, &parent);
+  Expect(parent == 0U, "the actor is free for the next item");
+
+  ItemReceiver unavailable([](std::uint32_t, std::uint32_t, std::string *error) {
+    *error = "no page";
+    return false;
+  });
+  FakeMemory empty;
+  Expect(unavailable.Give(0x08U, empty, &error) == ItemReceiver::Result::Unavailable &&
+             error == "no page",
+         "an unmappable page is reported");
+}
+
+void TestLocationTakenInSave() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  FakeMemory memory;
+  FillFreshSave(memory);
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write16(kPlay + kPlaySceneNum, 0x55U);
+  memory.Write32(kPlay + kPlayChestFlags, 1U << 0U);
+  memory.Write32(kPlay + kPlayCollectFlags, 0U);
+  Expect(LocationTakenInSave({0x55U, OverrideType::Chest, 0x00U}, memory) == true,
+         "the current scene's chest flags come from the play state");
+  Expect(LocationTakenInSave({0x55U, OverrideType::Collectable, 0x04U}, memory) == false,
+         "an untaken collectible");
+  memory.Write32(kSaveContext + kSaveSceneFlags + 0x28U * kSceneFlagsSize + kSceneFlagsChest, 1U << 2U);
+  Expect(LocationTakenInSave({0x28U, OverrideType::Chest, 0x02U}, memory) == true,
+         "other scenes' flags come from the save");
+  Expect(!LocationTakenInSave({0x5FU, OverrideType::BaseItem, 0x47U}, memory).has_value(),
+         "an NPC gift has no single flag");
+}
+
 void TestSessionWithoutConnection() {
   const auto directory = FreshDirectory("triaevum_archipelago_session_test");
   {
     std::ofstream(directory / "locations.json") << kTableJson;
     Session session({directory / "archipelago.json", directory / "sidecars",
-                     directory / "locations.json"});
+                     directory / "locations.json", TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
     Expect(session.State() == ConnectionState::Disconnected, "no connection is opened by itself");
     CheckEvent event;
     event.Key = LocationKey{0x55U, OverrideType::Chest, 0x00U};
     session.OnCheck(event);
     event.Key = LocationKey{0x55U, OverrideType::Chest, 0x09U};
     session.OnCheck(event);
+    FakeMemory memory;
+    Expect(!session.OverrideGetItem({0x55U, OverrideType::Chest, 0x00U}, memory).has_value(),
+           "without a connected slot every location keeps its own item");
     const auto stats = session.Stats();
     Expect(stats.LocationTableSize == 3U, "the session loads the location table");
     Expect(stats.ChecksUnmapped == 1U, "an unmapped key is counted");
@@ -465,6 +670,7 @@ int main(int argc, char **argv) {
     TestSha256();
     TestAddressTableMatchesJson(argc > 1 ? argv[1] : TRIAEVUM_ARCHIPELAGO_ADDRESSES_JSON);
     TestObserverReportsAcceptedOffer();
+    TestObserverOverridesOffer();
     TestObserverMatchesTokenWithoutPlayerState();
     TestStaleOfferIsNotInherited();
     TestObserverReportsDirectSong();
@@ -474,6 +680,9 @@ int main(int argc, char **argv) {
     TestLocationTable();
     TestGeneratedLocationTable(TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON);
     TestSidecarRoundTripAndMismatch();
+    TestGeneratedItemTable(TRIAEVUM_ARCHIPELAGO_ITEMS_JSON);
+    TestReceiverGivesThroughPlayer();
+    TestLocationTakenInSave();
     TestSessionWithoutConnection();
   } catch (const std::exception &error) {
     std::fprintf(stderr, "triaevum_archipelago_tests: %s\n", error.what());

@@ -55,9 +55,22 @@ std::optional<SidecarState> LoadSidecar(const std::filesystem::path &directory,
     Fail(error, "Archipelago save data belongs to another seed or slot: " + path.string());
     return std::nullopt;
   }
-  state.AppliedItems = document.value("applied_items", std::int64_t{0});
-  for (const auto &location : document.value("reported_locations", nlohmann::json::array()))
-    state.ReportedLocations.insert(location.get<std::int64_t>());
+  try {
+    state.AppliedItems = document.value("applied_items", std::int64_t{0});
+    for (const auto &location : document.value("reported_locations", nlohmann::json::array()))
+      state.ReportedLocations.insert(location.get<std::int64_t>());
+    // Phase 4 fields; files from before have none.
+    for (const auto &row : document.value("placements", nlohmann::json::array()))
+      state.Placements[row.at(0).get<std::int64_t>()] =
+          Placement{row.at(1).get<std::int64_t>(), row.at(2).get<int>(), row.at(3).get<unsigned>()};
+    for (const auto &location : document.value("given_at_location", nlohmann::json::array()))
+      state.GivenAtLocation.insert(location.get<std::int64_t>());
+    for (const auto &location : document.value("given_by_server", nlohmann::json::array()))
+      state.GivenByServer.insert(location.get<std::int64_t>());
+  } catch (const nlohmann::json::exception &) {
+    Fail(error, "Archipelago save data is unreadable: " + path.string());
+    return std::nullopt;
+  }
   return state;
 }
 
@@ -66,6 +79,9 @@ bool SaveSidecar(const std::filesystem::path &directory, const SidecarState &sta
   std::error_code created;
   std::filesystem::create_directories(directory, created);
   const auto path = SidecarPath(directory, state.Identity);
+  nlohmann::json placements = nlohmann::json::array();
+  for (const auto &[location, placement] : state.Placements)
+    placements.push_back({location, placement.Item, placement.Player, placement.Flags});
   const nlohmann::json document = {
       {"format", kFormat},
       {"seed", state.Identity.Seed},
@@ -74,6 +90,9 @@ bool SaveSidecar(const std::filesystem::path &directory, const SidecarState &sta
       {"save_slot", state.Identity.SaveSlot},
       {"applied_items", state.AppliedItems},
       {"reported_locations", state.ReportedLocations},
+      {"placements", placements},
+      {"given_at_location", state.GivenAtLocation},
+      {"given_by_server", state.GivenByServer},
   };
   auto temporary = path;
   temporary += ".tmp";

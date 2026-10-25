@@ -62,8 +62,20 @@ public:
       event.CheckedLocations.assign(checked.begin(), checked.end());
       const auto &missing = mClient->get_missing_locations();
       event.MissingLocations.assign(missing.begin(), missing.end());
+      // The game overrides what its locations give (Phase 4), so it needs
+      // the placement of every location of this slot.
+      std::list<std::int64_t> all(checked.begin(), checked.end());
+      all.insert(all.end(), missing.begin(), missing.end());
+      if (!all.empty())
+        mClient->LocationScouts(std::move(all));
       mOwner.Emit(std::move(event));
       mOwner.Emit(NetworkEvent::StateChanged{ConnectionState::SlotConnected, mSettings.Slot});
+    });
+    mClient->set_location_info_handler([this](const std::list<APClient::NetworkItem> &items) {
+      NetworkEvent::LocationsScouted event;
+      for (const auto &item : items)
+        event.Items.push_back({0, item.item, item.location, item.player, item.flags});
+      mOwner.Emit(std::move(event));
     });
     mClient->set_slot_refused_handler([this](const std::list<std::string> &errors) {
       mOwner.Emit(NetworkEvent::SlotRefused{{errors.begin(), errors.end()}});

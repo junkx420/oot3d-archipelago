@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <fstream>
 #include <random>
+#include <variant>
 #include <sstream>
 
 namespace Oot3dArchipelago {
@@ -34,6 +35,16 @@ Session::Session(Paths paths) : mPaths(std::move(paths)) {
     Log("Location table: " + std::to_string(mLocations->Size()) + " locations");
   else
     Log("No location table yet (" + error + "); checks are logged, not sent.");
+  mItems = ItemTable::Load(mPaths.ItemTable, &error);
+  if (mItems.has_value())
+    Log("Item table: " + std::to_string(mItems->Size()) + " items");
+  else
+    Log("No item table (" + error + "); locations keep their own items and nothing is received.");
+}
+
+void Session::SetGuestRegionMapper(GuestRegionMapper mapper) {
+  std::lock_guard lock(mMutex);
+  mReceiver = ItemReceiver(std::move(mapper));
 }
 
 Session::~Session() {
@@ -122,6 +133,7 @@ Session::Counters Session::Stats() const {
   counters.ChecksUnmapped = mUnmapped;
   counters.ItemsFromServer = mServerItems.size();
   counters.ItemsApplied = mSidecar ? mSidecar->AppliedItems : 0;
+  counters.LocationsScouted = mPlacements.size();
   counters.SaveSlot = mSidecar ? mSidecar->Identity.SaveSlot : -1;
   return counters;
 }
@@ -141,6 +153,36 @@ void Session::OnCheck(const CheckEvent &event) {
     return;
   }
   ReportLocation(*id);
+  // The game gave this world's item at its location itself; the server's
+  // copy of it is skipped while the save records the location.
+  if (mSidecar.has_value() && mShownAtLocation.count(*id) != 0U &&
+      mSidecar->GivenAtLocation.insert(*id).second)
+    Persist();
+}
+
+std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
+                                                      oot3d::recomp::a32::MemoryBus &memory) {
+  std::lock_guard lock(mMutex);
+  if (!mSidecar.has_value() || !mSlot.has_value() || !mLocations.has_value())
+    return std::nullopt;
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value())
+    return std::nullopt;
+  const auto placement = mSidecar->Placements.find(*id);
+  if (placement == mSidecar->Placements.end())
+    return std::nullopt; // not scouted yet: the game's own item
+  mShownAtLocation.erase(*id);
+  // Another player's item, or ours that the server already gave: a
+  // placeholder; the real item travels through the server.
+  if (placement->second.Player != mSlot->Slot || mSidecar->GivenByServer.count(*id) != 0U ||
+      !mItems.has_value())
+    return kPlaceholderGetItem;
+  const ItemPlan plan = mItems->Plan(placement->second.Item, memory);
+  if (const auto *give = std::get_if<GiveGetItem>(&plan)) {
+    mShownAtLocation.insert(*id);
+    return give->GetItemId;
+  }
+  return kPlaceholderGetItem; // no get-item in the game: given by the server
 }
 
 void Session::ReportLocation(std::int64_t id) {
@@ -164,6 +206,62 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       HandleEvent(event);
   }
   OpenSidecarIfReady(memory);
+  GiveReceivedItems(memory);
+}
+
+// Received items are always items of this game, whoever found them.
+std::string Session::ItemName(std::int64_t item) const {
+  if (mItems.has_value())
+    if (auto name = mItems->Name(item))
+      return *name;
+  return "item " + std::to_string(item);
+}
+
+void Session::GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory) {
+  if (!mSidecar.has_value() || !mSlot.has_value() || !mItems.has_value() ||
+      PlayerActor(memory) == 0U)
+    return;
+  while (mSidecar->AppliedItems < static_cast<std::int64_t>(mServerItems.size())) {
+    const ReceivedItem &item = mServerItems[static_cast<std::size_t>(mSidecar->AppliedItems)];
+    // Items of this world come from this slot's own locations.
+    const bool ours = item.Player == mSlot->Slot;
+    const std::string name = ItemName(item.Item);
+    if (ours && mSidecar->GivenAtLocation.count(item.Location) != 0U) {
+      const auto *location = mLocations ? mLocations->ById(item.Location) : nullptr;
+      const auto taken = location != nullptr ? LocationTakenInSave(location->Key, memory) : std::nullopt;
+      if (!taken.has_value() || *taken) {
+        ++mSidecar->AppliedItems;
+        Persist();
+        continue;
+      }
+      // The save lost the location (another or an older save): give it again.
+      mSidecar->GivenAtLocation.erase(item.Location);
+    }
+    const ItemPlan plan = mItems->Plan(item.Item, memory);
+    if (const auto *give = std::get_if<GiveGetItem>(&plan)) {
+      std::string error;
+      const auto result = mReceiver.Give(give->GetItemId, memory, &error);
+      if (result == ItemReceiver::Result::Unavailable) {
+        if (!mReceiverReported)
+          Log("Cannot give items in the game: " + error);
+        mReceiverReported = true;
+        return;
+      }
+      if (result == ItemReceiver::Result::Waiting)
+        return; // one item at a time, when Link can take it
+      Log("Received " + name);
+    } else if (const auto *direct = std::get_if<GiveDirect>(&plan)) {
+      if (!ApplyDirect(*direct, memory))
+        return;
+      Log("Received " + name);
+    } else {
+      Log("Not given: " + std::get<GiveUnsupported>(plan).Reason);
+    }
+    if (ours)
+      mSidecar->GivenByServer.insert(item.Location);
+    ++mSidecar->AppliedItems;
+    Persist();
+  }
 }
 
 void Session::OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory) {
@@ -197,6 +295,8 @@ void Session::OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory) {
     return;
   }
   mSidecar = std::move(state);
+  for (const auto &[location, placement] : mPlacements)
+    mSidecar->Placements[location] = placement;
   Log("Save slot " + std::to_string(identity.SaveSlot) + ": " +
       std::to_string(mSidecar->ReportedLocations.size()) + " checks, " +
       std::to_string(mSidecar->AppliedItems) + " items applied");
@@ -222,6 +322,7 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     mSlot = SidecarIdentity{slot->Seed, slot->Team, slot->Slot, -1};
     mServerChecked = {slot->CheckedLocations.begin(), slot->CheckedLocations.end()};
     mServerItems.clear();
+    mPlacements.clear();
     mSidecar.reset();
     Log("Slot connected: seed " + slot->Seed + ", team " + std::to_string(slot->Team) +
         ", slot " + std::to_string(slot->Slot) + ", " +
@@ -233,15 +334,24 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
       errors += (errors.empty() ? "" : ", ") + error;
     Log("Slot refused: " + errors);
   } else if (const auto *items = std::get_if<NetworkEvent::ItemsReceived>(&variant)) {
-    // Phase 2 records items only; Phase 4 gives them in game and advances
-    // AppliedItems. The server resends from index 0 on every connection.
+    // Update gives them in the game and advances AppliedItems. The server
+    // resends from index 0 on every connection.
     for (const auto &item : items->Items) {
       if (item.Index < static_cast<std::int64_t>(mServerItems.size()))
         continue;
       mServerItems.push_back(item);
-      Log("Item #" + std::to_string(item.Index) + ": id " + std::to_string(item.Item) +
+      Log("Item #" + std::to_string(item.Index) + ": " + ItemName(item.Item) +
           " from player " + std::to_string(item.Player));
     }
+  } else if (const auto *scouted = std::get_if<NetworkEvent::LocationsScouted>(&variant)) {
+    for (const auto &item : scouted->Items)
+      mPlacements[item.Location] = Placement{item.Item, item.Player, item.Flags};
+    if (mSidecar.has_value()) {
+      for (const auto &[location, placement] : mPlacements)
+        mSidecar->Placements[location] = placement;
+      Persist();
+    }
+    Log("Scouted " + std::to_string(scouted->Items.size()) + " locations");
   } else if (const auto *checked = std::get_if<NetworkEvent::LocationsChecked>(&variant)) {
     mServerChecked.insert(checked->Locations.begin(), checked->Locations.end());
   } else if (const auto *message = std::get_if<NetworkEvent::Message>(&variant)) {

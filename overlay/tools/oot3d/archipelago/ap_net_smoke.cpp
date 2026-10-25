@@ -25,10 +25,11 @@ int main(int argc, char **argv) {
   client.Connect({argv[1], argv[2], argc > 4 ? argv[4] : ""});
 
   bool connected = false, sent = false, confirmed = false, items = false, reconnected = false;
+  std::size_t scouted = 0;
   int connections = 0;
   auto reconnectAt = std::chrono::steady_clock::time_point::max();
   const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
-  while (std::chrono::steady_clock::now() < deadline && !(confirmed && items)) {
+  while (std::chrono::steady_clock::now() < deadline && !(confirmed && items && scouted != 0U)) {
     if (!reconnected && std::chrono::steady_clock::now() >= reconnectAt) {
       reconnected = true;
       std::printf("reconnecting\n");
@@ -56,6 +57,12 @@ int main(int argc, char **argv) {
           std::printf("item #%lld: %lld from player %d (location %lld)\n",
                       static_cast<long long>(item.Index), static_cast<long long>(item.Item),
                       item.Player, static_cast<long long>(item.Location));
+      } else if (const auto *scouts = std::get_if<NetworkEvent::LocationsScouted>(&variant)) {
+        scouted += scouts->Items.size();
+        for (const auto &item : scouts->Items)
+          if (item.Location == location)
+            std::printf("location %lld holds item %lld of player %d\n", static_cast<long long>(item.Location),
+                        static_cast<long long>(item.Item), item.Player);
       } else if (const auto *checked = std::get_if<NetworkEvent::LocationsChecked>(&variant)) {
         for (const auto id : checked->Locations) {
           std::printf("server confirms location %lld\n", static_cast<long long>(id));
@@ -75,7 +82,7 @@ int main(int argc, char **argv) {
   }
   client.Disconnect();
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
-  std::printf("result: connected=%d sent=%d confirmed=%d items=%d\n", connected, sent, confirmed,
-              items);
-  return connected && confirmed && items ? 0 : 1;
+  std::printf("result: connected=%d sent=%d confirmed=%d items=%d scouted=%zu\n", connected, sent,
+              confirmed, items, scouted);
+  return connected && confirmed && items && scouted != 0U ? 0 : 1;
 }

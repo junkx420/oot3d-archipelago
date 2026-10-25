@@ -5,10 +5,14 @@ Inputs (a checkout of gamestabled/OoT3D_Randomizer):
   source/item_location.cpp   locationTable[...] = ItemLocation::Kind(...)
   source/item_list.cpp       itemTable[...] = Item(...)
   shared/s_item.h            GetItemID values (/* 0xNN */ GI_...)
+  code/src/item_table.c      the patch's item rows (upgrade and effect per GI)
 
 Outputs:
   --client   runtime/triaevum_resources/archipelago/locations.json, read by
              the game (format triaevum_archipelago_locations_v1)
+  --client-items  runtime/triaevum_resources/archipelago/items.json: AP item
+             ids with their get-item ids and the item rows the client needs
+             to give them (format triaevum_archipelago_items_v1)
   --apworld  the apworld's data/locations.json and data/items.json
 
 Ids are base + index and append-only (decided 2026-10-25): an existing
@@ -202,6 +206,40 @@ def parse_items(path: Path, get_item_ids: dict[str, int],
     return items
 
 
+def number_or_text(text: str, constants: dict[str, int]) -> int | str:
+    try:
+        return number(text, constants)
+    except ValueError:
+        return text.strip()
+
+
+ROW_RE = re.compile(r"^\s*\[(GI_\w+)\]\s*=\s*ITEM_ROW\((.*?)\)\s*,", re.S | re.M)
+
+
+def parse_item_rows(path: Path, get_item_ids: dict[str, int], constants: dict[str, int]) -> list[dict]:
+    """The patch's item table (code/src/item_table.c), one row per get-item
+    id: what Item_Give receives (action id), how progressive items resolve
+    against the save (upgrade) and what custom items do (effect)."""
+    rows = []
+    for gi, arguments in ROW_RE.findall(source_text(path)):
+        parts = split_arguments(arguments)
+        if len(parts) != 14:
+            raise ValueError(f"unexpected ITEM_ROW for {gi}: {parts}")
+        if gi not in get_item_ids:
+            raise ValueError(f"unknown get-item id {gi} in the item table")
+        rows.append({
+            "gi": get_item_ids[gi],
+            "action_id": number(parts[2], constants) & 0xFF,
+            "upgrade": parts[10].removeprefix("ItemUpgrade_"),
+            "effect": parts[11].removeprefix("ItemEffect_"),
+            # Arguments of effects the client does not perform may name other
+            # enums; those stay text.
+            "arg1": number_or_text(parts[12], constants),
+            "arg2": number_or_text(parts[13], constants),
+        })
+    return rows
+
+
 def assign_ids(entries: list[dict], previous: list[dict] | None, base: int) -> None:
     known = {row["enum"]: row["id"] for row in previous or []}
     next_id = max(known.values(), default=base - 1) + 1
@@ -233,13 +271,16 @@ def main() -> int:
     parser.add_argument("--randomizer", type=Path, required=True)
     parser.add_argument("--commit", required=True)
     parser.add_argument("--client", type=Path, required=True)
+    parser.add_argument("--client-items", type=Path, required=True)
     parser.add_argument("--apworld-data", type=Path, required=True)
     arguments = parser.parse_args()
 
     root = arguments.randomizer
     locations = parse_locations(root / "source/item_location.cpp", parse_enum_constants(root))
-    items = parse_items(root / "source/item_list.cpp", parse_get_item_ids(root / "shared/s_item.h"),
+    get_item_ids = parse_get_item_ids(root / "shared/s_item.h")
+    items = parse_items(root / "source/item_list.cpp", get_item_ids,
                         parse_string_constants(root / "shared/shared_data.c"))
+    rows = parse_item_rows(root / "code/src/item_table.c", get_item_ids, parse_enum_constants(root))
     item_enums = {item["enum"] for item in items}
     for location in locations:
         if location["vanilla_item"] not in item_enums:
@@ -268,6 +309,10 @@ def main() -> int:
     arguments.client.write_text(json.dumps({"format": "triaevum_archipelago_locations_v1",
                                             "source": source, "locations": client},
                                            indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    arguments.client_items.write_text(json.dumps({
+        "format": "triaevum_archipelago_items_v1", "source": source,
+        "items": [{"id": i["id"], "name": i["name"], "gi": i["get_item_id"]} for i in items],
+        "rows": rows}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     kinds: dict[str, int] = {}
     for location in locations:
         kinds[location["kind"]] = kinds.get(location["kind"], 0) + 1

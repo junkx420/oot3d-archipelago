@@ -299,3 +299,49 @@ is a randomizer patch).
   logics are wrong it cannot tell.
 - Tricks: the Ship of Harkinian tricks describe N64 techniques; the option
   rejects them until 3D tricks are mapped.
+
+## Phase 4: gameplay integration (2026-10-25, started)
+
+Design and the user's decision: ARCHITECTURE.md, "Items in the game".
+
+### Done
+
+- Item table generated with the location table
+  (`runtime/triaevum_resources/archipelago/items.json`, format
+  `triaevum_archipelago_items_v1`): AP item id -> the randomizer's get-item
+  id, plus the patch's 274 item rows (action id, upgrade, effect, arguments).
+- `ap_item_table`: progressive items resolve against the save as the
+  randomizer's `ItemTable_ResolveUpgrades` does (hookshot, strength, bomb bag,
+  quiver, bullet bag, wallet, scale, nuts, sticks, magic, bombchus, ocarina,
+  Goron sword, the "to rupee" fallbacks, Ruto's letter). A get-item below 0x7C
+  is the game's own; custom ones are written into the save as the
+  randomizer's effects do (dungeon keys and items, songs, medallions, stones,
+  magic, filled bottles, double defense). Other effects (enemy souls,
+  ocarina buttons, key rings, ice traps, Triforce pieces) are reported, not
+  given; the supported options do not place them.
+- Scouting: on every slot connection the client asks for all of its
+  locations; the placement is cached in the sidecar.
+- Override: at `Actor_OfferGetItem` the observer rewrites `r2`. This world's
+  item with a game get-item shows itself (model, text, Item_Give); another
+  player's item, or one of ours without a get-item, shows a recovery heart.
+- Receiving: one item per frame through the item actor at `0x06200000`
+  (mapped through `NativeA32Memory::MapRegion`), when Link is ready; custom
+  items directly. The server's copy of an item the game gave at its location
+  is skipped while the save records the location (chest and collectible
+  flags; other locations by the sidecar); otherwise it is given, and the
+  location then gives a placeholder.
+- Host tests: override rewrite and matching, the generated item table
+  (resolution and effects), the receiver against Player state, save flags,
+  sidecar round trip of the new fields. Both trees build (flag ON and OFF).
+- End to end against a local server: 272 locations scouted, placement
+  received ("KF Kokiri Sword Chest holds item 3997696").
+
+### Not done
+
+- **Not tried in the game yet.** Needs a play test: open chests with own and
+  foreign items, receive an item, reload a save.
+- The applied-item count in savestates; goal; DeathLink.
+- Locations that do not pass through `Actor_OfferGetItem` keep their own
+  item (songs, most NPC gifts); with the supported options those hold their
+  vanilla items.
+- Without a connection in the session, locations keep their own items.

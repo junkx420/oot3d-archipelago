@@ -1,0 +1,3429 @@
+{
+ "format": "triaevum_archipelago_items_v1",
+ "source": {
+  "repository": "https://github.com/gamestabled/OoT3D_Randomizer",
+  "commit": "ae0fcf56cbc7166c809f675668b43e24a9640fe1",
+  "license": "see THIRD_PARTY_NOTICES.md (OoT3D_Randomizer data)"
+ },
+ "items": [
+  {
+   "id": 3997696,
+   "name": "Kokiri Sword",
+   "gi": 39
+  },
+  {
+   "id": 3997697,
+   "name": "Master Sword",
+   "gi": 126
+  },
+  {
+   "id": 3997698,
+   "name": "Giant's Knife",
+   "gi": 40
+  },
+  {
+   "id": 3997699,
+   "name": "Biggoron's Sword",
+   "gi": 87
+  },
+  {
+   "id": 3997700,
+   "name": "Deku Shield",
+   "gi": 41
+  },
+  {
+   "id": 3997701,
+   "name": "Hylian Shield",
+   "gi": 42
+  },
+  {
+   "id": 3997702,
+   "name": "Mirror Shield",
+   "gi": 43
+  },
+  {
+   "id": 3997703,
+   "name": "Goron Tunic",
+   "gi": 44
+  },
+  {
+   "id": 3997704,
+   "name": "Zora Tunic",
+   "gi": 45
+  },
+  {
+   "id": 3997705,
+   "name": "Iron Boots",
+   "gi": 46
+  },
+  {
+   "id": 3997706,
+   "name": "Hover Boots",
+   "gi": 47
+  },
+  {
+   "id": 3997707,
+   "name": "Boomerang",
+   "gi": 6
+  },
+  {
+   "id": 3997708,
+   "name": "Lens of Truth",
+   "gi": 10
+  },
+  {
+   "id": 3997709,
+   "name": "Megaton Hammer",
+   "gi": 13
+  },
+  {
+   "id": 3997710,
+   "name": "Shard of Agony",
+   "gi": 57
+  },
+  {
+   "id": 3997711,
+   "name": "Din's Fire",
+   "gi": 92
+  },
+  {
+   "id": 3997712,
+   "name": "Farore's Wind",
+   "gi": 93
+  },
+  {
+   "id": 3997713,
+   "name": "Nayru's Love",
+   "gi": 94
+  },
+  {
+   "id": 3997714,
+   "name": "Fire Arrow",
+   "gi": 88
+  },
+  {
+   "id": 3997715,
+   "name": "Ice Arrow",
+   "gi": 89
+  },
+  {
+   "id": 3997716,
+   "name": "Light Arrow",
+   "gi": 90
+  },
+  {
+   "id": 3997717,
+   "name": "Gerudo Token",
+   "gi": 58
+  },
+  {
+   "id": 3997718,
+   "name": "Magic Bean",
+   "gi": 22
+  },
+  {
+   "id": 3997719,
+   "name": "Magic Bean Pack",
+   "gi": 201
+  },
+  {
+   "id": 3997720,
+   "name": "Double Defense",
+   "gi": 184
+  },
+  {
+   "id": 3997721,
+   "name": "Weird Egg",
+   "gi": 71
+  },
+  {
+   "id": 3997722,
+   "name": "Zelda's Letter",
+   "gi": 11
+  },
+  {
+   "id": 3997723,
+   "name": "Pocket Egg",
+   "gi": 29
+  },
+  {
+   "id": 3997724,
+   "name": "Cojiro",
+   "gi": 14
+  },
+  {
+   "id": 3997725,
+   "name": "Odd Mushroom",
+   "gi": 31
+  },
+  {
+   "id": 3997726,
+   "name": "Odd Poultice",
+   "gi": 32
+  },
+  {
+   "id": 3997727,
+   "name": "Poacher's Saw",
+   "gi": 33
+  },
+  {
+   "id": 3997728,
+   "name": "Broken Goron's Sword",
+   "gi": 34
+  },
+  {
+   "id": 3997729,
+   "name": "Prescription",
+   "gi": 35
+  },
+  {
+   "id": 3997730,
+   "name": "Eyeball Frog",
+   "gi": 36
+  },
+  {
+   "id": 3997731,
+   "name": "World's Finest Eyedrops",
+   "gi": 37
+  },
+  {
+   "id": 3997732,
+   "name": "Claim Check",
+   "gi": 38
+  },
+  {
+   "id": 3997733,
+   "name": "Gold Skulltula Token",
+   "gi": 91
+  },
+  {
+   "id": 3997734,
+   "name": "Progressive Hookshot",
+   "gi": 128
+  },
+  {
+   "id": 3997735,
+   "name": "Progressive Strength Upgrade",
+   "gi": 129
+  },
+  {
+   "id": 3997736,
+   "name": "Progressive Bomb Bag",
+   "gi": 130
+  },
+  {
+   "id": 3997737,
+   "name": "Progressive Bow",
+   "gi": 131
+  },
+  {
+   "id": 3997738,
+   "name": "Progressive Slingshot",
+   "gi": 132
+  },
+  {
+   "id": 3997739,
+   "name": "Progressive Wallet",
+   "gi": 133
+  },
+  {
+   "id": 3997740,
+   "name": "Progressive Scale",
+   "gi": 134
+  },
+  {
+   "id": 3997741,
+   "name": "Progressive Nut Capacity",
+   "gi": 135
+  },
+  {
+   "id": 3997742,
+   "name": "Progressive Stick Capacity",
+   "gi": 136
+  },
+  {
+   "id": 3997743,
+   "name": "Progressive Bombchu",
+   "gi": 137
+  },
+  {
+   "id": 3997744,
+   "name": "Progressive Magic Meter",
+   "gi": 138
+  },
+  {
+   "id": 3997745,
+   "name": "Progressive Ocarina",
+   "gi": 139
+  },
+  {
+   "id": 3997746,
+   "name": "Progressive Goron Sword",
+   "gi": 212
+  },
+  {
+   "id": 3997747,
+   "name": "Empty Bottle",
+   "gi": 15
+  },
+  {
+   "id": 3997748,
+   "name": "Bottle with Red Potion",
+   "gi": 140
+  },
+  {
+   "id": 3997749,
+   "name": "Bottle with Milk",
+   "gi": 20
+  },
+  {
+   "id": 3997750,
+   "name": "Bottle with Green Potion",
+   "gi": 141
+  },
+  {
+   "id": 3997751,
+   "name": "Bottle with Blue Potion",
+   "gi": 142
+  },
+  {
+   "id": 3997752,
+   "name": "Bottle with Fairy",
+   "gi": 143
+  },
+  {
+   "id": 3997753,
+   "name": "Bottle with Fish",
+   "gi": 144
+  },
+  {
+   "id": 3997754,
+   "name": "Bottle with Blue Fire",
+   "gi": 145
+  },
+  {
+   "id": 3997755,
+   "name": "Bottle with Bugs",
+   "gi": 146
+  },
+  {
+   "id": 3997756,
+   "name": "Bottle with Poe",
+   "gi": 148
+  },
+  {
+   "id": 3997757,
+   "name": "Bottle with Ruto's Letter",
+   "gi": 21
+  },
+  {
+   "id": 3997758,
+   "name": "Bottle with Big Poe",
+   "gi": 147
+  },
+  {
+   "id": 3997759,
+   "name": "Zelda's Lullaby",
+   "gi": 193
+  },
+  {
+   "id": 3997760,
+   "name": "Epona's Song",
+   "gi": 194
+  },
+  {
+   "id": 3997761,
+   "name": "Saria's Song",
+   "gi": 195
+  },
+  {
+   "id": 3997762,
+   "name": "Sun's Song",
+   "gi": 196
+  },
+  {
+   "id": 3997763,
+   "name": "Song of Time",
+   "gi": 197
+  },
+  {
+   "id": 3997764,
+   "name": "Song of Storms",
+   "gi": 198
+  },
+  {
+   "id": 3997765,
+   "name": "Minuet of Forest",
+   "gi": 187
+  },
+  {
+   "id": 3997766,
+   "name": "Bolero of Fire",
+   "gi": 188
+  },
+  {
+   "id": 3997767,
+   "name": "Serenade of Water",
+   "gi": 189
+  },
+  {
+   "id": 3997768,
+   "name": "Requiem of Spirit",
+   "gi": 190
+  },
+  {
+   "id": 3997769,
+   "name": "Nocturne of Shadow",
+   "gi": 191
+  },
+  {
+   "id": 3997770,
+   "name": "Prelude of Light",
+   "gi": 192
+  },
+  {
+   "id": 3997771,
+   "name": "Great Deku Tree Map",
+   "gi": 165
+  },
+  {
+   "id": 3997772,
+   "name": "Dodongo's Cavern Map",
+   "gi": 166
+  },
+  {
+   "id": 3997773,
+   "name": "Jabu-Jabu's Belly Map",
+   "gi": 167
+  },
+  {
+   "id": 3997774,
+   "name": "Forest Temple Map",
+   "gi": 168
+  },
+  {
+   "id": 3997775,
+   "name": "Fire Temple Map",
+   "gi": 169
+  },
+  {
+   "id": 3997776,
+   "name": "Water Temple Map",
+   "gi": 170
+  },
+  {
+   "id": 3997777,
+   "name": "Spirit Temple Map",
+   "gi": 171
+  },
+  {
+   "id": 3997778,
+   "name": "Shadow Temple Map",
+   "gi": 172
+  },
+  {
+   "id": 3997779,
+   "name": "Bottom of the Well Map",
+   "gi": 173
+  },
+  {
+   "id": 3997780,
+   "name": "Ice Cavern Map",
+   "gi": 174
+  },
+  {
+   "id": 3997781,
+   "name": "Great Deku Tree Compass",
+   "gi": 155
+  },
+  {
+   "id": 3997782,
+   "name": "Dodongo's Cavern Compass",
+   "gi": 156
+  },
+  {
+   "id": 3997783,
+   "name": "Jabu-Jabu's Belly Compass",
+   "gi": 157
+  },
+  {
+   "id": 3997784,
+   "name": "Forest Temple Compass",
+   "gi": 158
+  },
+  {
+   "id": 3997785,
+   "name": "Fire Temple Compass",
+   "gi": 159
+  },
+  {
+   "id": 3997786,
+   "name": "Water Temple Compass",
+   "gi": 160
+  },
+  {
+   "id": 3997787,
+   "name": "Spirit Temple Compass",
+   "gi": 161
+  },
+  {
+   "id": 3997788,
+   "name": "Shadow Temple Compass",
+   "gi": 162
+  },
+  {
+   "id": 3997789,
+   "name": "Bottom of the Well Compass",
+   "gi": 163
+  },
+  {
+   "id": 3997790,
+   "name": "Ice Cavern Compass",
+   "gi": 164
+  },
+  {
+   "id": 3997791,
+   "name": "Forest Temple Big Key",
+   "gi": 149
+  },
+  {
+   "id": 3997792,
+   "name": "Fire Temple Big Key",
+   "gi": 150
+  },
+  {
+   "id": 3997793,
+   "name": "Water Temple Big Key",
+   "gi": 151
+  },
+  {
+   "id": 3997794,
+   "name": "Spirit Temple Big Key",
+   "gi": 152
+  },
+  {
+   "id": 3997795,
+   "name": "Shadow Temple Big Key",
+   "gi": 153
+  },
+  {
+   "id": 3997796,
+   "name": "Ganon's Castle Big Key",
+   "gi": 154
+  },
+  {
+   "id": 3997797,
+   "name": "Forest Temple Small Key",
+   "gi": 175
+  },
+  {
+   "id": 3997798,
+   "name": "Fire Temple Small Key",
+   "gi": 176
+  },
+  {
+   "id": 3997799,
+   "name": "Water Temple Small Key",
+   "gi": 177
+  },
+  {
+   "id": 3997800,
+   "name": "Spirit Temple Small Key",
+   "gi": 178
+  },
+  {
+   "id": 3997801,
+   "name": "Shadow Temple Small Key",
+   "gi": 179
+  },
+  {
+   "id": 3997802,
+   "name": "Bottom of the Well Small Key",
+   "gi": 180
+  },
+  {
+   "id": 3997803,
+   "name": "Training Grounds Small Key",
+   "gi": 181
+  },
+  {
+   "id": 3997804,
+   "name": "Gerudo Fortress Small Key",
+   "gi": 182
+  },
+  {
+   "id": 3997805,
+   "name": "Ganon's Castle Small Key",
+   "gi": 183
+  },
+  {
+   "id": 3997806,
+   "name": "Chest Game Small Key",
+   "gi": 222
+  },
+  {
+   "id": 3997807,
+   "name": "Forest Temple Key Ring",
+   "gi": 213
+  },
+  {
+   "id": 3997808,
+   "name": "Fire Temple Key Ring",
+   "gi": 214
+  },
+  {
+   "id": 3997809,
+   "name": "Water Temple Key Ring",
+   "gi": 215
+  },
+  {
+   "id": 3997810,
+   "name": "Spirit Temple Key Ring",
+   "gi": 216
+  },
+  {
+   "id": 3997811,
+   "name": "Shadow Temple Key Ring",
+   "gi": 217
+  },
+  {
+   "id": 3997812,
+   "name": "Bottom of the Well Key Ring",
+   "gi": 218
+  },
+  {
+   "id": 3997813,
+   "name": "Training Grounds Key Ring",
+   "gi": 219
+  },
+  {
+   "id": 3997814,
+   "name": "Gerudo Fortress Key Ring",
+   "gi": 220
+  },
+  {
+   "id": 3997815,
+   "name": "Ganon's Castle Key Ring",
+   "gi": 221
+  },
+  {
+   "id": 3997816,
+   "name": "Kokiri's Emerald",
+   "gi": 203
+  },
+  {
+   "id": 3997817,
+   "name": "Goron's Ruby",
+   "gi": 204
+  },
+  {
+   "id": 3997818,
+   "name": "Zora's Sapphire",
+   "gi": 205
+  },
+  {
+   "id": 3997819,
+   "name": "Forest Medallion",
+   "gi": 206
+  },
+  {
+   "id": 3997820,
+   "name": "Fire Medallion",
+   "gi": 207
+  },
+  {
+   "id": 3997821,
+   "name": "Water Medallion",
+   "gi": 208
+  },
+  {
+   "id": 3997822,
+   "name": "Spirit Medallion",
+   "gi": 209
+  },
+  {
+   "id": 3997823,
+   "name": "Shadow Medallion",
+   "gi": 210
+  },
+  {
+   "id": 3997824,
+   "name": "Light Medallion",
+   "gi": 211
+  },
+  {
+   "id": 3997825,
+   "name": "Recovery Heart",
+   "gi": 72
+  },
+  {
+   "id": 3997826,
+   "name": "Green Rupee",
+   "gi": 76
+  },
+  {
+   "id": 3997827,
+   "name": "Blue Rupee",
+   "gi": 77
+  },
+  {
+   "id": 3997828,
+   "name": "Red Rupee",
+   "gi": 78
+  },
+  {
+   "id": 3997829,
+   "name": "Purple Rupee",
+   "gi": 85
+  },
+  {
+   "id": 3997830,
+   "name": "Huge Rupee",
+   "gi": 86
+  },
+  {
+   "id": 3997831,
+   "name": "Piece of Heart",
+   "gi": 62
+  },
+  {
+   "id": 3997832,
+   "name": "Heart Container",
+   "gi": 79
+  },
+  {
+   "id": 3997833,
+   "name": "Ice Trap",
+   "gi": 124
+  },
+  {
+   "id": 3997834,
+   "name": "Milk",
+   "gi": 80
+  },
+  {
+   "id": 3997835,
+   "name": "Bombs (5)",
+   "gi": 1
+  },
+  {
+   "id": 3997836,
+   "name": "Bombs (10)",
+   "gi": 102
+  },
+  {
+   "id": 3997837,
+   "name": "Bombs (20)",
+   "gi": 103
+  },
+  {
+   "id": 3997838,
+   "name": "Bombchus (5)",
+   "gi": 106
+  },
+  {
+   "id": 3997839,
+   "name": "Bombchus (10)",
+   "gi": 3
+  },
+  {
+   "id": 3997840,
+   "name": "Bombchus (20)",
+   "gi": 107
+  },
+  {
+   "id": 3997841,
+   "name": "Bombchu Drop",
+   "gi": 3
+  },
+  {
+   "id": 3997842,
+   "name": "Arrows (5)",
+   "gi": 73
+  },
+  {
+   "id": 3997843,
+   "name": "Arrows (10)",
+   "gi": 74
+  },
+  {
+   "id": 3997844,
+   "name": "Arrows (30)",
+   "gi": 75
+  },
+  {
+   "id": 3997845,
+   "name": "Deku Nuts (5)",
+   "gi": 2
+  },
+  {
+   "id": 3997846,
+   "name": "Deku Nuts (10)",
+   "gi": 100
+  },
+  {
+   "id": 3997847,
+   "name": "Deku Seeds (30)",
+   "gi": 105
+  },
+  {
+   "id": 3997848,
+   "name": "Deku Stick (1)",
+   "gi": 7
+  },
+  {
+   "id": 3997849,
+   "name": "Red Potion Refill",
+   "gi": 16
+  },
+  {
+   "id": 3997850,
+   "name": "Green Potion Refill",
+   "gi": 17
+  },
+  {
+   "id": 3997851,
+   "name": "Blue Potion Refill",
+   "gi": 18
+  },
+  {
+   "id": 3997852,
+   "name": "Piece of Heart (Treasure Chest Minigame)",
+   "gi": 118
+  },
+  {
+   "id": 3997853,
+   "name": "Green Rupee (Treasure Chest Minigame)",
+   "gi": 114
+  },
+  {
+   "id": 3997854,
+   "name": "Buy Deku Nut (5)",
+   "gi": 0
+  },
+  {
+   "id": 3997855,
+   "name": "Buy Arrows (30)",
+   "gi": 1
+  },
+  {
+   "id": 3997856,
+   "name": "Buy Arrows (50)",
+   "gi": 2
+  },
+  {
+   "id": 3997857,
+   "name": "Buy Bombs (5) [25]",
+   "gi": 3
+  },
+  {
+   "id": 3997858,
+   "name": "Buy Deku Nut (10)",
+   "gi": 4
+  },
+  {
+   "id": 3997859,
+   "name": "Buy Deku Stick (1)",
+   "gi": 5
+  },
+  {
+   "id": 3997860,
+   "name": "Buy Bombs (10)",
+   "gi": 6
+  },
+  {
+   "id": 3997861,
+   "name": "Buy Fish",
+   "gi": 7
+  },
+  {
+   "id": 3997862,
+   "name": "Buy Red Potion [30]",
+   "gi": 8
+  },
+  {
+   "id": 3997863,
+   "name": "Buy Green Potion",
+   "gi": 9
+  },
+  {
+   "id": 3997864,
+   "name": "Buy Blue Potion",
+   "gi": 10
+  },
+  {
+   "id": 3997865,
+   "name": "Buy Hylian Shield",
+   "gi": 12
+  },
+  {
+   "id": 3997866,
+   "name": "Buy Deku Shield",
+   "gi": 13
+  },
+  {
+   "id": 3997867,
+   "name": "Buy Goron Tunic",
+   "gi": 14
+  },
+  {
+   "id": 3997868,
+   "name": "Buy Zora Tunic",
+   "gi": 15
+  },
+  {
+   "id": 3997869,
+   "name": "Buy Heart",
+   "gi": 16
+  },
+  {
+   "id": 3997870,
+   "name": "Buy Bombchu (10)",
+   "gi": 21
+  },
+  {
+   "id": 3997871,
+   "name": "Buy Bombchu (20)",
+   "gi": 22
+  },
+  {
+   "id": 3997872,
+   "name": "Buy Bombchu (5)",
+   "gi": 24
+  },
+  {
+   "id": 3997873,
+   "name": "Buy Deku Seeds (30)",
+   "gi": 29
+  },
+  {
+   "id": 3997874,
+   "name": "Sold Out",
+   "gi": 38
+  },
+  {
+   "id": 3997875,
+   "name": "Buy Blue Fire",
+   "gi": 39
+  },
+  {
+   "id": 3997876,
+   "name": "Buy Bottle Bug",
+   "gi": 40
+  },
+  {
+   "id": 3997877,
+   "name": "Buy Poe",
+   "gi": 42
+  },
+  {
+   "id": 3997878,
+   "name": "Buy Fairy's Spirit",
+   "gi": 43
+  },
+  {
+   "id": 3997879,
+   "name": "Buy Arrows (10)",
+   "gi": 44
+  },
+  {
+   "id": 3997880,
+   "name": "Buy Bombs (20)",
+   "gi": 45
+  },
+  {
+   "id": 3997881,
+   "name": "Buy Bombs (30)",
+   "gi": 46
+  },
+  {
+   "id": 3997882,
+   "name": "Buy Bombs (5) [35]",
+   "gi": 47
+  },
+  {
+   "id": 3997883,
+   "name": "Buy Red Potion [40]",
+   "gi": 48
+  },
+  {
+   "id": 3997884,
+   "name": "Buy Red Potion [50]",
+   "gi": 49
+  },
+  {
+   "id": 3997885,
+   "name": "Poe Soul",
+   "gi": 223
+  },
+  {
+   "id": 3997886,
+   "name": "Octorok Soul",
+   "gi": 224
+  },
+  {
+   "id": 3997887,
+   "name": "Keese Soul",
+   "gi": 225
+  },
+  {
+   "id": 3997888,
+   "name": "Tektite Soul",
+   "gi": 226
+  },
+  {
+   "id": 3997889,
+   "name": "Leever Soul",
+   "gi": 227
+  },
+  {
+   "id": 3997890,
+   "name": "Peahat Soul",
+   "gi": 228
+  },
+  {
+   "id": 3997891,
+   "name": "Lizalfos and Dinolfos Soul",
+   "gi": 229
+  },
+  {
+   "id": 3997892,
+   "name": "Shabom Soul",
+   "gi": 230
+  },
+  {
+   "id": 3997893,
+   "name": "Biri and Bari Soul",
+   "gi": 231
+  },
+  {
+   "id": 3997894,
+   "name": "Tailpasaran Soul",
+   "gi": 232
+  },
+  {
+   "id": 3997895,
+   "name": "Skulltula Soul",
+   "gi": 233
+  },
+  {
+   "id": 3997896,
+   "name": "Torch Slug Soul",
+   "gi": 234
+  },
+  {
+   "id": 3997897,
+   "name": "Stinger Soul",
+   "gi": 235
+  },
+  {
+   "id": 3997898,
+   "name": "Moblin Soul",
+   "gi": 236
+  },
+  {
+   "id": 3997899,
+   "name": "Armos Soul",
+   "gi": 237
+  },
+  {
+   "id": 3997900,
+   "name": "Deku Baba Soul",
+   "gi": 238
+  },
+  {
+   "id": 3997901,
+   "name": "Bubble Soul",
+   "gi": 239
+  },
+  {
+   "id": 3997902,
+   "name": "Flying Pot and Tile Soul",
+   "gi": 240
+  },
+  {
+   "id": 3997903,
+   "name": "Beamos Soul",
+   "gi": 241
+  },
+  {
+   "id": 3997904,
+   "name": "Wallmaster and Floormaster Soul",
+   "gi": 242
+  },
+  {
+   "id": 3997905,
+   "name": "ReDead and Gibdo Soul",
+   "gi": 243
+  },
+  {
+   "id": 3997906,
+   "name": "Shell Blade Soul",
+   "gi": 244
+  },
+  {
+   "id": 3997907,
+   "name": "Like Like Soul",
+   "gi": 245
+  },
+  {
+   "id": 3997908,
+   "name": "Parasitic Tentacle Soul",
+   "gi": 246
+  },
+  {
+   "id": 3997909,
+   "name": "Anubis Soul",
+   "gi": 247
+  },
+  {
+   "id": 3997910,
+   "name": "Spike Soul",
+   "gi": 248
+  },
+  {
+   "id": 3997911,
+   "name": "Skull Kid Soul",
+   "gi": 249
+  },
+  {
+   "id": 3997912,
+   "name": "Freezard Soul",
+   "gi": 250
+  },
+  {
+   "id": 3997913,
+   "name": "Deku Scrub Soul",
+   "gi": 251
+  },
+  {
+   "id": 3997914,
+   "name": "Wolfos Soul",
+   "gi": 252
+  },
+  {
+   "id": 3997915,
+   "name": "Stalchild Soul",
+   "gi": 253
+  },
+  {
+   "id": 3997916,
+   "name": "Guay Soul",
+   "gi": 254
+  },
+  {
+   "id": 3997917,
+   "name": "Door Mimic Soul",
+   "gi": 255
+  },
+  {
+   "id": 3997918,
+   "name": "Stalfos Soul",
+   "gi": 256
+  },
+  {
+   "id": 3997919,
+   "name": "Dark Link Soul",
+   "gi": 257
+  },
+  {
+   "id": 3997920,
+   "name": "Flare Dancer Soul",
+   "gi": 258
+  },
+  {
+   "id": 3997921,
+   "name": "Dead Hand Soul",
+   "gi": 259
+  },
+  {
+   "id": 3997922,
+   "name": "Gerudo and Iron Knuckle Soul",
+   "gi": 260
+  },
+  {
+   "id": 3997923,
+   "name": "Gohma Soul",
+   "gi": 261
+  },
+  {
+   "id": 3997924,
+   "name": "Dodongo Soul",
+   "gi": 262
+  },
+  {
+   "id": 3997925,
+   "name": "Barinade Soul",
+   "gi": 263
+  },
+  {
+   "id": 3997926,
+   "name": "Phantom Ganon Soul",
+   "gi": 264
+  },
+  {
+   "id": 3997927,
+   "name": "Volvagia Soul",
+   "gi": 265
+  },
+  {
+   "id": 3997928,
+   "name": "Morpha Soul",
+   "gi": 266
+  },
+  {
+   "id": 3997929,
+   "name": "Bongo Bongo Soul",
+   "gi": 267
+  },
+  {
+   "id": 3997930,
+   "name": "Twinrova Soul",
+   "gi": 268
+  },
+  {
+   "id": 3997931,
+   "name": "Ganon Soul",
+   "gi": 269
+  },
+  {
+   "id": 3997932,
+   "name": "Ocarina L Button",
+   "gi": 270
+  },
+  {
+   "id": 3997933,
+   "name": "Ocarina R Button",
+   "gi": 271
+  },
+  {
+   "id": 3997934,
+   "name": "Ocarina X Button",
+   "gi": 272
+  },
+  {
+   "id": 3997935,
+   "name": "Ocarina Y Button",
+   "gi": 273
+  },
+  {
+   "id": 3997936,
+   "name": "Ocarina A Button",
+   "gi": 274
+  },
+  {
+   "id": 3997937,
+   "name": "Big Poe",
+   "gi": 276
+  },
+  {
+   "id": 3997938,
+   "name": "Triforce Piece",
+   "gi": 202
+  },
+  {
+   "id": 3997939,
+   "name": "Triforce",
+   "gi": 116
+  },
+  {
+   "id": 3997940,
+   "name": "Hint",
+   "gi": 115
+  }
+ ],
+ "rows": [
+  {
+   "gi": 1,
+   "action_id": 142,
+   "upgrade": "BombsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 2,
+   "action_id": 140,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 3,
+   "action_id": 9,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 4,
+   "action_id": 3,
+   "upgrade": "None",
+   "effect": "PlaceMagicArrowsInInventory",
+   "arg1": 0,
+   "arg2": -1
+  },
+  {
+   "gi": 5,
+   "action_id": 6,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 6,
+   "action_id": 14,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 7,
+   "action_id": 0,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 8,
+   "action_id": 10,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 9,
+   "action_id": 11,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 10,
+   "action_id": 15,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 11,
+   "action_id": 35,
+   "upgrade": "None",
+   "effect": "OpenMaskShop",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 12,
+   "action_id": 8,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 13,
+   "action_id": 17,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 14,
+   "action_id": 47,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 47,
+   "arg2": -1
+  },
+  {
+   "gi": 15,
+   "action_id": 20,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 16,
+   "action_id": 21,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 17,
+   "action_id": 22,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 18,
+   "action_id": 23,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 19,
+   "action_id": 24,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 20,
+   "action_id": 26,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 21,
+   "action_id": 27,
+   "upgrade": "LetterToBottle",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 22,
+   "action_id": 16,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 23,
+   "action_id": 37,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 24,
+   "action_id": 38,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 25,
+   "action_id": 34,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 26,
+   "action_id": 36,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 27,
+   "action_id": 39,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 28,
+   "action_id": 43,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 29,
+   "action_id": 45,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 45,
+   "arg2": -1
+  },
+  {
+   "gi": 30,
+   "action_id": 46,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 46,
+   "arg2": -1
+  },
+  {
+   "gi": 31,
+   "action_id": 48,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 48,
+   "arg2": -1
+  },
+  {
+   "gi": 32,
+   "action_id": 49,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 49,
+   "arg2": -1
+  },
+  {
+   "gi": 33,
+   "action_id": 50,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 50,
+   "arg2": -1
+  },
+  {
+   "gi": 34,
+   "action_id": 51,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 51,
+   "arg2": -1
+  },
+  {
+   "gi": 35,
+   "action_id": 52,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 52,
+   "arg2": -1
+  },
+  {
+   "gi": 36,
+   "action_id": 53,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 53,
+   "arg2": -1
+  },
+  {
+   "gi": 37,
+   "action_id": 54,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 54,
+   "arg2": -1
+  },
+  {
+   "gi": 38,
+   "action_id": 55,
+   "upgrade": "None",
+   "effect": "OwnAdultTrade",
+   "arg1": 55,
+   "arg2": -1
+  },
+  {
+   "gi": 39,
+   "action_id": 59,
+   "upgrade": "None",
+   "effect": "GiveChildKokiriSword",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 40,
+   "action_id": 61,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 41,
+   "action_id": 62,
+   "upgrade": "None",
+   "effect": "Shield",
+   "arg1": "EQUIP_VALUE_SHIELD_DEKU",
+   "arg2": -1
+  },
+  {
+   "gi": 42,
+   "action_id": 63,
+   "upgrade": "None",
+   "effect": "Shield",
+   "arg1": "EQUIP_VALUE_SHIELD_HYLIAN",
+   "arg2": -1
+  },
+  {
+   "gi": 43,
+   "action_id": 64,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 44,
+   "action_id": 66,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 45,
+   "action_id": 67,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 46,
+   "action_id": 69,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 47,
+   "action_id": 70,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 48,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 2,
+   "arg2": 0
+  },
+  {
+   "gi": 49,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 3,
+   "arg2": 0
+  },
+  {
+   "gi": 50,
+   "action_id": 77,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 51,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 2,
+   "arg2": 1
+  },
+  {
+   "gi": 52,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 3,
+   "arg2": 1
+  },
+  {
+   "gi": 53,
+   "action_id": 81,
+   "upgrade": "None",
+   "effect": "MoveNabooru",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 54,
+   "action_id": 82,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 55,
+   "action_id": 83,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 56,
+   "action_id": 84,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 57,
+   "action_id": 111,
+   "upgrade": "None",
+   "effect": "ShardOfAgony",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 58,
+   "action_id": 112,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 59,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveFairyOcarina",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 60,
+   "action_id": 88,
+   "upgrade": "SeedsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 61,
+   "action_id": 114,
+   "upgrade": "HealthToRupee",
+   "effect": "FullHeal",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 62,
+   "action_id": 122,
+   "upgrade": "HealthToRupee",
+   "effect": "FullHeal",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 63,
+   "action_id": 116,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 64,
+   "action_id": 117,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 65,
+   "action_id": 118,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 66,
+   "action_id": 119,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 67,
+   "action_id": 120,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 68,
+   "action_id": 121,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 69,
+   "action_id": 86,
+   "upgrade": "None",
+   "effect": "FillWalletUpgrade",
+   "arg1": 1,
+   "arg2": -1
+  },
+  {
+   "gi": 70,
+   "action_id": 87,
+   "upgrade": "None",
+   "effect": "FillWalletUpgrade",
+   "arg1": 2,
+   "arg2": -1
+  },
+  {
+   "gi": 71,
+   "action_id": 33,
+   "upgrade": "None",
+   "effect": "GiveWeirdEgg",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 72,
+   "action_id": 131,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 73,
+   "action_id": 146,
+   "upgrade": "ArrowsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 74,
+   "action_id": 147,
+   "upgrade": "ArrowsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 75,
+   "action_id": 148,
+   "upgrade": "ArrowsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 76,
+   "action_id": 132,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 77,
+   "action_id": 133,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 78,
+   "action_id": 134,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 79,
+   "action_id": 114,
+   "upgrade": "HealthToRupee",
+   "effect": "FullHeal",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 80,
+   "action_id": 130,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 81,
+   "action_id": 40,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 82,
+   "action_id": 41,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 83,
+   "action_id": 42,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 84,
+   "action_id": 80,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 85,
+   "action_id": 135,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 86,
+   "action_id": 136,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 87,
+   "action_id": 61,
+   "upgrade": "None",
+   "effect": "GiveBiggoronSword",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 88,
+   "action_id": 4,
+   "upgrade": "None",
+   "effect": "PlaceMagicArrowsInInventory",
+   "arg1": 1,
+   "arg2": -1
+  },
+  {
+   "gi": 89,
+   "action_id": 12,
+   "upgrade": "None",
+   "effect": "PlaceMagicArrowsInInventory",
+   "arg1": 2,
+   "arg2": -1
+  },
+  {
+   "gi": 90,
+   "action_id": 18,
+   "upgrade": "None",
+   "effect": "PlaceMagicArrowsInInventory",
+   "arg1": 3,
+   "arg2": -1
+  },
+  {
+   "gi": 91,
+   "action_id": 113,
+   "upgrade": "TokenToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 92,
+   "action_id": 5,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 93,
+   "action_id": 13,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 94,
+   "action_id": 19,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 95,
+   "action_id": 71,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 96,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 2,
+   "arg2": 5
+  },
+  {
+   "gi": 97,
+   "action_id": 138,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 98,
+   "action_id": 139,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 99,
+   "action_id": 140,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 100,
+   "action_id": 141,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 101,
+   "action_id": 2,
+   "upgrade": "BombsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 102,
+   "action_id": 143,
+   "upgrade": "BombsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 103,
+   "action_id": 144,
+   "upgrade": "BombsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 104,
+   "action_id": 145,
+   "upgrade": "BombsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 105,
+   "action_id": 149,
+   "upgrade": "SeedsToRupee",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 106,
+   "action_id": 150,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 107,
+   "action_id": 151,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 108,
+   "action_id": 25,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 109,
+   "action_id": 29,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 110,
+   "action_id": 28,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 111,
+   "action_id": 32,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 112,
+   "action_id": 30,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 113,
+   "action_id": 119,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 114,
+   "action_id": 132,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 115,
+   "action_id": 133,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 116,
+   "action_id": 134,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 117,
+   "action_id": 135,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 118,
+   "action_id": 122,
+   "upgrade": "HealthToRupee",
+   "effect": "FullHeal",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 119,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 2,
+   "arg2": 6
+  },
+  {
+   "gi": 120,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 3,
+   "arg2": 6
+  },
+  {
+   "gi": 121,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 2,
+   "arg2": 7
+  },
+  {
+   "gi": 122,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 3,
+   "arg2": 7
+  },
+  {
+   "gi": 123,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveUpgrade",
+   "arg1": 3,
+   "arg2": 5
+  },
+  {
+   "gi": 124,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "IceTrap",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 126,
+   "action_id": 60,
+   "upgrade": "None",
+   "effect": "GiveMasterSword",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 128,
+   "action_id": 255,
+   "upgrade": "Hookshot",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 129,
+   "action_id": 255,
+   "upgrade": "Strength",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 130,
+   "action_id": 255,
+   "upgrade": "BombBag",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 131,
+   "action_id": 255,
+   "upgrade": "Quiver",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 132,
+   "action_id": 255,
+   "upgrade": "BulletBag",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 133,
+   "action_id": 255,
+   "upgrade": "Wallet",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 134,
+   "action_id": 255,
+   "upgrade": "Scale",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 135,
+   "action_id": 255,
+   "upgrade": "Nuts",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 136,
+   "action_id": 255,
+   "upgrade": "Sticks",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 137,
+   "action_id": 255,
+   "upgrade": "Bombchu",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 138,
+   "action_id": 255,
+   "upgrade": "Magic",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 139,
+   "action_id": 255,
+   "upgrade": "Ocarina",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 140,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 21,
+   "arg2": -1
+  },
+  {
+   "gi": 141,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 22,
+   "arg2": -1
+  },
+  {
+   "gi": 142,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 23,
+   "arg2": -1
+  },
+  {
+   "gi": 143,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 24,
+   "arg2": -1
+  },
+  {
+   "gi": 144,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 25,
+   "arg2": -1
+  },
+  {
+   "gi": 145,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 28,
+   "arg2": -1
+  },
+  {
+   "gi": 146,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 29,
+   "arg2": -1
+  },
+  {
+   "gi": 147,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 30,
+   "arg2": -1
+  },
+  {
+   "gi": 148,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveBottle",
+   "arg1": 32,
+   "arg2": -1
+  },
+  {
+   "gi": 149,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 3
+  },
+  {
+   "gi": 150,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 4
+  },
+  {
+   "gi": 151,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 5
+  },
+  {
+   "gi": 152,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 6
+  },
+  {
+   "gi": 153,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 7
+  },
+  {
+   "gi": 154,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 1,
+   "arg2": 10
+  },
+  {
+   "gi": 155,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 0
+  },
+  {
+   "gi": 156,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 1
+  },
+  {
+   "gi": 157,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 2
+  },
+  {
+   "gi": 158,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 3
+  },
+  {
+   "gi": 159,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 4
+  },
+  {
+   "gi": 160,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 5
+  },
+  {
+   "gi": 161,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 6
+  },
+  {
+   "gi": 162,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 7
+  },
+  {
+   "gi": 163,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 8
+  },
+  {
+   "gi": 164,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 2,
+   "arg2": 9
+  },
+  {
+   "gi": 165,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 0
+  },
+  {
+   "gi": 166,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 1
+  },
+  {
+   "gi": 167,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 2
+  },
+  {
+   "gi": 168,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 3
+  },
+  {
+   "gi": 169,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 4
+  },
+  {
+   "gi": 170,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 5
+  },
+  {
+   "gi": 171,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 6
+  },
+  {
+   "gi": 172,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 7
+  },
+  {
+   "gi": 173,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 8
+  },
+  {
+   "gi": 174,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDungeonItem",
+   "arg1": 4,
+   "arg2": 9
+  },
+  {
+   "gi": 175,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 3,
+   "arg2": -1
+  },
+  {
+   "gi": 176,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 4,
+   "arg2": -1
+  },
+  {
+   "gi": 177,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 5,
+   "arg2": -1
+  },
+  {
+   "gi": 178,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 6,
+   "arg2": -1
+  },
+  {
+   "gi": 179,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 7,
+   "arg2": -1
+  },
+  {
+   "gi": 180,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 8,
+   "arg2": -1
+  },
+  {
+   "gi": 181,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 11,
+   "arg2": -1
+  },
+  {
+   "gi": 182,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 12,
+   "arg2": -1
+  },
+  {
+   "gi": 183,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 13,
+   "arg2": -1
+  },
+  {
+   "gi": 184,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDefense",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 185,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMagic",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 186,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveDoubleMagic",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 187,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 6,
+   "arg2": -1
+  },
+  {
+   "gi": 188,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 7,
+   "arg2": -1
+  },
+  {
+   "gi": 189,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 8,
+   "arg2": -1
+  },
+  {
+   "gi": 190,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 9,
+   "arg2": -1
+  },
+  {
+   "gi": 191,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 10,
+   "arg2": -1
+  },
+  {
+   "gi": 192,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 11,
+   "arg2": -1
+  },
+  {
+   "gi": 193,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 12,
+   "arg2": -1
+  },
+  {
+   "gi": 194,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 13,
+   "arg2": -1
+  },
+  {
+   "gi": 195,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 14,
+   "arg2": -1
+  },
+  {
+   "gi": 196,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 15,
+   "arg2": -1
+  },
+  {
+   "gi": 197,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 16,
+   "arg2": -1
+  },
+  {
+   "gi": 198,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSong",
+   "arg1": 17,
+   "arg2": -1
+  },
+  {
+   "gi": 199,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveTycoonWallet",
+   "arg1": 3,
+   "arg2": -1
+  },
+  {
+   "gi": 200,
+   "action_id": 20,
+   "upgrade": "None",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 201,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "BeanPack",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 202,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "TriforcePiece",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 203,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveStone",
+   "arg1": 4,
+   "arg2": -1
+  },
+  {
+   "gi": 204,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveStone",
+   "arg1": 8,
+   "arg2": -1
+  },
+  {
+   "gi": 205,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveStone",
+   "arg1": 16,
+   "arg2": -1
+  },
+  {
+   "gi": 206,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 1,
+   "arg2": -1
+  },
+  {
+   "gi": 207,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 2,
+   "arg2": -1
+  },
+  {
+   "gi": 208,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 4,
+   "arg2": -1
+  },
+  {
+   "gi": 209,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 8,
+   "arg2": -1
+  },
+  {
+   "gi": 210,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 16,
+   "arg2": -1
+  },
+  {
+   "gi": 211,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveMedallion",
+   "arg1": 32,
+   "arg2": -1
+  },
+  {
+   "gi": 212,
+   "action_id": 255,
+   "upgrade": "GoronSword",
+   "effect": "None",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 213,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 3,
+   "arg2": -1
+  },
+  {
+   "gi": 214,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 4,
+   "arg2": -1
+  },
+  {
+   "gi": 215,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 5,
+   "arg2": -1
+  },
+  {
+   "gi": 216,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 6,
+   "arg2": -1
+  },
+  {
+   "gi": 217,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 7,
+   "arg2": -1
+  },
+  {
+   "gi": 218,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 8,
+   "arg2": -1
+  },
+  {
+   "gi": 219,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 11,
+   "arg2": -1
+  },
+  {
+   "gi": 220,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 12,
+   "arg2": -1
+  },
+  {
+   "gi": 221,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKeyRing",
+   "arg1": 13,
+   "arg2": -1
+  },
+  {
+   "gi": 222,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "GiveSmallKey",
+   "arg1": 16,
+   "arg2": -1
+  },
+  {
+   "gi": 223,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_POE",
+   "arg2": -1
+  },
+  {
+   "gi": 224,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_OCTOROK",
+   "arg2": -1
+  },
+  {
+   "gi": 225,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_KEESE",
+   "arg2": -1
+  },
+  {
+   "gi": 226,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_TEKTITE",
+   "arg2": -1
+  },
+  {
+   "gi": 227,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_LEEVER",
+   "arg2": -1
+  },
+  {
+   "gi": 228,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_PEAHAT",
+   "arg2": -1
+  },
+  {
+   "gi": 229,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_LIZALFOS",
+   "arg2": -1
+  },
+  {
+   "gi": 230,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_SHABOM",
+   "arg2": -1
+  },
+  {
+   "gi": 231,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_BIRI_BARI",
+   "arg2": -1
+  },
+  {
+   "gi": 232,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_TAILPASARAN",
+   "arg2": -1
+  },
+  {
+   "gi": 233,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_SKULLTULA",
+   "arg2": -1
+  },
+  {
+   "gi": 234,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_TORCH_SLUG",
+   "arg2": -1
+  },
+  {
+   "gi": 235,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_STINGER",
+   "arg2": -1
+  },
+  {
+   "gi": 236,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_MOBLIN",
+   "arg2": -1
+  },
+  {
+   "gi": 237,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_ARMOS",
+   "arg2": -1
+  },
+  {
+   "gi": 238,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DEKU_BABA",
+   "arg2": -1
+  },
+  {
+   "gi": 239,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_BUBBLE",
+   "arg2": -1
+  },
+  {
+   "gi": 240,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_FLYING_TRAP",
+   "arg2": -1
+  },
+  {
+   "gi": 241,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_BEAMOS",
+   "arg2": -1
+  },
+  {
+   "gi": 242,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_WALLMASTER",
+   "arg2": -1
+  },
+  {
+   "gi": 243,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_REDEAD_GIBDO",
+   "arg2": -1
+  },
+  {
+   "gi": 244,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_SHELL_BLADE",
+   "arg2": -1
+  },
+  {
+   "gi": 245,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_LIKE_LIKE",
+   "arg2": -1
+  },
+  {
+   "gi": 246,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_TENTACLE",
+   "arg2": -1
+  },
+  {
+   "gi": 247,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_ANUBIS",
+   "arg2": -1
+  },
+  {
+   "gi": 248,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_SPIKE",
+   "arg2": -1
+  },
+  {
+   "gi": 249,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_SKULL_KID",
+   "arg2": -1
+  },
+  {
+   "gi": 250,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_FREEZARD",
+   "arg2": -1
+  },
+  {
+   "gi": 251,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DEKU_SCRUB",
+   "arg2": -1
+  },
+  {
+   "gi": 252,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_WOLFOS",
+   "arg2": -1
+  },
+  {
+   "gi": 253,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_STALCHILD",
+   "arg2": -1
+  },
+  {
+   "gi": 254,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_GUAY",
+   "arg2": -1
+  },
+  {
+   "gi": 255,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DOOR_MIMIC",
+   "arg2": -1
+  },
+  {
+   "gi": 256,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_STALFOS",
+   "arg2": -1
+  },
+  {
+   "gi": 257,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DARK_LINK",
+   "arg2": -1
+  },
+  {
+   "gi": 258,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_FLARE_DANCER",
+   "arg2": -1
+  },
+  {
+   "gi": 259,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DEAD_HAND",
+   "arg2": -1
+  },
+  {
+   "gi": 260,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_GERUDO",
+   "arg2": -1
+  },
+  {
+   "gi": 261,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_GOHMA",
+   "arg2": -1
+  },
+  {
+   "gi": 262,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_DODONGO",
+   "arg2": -1
+  },
+  {
+   "gi": 263,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_BARINADE",
+   "arg2": -1
+  },
+  {
+   "gi": 264,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_PHANTOM_GANON",
+   "arg2": -1
+  },
+  {
+   "gi": 265,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_VOLVAGIA",
+   "arg2": -1
+  },
+  {
+   "gi": 266,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_MORPHA",
+   "arg2": -1
+  },
+  {
+   "gi": 267,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_BONGO_BONGO",
+   "arg2": -1
+  },
+  {
+   "gi": 268,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_TWINROVA",
+   "arg2": -1
+  },
+  {
+   "gi": 269,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "EnemySoul",
+   "arg1": "SOUL_GANON",
+   "arg2": -1
+  },
+  {
+   "gi": 270,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "OcarinaNote",
+   "arg1": "OCARINA_BUTTON_L",
+   "arg2": -1
+  },
+  {
+   "gi": 271,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "OcarinaNote",
+   "arg1": "OCARINA_BUTTON_R",
+   "arg2": -1
+  },
+  {
+   "gi": 272,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "OcarinaNote",
+   "arg1": "OCARINA_BUTTON_X",
+   "arg2": -1
+  },
+  {
+   "gi": 273,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "OcarinaNote",
+   "arg1": "OCARINA_BUTTON_Y",
+   "arg2": -1
+  },
+  {
+   "gi": 274,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "OcarinaNote",
+   "arg1": "OCARINA_BUTTON_A",
+   "arg2": -1
+  },
+  {
+   "gi": 275,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "Rupoor",
+   "arg1": -1,
+   "arg2": -1
+  },
+  {
+   "gi": 276,
+   "action_id": 65,
+   "upgrade": "None",
+   "effect": "UnbottledBigPoe",
+   "arg1": -1,
+   "arg2": -1
+  }
+ ]
+}

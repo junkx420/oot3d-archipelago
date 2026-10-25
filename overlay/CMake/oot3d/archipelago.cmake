@@ -39,6 +39,8 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
 
     add_library(triaevum_archipelago STATIC
         tools/oot3d/archipelago/ap_check_observer.cpp
+        tools/oot3d/archipelago/ap_item_receiver.cpp
+        tools/oot3d/archipelago/ap_item_table.cpp
         tools/oot3d/archipelago/ap_location_key.cpp
         tools/oot3d/archipelago/ap_location_table.cpp
         tools/oot3d/archipelago/ap_network_client.cpp
@@ -80,7 +82,8 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
         triaevum_archipelago nlohmann_json::nlohmann_json)
     target_compile_definitions(triaevum_archipelago_tests PRIVATE
         TRIAEVUM_ARCHIPELAGO_ADDRESSES_JSON="${CMAKE_CURRENT_SOURCE_DIR}/tools/oot3d/archipelago/addresses.json"
-        TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON="${CMAKE_CURRENT_SOURCE_DIR}/runtime/triaevum_resources/archipelago/locations.json")
+        TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON="${CMAKE_CURRENT_SOURCE_DIR}/runtime/triaevum_resources/archipelago/locations.json"
+        TRIAEVUM_ARCHIPELAGO_ITEMS_JSON="${CMAKE_CURRENT_SOURCE_DIR}/runtime/triaevum_resources/archipelago/items.json")
     oot3d_target_defaults(triaevum_archipelago_tests FOLDER Tests)
     add_test(NAME triaevum_archipelago_tests COMMAND triaevum_archipelago_tests)
 

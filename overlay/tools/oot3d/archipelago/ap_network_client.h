@@ -41,7 +41,7 @@ struct ReceivedItem {
   std::int64_t Index = 0;    // position in the server's item list
   std::int64_t Item = 0;     // AP item id
   std::int64_t Location = 0; // AP location id it came from
-  int Player = 0;            // finding player's slot
+  int Player = 0;            // ReceivedItems: finding player's slot; scouts: owner
   unsigned Flags = 0;
 };
 
@@ -67,6 +67,11 @@ struct ItemsReceived {
 struct LocationsChecked {
   std::vector<std::int64_t> Locations;
 };
+// What this slot's locations hold (LocationScouts, sent on every slot
+// connection for all of them). Item is the id in the owning player's game.
+struct LocationsScouted {
+  std::vector<ReceivedItem> Items; // Index unused; Player owns the item
+};
 struct Message {
   std::string Text;
 };
@@ -75,7 +80,8 @@ struct Message {
 using NetworkEventVariant =
     std::variant<NetworkEvent::StateChanged, NetworkEvent::SlotConnected,
                  NetworkEvent::SlotRefused, NetworkEvent::ItemsReceived,
-                 NetworkEvent::LocationsChecked, NetworkEvent::Message>;
+                 NetworkEvent::LocationsChecked, NetworkEvent::LocationsScouted,
+                 NetworkEvent::Message>;
 
 class NetworkClient final {
 public:

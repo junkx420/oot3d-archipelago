@@ -1,12 +1,16 @@
 #pragma once
 
-// Phase 1 of the Archipelago integration: observe item checks, change nothing.
+// Observes item checks (Phase 1) and, with an override set, changes what a
+// location gives (Phase 4).
 //
 // Hooks are guest function entries, so they are block starts of every
 // execution mode (interpreter, compiled functions, whole-AOT) and need no
-// title-module rebuild. The observer only reads guest state; it never writes
-// registers or memory and never raises an observable exit.
+// title-module rebuild. The observer reads guest state; its one write is the
+// get-item argument of Actor_OfferGetItem (r2, which block-entry callbacks
+// may change) when the override names another item. It never writes memory
+// and never raises an observable exit.
 
+#include "ap_guest_layout.h"
 #include "ap_location_key.h"
 #include "recomp/a32_runtime.h"
 
@@ -39,18 +43,6 @@ inline constexpr std::array<GuestFunction, 2> kGuestFunctions{{
      "e4f40f57614484da8e6cad178fc76bc97f1a26418815587c7c735c1be5c401c5"},
 }};
 
-// Guest layout (OoT3D_Randomizer code/include/z3D, EUR = USA here).
-inline constexpr std::uint32_t kSaveContext = 0x00587958U;
-inline constexpr std::uint32_t kSaveRespawnReturnData = kSaveContext + 0x14F0U + 0x1CU + 0x13U;
-inline constexpr std::uint32_t kPlaySceneNum = 0x0104U;
-// actorCtx (0x208C) + actorList (0x0C) + ACTORTYPE_PLAYER (2) * 8 + first (4)
-inline constexpr std::uint32_t kPlayPlayerActor = 0x208CU + 0x0CU + 2U * 8U + 4U;
-inline constexpr std::uint32_t kActorId = 0x000U;
-inline constexpr std::uint32_t kActorParams = 0x01CU;
-inline constexpr std::uint32_t kEnItem00CollectibleFlag = 0x1A8U;
-inline constexpr std::uint32_t kPlayerGetItemId = 0x12ACU;
-inline constexpr std::uint32_t kPlayerInteractRangeActor = 0x12B0U;
-
 struct CheckEvent {
   std::uint64_t Sequence = 0;
   std::uint8_t Scene = 0;
@@ -59,6 +51,7 @@ struct CheckEvent {
   std::uint16_t ActorId = 0;        // source actor, 0 when none
   std::uint16_t ActorParams = 0;
   std::uint8_t OfferGetItemId = 0;  // the matched offer's get-item id
+  std::uint8_t OverrideGetItemId = 0; // what the override gave instead, 0 for none
   std::optional<LocationKey> Key;
   const char *Source = "none"; // "offer", "direct" or "none"
 };
@@ -89,6 +82,11 @@ public:
   static bool VerifyAddresses(oot3d::recomp::a32::MemoryBus &memory, std::string *error);
 
   void SetSink(std::function<void(const CheckEvent &)> sink) { mSink = std::move(sink); }
+  // Called for every offer that forms a location key; a value replaces the
+  // offered get-item id (its sign is kept).
+  using GetItemOverride = std::function<std::optional<std::uint16_t>(const LocationKey &key,
+                                                                     oot3d::recomp::a32::MemoryBus &memory)>;
+  void SetOverride(GetItemOverride override) { mOverride = std::move(override); }
   // Called for every hooked block entry of the window, not only the
   // observer's own pcs: the first call runs VerifyAddresses (guest code is
   // mapped by then) and throws std::runtime_error on a mismatch.
@@ -107,12 +105,14 @@ private:
   struct Offer {
     std::uint32_t Actor = 0;
     OfferSource Source{};
+    std::uint8_t OverrideGetItemId = 0;
   };
   void OnOffer(oot3d::recomp::a32::GuestState &state, oot3d::recomp::a32::MemoryBus &memory);
   void OnItemGive(oot3d::recomp::a32::GuestState &state, oot3d::recomp::a32::MemoryBus &memory);
 
   std::function<void(const CheckEvent &)> mSink;
   std::function<void(const std::string &)> mReportSink;
+  GetItemOverride mOverride;
   std::optional<Offer> mLastOffer;
   std::optional<std::uint32_t> mProbePc;
   HookHits mHits{};
