@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Choice, Toggle, DefaultOnToggle, Range, PerGameCommonOptions, StartInventoryPool, Visibility, OptionGroup, OptionSet, Accessibility
+from Options import Choice, Toggle, DefaultOnToggle, Range, PerGameCommonOptions, StartInventoryPool, Visibility, OptionGroup, OptionSet, Accessibility, DeathLink
 from .Enums import Tricks, Items, TokenCounts
 
 wallet_capacities: dict[Items, int] = {
@@ -1718,6 +1718,8 @@ class SohOptions(PerGameCommonOptions):
     gs_50_hint: GS50Hint
     gs_100_hint: GS100Hint
     mask_shop_hint: MaskShopHint
+    # TriAevum: deaths are shared with the other DeathLink players.
+    death_link: DeathLink
 
     def apply_any_required_option_adjustments(self):
         self.adjust_for_forced_child_starts()

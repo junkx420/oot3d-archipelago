@@ -12,8 +12,8 @@ namespace {
 using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
-constexpr std::array<std::uint32_t, 2> kCheckHooks{kActorOfferGetItem, kItemGive};
-static_assert(kCheckHooks[0] < kCheckHooks[1]);
+constexpr std::array<std::uint32_t, 3> kCheckHooks{kGameOverStartBlock, kActorOfferGetItem, kItemGive};
+static_assert(kCheckHooks[0] < kCheckHooks[1] && kCheckHooks[1] < kCheckHooks[2]);
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -45,11 +45,12 @@ CheckObserver::~CheckObserver() {
   char text[192];
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
-                "Actor_OfferGetItem=%llu Item_Give=%llu",
+                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
                 static_cast<unsigned long long>(mHits.ActorOfferGetItem),
-                static_cast<unsigned long long>(mHits.ItemGive));
+                static_cast<unsigned long long>(mHits.ItemGive),
+                static_cast<unsigned long long>(mHits.GameOver));
   mReportSink(text);
 }
 
@@ -108,6 +109,11 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
   case kItemGive:
     ++mHits.ItemGive;
     OnItemGive(state, memory);
+    break;
+  case kGameOverStartBlock:
+    ++mHits.GameOver;
+    if (mDeathSink)
+      mDeathSink();
     break;
   default:
     break;

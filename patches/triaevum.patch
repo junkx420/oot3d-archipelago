@@ -174,10 +174,10 @@ index b6cfceec..fc68bbb7 100644
    std::optional<Oot3dNativeGame::Menu::MenuFontTextureProvider> menuFontProviderStorage;
    std::optional<oot3d::ui::N64UiFast3dRenderer> n64UiRendererStorage;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-index 81150d82..78658a83 100644
+index 81150d82..9b9e1fc9 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-@@ -228,6 +228,48 @@ void NativeA32WindowSession::Setup() {
+@@ -228,6 +228,49 @@ void NativeA32WindowSession::Setup() {
                           objectBankHooks.end());
    const auto rainHooks = Oot3dNativeGame::TopScreenRainAdapter::HookPcs();
    blockEntryHooks.insert(blockEntryHooks.end(), rainHooks.begin(), rainHooks.end());
@@ -207,6 +207,7 @@ index 81150d82..78658a83 100644
 +      session->OnCheck(event);
 +    });
 +    archipelago.SetReportSink(writeLine);
++    archipelago.SetDeathSink([session = archipelagoSession.get()] { session->OnDeath(); });
 +    archipelago.SetOverride([session = archipelagoSession.get()](
 +                                const Oot3dArchipelago::LocationKey &key,
 +                                oot3d::recomp::a32::MemoryBus &memory) {
@@ -226,7 +227,7 @@ index 81150d82..78658a83 100644
    widescreenProjection.ActorVisibility.Diagnostics =
        std::getenv("OOT3D_ACTOR_VISIBILITY_DIAGNOSTICS") != nullptr;
    picaCompositionHooks =
-@@ -643,6 +685,13 @@ void NativeA32WindowSession::Setup() {
+@@ -643,6 +686,13 @@ void NativeA32WindowSession::Setup() {
        Oot3dNativeGame::Oot3dNativeA32Registry(), hostServices);
    widescreenProjection.TraceMemory = &process.Memory();
    widescreenProjection.ActorVisibility.HostMemory = &process.Memory();
@@ -240,7 +241,7 @@ index 81150d82..78658a83 100644
    process.Memory().EnableWriteTraceFingerprint(
        widescreenProjection.TraceA32Blocks);
    auto &uiLifecycleBridge = uiLifecycleBridgeStorage.emplace(
-@@ -856,6 +905,10 @@ void NativeA32WindowSession::Setup() {
+@@ -856,6 +906,10 @@ void NativeA32WindowSession::Setup() {
    }
    applicationSettingsTabs.push_back(
        Oot3dNativeGame::CreateSavestatePanel(savestateLibrary));

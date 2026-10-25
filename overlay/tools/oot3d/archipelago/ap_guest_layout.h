@@ -17,6 +17,7 @@ inline constexpr std::uint32_t kSaveContext = 0x00587958U;
 inline constexpr std::uint32_t kSaveRespawnReturnData = kSaveContext + 0x14F0U + 0x1CU + 0x13U;
 inline constexpr std::uint32_t kSaveCutsceneIndex = 0x0008U;    // s32
 inline constexpr std::uint32_t kSaveHealthCapacity = 0x0042U;   // s16
+inline constexpr std::uint32_t kSaveHealth = 0x0044U;           // s16
 inline constexpr std::uint32_t kSaveMagicLevel = 0x0046U;       // s8
 inline constexpr std::uint32_t kSaveMagic = 0x0047U;            // s8
 inline constexpr std::uint32_t kSaveMagicAcquired = 0x004EU;    // u8
@@ -36,6 +37,7 @@ inline constexpr std::uint32_t kSaveEventChkInf = 0x0EECU;      // u16[14]
 inline constexpr std::uint32_t kSaveItemGetInf = 0x0F08U;       // u16[4]
 inline constexpr std::uint32_t kSaveInfTable = 0x0F10U;         // u16[30]
 inline constexpr std::uint32_t kSaveOtherNewEventFlags = 0x13D4U; // u8
+inline constexpr std::uint32_t kSaveGameMode = 0x14E4U;         // s32, 0 in gameplay
 inline constexpr std::uint32_t kSaveMagicMeterSize = 0x1584U;   // u16
 inline constexpr std::uint32_t kSaveHealthAccumulator = 0x15B2U; // s16
 inline constexpr std::uint32_t kSceneFlagsSize = 0x1CU;
@@ -51,6 +53,9 @@ inline constexpr std::uint8_t kSlotBottle1 = 0x12U;
 inline constexpr std::uint8_t kSlotBottle4 = 0x15U;
 inline constexpr std::uint8_t kItemLetterRuto = 0x1BU;
 inline constexpr std::uint8_t kItemNone = 0xFFU;
+
+// Ganon's battle after the tower collapse (OoT3D_Randomizer entrance.c).
+inline constexpr std::uint16_t kSceneGanonBattle = 0x4FU;
 
 // The play state (GlobalContext): gGlobalContext holds its address.
 inline constexpr std::uint32_t kGlobalContextPointer = 0x005043E0U;

@@ -2,6 +2,7 @@
 
 #include <apclient.hpp>
 
+#include <algorithm>
 #include <chrono>
 
 namespace Oot3dArchipelago {
@@ -93,6 +94,16 @@ public:
     mClient->set_location_checked_handler([this](const std::list<std::int64_t> &locations) {
       mOwner.Emit(NetworkEvent::LocationsChecked{{locations.begin(), locations.end()}});
     });
+    mClient->set_bounced_handler([this](const nlohmann::json &packet) {
+      const auto tags = packet.value("tags", nlohmann::json::array());
+      if (std::find(tags.begin(), tags.end(), "DeathLink") == tags.end())
+        return;
+      const auto data = packet.value("data", nlohmann::json::object());
+      const std::string source = data.value("source", "");
+      if (source == mSettings.Slot)
+        return; // our own death, echoed to every DeathLink client
+      mOwner.Emit(NetworkEvent::DeathReceived{source, data.value("cause", "")});
+    });
     mClient->set_print_json_handler([this](const APClient::PrintJSONArgs &args) {
       mOwner.Emit(NetworkEvent::Message{mClient->render_json(args.data)});
     });
@@ -135,6 +146,20 @@ void NetworkClient::SendLocationChecks(std::vector<std::int64_t> locations) {
 
 void NetworkClient::SendGoal() { Post({Command::Kind::Goal}); }
 
+void NetworkClient::SetDeathLink(bool enabled) {
+  Command command;
+  command.Type = Command::Kind::DeathLink;
+  command.Enabled = enabled;
+  Post(std::move(command));
+}
+
+void NetworkClient::SendDeath(std::string cause) {
+  Command command;
+  command.Type = Command::Kind::Death;
+  command.Text = std::move(cause);
+  Post(std::move(command));
+}
+
 void NetworkClient::Say(std::string text) {
   Command command;
   command.Type = Command::Kind::Say;
@@ -165,6 +190,8 @@ void NetworkClient::Run() {
   // ignores duplicates, so resending after a reconnect is safe.
   std::vector<std::int64_t> pendingChecks;
   bool pendingGoal = false;
+  bool deathLink = false;
+  bool tagsSent = false;
   while (!mStop) {
     std::deque<Command> commands;
     {
@@ -196,6 +223,21 @@ void NetworkClient::Run() {
           if (session && mState == ConnectionState::SlotConnected)
             session->Client().Say(command.Text);
           break;
+        case Command::Kind::DeathLink:
+          deathLink = command.Enabled;
+          tagsSent = false;
+          break;
+        case Command::Kind::Death:
+          // A death while not connected is not shared later: it is old news.
+          if (session && mState == ConnectionState::SlotConnected && deathLink) {
+            const double now = std::chrono::duration<double>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
+            session->Client().Bounce({{"time", now},
+                                      {"source", session->Client().get_slot()},
+                                      {"cause", command.Text}},
+                                     {}, {}, {"DeathLink"});
+          }
+          break;
         }
       } catch (const std::exception &error) {
         session.reset();
@@ -206,7 +248,14 @@ void NetworkClient::Run() {
     if (session) {
       try {
         session->Poll();
+        if (mState != ConnectionState::SlotConnected)
+          tagsSent = false; // a new slot connection starts without tags
         if (mState == ConnectionState::SlotConnected) {
+          if (!tagsSent) {
+            const std::list<std::string> tags = deathLink ? std::list<std::string>{"DeathLink"}
+                                                          : std::list<std::string>{};
+            tagsSent = session->Client().ConnectUpdate(false, 0, true, tags);
+          }
           if (!pendingChecks.empty() &&
               session->Client().LocationChecks({pendingChecks.begin(), pendingChecks.end()}))
             pendingChecks.clear();

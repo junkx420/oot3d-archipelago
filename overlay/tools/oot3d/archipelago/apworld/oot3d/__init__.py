@@ -546,6 +546,7 @@ class SohWorld(CachedRuleBuilderWorld):
             "tricks_in_logic": self.options.tricks_in_logic.value,
             "medallion_locked_trials": self.options.medallion_locked_trials.value,
             "starting_hearts": self.options.starting_hearts.value,
+            "death_link": bool(self.options.death_link.value),
             "hint_clarity": self.options.hint_clarity.value,
             "gossip_stone_hints": self.options.gossip_stone_hints.value,
             "tot_altar_hint": self.options.tot_altar_hint.value,
@@ -578,5 +579,6 @@ class SohWorld(CachedRuleBuilderWorld):
             "static_hints": static_hints,
             "hintable_items": {item.code for item in self.item_pool + self.preplaced_items if item.code is not None},
             "starting_hearts": self.options.starting_hearts.value,
+            "death_link": bool(self.options.death_link.value),
             "archipelago_seed": self.random.randint(0, 4294967295) #This is a uint32_t in ship
         }

@@ -49,7 +49,8 @@ public:
                 stats.ChecksUnmapped);
     ImGui::Text("Items from server: %zu   applied: %lld", stats.ItemsFromServer,
                 static_cast<long long>(stats.ItemsApplied));
-    ImGui::Text("Locations scouted: %zu", stats.LocationsScouted);
+    ImGui::Text("Locations scouted: %zu   DeathLink: %s   Goal: %s", stats.LocationsScouted,
+                stats.DeathLink ? "on" : "off", stats.GoalReached ? "reached" : "not yet");
     if (stats.LocationTableSize == 0U)
       ImGui::TextDisabled("No location table: checks are not sent yet.");
 

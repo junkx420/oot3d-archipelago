@@ -379,3 +379,29 @@ Seed 18246537981234658761, local server, TopScreen launcher:
   `!getitem`) no longer count as this world's location items.
 - Still open: reloading a save after receiving, a new file receiving
   everything again (blocked by the invisible file selection, KNOWN_ISSUES).
+
+### Goal and DeathLink (2026-10-25)
+
+- Death: a block-entry hook at 0x00252420, the block holding
+  OoT3D_Randomizer's GameOverStart patch site (a `nop` at 0x00252424). It
+  follows a call, so every execution mode starts a block there; the game
+  reaches it only after setting the game-over state to "death" (with a fairy
+  it sets "revive" and branches past). `addresses.json` lists it as kind
+  `hook_block` (`map_rando_addresses.py`, CLIENT_HOOK_BLOCKS), signature
+  pinned and verified by the startup self-check like the other hooks.
+- DeathLink: apworld option `death_link` (Archipelago's DeathLink), passed in
+  slot_data. The client then joins the DeathLink tag (also after reconnects),
+  sends a Bounce on every death and, for a received one, sets Link's health
+  to 0 once Link can be hit by it; the game's own death follows (a bottled
+  fairy still saves him). The game over that follows a received death is not
+  sent back (15-second window).
+- Goal: Link leaves Ganon's battle (scene 0x4F) alive, without a game over
+  there, still in gameplay. Kept in the sidecar and reported on every
+  connection.
+- Tests: host tests for the death hook and the sidecar goal flag. Network end
+  to end against a local server with a DeathLink seed:
+  `triaevum_archipelago_net_smoke` joined DeathLink, sent a death and
+  received one from a second client (`private/deathlink-peer.py`).
+- Not tried in the game: neither a death nor the goal. The goal condition
+  is inferred from the game's flow, not observed; loading a savestate out of
+  Ganon's battle would count as winning.

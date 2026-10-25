@@ -149,7 +149,8 @@ void TestAddressTableMatchesJson(const char *path) {
   for (const GuestFunction &function : kGuestFunctions) {
     bool found = false;
     for (const auto &entry : document.at("entries")) {
-      if (entry.at("name") != function.Name || entry.at("kind") != "symbol")
+      if (entry.at("name") != function.Name ||
+          (entry.at("kind") != "symbol" && entry.at("kind") != "hook_block"))
         continue;
       found = true;
       char address[16];
@@ -356,9 +357,19 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 2U, "checks need two hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 3U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 2U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 3U, "checks and deaths need three hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 4U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 3U, "a probe on a check hook is merged");
+}
+
+void TestObserverReportsDeath() {
+  FakeMemory memory;
+  CheckObserver observer{false};
+  int deaths = 0;
+  observer.SetDeathSink([&] { ++deaths; });
+  oot3d::recomp::a32::GuestState state{};
+  observer.ObserveBlockEntry(kGameOverStartBlock, state, memory);
+  Expect(deaths == 1 && observer.Hits().GameOver == 1U, "the game-over block reports a death");
 }
 
 void TestProbeCountsOnlyItsPc() {
@@ -452,6 +463,7 @@ void TestSidecarRoundTripAndMismatch() {
   fresh->Placements[1000] = Placement{3997700, 2, 1U};
   fresh->GivenAtLocation = {1000};
   fresh->GivenByServer = {1001};
+  fresh->GoalReached = true;
   Expect(SaveSidecar(directory, *fresh, &error), error.c_str());
   Expect(SidecarPath(directory, identity).filename() == "AP_1234_x-0-2-save1.json",
          "the seed is reduced to a safe file name");
@@ -460,7 +472,7 @@ void TestSidecarRoundTripAndMismatch() {
              loaded->ReportedLocations == std::set<std::int64_t>{1000, 1001} &&
              loaded->Placements.at(1000) == Placement{3997700, 2, 1U} &&
              loaded->GivenAtLocation == std::set<std::int64_t>{1000} &&
-             loaded->GivenByServer == std::set<std::int64_t>{1001},
+             loaded->GivenByServer == std::set<std::int64_t>{1001} && loaded->GoalReached,
          "the sidecar round-trips");
 
   // Another seed whose name reduces to the same file must not be adopted.
@@ -704,6 +716,7 @@ int main(int argc, char **argv) {
     TestVerifyAddressesRejectsOtherImage();
     TestHookPcsAreSorted();
     TestProbeCountsOnlyItsPc();
+    TestObserverReportsDeath();
     TestLocationTable();
     TestGeneratedLocationTable(TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON);
     TestSidecarRoundTripAndMismatch();

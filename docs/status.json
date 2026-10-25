@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-25",
-  "now": "Phase 4: item override and receiving work in the game; next are the save reload test, the goal and DeathLink.",
+  "now": "Phase 4: goal and DeathLink are built; next are play tests of deaths, a save reload, and the savestate item counter.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 50,
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 65,
       "items": [
         {"text": "Design: server stays the only item source, own items show their model when found", "done": true},
         {"text": "Structure offsets from the z3D headers compiled for the 3DS", "done": true},
@@ -50,8 +50,8 @@
         {"text": "Play test: chests and received items", "done": true},
         {"text": "Play test: reloaded save and a new file receiving everything", "done": false},
         {"text": "Applied-item count in savestates", "done": false},
-        {"text": "Goal (Ganon) reported to the server", "done": false},
-        {"text": "DeathLink", "done": false}
+        {"text": "Goal (Ganon) reported to the server (built, not yet seen in the game)", "done": true},
+        {"text": "DeathLink (works against a server, not yet seen in the game)", "done": true}
       ]
     },
     {
@@ -64,6 +64,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "Goal and DeathLink: defeating Ganon is reported to the server, and deaths are shared with other DeathLink players (tested end to end against a local server)."},
     {"date": "2026-10-25", "text": "First real play test of Phase 4: chests gave the multiworld items with their real models (the Light Arrow from Mido's chest), nothing came twice, and an item sent by the server reached Link with the normal animation."},
     {"date": "2026-10-25", "text": "Optional cutscene skips: story, boss and owl cutscenes can be skipped from the F1 panel, plus an experimental intro skip. Only skips that change nothing in the logic."},
     {"date": "2026-10-25", "text": "Phase 4: locations now give the multiworld item (your own items with their real model), and received items reach Link through the game's own get-item animation. Host tests pass; the play test is next."},

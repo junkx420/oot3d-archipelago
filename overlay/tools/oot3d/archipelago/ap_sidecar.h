@@ -44,6 +44,9 @@ struct SidecarState {
   // This world's items the server gave (the location was not taken in this
   // save); their location then gives only a placeholder.
   std::set<std::int64_t> GivenByServer;
+  // Ganon was defeated in this save; the goal is reported on every
+  // connection until the server has it (it ignores repeats).
+  bool GoalReached = false;
 };
 
 // <directory>/<seed>-<team>-<slot>-save<n>.json; the seed is reduced to

@@ -75,13 +75,18 @@ struct LocationsScouted {
 struct Message {
   std::string Text;
 };
+// Another DeathLink player died (Bounced with the DeathLink tag).
+struct DeathReceived {
+  std::string Source;
+  std::string Cause;
+};
 } // namespace NetworkEvent
 
 using NetworkEventVariant =
     std::variant<NetworkEvent::StateChanged, NetworkEvent::SlotConnected,
                  NetworkEvent::SlotRefused, NetworkEvent::ItemsReceived,
                  NetworkEvent::LocationsChecked, NetworkEvent::LocationsScouted,
-                 NetworkEvent::Message>;
+                 NetworkEvent::Message, NetworkEvent::DeathReceived>;
 
 class NetworkClient final {
 public:
@@ -97,6 +102,9 @@ public:
   void Disconnect();
   void SendLocationChecks(std::vector<std::int64_t> locations);
   void SendGoal();
+  // Joins or leaves DeathLink (the slot's tags); kept across reconnects.
+  void SetDeathLink(bool enabled);
+  void SendDeath(std::string cause);
   void Say(std::string text);
 
   // Game thread: events since the last call, in order.
@@ -105,11 +113,12 @@ public:
 
 private:
   struct Command {
-    enum class Kind : std::uint8_t { Connect, Disconnect, LocationChecks, Goal, Say };
+    enum class Kind : std::uint8_t { Connect, Disconnect, LocationChecks, Goal, Say, DeathLink, Death };
     Kind Type = Kind::Disconnect;
     ConnectionSettings Settings;
     std::vector<std::int64_t> Locations;
     std::string Text;
+    bool Enabled = false;
   };
   class Session;
   void Post(Command command);

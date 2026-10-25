@@ -35,12 +35,18 @@ struct GuestFunction {
 
 inline constexpr std::uint32_t kActorOfferGetItem = 0x003724DCU;
 inline constexpr std::uint32_t kItemGive = 0x00376A78U;
+// Not a function: the block holding OoT3D_Randomizer's GameOverStart patch
+// site, which runs once when Link dies without a fairy (addresses.json kind
+// hook_block). It starts after a call, so every execution mode enters it.
+inline constexpr std::uint32_t kGameOverStartBlock = 0x00252420U;
 
-inline constexpr std::array<GuestFunction, 2> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 3> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
      "e4f40f57614484da8e6cad178fc76bc97f1a26418815587c7c735c1be5c401c5"},
+    {"GameOverStartBlock", kGameOverStartBlock,
+     "6a643f94311062f2ce147592b043023f63114857eef0a2b5aacb4254f8db40cd"},
 }};
 
 struct CheckEvent {
@@ -82,6 +88,8 @@ public:
   static bool VerifyAddresses(oot3d::recomp::a32::MemoryBus &memory, std::string *error);
 
   void SetSink(std::function<void(const CheckEvent &)> sink) { mSink = std::move(sink); }
+  // Called when Link dies without a fairy.
+  void SetDeathSink(std::function<void()> sink) { mDeathSink = std::move(sink); }
   // Called for every offer that forms a location key; a value replaces the
   // offered get-item id (its sign is kept).
   using GetItemOverride = std::function<std::optional<std::uint16_t>(const LocationKey &key,
@@ -98,6 +106,7 @@ public:
     std::uint64_t Probe = 0;
     std::uint64_t ActorOfferGetItem = 0;
     std::uint64_t ItemGive = 0;
+    std::uint64_t GameOver = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -113,6 +122,7 @@ private:
   std::function<void(const CheckEvent &)> mSink;
   std::function<void(const std::string &)> mReportSink;
   GetItemOverride mOverride;
+  std::function<void()> mDeathSink;
   std::optional<Offer> mLastOffer;
   std::optional<std::uint32_t> mProbePc;
   HookHits mHits{};

@@ -13,6 +13,8 @@ namespace {
 
 constexpr std::size_t kConsoleLines = 200;
 constexpr int kSaveSlots = 3;
+// How long a game over after a received death counts as that death.
+constexpr int kLinkDeathFrames = 900;
 
 std::string NewUuid() {
   std::random_device device;
@@ -166,6 +168,8 @@ Session::Counters Session::Stats() const {
   counters.ItemsFromServer = mServerItems.size();
   counters.ItemsApplied = mSidecar ? mSidecar->AppliedItems : 0;
   counters.LocationsScouted = mPlacements.size();
+  counters.DeathLink = mDeathLink;
+  counters.GoalReached = mSidecar && mSidecar->GoalReached;
   counters.SaveSlot = mSidecar ? mSidecar->Identity.SaveSlot : -1;
   return counters;
 }
@@ -249,6 +253,58 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
     }
   }
   GiveReceivedItems(memory);
+  ApplyDeathLink(memory);
+  WatchGoal(memory);
+}
+
+void Session::OnDeath() {
+  std::lock_guard lock(mMutex);
+  mDiedInScene = true;
+  if (mLinkDeathFrames > 0) {
+    mLinkDeathFrames = 0; // this game over is the received death itself
+    return;
+  }
+  if (mDeathLink && mClient && mSlot.has_value()) {
+    mClient->SendDeath(mSettings.Slot + " fell in Hyrule.");
+    Log("DeathLink: your death was sent");
+  }
+}
+
+void Session::ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory) {
+  if (mLinkDeathFrames > 0)
+    --mLinkDeathFrames;
+  if (!mKillPending || !LoadedSaveSlot(memory).has_value() || !PlayerCanTakeItem(memory))
+    return;
+  std::uint16_t health = 0;
+  if (!memory.Read16(kSaveContext + kSaveHealth, &health) || static_cast<std::int16_t>(health) <= 0)
+    return;
+  // No health: the game's own death follows (a fairy in a bottle saves Link).
+  if (memory.Write16(kSaveContext + kSaveHealth, 0U)) {
+    mKillPending = false;
+    mLinkDeathFrames = kLinkDeathFrames;
+  }
+}
+
+void Session::WatchGoal(oot3d::recomp::a32::MemoryBus &memory) {
+  std::uint32_t play = 0;
+  std::uint16_t scene = 0;
+  if (!memory.Read32(kGlobalContextPointer, &play) || play == 0U || PlayerActor(memory) == 0U ||
+      !memory.Read16(play + kPlaySceneNum, &scene) || scene == mPreviousScene)
+    return;
+  // Leaving Ganon's battle alive and in gameplay is the end of the fight;
+  // a game over there sends Link back into Ganon's Castle instead.
+  std::uint32_t gameMode = 1;
+  const bool won = mPreviousScene == kSceneGanonBattle && !mDiedInScene &&
+                   memory.Read32(kSaveContext + kSaveGameMode, &gameMode) && gameMode == 0U;
+  mPreviousScene = scene;
+  mDiedInScene = false;
+  if (!won || !mSidecar.has_value() || mSidecar->GoalReached)
+    return;
+  mSidecar->GoalReached = true;
+  Persist();
+  Log("Goal: Ganon is defeated");
+  if (mClient)
+    mClient->SendGoal();
 }
 
 // Received items are always items of this game, whoever found them.
@@ -341,6 +397,8 @@ void Session::OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory) {
       resend.push_back(id);
   if (!resend.empty() && mClient)
     mClient->SendLocationChecks(resend);
+  if (mSidecar->GoalReached && mClient)
+    mClient->SendGoal();
   auto unsent = std::move(mUnsentChecks);
   mUnsentChecks.clear();
   for (const std::int64_t id : unsent)
@@ -358,6 +416,10 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     mServerItems.clear();
     mPlacements.clear();
     mSidecar.reset();
+    const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
+    mDeathLink = slotData.is_object() && slotData.value("death_link", false);
+    if (mClient)
+      mClient->SetDeathLink(mDeathLink);
     Log("Slot connected: seed " + slot->Seed + ", team " + std::to_string(slot->Team) +
         ", slot " + std::to_string(slot->Slot) + ", " +
         std::to_string(slot->CheckedLocations.size()) + " checked, " +
@@ -388,6 +450,11 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     Log("Scouted " + std::to_string(scouted->Items.size()) + " locations");
   } else if (const auto *checked = std::get_if<NetworkEvent::LocationsChecked>(&variant)) {
     mServerChecked.insert(checked->Locations.begin(), checked->Locations.end());
+  } else if (const auto *death = std::get_if<NetworkEvent::DeathReceived>(&variant)) {
+    if (mDeathLink) {
+      mKillPending = true;
+      Log("DeathLink: " + death->Source + " died" + (death->Cause.empty() ? "" : " (" + death->Cause + ")"));
+    }
   } else if (const auto *message = std::get_if<NetworkEvent::Message>(&variant)) {
     Log(message->Text);
   }

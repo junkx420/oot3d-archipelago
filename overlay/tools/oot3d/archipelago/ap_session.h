@@ -49,6 +49,8 @@ public:
   std::optional<std::uint16_t> OverrideGetItem(const LocationKey &key,
                                                oot3d::recomp::a32::MemoryBus &memory);
   void SetGuestRegionMapper(GuestRegionMapper mapper);
+  // The check observer saw Link die without a fairy.
+  void OnDeath();
   void Update(oot3d::recomp::a32::MemoryBus &memory);
 
   [[nodiscard]] ConnectionSettings Settings() const;
@@ -69,6 +71,8 @@ public:
     std::size_t ItemsFromServer = 0;
     std::int64_t ItemsApplied = 0;
     std::size_t LocationsScouted = 0;
+    bool DeathLink = false;
+    bool GoalReached = false;
     int SaveSlot = -1;
   };
   [[nodiscard]] Counters Stats() const;
@@ -82,6 +86,8 @@ private:
   void Persist();
   void ReportLocation(std::int64_t id);
   void GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory);
+  void ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory);
+  void WatchGoal(oot3d::recomp::a32::MemoryBus &memory);
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
 
   mutable std::mutex mMutex;
@@ -97,6 +103,14 @@ private:
   bool mReceiverReported = false;
   // Locations whose offer showed this world's item itself in this session.
   std::set<std::int64_t> mShownAtLocation;
+  // DeathLink (slot_data death_link): a received death waits until Link
+  // can die; the game over it causes is not sent back for a while.
+  bool mDeathLink = false;
+  bool mKillPending = false;
+  int mLinkDeathFrames = 0;
+  // Goal: Link leaves Ganon's battle alive.
+  std::uint16_t mPreviousScene = 0xFFFFU;
+  bool mDiedInScene = false;
   std::deque<std::string> mConsole;
 
   // From SlotConnected.

@@ -26,10 +26,20 @@ int main(int argc, char **argv) {
 
   bool connected = false, sent = false, confirmed = false, items = false, reconnected = false;
   std::size_t scouted = 0;
+  // With slot_data death_link: join DeathLink, send one death, and wait for
+  // one from another client.
+  bool deathLink = false, deathSent = false, deathReceived = false;
+  auto deathAt = std::chrono::steady_clock::time_point::max();
   int connections = 0;
   auto reconnectAt = std::chrono::steady_clock::time_point::max();
   const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
-  while (std::chrono::steady_clock::now() < deadline && !(confirmed && items && scouted != 0U)) {
+  while (std::chrono::steady_clock::now() < deadline &&
+         !(confirmed && items && scouted != 0U && (!deathLink || deathReceived))) {
+    if (deathLink && !deathSent && std::chrono::steady_clock::now() >= deathAt) {
+      client.SendDeath("net smoke test");
+      deathSent = true;
+      std::printf("death sent\n");
+    }
     if (!reconnected && std::chrono::steady_clock::now() >= reconnectAt) {
       reconnected = true;
       std::printf("reconnecting\n");
@@ -47,6 +57,11 @@ int main(int argc, char **argv) {
                     slot->Seed.c_str(), slot->Team, slot->Slot, slot->CheckedLocations.size(),
                     slot->MissingLocations.size());
         std::printf("slot_data: %s\n", slot->SlotDataJson.c_str());
+        if (!deathLink && slot->SlotDataJson.find("\"death_link\":true") != std::string::npos) {
+          deathLink = true;
+          client.SetDeathLink(true);
+          deathAt = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+        }
       } else if (const auto *refused = std::get_if<NetworkEvent::SlotRefused>(&variant)) {
         for (const auto &error : refused->Errors)
           std::printf("refused: %s\n", error.c_str());
@@ -68,6 +83,9 @@ int main(int argc, char **argv) {
           std::printf("server confirms location %lld\n", static_cast<long long>(id));
           confirmed |= id == location;
         }
+      } else if (const auto *death = std::get_if<NetworkEvent::DeathReceived>(&variant)) {
+        deathReceived = true;
+        std::printf("death received from %s (%s)\n", death->Source.c_str(), death->Cause.c_str());
       } else if (const auto *message = std::get_if<NetworkEvent::Message>(&variant)) {
         std::printf("message: %s\n", message->Text.c_str());
       }
@@ -82,7 +100,7 @@ int main(int argc, char **argv) {
   }
   client.Disconnect();
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
-  std::printf("result: connected=%d sent=%d confirmed=%d items=%d scouted=%zu\n", connected, sent,
-              confirmed, items, scouted);
-  return connected && confirmed && items && scouted != 0U ? 0 : 1;
+  std::printf("result: connected=%d sent=%d confirmed=%d items=%d scouted=%zu deathlink=%d sent=%d received=%d\n",
+              connected, sent, confirmed, items, scouted, deathLink, deathSent, deathReceived);
+  return connected && confirmed && items && scouted != 0U && (!deathLink || deathReceived) ? 0 : 1;
 }

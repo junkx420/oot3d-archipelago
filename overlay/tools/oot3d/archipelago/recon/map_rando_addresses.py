@@ -15,6 +15,9 @@ evidence per entry:
   independently discovered whole-AOT function selection.
 * ``arm_prologue``: the first instruction is a PUSH/STMFD that saves LR, a
   single-register LR push, or a SUB SP.
+* ``block_after_call``: a client hook block (CLIENT_HOOK_BLOCKS) starts right
+  after a BL, where every execution mode starts a block, and its next
+  instruction is the randomizer's patch site.
 
 An entry without either is reported as unverified, not dropped.
 
@@ -42,6 +45,14 @@ SIGNATURE_BYTES = 32
 
 OFFSET_RE = re.compile(r"_LD_OFF\s*=\s*_LD_EUR\s*\?\s*(-?0x[0-9A-Fa-f]+|-?\d+)\s*:\s*_LD_OFF\s*;")
 SYMBOL_RE = re.compile(r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)\s*\+\s*_LD_OFF\s*;")
+# Patch sites the client observes through the block that holds them: a
+# block-entry hook needs a block start, and a call's return is one. Name ->
+# patch site name; the block starts one instruction before the site.
+CLIENT_HOOK_BLOCKS = {
+    # Link's death without a fairy: the game-over state is set just before.
+    "GameOverStartBlock": "GameOverStart",
+}
+
 PATCH_RE = re.compile(r"^\s*\.patch_(\w+)\s+0x([0-9A-Fa-f]+)\s*\+\s*_LD_OFF\s*:")
 
 
@@ -136,6 +147,29 @@ def main() -> int:
         entry["exec_addr"] = f"0x{address:08X}"
         entry["eur_offset"] = f"{entry['eur_offset']:+#x}"
 
+    by_name = {entry["name"]: entry for entry in entries}
+    for name, site_name in CLIENT_HOOK_BLOCKS.items():
+        site = by_name[site_name]
+        start = int(site["exec_addr"], 16) - 4
+        previous = struct.unpack_from("<I", code, start - 4 - CODE_BASE)[0]
+        if (previous & 0x0F000000) != 0x0B000000:  # BL, any condition
+            print(f"error: {name}: 0x{start:08X} does not follow a call", file=sys.stderr)
+            return 1
+        window = code[start - CODE_BASE:start - CODE_BASE + SIGNATURE_BYTES]
+        entries.append({
+            "name": name,
+            "kind": "hook_block",
+            "usa_ref": site["usa_ref"],
+            "eur_offset": site["eur_offset"],
+            "exec_addr": f"0x{start:08X}",
+            "ld_line": site["ld_line"],
+            "section": "text",
+            "signature": "sha256:" + hashlib.sha256(window).hexdigest(),
+            "verified_by": ["oot3d_randomizer_ld_eur_offset", "block_after_call"],
+            "status": "signature_pinned",
+        })
+        counts["verified"] += 1
+
     document = {
         "format": "triaevum_archipelago_addresses_v1",
         "code_sha256": code_sha256,
@@ -146,7 +180,7 @@ def main() -> int:
         "entries": entries,
     }
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
-    arguments.output.write_text(json.dumps(document, indent=1) + "\n", encoding="utf-8")
+    arguments.output.write_text(json.dumps(document, indent=1) + "\n", encoding="utf-8", newline="\n")
     print(f"{len(entries)} entries: {counts}")
     return 0
 
