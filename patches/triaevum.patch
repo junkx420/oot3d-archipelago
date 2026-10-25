@@ -142,7 +142,7 @@ index 5f59a070..490e21f7 100644
        pc, state, memory, runtime.ActorVisibility);
    if (pc == Oot3dNativeGame::kNativeQbfA4Blit && runtime.HdFonts && runtime.TraceMemory)
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
-index 01026912..4b3a964e 100644
+index 01026912..69e6beb9 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 @@ -513,6 +513,11 @@ bool NativeA32WindowSession::RunFrame() {
@@ -157,7 +157,19 @@ index 01026912..4b3a964e 100644
      }
      if (presentHostFrame) {
        PresentVisualFrame(presentationElapsedSeconds, visualInterpolationAlpha);
-@@ -1093,11 +1098,19 @@ bool NativeA32WindowSession::UpdateGuestServicesForRefresh(
+@@ -599,6 +604,11 @@ bool NativeA32WindowSession::RunFrame() {
+   phaseStart = std::chrono::steady_clock::now();
+   CpuProbe::Scope cpuPresent(CpuProbe::Phase::Present);
+   Fast::Renderer3ds::SlowStepTrace presentSteps("present");
++#ifdef TRIAEVUM_ENABLE_ARCHIPELAGO
++  // Title and file selection only; under the preparation screen.
++  if (archipelagoSession)
++    Oot3dArchipelago::DrawBadge(*archipelagoSession);
++#endif
+   // The first frames render under the preparation screen.
+   preparationScreen.Draw(preparationStatus);
+   gui->EndDraw();
+@@ -1093,11 +1103,19 @@ bool NativeA32WindowSession::UpdateGuestServicesForRefresh(
                                       pauseInputs.SceneMode == 3U &&
                                       (pauseInputs.RuntimeMode == 1U ||
                                        pauseInputs.RuntimeMode == 2U);

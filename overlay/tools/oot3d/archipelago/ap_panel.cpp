@@ -2,8 +2,12 @@
 
 #include <imgui.h>
 
+#include <algorithm>
 #include <array>
+#include <cfloat>
+#include <cmath>
 #include <cstring>
+#include <string>
 
 namespace Oot3dArchipelago {
 namespace {
@@ -92,6 +96,54 @@ private:
 
 std::shared_ptr<Fast::Oot3d::GraphicsSettingsPanelTab> CreatePanel(Session &session) {
   return std::make_shared<Panel>(session);
+}
+
+void DrawBadge(const Session &session) {
+  if (!session.Stats().Frontend)
+    return;
+  const ConnectionState state = session.State();
+  const ImGuiViewport *viewport = ImGui::GetMainViewport();
+  ImDrawList *draw = ImGui::GetForegroundDrawList(const_cast<ImGuiViewport *>(viewport));
+  ImFont *font = ImGui::GetFont();
+  const float scale = std::max(1.0F, viewport->Size.y / 720.0F);
+  const float titleSize = ImGui::GetFontSize() * 2.2F * scale;
+  const float detailSize = ImGui::GetFontSize() * 1.25F * scale;
+  const char *title = "Archipelago";
+  const std::string detail =
+      state == ConnectionState::SlotConnected   ? "Connected as " + session.Settings().Slot
+      : state == ConnectionState::Disconnected ? std::string("Not connected - F1 > Archipelago")
+                                               : "Status: " + std::string(ToString(state));
+  const ImVec2 titleExtent = font->CalcTextSizeA(titleSize, FLT_MAX, 0.0F, title);
+  const ImVec2 detailExtent = font->CalcTextSizeA(detailSize, FLT_MAX, 0.0F, detail.c_str());
+
+  // A ring of six colored dots in front of the name, after the Archipelago
+  // logo's colors.
+  const float margin = 18.0F * scale;
+  const float ring = titleExtent.y * 0.55F;
+  const float dot = ring * 0.32F;
+  const float padding = 10.0F * scale;
+  const float textWidth = std::max(titleExtent.x, detailExtent.x);
+  const ImVec2 max(viewport->Pos.x + viewport->Size.x - margin,
+                   viewport->Pos.y + viewport->Size.y - margin);
+  const ImVec2 min(max.x - (padding * 3.0F + ring * 2.0F + textWidth),
+                   max.y - (padding * 2.0F + titleExtent.y + detailExtent.y));
+  draw->AddRectFilled(min, max, IM_COL32(10, 14, 30, 190), 8.0F * scale);
+  const ImVec2 center(min.x + padding + ring, min.y + padding + titleExtent.y * 0.5F);
+  constexpr std::array<ImU32, 6> kColors{IM_COL32(201, 118, 130, 255), IM_COL32(117, 194, 117, 255),
+                                         IM_COL32(202, 148, 194, 255), IM_COL32(217, 160, 125, 255),
+                                         IM_COL32(118, 126, 189, 255), IM_COL32(238, 227, 145, 255)};
+  for (std::size_t index = 0; index < kColors.size(); ++index) {
+    const float angle = static_cast<float>(index) * 6.2831853F / 6.0F - 1.5707963F;
+    draw->AddCircleFilled(ImVec2(center.x + std::cos(angle) * (ring - dot),
+                                 center.y + std::sin(angle) * (ring - dot)),
+                          dot, kColors[index]);
+  }
+  const float textX = min.x + padding * 2.0F + ring * 2.0F;
+  draw->AddText(font, titleSize, ImVec2(textX, min.y + padding), IM_COL32(240, 240, 240, 255), title);
+  const ImU32 detailColor = state == ConnectionState::SlotConnected ? IM_COL32(140, 220, 140, 255)
+                                                                    : IM_COL32(190, 190, 190, 255);
+  draw->AddText(font, detailSize, ImVec2(textX, min.y + padding + titleExtent.y), detailColor,
+                detail.c_str());
 }
 
 } // namespace Oot3dArchipelago

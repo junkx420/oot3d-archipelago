@@ -74,6 +74,9 @@ public:
     bool DeathLink = false;
     bool GoalReached = false;
     int SaveSlot = -1;
+    // Title or file selection (SaveContext.game_mode not 0), from the last
+    // Update.
+    bool Frontend = false;
   };
   [[nodiscard]] Counters Stats() const;
 
@@ -112,6 +115,7 @@ private:
   std::uint16_t mPreviousScene = 0xFFFFU;
   bool mDiedInScene = false;
   std::deque<std::string> mConsole;
+  bool mFrontend = false;
 
   // From SlotConnected.
   std::optional<SidecarIdentity> mSlot;

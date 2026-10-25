@@ -56,15 +56,17 @@
       ]
     },
     {
-      "id": 5, "name": "Polish", "weight": 10, "percent": 10,
+      "id": 5, "name": "Polish", "weight": 10, "percent": 15,
       "items": [
         {"text": "Names and models for other games' items", "done": false},
         {"text": "Optional cutscene skips and intro skip (built, not yet tried in the game)", "done": true},
+        {"text": "Archipelago badge with the connection state on the title and file selection", "done": true},
         {"text": "Player-facing setup guide", "done": false}
       ]
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "The title and file selection now show an Archipelago badge with the connection state, so the Archipelago version is recognizable at a glance."},
     {"date": "2026-10-25", "text": "The file selection shows its files again in the developer TopScreen build: a speed barrier skipped the code that draws them on the upper screen."},
     {"date": "2026-10-25", "text": "DeathLink works in the game: Link's death reached another player, and a death from another player killed Link without being sent back."},
     {"date": "2026-10-25", "text": "Goal and DeathLink: defeating Ganon is reported to the server, and deaths are shared with other DeathLink players (tested end to end against a local server)."},

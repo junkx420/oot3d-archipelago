@@ -11,4 +11,9 @@ namespace Oot3dArchipelago {
 
 std::shared_ptr<Fast::Oot3d::GraphicsSettingsPanelTab> CreatePanel(Session &session);
 
+// The Archipelago badge in the bottom-right corner of the title and the file
+// selection, with the connection state; nothing in gameplay. Call inside the
+// frame's ImGui pass.
+void DrawBadge(const Session &session);
+
 } // namespace Oot3dArchipelago

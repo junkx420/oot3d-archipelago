@@ -415,3 +415,14 @@ client (`private/deathlink-peer.py`):
 - Link died in the game: the second client received "Link3D fell in Hyrule."
 - The second client sent a death: Link's health went to 0 and he died; the
   game over that followed was not sent back.
+
+### Archipelago badge (2026-10-25)
+
+- With the module on (`TRIAEVUM_ARCHIPELAGO=1`), the title and the file
+  selection show an "Archipelago" badge in the bottom-right corner: a ring of
+  colored dots, the name and the connection state ("Not connected - F1 >
+  Archipelago", "Connected as <slot>"). It is an ImGui overlay drawn with the
+  frame (`DrawBadge` in `ap_panel.cpp`), shown while `SaveContext.game_mode`
+  is not 0, so never in gameplay; the preparation screen covers it.
+- Verified headless at the file selection: badge with the module on, none
+  with it off. Not seen in a window yet.

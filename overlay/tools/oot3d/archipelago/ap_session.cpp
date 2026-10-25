@@ -171,6 +171,7 @@ Session::Counters Session::Stats() const {
   counters.DeathLink = mDeathLink;
   counters.GoalReached = mSidecar && mSidecar->GoalReached;
   counters.SaveSlot = mSidecar ? mSidecar->Identity.SaveSlot : -1;
+  counters.Frontend = mFrontend;
   return counters;
 }
 
@@ -237,6 +238,8 @@ void Session::ReportLocation(std::int64_t id) {
 
 void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
   std::lock_guard lock(mMutex);
+  std::uint32_t gameMode = 0U;
+  mFrontend = memory.Read32(kSaveContext + kSaveGameMode, &gameMode) && gameMode != 0U;
   if (mClient) {
     for (const auto &event : mClient->TakeEvents())
       HandleEvent(event);
