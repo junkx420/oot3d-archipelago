@@ -378,7 +378,8 @@ Seed 18246537981234658761, local server, TopScreen launcher:
 - Fix after the test: items without a location (starting inventory,
   `!getitem`) no longer count as this world's location items.
 - Still open: reloading a save after receiving, a new file receiving
-  everything again (blocked by the invisible file selection, KNOWN_ISSUES).
+  everything again (were blocked by the invisible file selection, fixed
+  2026-10-25, KNOWN_ISSUES).
 
 ### Goal and DeathLink (2026-10-25)
 

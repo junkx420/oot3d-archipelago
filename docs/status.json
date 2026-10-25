@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-25",
-  "now": "Phase 4: DeathLink works in the game; next are the savestate item counter, a save reload test and the goal at Ganon.",
+  "now": "Phase 4: the file selection is visible again; next are a save reload test, a new file receiving everything, the savestate item counter and the goal at Ganon.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 70,
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 72,
       "items": [
         {"text": "Design: server stays the only item source, own items show their model when found", "done": true},
         {"text": "Structure offsets from the z3D headers compiled for the 3DS", "done": true},
@@ -48,6 +48,7 @@
         {"text": "Locations give the multiworld item instead of their own (seen in the game)", "done": true},
         {"text": "Received items given to Link at a safe moment (seen in the game)", "done": true},
         {"text": "Play test: chests and received items", "done": true},
+        {"text": "File selection visible in the developer TopScreen build (was only sky)", "done": true},
         {"text": "Play test: reloaded save and a new file receiving everything", "done": false},
         {"text": "Applied-item count in savestates", "done": false},
         {"text": "Goal (Ganon) reported to the server (built, not yet seen in the game)", "done": true},
@@ -64,6 +65,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "The file selection shows its files again in the developer TopScreen build: a speed barrier skipped the code that draws them on the upper screen."},
     {"date": "2026-10-25", "text": "DeathLink works in the game: Link's death reached another player, and a death from another player killed Link without being sent back."},
     {"date": "2026-10-25", "text": "Goal and DeathLink: defeating Ganon is reported to the server, and deaths are shared with other DeathLink players (tested end to end against a local server)."},
     {"date": "2026-10-25", "text": "First real play test of Phase 4: chests gave the multiworld items with their real models (the Light Arrow from Mido's chest), nothing came twice, and an item sent by the server reached Link with the normal animation."},

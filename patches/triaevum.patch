@@ -142,7 +142,7 @@ index 5f59a070..490e21f7 100644
        pc, state, memory, runtime.ActorVisibility);
    if (pc == Oot3dNativeGame::kNativeQbfA4Blit && runtime.HdFonts && runtime.TraceMemory)
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
-index 01026912..e34ab51b 100644
+index 01026912..4b3a964e 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 @@ -513,6 +513,11 @@ bool NativeA32WindowSession::RunFrame() {
@@ -157,6 +157,27 @@ index 01026912..e34ab51b 100644
      }
      if (presentHostFrame) {
        PresentVisualFrame(presentationElapsedSeconds, visualInterpolationAlpha);
+@@ -1093,11 +1098,19 @@ bool NativeA32WindowSession::UpdateGuestServicesForRefresh(
+                                      pauseInputs.SceneMode == 3U &&
+                                      (pauseInputs.RuntimeMode == 1U ||
+                                       pauseInputs.RuntimeMode == 2U);
+-      nativeCandidateDispatch.TopScreenPauseAotBarrier =
++      const bool pauseRoute =
+           sceneRuntimeRoute ||
+           Oot3dNativeGame::ResolveTopScreenPauseRouteActive(
+               pauseInputs,
+               &nativeCandidateDispatch.TopScreenAotPauseRoute);
++      // Reframed's file selection keeps both native targets, so no pause
++      // route needs the barrier; its sites inside the upper pass (the logo
++      // at 0x00300520 onward) are whole-AOT block starts that the developer
++      // build's mass-AOT regions run through without a block entry, which
++      // left the file selection with the sky alone.
++      nativeCandidateDispatch.TopScreenPauseAotBarrier =
++          pauseRoute &&
++          !Oot3dNativeGame::TopScreenReframedFileSelect::Active(process.Memory());
+     }
+   }
+   nativeCandidateDispatch.TopScreenStartRouting.OpenRequested = false;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_session.h b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_session.h
 index b6cfceec..fc68bbb7 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_session.h
@@ -174,7 +195,7 @@ index b6cfceec..fc68bbb7 100644
    std::optional<Oot3dNativeGame::Menu::MenuFontTextureProvider> menuFontProviderStorage;
    std::optional<oot3d::ui::N64UiFast3dRenderer> n64UiRendererStorage;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-index 81150d82..9b9e1fc9 100644
+index 81150d82..ca9b37ed 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 @@ -228,6 +228,49 @@ void NativeA32WindowSession::Setup() {
@@ -227,7 +248,21 @@ index 81150d82..9b9e1fc9 100644
    widescreenProjection.ActorVisibility.Diagnostics =
        std::getenv("OOT3D_ACTOR_VISIBILITY_DIAGNOSTICS") != nullptr;
    picaCompositionHooks =
-@@ -643,6 +686,13 @@ void NativeA32WindowSession::Setup() {
+@@ -532,6 +575,13 @@ void NativeA32WindowSession::Setup() {
+         wholeAotObservableExitBlocks.end(),
+         topScreenObservableExitBlocks.begin(),
+         topScreenObservableExitBlocks.end());
++    // Reframed's file selection wraps calls inside the file-select pass, which
++    // whole-AOT otherwise runs to the end: without these exits the developer
++    // build skips its sites inside compiled code (the board geometry, the
++    // logo) and the file interface keeps the native lower-screen layout.
++    // Every site is a block start, as in the product.
++    wholeAotObservableExitBlocks.insert(wholeAotObservableExitBlocks.end(),
++                                        reframedFileSites.begin(), reframedFileSites.end());
+ #else
+     // The product runs the same TopScreen source port as developer builds:
+     // every block is an observable exit of the whole-AOT graph, because the
+@@ -643,6 +693,13 @@ void NativeA32WindowSession::Setup() {
        Oot3dNativeGame::Oot3dNativeA32Registry(), hostServices);
    widescreenProjection.TraceMemory = &process.Memory();
    widescreenProjection.ActorVisibility.HostMemory = &process.Memory();
@@ -241,7 +276,7 @@ index 81150d82..9b9e1fc9 100644
    process.Memory().EnableWriteTraceFingerprint(
        widescreenProjection.TraceA32Blocks);
    auto &uiLifecycleBridge = uiLifecycleBridgeStorage.emplace(
-@@ -856,6 +906,10 @@ void NativeA32WindowSession::Setup() {
+@@ -856,6 +913,10 @@ void NativeA32WindowSession::Setup() {
    }
    applicationSettingsTabs.push_back(
        Oot3dNativeGame::CreateSavestatePanel(savestateLibrary));

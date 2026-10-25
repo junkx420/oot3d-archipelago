@@ -113,14 +113,28 @@ on this machine, so the product build and its equivalence suite have not run.
 - The client page at `0x06200000` is assumed unused by the title; mapping it
   fails loudly ("Cannot give items in the game") if it is not.
 
-## File selection invisible in the developer TopScreen build
+## File selection invisible in the developer TopScreen build (fixed)
 
-Seen 2026-10-25: with `--ui-profile topscreen` the file selection shows only
-the sky; the file boards are missing, so files are chosen blind. Reproduced
-headless with the play launcher's arguments and an input timeline to the
-file selection (`private/probe-file-select.ps1`), after 1,264 guest frames:
-the same with Archipelago off and with typed gameplay on, so it is not caused
-by this branch. TriAevum draws this screen through its "Reframed" file
-selection port, which works at hook sites inside functions; 7 of its 9 sites
-are not in `whole_aot_observed_sites.json`. Whether that is the cause is not
-verified. Not investigated further.
+Seen 2026-10-25: with `--ui-profile topscreen` the file selection showed only
+the sky, so files were chosen blind. Not caused by this branch: the same with
+Archipelago off, typed gameplay on, `--disable-whole-aot`, default graphics
+settings and without the TopScreen asset pack. `--ui-profile oot3d` showed it.
+
+Cause, from a log of the Reframed sites and a PICA trace: in the developer
+build the pause AOT barrier (`TopScreenPauseAotBarrier`) turned whole-AOT off
+on the file selection, so the upper pass ran as mass-AOT regions. Only the
+sites after a call return reached the dispatcher (scene, caption, text). The
+sites the pass falls through to (logo 0x00300520, messages 0x0030052C and
+0x00300550, the replayed file interface 0x0030055C) are whole-AOT block starts
+but not mass-AOT ones, so they never ran: no file interface on the upper
+screen. The product has no barrier and keeps every TopScreen site an exit.
+
+Fix (upstream code, two small edits): the barrier stays off while Reframed
+owns the file selection (`oot3d_native_a32_window_frame.cpp`; Reframed keeps
+both native targets, no pause route needs it), and the developer build makes
+Reframed's sites whole-AOT observable exits as the product does
+(`oot3d_native_a32_window_setup.cpp`). The barrier fix alone shows the boards
+without Reframed's layout (full-width heading, unscaled names); both together
+show Reframed's layout. Verified headless at the file selection with
+Archipelago off and on. Still missing there: Link and the title logo on the
+right half; not investigated.
