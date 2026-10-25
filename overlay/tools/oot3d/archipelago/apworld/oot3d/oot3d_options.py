@@ -1,0 +1,161 @@
+"""Option values the TriAevum client supports, version 1.
+
+The imported SoH options describe Ship of Harkinian's game changes. A value
+is allowed here only when the unmodified 3DS game already behaves that way,
+or when it needs no more from the client than replacing what a location
+gives (chests, keys and dungeon items inside their own dungeon). Everything
+else waits until the client implements it.
+
+Defaults are set to the supported value, and a player who asks for an
+unsupported value gets an OptionError naming it, never a silent override.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from Options import Choice, OptionError, Toggle
+
+# option name -> (default, allowed values). Choice and Toggle values are the
+# option's internal names; Range values are numbers.
+SUPPORTED: dict[str, tuple[Any, frozenset]] = {
+    # The 3DS game as it is.
+    "closed_forest": ("on", frozenset({"on"})),
+    "kakariko_gate": ("closed", frozenset({"closed"})),
+    "door_of_time": ("closed", frozenset({"closed"})),
+    "zoras_fountain": ("closed", frozenset({"closed"})),
+    "sleeping_waterfall": ("closed", frozenset({"closed"})),
+    "jabu_jabu": ("closed", frozenset({"closed"})),
+    "lock_overworld_doors": (False, frozenset({False})),
+    "fortress_carpenters": ("normal", frozenset({"normal"})),
+    "rainbow_bridge": ("vanilla", frozenset({"vanilla"})),
+    "rainbow_bridge_greg_modifier": ("off", frozenset({"off"})),
+    "ganons_trials": ("set_number", frozenset({"set_number"})),
+    "ganons_trials_count": (6, frozenset({6})),
+    "triforce_hunt": (False, frozenset({False})),
+    "ganons_castle_boss_key": ("vanilla", frozenset({"vanilla"})),
+    "ganons_castle_boss_key_greg_modifier": ("off", frozenset({"off"})),
+    "big_poe_target_count": (10, frozenset({10})),
+    "skip_child_zelda": (False, frozenset({False})),
+    "skip_epona_race": (False, frozenset({False})),
+    "complete_mask_quest": (False, frozenset({False})),
+    "skip_scarecrows_song": (False, frozenset({False})),
+    "start_with_links_pocket": ("nothing", frozenset({"nothing"})),
+    "starting_age": ("child", frozenset({"child"})),
+    "starting_hearts": (3, frozenset({3})),
+    "full_wallets": (False, frozenset({False})),
+    "bombchu_bag": ("none", frozenset({"none"})),
+    "bombchu_drops": (False, frozenset({False})),
+    "blue_fire_arrows": (False, frozenset({False})),
+    "sunlight_arrows": (False, frozenset({False})),
+    "rocs_feather": (False, frozenset({False})),
+    "infinite_upgrades": ("off", frozenset({"off"})),
+    "skeleton_key": (False, frozenset({False})),
+    "slingbow_break_beehives": (False, frozenset({False})),
+    "medallion_locked_trials": (False, frozenset({False})),
+    "ice_trap_count": (0, frozenset({0})),
+    "ice_trap_filler_replacement": (0, frozenset({0})),
+    "true_no_logic": (False, frozenset({False})),
+    # SoH's tricks describe N64 techniques; 3D tricks are not ported yet.
+    "enable_all_tricks": (False, frozenset({False})),
+    # Shuffles that only need a location's item replaced in game.
+    "shuffle_kokiri_sword": (False, frozenset({False, True})),
+    "small_key_shuffle": ("own_dungeon", frozenset({"vanilla", "own_dungeon"})),
+    "boss_key_shuffle": ("own_dungeon", frozenset({"vanilla", "own_dungeon"})),
+    "maps_and_compasses": ("own_dungeon", frozenset({"vanilla", "own_dungeon"})),
+    "gerudo_fortress_key_shuffle": ("vanilla", frozenset({"vanilla"})),
+    "key_rings": ("off", frozenset({"off"})),
+    # Everything else stays as in the game.
+    "shuffle_songs": ("off", frozenset({"off"})),
+    "shuffle_skull_tokens": ("off", frozenset({"off"})),
+    "skulls_sun_song": (False, frozenset({False})),
+    "shuffle_master_sword": (False, frozenset({False})),
+    "shuffle_childs_wallet": (False, frozenset({False})),
+    "shuffle_tycoon_wallet": (False, frozenset({False})),
+    "shuffle_ocarinas": (False, frozenset({False})),
+    "shuffle_ocarina_buttons": (False, frozenset({False})),
+    "shuffle_swim": (False, frozenset({False})),
+    "shuffle_weird_egg": (False, frozenset({False})),
+    "shuffle_gerudo_membership_card": (False, frozenset({False})),
+    "shuffle_fishing_pole": (False, frozenset({False})),
+    "shuffle_deku_stick_bag": (False, frozenset({False})),
+    "shuffle_deku_nut_bag": (False, frozenset({False})),
+    "shuffle_freestanding_items": ("off", frozenset({"off"})),
+    "shuffle_shops": (False, frozenset({False})),
+    "shuffle_fish": ("off", frozenset({"off"})),
+    "shuffle_scrubs": ("off", frozenset({"off"})),
+    "shuffle_beehives": (False, frozenset({False})),
+    "shuffle_cows": (False, frozenset({False})),
+    "shuffle_pots": ("off", frozenset({"off"})),
+    "shuffle_crates": ("off", frozenset({"off"})),
+    "shuffle_trees": (False, frozenset({False})),
+    "shuffle_merchants": ("off", frozenset({"off"})),
+    "shuffle_frog_song_rupees": (False, frozenset({False})),
+    "shuffle_adult_trade_items": (False, frozenset({False})),
+    "shuffle_boss_souls": ("off", frozenset({"off"})),
+    "shuffle_fountain_fairies": (False, frozenset({False})),
+    "shuffle_stone_fairies": (False, frozenset({False})),
+    "shuffle_bean_fairies": (False, frozenset({False})),
+    "shuffle_song_fairies": (False, frozenset({False})),
+    "shuffle_grass": ("off", frozenset({"off"})),
+    "shuffle_dungeon_rewards": ("off", frozenset({"off"})),
+    "shuffle_100_gs_reward": (False, frozenset({False})),
+    "start_with_kokiri_sword": (False, frozenset({False})),
+    "start_with_master_sword": (False, frozenset({False})),
+    "start_with_deku_shield": (False, frozenset({False})),
+    "start_with_ocarina": ("off", frozenset({"off"})),
+    "start_with_stick_ammo": (False, frozenset({False})),
+    "start_with_nut_ammo": (False, frozenset({False})),
+    "start_with_magic_beans": (False, frozenset({False})),
+    "start_with_zeldas_lullaby": (False, frozenset({False})),
+    "start_with_eponas_song": (False, frozenset({False})),
+    "start_with_sarias_song": (False, frozenset({False})),
+    "start_with_suns_song": (False, frozenset({False})),
+    "start_with_song_of_time": (False, frozenset({False})),
+    "start_with_song_of_storms": (False, frozenset({False})),
+    "start_with_minuet": (False, frozenset({False})),
+    "start_with_bolero": (False, frozenset({False})),
+    "start_with_serenade": (False, frozenset({False})),
+    "start_with_requiem": (False, frozenset({False})),
+    "start_with_nocturne": (False, frozenset({False})),
+    "start_with_prelude": (False, frozenset({False})),
+}
+
+
+def _option_value(option: Any) -> Any:
+    """The comparable value: a Toggle's bool, a Choice's name, a Range's int.
+    SoH Choices keep "false"/"true" aliases; they compare as bools."""
+    if isinstance(option, Toggle):
+        return bool(option.value)
+    if isinstance(option, Choice):
+        key = option.current_key
+        return key == "true" if key in ("true", "false") else key
+    return option.value
+
+
+def apply_defaults(options_dataclass: type) -> None:
+    """Make the supported value the default of every restricted option."""
+    import typing
+    hints = typing.get_type_hints(options_dataclass)
+    for name, (default, _) in SUPPORTED.items():
+        option_class = hints[name]
+        choices = getattr(option_class, "options", None)
+        if isinstance(default, bool):
+            option_class.default = int(default)
+        elif isinstance(default, str):
+            option_class.default = choices[default]
+        else:
+            option_class.default = default
+
+
+def validate(options: Any, player_name: str) -> None:
+    unsupported = []
+    for name, (_, allowed) in SUPPORTED.items():
+        value = _option_value(getattr(options, name))
+        if value not in allowed:
+            unsupported.append(f"{name}={value!r} (supported: {sorted(map(str, allowed))})")
+    if options.tricks_in_logic.value:
+        unsupported.append("tricks_in_logic (3D tricks are not ported yet)")
+    if unsupported:
+        raise OptionError(f"Ocarina of Time 3D ({player_name}): the TriAevum client does not support "
+                          + "; ".join(unsupported))

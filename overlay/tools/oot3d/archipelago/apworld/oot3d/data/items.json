@@ -1,0 +1,1970 @@
+{
+ "format": "triaevum_oot3d_apworld_items_v1",
+ "source": {
+  "repository": "https://github.com/gamestabled/OoT3D_Randomizer",
+  "commit": "ae0fcf56cbc7166c809f675668b43e24a9640fe1",
+  "license": "see THIRD_PARTY_NOTICES.md (OoT3D_Randomizer data)"
+ },
+ "items": [
+  {
+   "enum": "KOKIRI_SWORD",
+   "name": "Kokiri Sword",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 39,
+   "classification": "progression",
+   "id": 3997696
+  },
+  {
+   "enum": "MASTER_SWORD",
+   "name": "Master Sword",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 126,
+   "classification": "progression",
+   "id": 3997697
+  },
+  {
+   "enum": "GIANTS_KNIFE",
+   "name": "Giant's Knife",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 40,
+   "classification": "useful",
+   "id": 3997698
+  },
+  {
+   "enum": "BIGGORON_SWORD",
+   "name": "Biggoron's Sword",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 87,
+   "classification": "progression",
+   "id": 3997699
+  },
+  {
+   "enum": "DEKU_SHIELD",
+   "name": "Deku Shield",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 41,
+   "classification": "useful",
+   "id": 3997700
+  },
+  {
+   "enum": "HYLIAN_SHIELD",
+   "name": "Hylian Shield",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 42,
+   "classification": "useful",
+   "id": 3997701
+  },
+  {
+   "enum": "MIRROR_SHIELD",
+   "name": "Mirror Shield",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 43,
+   "classification": "progression",
+   "id": 3997702
+  },
+  {
+   "enum": "GORON_TUNIC",
+   "name": "Goron Tunic",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 44,
+   "classification": "progression",
+   "id": 3997703
+  },
+  {
+   "enum": "ZORA_TUNIC",
+   "name": "Zora Tunic",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 45,
+   "classification": "progression",
+   "id": 3997704
+  },
+  {
+   "enum": "IRON_BOOTS",
+   "name": "Iron Boots",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 46,
+   "classification": "progression",
+   "id": 3997705
+  },
+  {
+   "enum": "HOVER_BOOTS",
+   "name": "Hover Boots",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 47,
+   "classification": "progression",
+   "id": 3997706
+  },
+  {
+   "enum": "BOOMERANG",
+   "name": "Boomerang",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 6,
+   "classification": "progression",
+   "id": 3997707
+  },
+  {
+   "enum": "LENS_OF_TRUTH",
+   "name": "Lens of Truth",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 10,
+   "classification": "progression",
+   "id": 3997708
+  },
+  {
+   "enum": "MEGATON_HAMMER",
+   "name": "Megaton Hammer",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 13,
+   "classification": "progression",
+   "id": 3997709
+  },
+  {
+   "enum": "SHARD_OF_AGONY",
+   "name": "Shard of Agony",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 57,
+   "classification": "progression",
+   "id": 3997710
+  },
+  {
+   "enum": "DINS_FIRE",
+   "name": "Din's Fire",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 92,
+   "classification": "progression",
+   "id": 3997711
+  },
+  {
+   "enum": "FARORES_WIND",
+   "name": "Farore's Wind",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 93,
+   "classification": "progression",
+   "id": 3997712
+  },
+  {
+   "enum": "NAYRUS_LOVE",
+   "name": "Nayru's Love",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 94,
+   "classification": "progression",
+   "id": 3997713
+  },
+  {
+   "enum": "FIRE_ARROWS",
+   "name": "Fire Arrow",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 88,
+   "classification": "progression",
+   "id": 3997714
+  },
+  {
+   "enum": "ICE_ARROWS",
+   "name": "Ice Arrow",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 89,
+   "classification": "progression",
+   "id": 3997715
+  },
+  {
+   "enum": "LIGHT_ARROWS",
+   "name": "Light Arrow",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 90,
+   "classification": "progression",
+   "id": 3997716
+  },
+  {
+   "enum": "GERUDO_TOKEN",
+   "name": "Gerudo Token",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 58,
+   "classification": "progression",
+   "id": 3997717
+  },
+  {
+   "enum": "MAGIC_BEAN",
+   "name": "Magic Bean",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 22,
+   "classification": "progression",
+   "id": 3997718
+  },
+  {
+   "enum": "MAGIC_BEAN_PACK",
+   "name": "Magic Bean Pack",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 201,
+   "classification": "progression",
+   "id": 3997719
+  },
+  {
+   "enum": "DOUBLE_DEFENSE",
+   "name": "Double Defense",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 184,
+   "classification": "progression",
+   "id": 3997720
+  },
+  {
+   "enum": "WEIRD_EGG",
+   "name": "Weird Egg",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 71,
+   "classification": "progression",
+   "id": 3997721
+  },
+  {
+   "enum": "ZELDAS_LETTER",
+   "name": "Zelda's Letter",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 11,
+   "classification": "progression",
+   "id": 3997722
+  },
+  {
+   "enum": "POCKET_EGG",
+   "name": "Pocket Egg",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 29,
+   "classification": "progression",
+   "id": 3997723
+  },
+  {
+   "enum": "COJIRO",
+   "name": "Cojiro",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 14,
+   "classification": "progression",
+   "id": 3997724
+  },
+  {
+   "enum": "ODD_MUSHROOM",
+   "name": "Odd Mushroom",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 31,
+   "classification": "progression",
+   "id": 3997725
+  },
+  {
+   "enum": "ODD_POULTICE",
+   "name": "Odd Poultice",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 32,
+   "classification": "progression",
+   "id": 3997726
+  },
+  {
+   "enum": "POACHERS_SAW",
+   "name": "Poacher's Saw",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 33,
+   "classification": "progression",
+   "id": 3997727
+  },
+  {
+   "enum": "BROKEN_SWORD",
+   "name": "Broken Goron's Sword",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 34,
+   "classification": "progression",
+   "id": 3997728
+  },
+  {
+   "enum": "PRESCRIPTION",
+   "name": "Prescription",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 35,
+   "classification": "progression",
+   "id": 3997729
+  },
+  {
+   "enum": "EYEBALL_FROG",
+   "name": "Eyeball Frog",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 36,
+   "classification": "progression",
+   "id": 3997730
+  },
+  {
+   "enum": "EYEDROPS",
+   "name": "World's Finest Eyedrops",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 37,
+   "classification": "progression",
+   "id": 3997731
+  },
+  {
+   "enum": "CLAIM_CHECK",
+   "name": "Claim Check",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 38,
+   "classification": "progression",
+   "id": 3997732
+  },
+  {
+   "enum": "GOLD_SKULLTULA_TOKEN",
+   "name": "Gold Skulltula Token",
+   "item_type": "ITEMTYPE_TOKEN",
+   "get_item_id": 91,
+   "classification": "progression",
+   "id": 3997733
+  },
+  {
+   "enum": "PROGRESSIVE_HOOKSHOT",
+   "name": "Progressive Hookshot",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 128,
+   "classification": "progression",
+   "id": 3997734
+  },
+  {
+   "enum": "PROGRESSIVE_STRENGTH",
+   "name": "Progressive Strength Upgrade",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 129,
+   "classification": "progression",
+   "id": 3997735
+  },
+  {
+   "enum": "PROGRESSIVE_BOMB_BAG",
+   "name": "Progressive Bomb Bag",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 130,
+   "classification": "progression",
+   "id": 3997736
+  },
+  {
+   "enum": "PROGRESSIVE_BOW",
+   "name": "Progressive Bow",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 131,
+   "classification": "progression",
+   "id": 3997737
+  },
+  {
+   "enum": "PROGRESSIVE_SLINGSHOT",
+   "name": "Progressive Slingshot",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 132,
+   "classification": "progression",
+   "id": 3997738
+  },
+  {
+   "enum": "PROGRESSIVE_WALLET",
+   "name": "Progressive Wallet",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 133,
+   "classification": "progression",
+   "id": 3997739
+  },
+  {
+   "enum": "PROGRESSIVE_SCALE",
+   "name": "Progressive Scale",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 134,
+   "classification": "progression",
+   "id": 3997740
+  },
+  {
+   "enum": "PROGRESSIVE_NUT_UPGRADE",
+   "name": "Progressive Nut Capacity",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 135,
+   "classification": "useful",
+   "id": 3997741
+  },
+  {
+   "enum": "PROGRESSIVE_STICK_UPGRADE",
+   "name": "Progressive Stick Capacity",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 136,
+   "classification": "useful",
+   "id": 3997742
+  },
+  {
+   "enum": "PROGRESSIVE_BOMBCHUS",
+   "name": "Progressive Bombchu",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 137,
+   "classification": "progression",
+   "id": 3997743
+  },
+  {
+   "enum": "PROGRESSIVE_MAGIC_METER",
+   "name": "Progressive Magic Meter",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 138,
+   "classification": "progression",
+   "id": 3997744
+  },
+  {
+   "enum": "PROGRESSIVE_OCARINA",
+   "name": "Progressive Ocarina",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 139,
+   "classification": "progression",
+   "id": 3997745
+  },
+  {
+   "enum": "PROGRESSIVE_GORONSWORD",
+   "name": "Progressive Goron Sword",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 212,
+   "classification": "progression",
+   "id": 3997746
+  },
+  {
+   "enum": "EMPTY_BOTTLE",
+   "name": "Empty Bottle",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 15,
+   "classification": "progression",
+   "id": 3997747
+  },
+  {
+   "enum": "BOTTLE_WITH_RED_POTION",
+   "name": "Bottle with Red Potion",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 140,
+   "classification": "progression",
+   "id": 3997748
+  },
+  {
+   "enum": "BOTTLE_WITH_MILK",
+   "name": "Bottle with Milk",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 20,
+   "classification": "progression",
+   "id": 3997749
+  },
+  {
+   "enum": "BOTTLE_WITH_GREEN_POTION",
+   "name": "Bottle with Green Potion",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 141,
+   "classification": "progression",
+   "id": 3997750
+  },
+  {
+   "enum": "BOTTLE_WITH_BLUE_POTION",
+   "name": "Bottle with Blue Potion",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 142,
+   "classification": "progression",
+   "id": 3997751
+  },
+  {
+   "enum": "BOTTLE_WITH_FAIRY",
+   "name": "Bottle with Fairy",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 143,
+   "classification": "progression",
+   "id": 3997752
+  },
+  {
+   "enum": "BOTTLE_WITH_FISH",
+   "name": "Bottle with Fish",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 144,
+   "classification": "progression",
+   "id": 3997753
+  },
+  {
+   "enum": "BOTTLE_WITH_BLUE_FIRE",
+   "name": "Bottle with Blue Fire",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 145,
+   "classification": "progression",
+   "id": 3997754
+  },
+  {
+   "enum": "BOTTLE_WITH_BUGS",
+   "name": "Bottle with Bugs",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 146,
+   "classification": "progression",
+   "id": 3997755
+  },
+  {
+   "enum": "BOTTLE_WITH_POE",
+   "name": "Bottle with Poe",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 148,
+   "classification": "progression",
+   "id": 3997756
+  },
+  {
+   "enum": "RUTOS_LETTER",
+   "name": "Bottle with Ruto's Letter",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 21,
+   "classification": "progression",
+   "id": 3997757
+  },
+  {
+   "enum": "BOTTLE_WITH_BIG_POE",
+   "name": "Bottle with Big Poe",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 147,
+   "classification": "progression",
+   "id": 3997758
+  },
+  {
+   "enum": "ZELDAS_LULLABY",
+   "name": "Zelda's Lullaby",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 193,
+   "classification": "progression",
+   "id": 3997759
+  },
+  {
+   "enum": "EPONAS_SONG",
+   "name": "Epona's Song",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 194,
+   "classification": "progression",
+   "id": 3997760
+  },
+  {
+   "enum": "SARIAS_SONG",
+   "name": "Saria's Song",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 195,
+   "classification": "progression",
+   "id": 3997761
+  },
+  {
+   "enum": "SUNS_SONG",
+   "name": "Sun's Song",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 196,
+   "classification": "progression",
+   "id": 3997762
+  },
+  {
+   "enum": "SONG_OF_TIME",
+   "name": "Song of Time",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 197,
+   "classification": "progression",
+   "id": 3997763
+  },
+  {
+   "enum": "SONG_OF_STORMS",
+   "name": "Song of Storms",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 198,
+   "classification": "progression",
+   "id": 3997764
+  },
+  {
+   "enum": "MINUET_OF_FOREST",
+   "name": "Minuet of Forest",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 187,
+   "classification": "progression",
+   "id": 3997765
+  },
+  {
+   "enum": "BOLERO_OF_FIRE",
+   "name": "Bolero of Fire",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 188,
+   "classification": "progression",
+   "id": 3997766
+  },
+  {
+   "enum": "SERENADE_OF_WATER",
+   "name": "Serenade of Water",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 189,
+   "classification": "progression",
+   "id": 3997767
+  },
+  {
+   "enum": "REQUIEM_OF_SPIRIT",
+   "name": "Requiem of Spirit",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 190,
+   "classification": "progression",
+   "id": 3997768
+  },
+  {
+   "enum": "NOCTURNE_OF_SHADOW",
+   "name": "Nocturne of Shadow",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 191,
+   "classification": "progression",
+   "id": 3997769
+  },
+  {
+   "enum": "PRELUDE_OF_LIGHT",
+   "name": "Prelude of Light",
+   "item_type": "ITEMTYPE_SONG",
+   "get_item_id": 192,
+   "classification": "progression",
+   "id": 3997770
+  },
+  {
+   "enum": "DEKU_TREE_MAP",
+   "name": "Great Deku Tree Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 165,
+   "classification": "useful",
+   "id": 3997771
+  },
+  {
+   "enum": "DODONGOS_CAVERN_MAP",
+   "name": "Dodongo's Cavern Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 166,
+   "classification": "useful",
+   "id": 3997772
+  },
+  {
+   "enum": "JABU_JABUS_BELLY_MAP",
+   "name": "Jabu-Jabu's Belly Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 167,
+   "classification": "useful",
+   "id": 3997773
+  },
+  {
+   "enum": "FOREST_TEMPLE_MAP",
+   "name": "Forest Temple Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 168,
+   "classification": "useful",
+   "id": 3997774
+  },
+  {
+   "enum": "FIRE_TEMPLE_MAP",
+   "name": "Fire Temple Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 169,
+   "classification": "useful",
+   "id": 3997775
+  },
+  {
+   "enum": "WATER_TEMPLE_MAP",
+   "name": "Water Temple Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 170,
+   "classification": "useful",
+   "id": 3997776
+  },
+  {
+   "enum": "SPIRIT_TEMPLE_MAP",
+   "name": "Spirit Temple Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 171,
+   "classification": "useful",
+   "id": 3997777
+  },
+  {
+   "enum": "SHADOW_TEMPLE_MAP",
+   "name": "Shadow Temple Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 172,
+   "classification": "useful",
+   "id": 3997778
+  },
+  {
+   "enum": "BOTTOM_OF_THE_WELL_MAP",
+   "name": "Bottom of the Well Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 173,
+   "classification": "useful",
+   "id": 3997779
+  },
+  {
+   "enum": "ICE_CAVERN_MAP",
+   "name": "Ice Cavern Map",
+   "item_type": "ITEMTYPE_MAP",
+   "get_item_id": 174,
+   "classification": "useful",
+   "id": 3997780
+  },
+  {
+   "enum": "DEKU_TREE_COMPASS",
+   "name": "Great Deku Tree Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 155,
+   "classification": "useful",
+   "id": 3997781
+  },
+  {
+   "enum": "DODONGOS_CAVERN_COMPASS",
+   "name": "Dodongo's Cavern Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 156,
+   "classification": "useful",
+   "id": 3997782
+  },
+  {
+   "enum": "JABU_JABUS_BELLY_COMPASS",
+   "name": "Jabu-Jabu's Belly Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 157,
+   "classification": "useful",
+   "id": 3997783
+  },
+  {
+   "enum": "FOREST_TEMPLE_COMPASS",
+   "name": "Forest Temple Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 158,
+   "classification": "useful",
+   "id": 3997784
+  },
+  {
+   "enum": "FIRE_TEMPLE_COMPASS",
+   "name": "Fire Temple Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 159,
+   "classification": "useful",
+   "id": 3997785
+  },
+  {
+   "enum": "WATER_TEMPLE_COMPASS",
+   "name": "Water Temple Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 160,
+   "classification": "useful",
+   "id": 3997786
+  },
+  {
+   "enum": "SPIRIT_TEMPLE_COMPASS",
+   "name": "Spirit Temple Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 161,
+   "classification": "useful",
+   "id": 3997787
+  },
+  {
+   "enum": "SHADOW_TEMPLE_COMPASS",
+   "name": "Shadow Temple Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 162,
+   "classification": "useful",
+   "id": 3997788
+  },
+  {
+   "enum": "BOTTOM_OF_THE_WELL_COMPASS",
+   "name": "Bottom of the Well Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 163,
+   "classification": "useful",
+   "id": 3997789
+  },
+  {
+   "enum": "ICE_CAVERN_COMPASS",
+   "name": "Ice Cavern Compass",
+   "item_type": "ITEMTYPE_COMPASS",
+   "get_item_id": 164,
+   "classification": "useful",
+   "id": 3997790
+  },
+  {
+   "enum": "FOREST_TEMPLE_BOSS_KEY",
+   "name": "Forest Temple Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 149,
+   "classification": "progression",
+   "id": 3997791
+  },
+  {
+   "enum": "FIRE_TEMPLE_BOSS_KEY",
+   "name": "Fire Temple Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 150,
+   "classification": "progression",
+   "id": 3997792
+  },
+  {
+   "enum": "WATER_TEMPLE_BOSS_KEY",
+   "name": "Water Temple Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 151,
+   "classification": "progression",
+   "id": 3997793
+  },
+  {
+   "enum": "SPIRIT_TEMPLE_BOSS_KEY",
+   "name": "Spirit Temple Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 152,
+   "classification": "progression",
+   "id": 3997794
+  },
+  {
+   "enum": "SHADOW_TEMPLE_BOSS_KEY",
+   "name": "Shadow Temple Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 153,
+   "classification": "progression",
+   "id": 3997795
+  },
+  {
+   "enum": "GANONS_CASTLE_BOSS_KEY",
+   "name": "Ganon's Castle Big Key",
+   "item_type": "ITEMTYPE_BOSSKEY",
+   "get_item_id": 154,
+   "classification": "progression",
+   "id": 3997796
+  },
+  {
+   "enum": "FOREST_TEMPLE_SMALL_KEY",
+   "name": "Forest Temple Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 175,
+   "classification": "progression",
+   "id": 3997797
+  },
+  {
+   "enum": "FIRE_TEMPLE_SMALL_KEY",
+   "name": "Fire Temple Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 176,
+   "classification": "progression",
+   "id": 3997798
+  },
+  {
+   "enum": "WATER_TEMPLE_SMALL_KEY",
+   "name": "Water Temple Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 177,
+   "classification": "progression",
+   "id": 3997799
+  },
+  {
+   "enum": "SPIRIT_TEMPLE_SMALL_KEY",
+   "name": "Spirit Temple Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 178,
+   "classification": "progression",
+   "id": 3997800
+  },
+  {
+   "enum": "SHADOW_TEMPLE_SMALL_KEY",
+   "name": "Shadow Temple Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 179,
+   "classification": "progression",
+   "id": 3997801
+  },
+  {
+   "enum": "BOTTOM_OF_THE_WELL_SMALL_KEY",
+   "name": "Bottom of the Well Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 180,
+   "classification": "progression",
+   "id": 3997802
+  },
+  {
+   "enum": "GERUDO_TRAINING_GROUNDS_SMALL_KEY",
+   "name": "Training Grounds Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 181,
+   "classification": "progression",
+   "id": 3997803
+  },
+  {
+   "enum": "GERUDO_FORTRESS_SMALL_KEY",
+   "name": "Gerudo Fortress Small Key",
+   "item_type": "ITEMTYPE_FORTRESS_SMALLKEY",
+   "get_item_id": 182,
+   "classification": "progression",
+   "id": 3997804
+  },
+  {
+   "enum": "GANONS_CASTLE_SMALL_KEY",
+   "name": "Ganon's Castle Small Key",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 183,
+   "classification": "progression",
+   "id": 3997805
+  },
+  {
+   "enum": "TREASURE_GAME_SMALL_KEY",
+   "name": "Chest Game Small Key",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 222,
+   "classification": "progression",
+   "id": 3997806
+  },
+  {
+   "enum": "FOREST_TEMPLE_KEY_RING",
+   "name": "Forest Temple Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 213,
+   "classification": "progression",
+   "id": 3997807
+  },
+  {
+   "enum": "FIRE_TEMPLE_KEY_RING",
+   "name": "Fire Temple Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 214,
+   "classification": "progression",
+   "id": 3997808
+  },
+  {
+   "enum": "WATER_TEMPLE_KEY_RING",
+   "name": "Water Temple Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 215,
+   "classification": "progression",
+   "id": 3997809
+  },
+  {
+   "enum": "SPIRIT_TEMPLE_KEY_RING",
+   "name": "Spirit Temple Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 216,
+   "classification": "progression",
+   "id": 3997810
+  },
+  {
+   "enum": "SHADOW_TEMPLE_KEY_RING",
+   "name": "Shadow Temple Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 217,
+   "classification": "progression",
+   "id": 3997811
+  },
+  {
+   "enum": "BOTTOM_OF_THE_WELL_KEY_RING",
+   "name": "Bottom of the Well Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 218,
+   "classification": "progression",
+   "id": 3997812
+  },
+  {
+   "enum": "GERUDO_TRAINING_GROUNDS_KEY_RING",
+   "name": "Training Grounds Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 219,
+   "classification": "progression",
+   "id": 3997813
+  },
+  {
+   "enum": "GERUDO_FORTRESS_KEY_RING",
+   "name": "Gerudo Fortress Key Ring",
+   "item_type": "ITEMTYPE_FORTRESS_SMALLKEY",
+   "get_item_id": 220,
+   "classification": "progression",
+   "id": 3997814
+  },
+  {
+   "enum": "GANONS_CASTLE_KEY_RING",
+   "name": "Ganon's Castle Key Ring",
+   "item_type": "ITEMTYPE_SMALLKEY",
+   "get_item_id": 221,
+   "classification": "progression",
+   "id": 3997815
+  },
+  {
+   "enum": "KOKIRI_EMERALD",
+   "name": "Kokiri's Emerald",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 203,
+   "classification": "progression",
+   "id": 3997816
+  },
+  {
+   "enum": "GORON_RUBY",
+   "name": "Goron's Ruby",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 204,
+   "classification": "progression",
+   "id": 3997817
+  },
+  {
+   "enum": "ZORA_SAPPHIRE",
+   "name": "Zora's Sapphire",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 205,
+   "classification": "progression",
+   "id": 3997818
+  },
+  {
+   "enum": "FOREST_MEDALLION",
+   "name": "Forest Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 206,
+   "classification": "progression",
+   "id": 3997819
+  },
+  {
+   "enum": "FIRE_MEDALLION",
+   "name": "Fire Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 207,
+   "classification": "progression",
+   "id": 3997820
+  },
+  {
+   "enum": "WATER_MEDALLION",
+   "name": "Water Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 208,
+   "classification": "progression",
+   "id": 3997821
+  },
+  {
+   "enum": "SPIRIT_MEDALLION",
+   "name": "Spirit Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 209,
+   "classification": "progression",
+   "id": 3997822
+  },
+  {
+   "enum": "SHADOW_MEDALLION",
+   "name": "Shadow Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 210,
+   "classification": "progression",
+   "id": 3997823
+  },
+  {
+   "enum": "LIGHT_MEDALLION",
+   "name": "Light Medallion",
+   "item_type": "ITEMTYPE_DUNGEONREWARD",
+   "get_item_id": 211,
+   "classification": "progression",
+   "id": 3997824
+  },
+  {
+   "enum": "RECOVERY_HEART",
+   "name": "Recovery Heart",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 72,
+   "classification": "filler",
+   "id": 3997825
+  },
+  {
+   "enum": "GREEN_RUPEE",
+   "name": "Green Rupee",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 76,
+   "classification": "filler",
+   "id": 3997826
+  },
+  {
+   "enum": "BLUE_RUPEE",
+   "name": "Blue Rupee",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 77,
+   "classification": "filler",
+   "id": 3997827
+  },
+  {
+   "enum": "RED_RUPEE",
+   "name": "Red Rupee",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 78,
+   "classification": "filler",
+   "id": 3997828
+  },
+  {
+   "enum": "PURPLE_RUPEE",
+   "name": "Purple Rupee",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 85,
+   "classification": "filler",
+   "id": 3997829
+  },
+  {
+   "enum": "HUGE_RUPEE",
+   "name": "Huge Rupee",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 86,
+   "classification": "filler",
+   "id": 3997830
+  },
+  {
+   "enum": "PIECE_OF_HEART",
+   "name": "Piece of Heart",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 62,
+   "classification": "progression",
+   "id": 3997831
+  },
+  {
+   "enum": "HEART_CONTAINER",
+   "name": "Heart Container",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 79,
+   "classification": "progression",
+   "id": 3997832
+  },
+  {
+   "enum": "ICE_TRAP",
+   "name": "Ice Trap",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 124,
+   "classification": "filler",
+   "id": 3997833
+  },
+  {
+   "enum": "MILK",
+   "name": "Milk",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 80,
+   "classification": "filler",
+   "id": 3997834
+  },
+  {
+   "enum": "BOMBS_5",
+   "name": "Bombs (5)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 1,
+   "classification": "filler",
+   "id": 3997835
+  },
+  {
+   "enum": "BOMBS_10",
+   "name": "Bombs (10)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 102,
+   "classification": "filler",
+   "id": 3997836
+  },
+  {
+   "enum": "BOMBS_20",
+   "name": "Bombs (20)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 103,
+   "classification": "filler",
+   "id": 3997837
+  },
+  {
+   "enum": "BOMBCHU_5",
+   "name": "Bombchus (5)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 106,
+   "classification": "progression",
+   "id": 3997838
+  },
+  {
+   "enum": "BOMBCHU_10",
+   "name": "Bombchus (10)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 3,
+   "classification": "progression",
+   "id": 3997839
+  },
+  {
+   "enum": "BOMBCHU_20",
+   "name": "Bombchus (20)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 107,
+   "classification": "progression",
+   "id": 3997840
+  },
+  {
+   "enum": "BOMBCHU_DROP",
+   "name": "Bombchu Drop",
+   "item_type": "ITEMTYPE_DROP",
+   "get_item_id": 3,
+   "classification": "progression",
+   "id": 3997841
+  },
+  {
+   "enum": "ARROWS_5",
+   "name": "Arrows (5)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 73,
+   "classification": "filler",
+   "id": 3997842
+  },
+  {
+   "enum": "ARROWS_10",
+   "name": "Arrows (10)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 74,
+   "classification": "filler",
+   "id": 3997843
+  },
+  {
+   "enum": "ARROWS_30",
+   "name": "Arrows (30)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 75,
+   "classification": "filler",
+   "id": 3997844
+  },
+  {
+   "enum": "DEKU_NUTS_5",
+   "name": "Deku Nuts (5)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 2,
+   "classification": "filler",
+   "id": 3997845
+  },
+  {
+   "enum": "DEKU_NUTS_10",
+   "name": "Deku Nuts (10)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 100,
+   "classification": "filler",
+   "id": 3997846
+  },
+  {
+   "enum": "DEKU_SEEDS_30",
+   "name": "Deku Seeds (30)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 105,
+   "classification": "filler",
+   "id": 3997847
+  },
+  {
+   "enum": "DEKU_STICK_1",
+   "name": "Deku Stick (1)",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 7,
+   "classification": "filler",
+   "id": 3997848
+  },
+  {
+   "enum": "RED_POTION_REFILL",
+   "name": "Red Potion Refill",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 16,
+   "classification": "filler",
+   "id": 3997849
+  },
+  {
+   "enum": "GREEN_POTION_REFILL",
+   "name": "Green Potion Refill",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 17,
+   "classification": "filler",
+   "id": 3997850
+  },
+  {
+   "enum": "BLUE_POTION_REFILL",
+   "name": "Blue Potion Refill",
+   "item_type": "ITEMTYPE_REFILL",
+   "get_item_id": 18,
+   "classification": "filler",
+   "id": 3997851
+  },
+  {
+   "enum": "TREASURE_GAME_HEART",
+   "name": "Piece of Heart (Treasure Chest Minigame)",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 118,
+   "classification": "progression",
+   "id": 3997852
+  },
+  {
+   "enum": "TREASURE_GAME_GREEN_RUPEE",
+   "name": "Green Rupee (Treasure Chest Minigame)",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 114,
+   "classification": "useful",
+   "id": 3997853
+  },
+  {
+   "enum": "BUY_DEKU_NUT_5",
+   "name": "Buy Deku Nut (5)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 0,
+   "classification": "progression",
+   "id": 3997854
+  },
+  {
+   "enum": "BUY_ARROWS_30",
+   "name": "Buy Arrows (30)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 1,
+   "classification": "progression",
+   "id": 3997855
+  },
+  {
+   "enum": "BUY_ARROWS_50",
+   "name": "Buy Arrows (50)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 2,
+   "classification": "progression",
+   "id": 3997856
+  },
+  {
+   "enum": "BUY_BOMBS_525",
+   "name": "Buy Bombs (5) [25]",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 3,
+   "classification": "progression",
+   "id": 3997857
+  },
+  {
+   "enum": "BUY_DEKU_NUT_10",
+   "name": "Buy Deku Nut (10)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 4,
+   "classification": "progression",
+   "id": 3997858
+  },
+  {
+   "enum": "BUY_DEKU_STICK_1",
+   "name": "Buy Deku Stick (1)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 5,
+   "classification": "progression",
+   "id": 3997859
+  },
+  {
+   "enum": "BUY_BOMBS_10",
+   "name": "Buy Bombs (10)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 6,
+   "classification": "progression",
+   "id": 3997860
+  },
+  {
+   "enum": "BUY_FISH",
+   "name": "Buy Fish",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 7,
+   "classification": "progression",
+   "id": 3997861
+  },
+  {
+   "enum": "BUY_RED_POTION_30",
+   "name": "Buy Red Potion [30]",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 8,
+   "classification": "useful",
+   "id": 3997862
+  },
+  {
+   "enum": "BUY_GREEN_POTION",
+   "name": "Buy Green Potion",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 9,
+   "classification": "progression",
+   "id": 3997863
+  },
+  {
+   "enum": "BUY_BLUE_POTION",
+   "name": "Buy Blue Potion",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 10,
+   "classification": "progression",
+   "id": 3997864
+  },
+  {
+   "enum": "BUY_HYLIAN_SHIELD",
+   "name": "Buy Hylian Shield",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 12,
+   "classification": "progression",
+   "id": 3997865
+  },
+  {
+   "enum": "BUY_DEKU_SHIELD",
+   "name": "Buy Deku Shield",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 13,
+   "classification": "progression",
+   "id": 3997866
+  },
+  {
+   "enum": "BUY_GORON_TUNIC",
+   "name": "Buy Goron Tunic",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 14,
+   "classification": "progression",
+   "id": 3997867
+  },
+  {
+   "enum": "BUY_ZORA_TUNIC",
+   "name": "Buy Zora Tunic",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 15,
+   "classification": "progression",
+   "id": 3997868
+  },
+  {
+   "enum": "BUY_HEART",
+   "name": "Buy Heart",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 16,
+   "classification": "useful",
+   "id": 3997869
+  },
+  {
+   "enum": "BUY_BOMBCHU_10",
+   "name": "Buy Bombchu (10)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 21,
+   "classification": "progression",
+   "id": 3997870
+  },
+  {
+   "enum": "BUY_BOMBCHU_20",
+   "name": "Buy Bombchu (20)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 22,
+   "classification": "progression",
+   "id": 3997871
+  },
+  {
+   "enum": "BUY_BOMBCHU_5",
+   "name": "Buy Bombchu (5)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 24,
+   "classification": "progression",
+   "id": 3997872
+  },
+  {
+   "enum": "BUY_DEKU_SEEDS_30",
+   "name": "Buy Deku Seeds (30)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 29,
+   "classification": "progression",
+   "id": 3997873
+  },
+  {
+   "enum": "SOLD_OUT",
+   "name": "Sold Out",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 38,
+   "classification": "useful",
+   "id": 3997874
+  },
+  {
+   "enum": "BUY_BLUE_FIRE",
+   "name": "Buy Blue Fire",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 39,
+   "classification": "progression",
+   "id": 3997875
+  },
+  {
+   "enum": "BUY_BOTTLE_BUG",
+   "name": "Buy Bottle Bug",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 40,
+   "classification": "progression",
+   "id": 3997876
+  },
+  {
+   "enum": "BUY_POE",
+   "name": "Buy Poe",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 42,
+   "classification": "useful",
+   "id": 3997877
+  },
+  {
+   "enum": "BUY_FAIRYS_SPIRIT",
+   "name": "Buy Fairy's Spirit",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 43,
+   "classification": "progression",
+   "id": 3997878
+  },
+  {
+   "enum": "BUY_ARROWS_10",
+   "name": "Buy Arrows (10)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 44,
+   "classification": "progression",
+   "id": 3997879
+  },
+  {
+   "enum": "BUY_BOMBS_20",
+   "name": "Buy Bombs (20)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 45,
+   "classification": "progression",
+   "id": 3997880
+  },
+  {
+   "enum": "BUY_BOMBS_30",
+   "name": "Buy Bombs (30)",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 46,
+   "classification": "progression",
+   "id": 3997881
+  },
+  {
+   "enum": "BUY_BOMBS_535",
+   "name": "Buy Bombs (5) [35]",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 47,
+   "classification": "progression",
+   "id": 3997882
+  },
+  {
+   "enum": "BUY_RED_POTION_40",
+   "name": "Buy Red Potion [40]",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 48,
+   "classification": "useful",
+   "id": 3997883
+  },
+  {
+   "enum": "BUY_RED_POTION_50",
+   "name": "Buy Red Potion [50]",
+   "item_type": "ITEMTYPE_SHOP",
+   "get_item_id": 49,
+   "classification": "useful",
+   "id": 3997884
+  },
+  {
+   "enum": "SOUL_ITEM_POE",
+   "name": "Poe Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 223,
+   "classification": "progression",
+   "id": 3997885
+  },
+  {
+   "enum": "SOUL_ITEM_OCTOROK",
+   "name": "Octorok Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 224,
+   "classification": "progression",
+   "id": 3997886
+  },
+  {
+   "enum": "SOUL_ITEM_KEESE",
+   "name": "Keese Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 225,
+   "classification": "progression",
+   "id": 3997887
+  },
+  {
+   "enum": "SOUL_ITEM_TEKTITE",
+   "name": "Tektite Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 226,
+   "classification": "progression",
+   "id": 3997888
+  },
+  {
+   "enum": "SOUL_ITEM_LEEVER",
+   "name": "Leever Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 227,
+   "classification": "progression",
+   "id": 3997889
+  },
+  {
+   "enum": "SOUL_ITEM_PEAHAT",
+   "name": "Peahat Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 228,
+   "classification": "progression",
+   "id": 3997890
+  },
+  {
+   "enum": "SOUL_ITEM_LIZALFOS",
+   "name": "Lizalfos and Dinolfos Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 229,
+   "classification": "progression",
+   "id": 3997891
+  },
+  {
+   "enum": "SOUL_ITEM_SHABOM",
+   "name": "Shabom Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 230,
+   "classification": "progression",
+   "id": 3997892
+  },
+  {
+   "enum": "SOUL_ITEM_BIRI_BARI",
+   "name": "Biri and Bari Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 231,
+   "classification": "progression",
+   "id": 3997893
+  },
+  {
+   "enum": "SOUL_ITEM_TAILPASARAN",
+   "name": "Tailpasaran Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 232,
+   "classification": "progression",
+   "id": 3997894
+  },
+  {
+   "enum": "SOUL_ITEM_SKULLTULA",
+   "name": "Skulltula Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 233,
+   "classification": "progression",
+   "id": 3997895
+  },
+  {
+   "enum": "SOUL_ITEM_TORCH_SLUG",
+   "name": "Torch Slug Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 234,
+   "classification": "progression",
+   "id": 3997896
+  },
+  {
+   "enum": "SOUL_ITEM_STINGER",
+   "name": "Stinger Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 235,
+   "classification": "progression",
+   "id": 3997897
+  },
+  {
+   "enum": "SOUL_ITEM_MOBLIN",
+   "name": "Moblin Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 236,
+   "classification": "progression",
+   "id": 3997898
+  },
+  {
+   "enum": "SOUL_ITEM_ARMOS",
+   "name": "Armos Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 237,
+   "classification": "progression",
+   "id": 3997899
+  },
+  {
+   "enum": "SOUL_ITEM_DEKU_BABA",
+   "name": "Deku Baba Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 238,
+   "classification": "progression",
+   "id": 3997900
+  },
+  {
+   "enum": "SOUL_ITEM_BUBBLE",
+   "name": "Bubble Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 239,
+   "classification": "progression",
+   "id": 3997901
+  },
+  {
+   "enum": "SOUL_ITEM_FLYING_TRAP",
+   "name": "Flying Pot and Tile Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 240,
+   "classification": "progression",
+   "id": 3997902
+  },
+  {
+   "enum": "SOUL_ITEM_BEAMOS",
+   "name": "Beamos Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 241,
+   "classification": "progression",
+   "id": 3997903
+  },
+  {
+   "enum": "SOUL_ITEM_WALLMASTER",
+   "name": "Wallmaster and Floormaster Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 242,
+   "classification": "progression",
+   "id": 3997904
+  },
+  {
+   "enum": "SOUL_ITEM_REDEAD_GIBDO",
+   "name": "ReDead and Gibdo Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 243,
+   "classification": "progression",
+   "id": 3997905
+  },
+  {
+   "enum": "SOUL_ITEM_SHELL_BLADE",
+   "name": "Shell Blade Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 244,
+   "classification": "progression",
+   "id": 3997906
+  },
+  {
+   "enum": "SOUL_ITEM_LIKE_LIKE",
+   "name": "Like Like Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 245,
+   "classification": "progression",
+   "id": 3997907
+  },
+  {
+   "enum": "SOUL_ITEM_TENTACLE",
+   "name": "Parasitic Tentacle Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 246,
+   "classification": "progression",
+   "id": 3997908
+  },
+  {
+   "enum": "SOUL_ITEM_ANUBIS",
+   "name": "Anubis Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 247,
+   "classification": "progression",
+   "id": 3997909
+  },
+  {
+   "enum": "SOUL_ITEM_SPIKE",
+   "name": "Spike Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 248,
+   "classification": "progression",
+   "id": 3997910
+  },
+  {
+   "enum": "SOUL_ITEM_SKULL_KID",
+   "name": "Skull Kid Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 249,
+   "classification": "progression",
+   "id": 3997911
+  },
+  {
+   "enum": "SOUL_ITEM_FREEZARD",
+   "name": "Freezard Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 250,
+   "classification": "progression",
+   "id": 3997912
+  },
+  {
+   "enum": "SOUL_ITEM_DEKU_SCRUB",
+   "name": "Deku Scrub Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 251,
+   "classification": "progression",
+   "id": 3997913
+  },
+  {
+   "enum": "SOUL_ITEM_WOLFOS",
+   "name": "Wolfos Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 252,
+   "classification": "progression",
+   "id": 3997914
+  },
+  {
+   "enum": "SOUL_ITEM_STALCHILD",
+   "name": "Stalchild Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 253,
+   "classification": "progression",
+   "id": 3997915
+  },
+  {
+   "enum": "SOUL_ITEM_GUAY",
+   "name": "Guay Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 254,
+   "classification": "progression",
+   "id": 3997916
+  },
+  {
+   "enum": "SOUL_ITEM_DOOR_MIMIC",
+   "name": "Door Mimic Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 255,
+   "classification": "progression",
+   "id": 3997917
+  },
+  {
+   "enum": "SOUL_ITEM_STALFOS",
+   "name": "Stalfos Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 256,
+   "classification": "progression",
+   "id": 3997918
+  },
+  {
+   "enum": "SOUL_ITEM_DARK_LINK",
+   "name": "Dark Link Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 257,
+   "classification": "progression",
+   "id": 3997919
+  },
+  {
+   "enum": "SOUL_ITEM_FLARE_DANCER",
+   "name": "Flare Dancer Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 258,
+   "classification": "progression",
+   "id": 3997920
+  },
+  {
+   "enum": "SOUL_ITEM_DEAD_HAND",
+   "name": "Dead Hand Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 259,
+   "classification": "progression",
+   "id": 3997921
+  },
+  {
+   "enum": "SOUL_ITEM_GERUDO",
+   "name": "Gerudo and Iron Knuckle Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 260,
+   "classification": "progression",
+   "id": 3997922
+  },
+  {
+   "enum": "SOUL_ITEM_GOHMA",
+   "name": "Gohma Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 261,
+   "classification": "progression",
+   "id": 3997923
+  },
+  {
+   "enum": "SOUL_ITEM_DODONGO",
+   "name": "Dodongo Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 262,
+   "classification": "progression",
+   "id": 3997924
+  },
+  {
+   "enum": "SOUL_ITEM_BARINADE",
+   "name": "Barinade Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 263,
+   "classification": "progression",
+   "id": 3997925
+  },
+  {
+   "enum": "SOUL_ITEM_PHANTOM_GANON",
+   "name": "Phantom Ganon Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 264,
+   "classification": "progression",
+   "id": 3997926
+  },
+  {
+   "enum": "SOUL_ITEM_VOLVAGIA",
+   "name": "Volvagia Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 265,
+   "classification": "progression",
+   "id": 3997927
+  },
+  {
+   "enum": "SOUL_ITEM_MORPHA",
+   "name": "Morpha Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 266,
+   "classification": "progression",
+   "id": 3997928
+  },
+  {
+   "enum": "SOUL_ITEM_BONGO_BONGO",
+   "name": "Bongo Bongo Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 267,
+   "classification": "progression",
+   "id": 3997929
+  },
+  {
+   "enum": "SOUL_ITEM_TWINROVA",
+   "name": "Twinrova Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 268,
+   "classification": "progression",
+   "id": 3997930
+  },
+  {
+   "enum": "SOUL_ITEM_GANON",
+   "name": "Ganon Soul",
+   "item_type": "ITEMTYPE_ENEMY_SOUL",
+   "get_item_id": 269,
+   "classification": "progression",
+   "id": 3997931
+  },
+  {
+   "enum": "OCA_BUTTON_ITEM_L",
+   "name": "Ocarina L Button",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 270,
+   "classification": "progression",
+   "id": 3997932
+  },
+  {
+   "enum": "OCA_BUTTON_ITEM_R",
+   "name": "Ocarina R Button",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 271,
+   "classification": "progression",
+   "id": 3997933
+  },
+  {
+   "enum": "OCA_BUTTON_ITEM_X",
+   "name": "Ocarina X Button",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 272,
+   "classification": "progression",
+   "id": 3997934
+  },
+  {
+   "enum": "OCA_BUTTON_ITEM_Y",
+   "name": "Ocarina Y Button",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 273,
+   "classification": "progression",
+   "id": 3997935
+  },
+  {
+   "enum": "OCA_BUTTON_ITEM_A",
+   "name": "Ocarina A Button",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 274,
+   "classification": "progression",
+   "id": 3997936
+  },
+  {
+   "enum": "UNBOTTLED_BIG_POE",
+   "name": "Big Poe",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 276,
+   "classification": "progression",
+   "id": 3997937
+  },
+  {
+   "enum": "TRIFORCE_PIECE",
+   "name": "Triforce Piece",
+   "item_type": "ITEMTYPE_ITEM",
+   "get_item_id": 202,
+   "classification": "progression",
+   "id": 3997938
+  },
+  {
+   "enum": "TRIFORCE",
+   "name": "Triforce",
+   "item_type": "ITEMTYPE_EVENT",
+   "get_item_id": 116,
+   "classification": "useful",
+   "id": 3997939
+  },
+  {
+   "enum": "HINT",
+   "name": "Hint",
+   "item_type": "ITEMTYPE_EVENT",
+   "get_item_id": 115,
+   "classification": "useful",
+   "id": 3997940
+  }
+ ]
+}

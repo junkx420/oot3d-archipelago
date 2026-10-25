@@ -1,0 +1,6946 @@
+{
+ "format": "triaevum_archipelago_locations_v1",
+ "source": {
+  "repository": "https://github.com/gamestabled/OoT3D_Randomizer",
+  "commit": "ae0fcf56cbc7166c809f675668b43e24a9640fe1",
+  "license": "see THIRD_PARTY_NOTICES.md (OoT3D_Randomizer data)"
+ },
+ "locations": [
+  {
+   "id": 3997696,
+   "name": "Triforce Hunt Goal",
+   "scene": 255,
+   "type": 0,
+   "flag": 255,
+   "master_quest": false
+  },
+  {
+   "id": 3997697,
+   "name": "KF Kokiri Sword Chest",
+   "scene": 85,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997698,
+   "name": "KF Mido Top Left Chest",
+   "scene": 40,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997699,
+   "name": "KF Mido Top Right Chest",
+   "scene": 40,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997700,
+   "name": "KF Mido Bottom Left Chest",
+   "scene": 40,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997701,
+   "name": "KF Mido Bottom Right Chest",
+   "scene": 40,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997702,
+   "name": "KF Storms Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997703,
+   "name": "LW Near Shortcuts Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3997704,
+   "name": "LW Skull Kid",
+   "scene": 91,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997705,
+   "name": "LW Trade Cojiro",
+   "scene": 91,
+   "type": 0,
+   "flag": 31,
+   "master_quest": false
+  },
+  {
+   "id": 3997706,
+   "name": "LW Trade Odd Poultice",
+   "scene": 91,
+   "type": 0,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3997707,
+   "name": "LW Ocarina Memory Game",
+   "scene": 91,
+   "type": 0,
+   "flag": 118,
+   "master_quest": false
+  },
+  {
+   "id": 3997708,
+   "name": "LW Target in Woods",
+   "scene": 91,
+   "type": 0,
+   "flag": 96,
+   "master_quest": false
+  },
+  {
+   "id": 3997709,
+   "name": "LW Deku Scrub Near Deku Theater Right",
+   "scene": 91,
+   "type": 0,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997710,
+   "name": "LW Deku Scrub Near Deku Theater Left",
+   "scene": 91,
+   "type": 0,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997711,
+   "name": "LW Deku Scrub Near Bridge",
+   "scene": 91,
+   "type": 0,
+   "flag": 119,
+   "master_quest": false
+  },
+  {
+   "id": 3997712,
+   "name": "LW Deku Scrub Grotto Rear",
+   "scene": 245,
+   "type": 4,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997713,
+   "name": "LW Deku Scrub Grotto Front",
+   "scene": 245,
+   "type": 4,
+   "flag": 121,
+   "master_quest": false
+  },
+  {
+   "id": 3997714,
+   "name": "Deku Theater Skull Mask",
+   "scene": 62,
+   "type": 0,
+   "flag": 119,
+   "master_quest": false
+  },
+  {
+   "id": 3997715,
+   "name": "Deku Theater Mask of Truth",
+   "scene": 62,
+   "type": 0,
+   "flag": 122,
+   "master_quest": false
+  },
+  {
+   "id": 3997716,
+   "name": "SFM Wolfos Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3997717,
+   "name": "SFM Deku Scrub Grotto Rear",
+   "scene": 238,
+   "type": 4,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3997718,
+   "name": "SFM Deku Scrub Grotto Front",
+   "scene": 238,
+   "type": 4,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3997719,
+   "name": "HF Southeast Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997720,
+   "name": "HF Open Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997721,
+   "name": "HF Near Market Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997722,
+   "name": "HF Ocarina of Time Item",
+   "scene": 81,
+   "type": 0,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997723,
+   "name": "HF Tektite Grotto Freestanding PoH",
+   "scene": 62,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997724,
+   "name": "HF Deku Scrub Grotto",
+   "scene": 230,
+   "type": 4,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997725,
+   "name": "HF Big Poe near GV along road",
+   "scene": 81,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997726,
+   "name": "HF Big Poe near GV and tree",
+   "scene": 81,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997727,
+   "name": "HF Big Poe near south-east bush",
+   "scene": 81,
+   "type": 2,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997728,
+   "name": "HF Big Poe near south-east grass",
+   "scene": 81,
+   "type": 2,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997729,
+   "name": "HF Big Poe near silver boulder",
+   "scene": 81,
+   "type": 2,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997730,
+   "name": "HF Big Poe near central wall",
+   "scene": 81,
+   "type": 2,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997731,
+   "name": "HF Big Poe near Kakariko",
+   "scene": 81,
+   "type": 2,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997732,
+   "name": "HF Big Poe near Castle",
+   "scene": 81,
+   "type": 2,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997733,
+   "name": "HF Big Poe near Ranch",
+   "scene": 81,
+   "type": 2,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997734,
+   "name": "HF Big Poe near north-west river",
+   "scene": 81,
+   "type": 2,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997735,
+   "name": "LH Child Fishing",
+   "scene": 73,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997736,
+   "name": "LH Adult Fishing",
+   "scene": 73,
+   "type": 0,
+   "flag": 56,
+   "master_quest": false
+  },
+  {
+   "id": 3997737,
+   "name": "LH Lab Dive",
+   "scene": 56,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997738,
+   "name": "LH Lab Trade Eyeball Frog",
+   "scene": 56,
+   "type": 0,
+   "flag": 37,
+   "master_quest": false
+  },
+  {
+   "id": 3997739,
+   "name": "LH Underwater Item",
+   "scene": 87,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3997740,
+   "name": "LH Sun",
+   "scene": 87,
+   "type": 0,
+   "flag": 88,
+   "master_quest": false
+  },
+  {
+   "id": 3997741,
+   "name": "LH Freestanding PoH",
+   "scene": 87,
+   "type": 2,
+   "flag": 30,
+   "master_quest": false
+  },
+  {
+   "id": 3997742,
+   "name": "LH Deku Scrub Grotto Left",
+   "scene": 239,
+   "type": 4,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997743,
+   "name": "LH Deku Scrub Grotto Right",
+   "scene": 239,
+   "type": 4,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997744,
+   "name": "LH Deku Scrub Grotto Center",
+   "scene": 239,
+   "type": 4,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997745,
+   "name": "GV Chest",
+   "scene": 90,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997746,
+   "name": "GV Trade Saw",
+   "scene": 90,
+   "type": 0,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3997747,
+   "name": "GV Waterfall Freestanding PoH",
+   "scene": 90,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997748,
+   "name": "GV Crate Freestanding PoH",
+   "scene": 90,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997749,
+   "name": "GV Deku Scrub Grotto Rear",
+   "scene": 240,
+   "type": 4,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3997750,
+   "name": "GV Deku Scrub Grotto Front",
+   "scene": 240,
+   "type": 4,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3997751,
+   "name": "GF Chest",
+   "scene": 93,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997752,
+   "name": "GF HBA 1000 Points",
+   "scene": 93,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997753,
+   "name": "GF HBA 1500 Points",
+   "scene": 93,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3997754,
+   "name": "GF Gerudo Token",
+   "scene": 12,
+   "type": 0,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3997755,
+   "name": "GF North F1 Carpenter",
+   "scene": 12,
+   "type": 2,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997756,
+   "name": "GF North F2 Carpenter",
+   "scene": 12,
+   "type": 2,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997757,
+   "name": "GF South F1 Carpenter",
+   "scene": 12,
+   "type": 2,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3997758,
+   "name": "GF South F2 Carpenter",
+   "scene": 12,
+   "type": 2,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3997759,
+   "name": "Wasteland Chest",
+   "scene": 94,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997760,
+   "name": "Wasteland Carpet Salesman",
+   "scene": 94,
+   "type": 0,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997761,
+   "name": "Colossus Freestanding PoH",
+   "scene": 92,
+   "type": 2,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3997762,
+   "name": "Colossus Deku Scrub Grotto Rear",
+   "scene": 253,
+   "type": 4,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3997763,
+   "name": "Colossus Deku Scrub Grotto Front",
+   "scene": 253,
+   "type": 4,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3997764,
+   "name": "MK Treasure Chest Game Reward",
+   "scene": 16,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997765,
+   "name": "MK Bombchu Bowling First Prize",
+   "scene": 75,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3997766,
+   "name": "MK Bombchu Bowling Second Prize",
+   "scene": 75,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997767,
+   "name": "MK Bombchu Bowling Bombchus",
+   "scene": 75,
+   "type": 0,
+   "flag": 255,
+   "master_quest": false
+  },
+  {
+   "id": 3997768,
+   "name": "MK Lost Dog",
+   "scene": 53,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997769,
+   "name": "MK Shooting Gallery",
+   "scene": 66,
+   "type": 0,
+   "flag": 96,
+   "master_quest": false
+  },
+  {
+   "id": 3997770,
+   "name": "MK 10 Big Poes",
+   "scene": 77,
+   "type": 0,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3997771,
+   "name": "MK Chest Game First Room Chest",
+   "scene": 16,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997772,
+   "name": "MK Chest Game Second Room Chest",
+   "scene": 16,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997773,
+   "name": "MK Chest Game Third Room Chest",
+   "scene": 16,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997774,
+   "name": "MK Chest Game Fourth Room Chest",
+   "scene": 16,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997775,
+   "name": "MK Chest Game Fifth Room Chest",
+   "scene": 16,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997776,
+   "name": "HC Malon Egg",
+   "scene": 95,
+   "type": 0,
+   "flag": 71,
+   "master_quest": false
+  },
+  {
+   "id": 3997777,
+   "name": "Kak Redead Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997778,
+   "name": "Kak Open Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997779,
+   "name": "Kak 10 Gold Skulltula Reward",
+   "scene": 80,
+   "type": 0,
+   "flag": 69,
+   "master_quest": false
+  },
+  {
+   "id": 3997780,
+   "name": "Kak 20 Gold Skulltula Reward",
+   "scene": 80,
+   "type": 0,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3997781,
+   "name": "Kak 30 Gold Skulltula Reward",
+   "scene": 80,
+   "type": 0,
+   "flag": 70,
+   "master_quest": false
+  },
+  {
+   "id": 3997782,
+   "name": "Kak 40 Gold Skulltula Reward",
+   "scene": 80,
+   "type": 0,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997783,
+   "name": "Kak 50 Gold Skulltula Reward",
+   "scene": 80,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997784,
+   "name": "Kak Man on Roof",
+   "scene": 82,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997785,
+   "name": "Kak Shooting Gallery Reward",
+   "scene": 66,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3997786,
+   "name": "Kak Trade Odd Mushroom",
+   "scene": 78,
+   "type": 0,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3997787,
+   "name": "Kak Granny's Shop",
+   "scene": 78,
+   "type": 0,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3997788,
+   "name": "Kak Anju as Adult",
+   "scene": 82,
+   "type": 0,
+   "flag": 29,
+   "master_quest": false
+  },
+  {
+   "id": 3997789,
+   "name": "Kak Anju as Child",
+   "scene": 82,
+   "type": 0,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3997790,
+   "name": "Kak Trade Pocket Cucco",
+   "scene": 82,
+   "type": 0,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3997791,
+   "name": "Kak Impas House Freestanding PoH",
+   "scene": 55,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997792,
+   "name": "Kak Windmill Freestanding PoH",
+   "scene": 72,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997793,
+   "name": "GY Shield Grave Chest",
+   "scene": 64,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997794,
+   "name": "GY Heart Piece Grave Chest",
+   "scene": 63,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997795,
+   "name": "GY Composers Grave Chest",
+   "scene": 65,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997796,
+   "name": "GY Hookshot Chest",
+   "scene": 72,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997797,
+   "name": "GY Dampe Race Freestanding PoH",
+   "scene": 72,
+   "type": 2,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997798,
+   "name": "GY Freestanding PoH",
+   "scene": 83,
+   "type": 2,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997799,
+   "name": "GY Dampe Gravedigging Tour",
+   "scene": 83,
+   "type": 2,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997800,
+   "name": "DMT Chest",
+   "scene": 96,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997801,
+   "name": "DMT Storms Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 23,
+   "master_quest": false
+  },
+  {
+   "id": 3997802,
+   "name": "DMT Trade Broken Sword",
+   "scene": 96,
+   "type": 0,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3997803,
+   "name": "DMT Trade Eyedrops",
+   "scene": 96,
+   "type": 0,
+   "flag": 38,
+   "master_quest": false
+  },
+  {
+   "id": 3997804,
+   "name": "DMT Trade Claim Check",
+   "scene": 96,
+   "type": 0,
+   "flag": 87,
+   "master_quest": false
+  },
+  {
+   "id": 3997805,
+   "name": "DMT Freestanding PoH",
+   "scene": 96,
+   "type": 2,
+   "flag": 30,
+   "master_quest": false
+  },
+  {
+   "id": 3997806,
+   "name": "GC Maze Left Chest",
+   "scene": 98,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997807,
+   "name": "GC Maze Right Chest",
+   "scene": 98,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997808,
+   "name": "GC Maze Center Chest",
+   "scene": 98,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997809,
+   "name": "GC Rolling Goron as Child",
+   "scene": 98,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3997810,
+   "name": "GC Rolling Goron as Adult",
+   "scene": 98,
+   "type": 0,
+   "flag": 44,
+   "master_quest": false
+  },
+  {
+   "id": 3997811,
+   "name": "GC Darunias Joy",
+   "scene": 98,
+   "type": 0,
+   "flag": 84,
+   "master_quest": false
+  },
+  {
+   "id": 3997812,
+   "name": "GC Pot Freestanding PoH",
+   "scene": 98,
+   "type": 2,
+   "flag": 31,
+   "master_quest": false
+  },
+  {
+   "id": 3997813,
+   "name": "GC Deku Scrub Grotto Left",
+   "scene": 251,
+   "type": 4,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997814,
+   "name": "GC Deku Scrub Grotto Right",
+   "scene": 251,
+   "type": 4,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997815,
+   "name": "GC Deku Scrub Grotto Center",
+   "scene": 251,
+   "type": 4,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997816,
+   "name": "GC Medigoron",
+   "scene": 98,
+   "type": 0,
+   "flag": 81,
+   "master_quest": false
+  },
+  {
+   "id": 3997817,
+   "name": "DMC Upper Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 26,
+   "master_quest": false
+  },
+  {
+   "id": 3997818,
+   "name": "DMC Wall Freestanding PoH",
+   "scene": 97,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997819,
+   "name": "DMC Volcano Freestanding PoH",
+   "scene": 97,
+   "type": 2,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997820,
+   "name": "DMC Deku Scrub",
+   "scene": 97,
+   "type": 0,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997821,
+   "name": "DMC Deku Scrub Grotto Left",
+   "scene": 249,
+   "type": 4,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997822,
+   "name": "DMC Deku Scrub Grotto Right",
+   "scene": 249,
+   "type": 4,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997823,
+   "name": "DMC Deku Scrub Grotto Center",
+   "scene": 249,
+   "type": 4,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997824,
+   "name": "ZR Open Grotto Chest",
+   "scene": 62,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997825,
+   "name": "ZR Magic Bean Salesman",
+   "scene": 84,
+   "type": 0,
+   "flag": 22,
+   "master_quest": false
+  },
+  {
+   "id": 3997826,
+   "name": "ZR Frogs Zelda's Lullaby",
+   "scene": 84,
+   "type": 0,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997827,
+   "name": "ZR Frogs Epona's Song",
+   "scene": 84,
+   "type": 0,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997828,
+   "name": "ZR Frogs Saria's Song",
+   "scene": 84,
+   "type": 0,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997829,
+   "name": "ZR Frogs Sun's Song",
+   "scene": 84,
+   "type": 0,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997830,
+   "name": "ZR Frogs Song of Time",
+   "scene": 84,
+   "type": 0,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997831,
+   "name": "ZR Frogs in the Rain",
+   "scene": 84,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3997832,
+   "name": "ZR Frogs Ocarina Game",
+   "scene": 84,
+   "type": 0,
+   "flag": 118,
+   "master_quest": false
+  },
+  {
+   "id": 3997833,
+   "name": "ZR Near Open Grotto Freestanding PoH",
+   "scene": 84,
+   "type": 2,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997834,
+   "name": "ZR Near Domain Freestanding PoH",
+   "scene": 84,
+   "type": 2,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3997835,
+   "name": "ZR Deku Scrub Grotto Rear",
+   "scene": 235,
+   "type": 4,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3997836,
+   "name": "ZR Deku Scrub Grotto Front",
+   "scene": 235,
+   "type": 4,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3997837,
+   "name": "ZD Chest",
+   "scene": 88,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997838,
+   "name": "ZD Diving Minigame",
+   "scene": 88,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3997839,
+   "name": "ZD King Zora Thawed",
+   "scene": 88,
+   "type": 0,
+   "flag": 45,
+   "master_quest": false
+  },
+  {
+   "id": 3997840,
+   "name": "ZD Trade Prescription",
+   "scene": 88,
+   "type": 0,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3997841,
+   "name": "ZF Iceberg Freestanding PoH",
+   "scene": 89,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997842,
+   "name": "ZF Bottom Freestanding PoH",
+   "scene": 89,
+   "type": 2,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3997843,
+   "name": "LLR Talons Chickens",
+   "scene": 76,
+   "type": 0,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3997844,
+   "name": "LLR Freestanding PoH",
+   "scene": 76,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997845,
+   "name": "LLR Deku Scrub Grotto Left",
+   "scene": 252,
+   "type": 4,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997846,
+   "name": "LLR Deku Scrub Grotto Right",
+   "scene": 252,
+   "type": 4,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997847,
+   "name": "LLR Deku Scrub Grotto Center",
+   "scene": 252,
+   "type": 4,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997848,
+   "name": "Deku Tree Map Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997849,
+   "name": "Deku Tree Compass Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997850,
+   "name": "Deku Tree Compass Room Side Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997851,
+   "name": "Deku Tree Basement Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997852,
+   "name": "Deku Tree Slingshot Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997853,
+   "name": "Deku Tree Slingshot Room Side Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997854,
+   "name": "Deku Tree MQ Map Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997855,
+   "name": "Deku Tree MQ Compass Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997856,
+   "name": "Deku Tree MQ Slingshot Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997857,
+   "name": "Deku Tree MQ Slingshot Room Back Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997858,
+   "name": "Deku Tree MQ Basement Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3997859,
+   "name": "Deku Tree MQ Before Spinning Log Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997860,
+   "name": "Deku Tree MQ After Spinning Log Chest",
+   "scene": 0,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997861,
+   "name": "Deku Tree MQ Deku Scrub",
+   "scene": 0,
+   "type": 0,
+   "flag": 41,
+   "master_quest": true
+  },
+  {
+   "id": 3997862,
+   "name": "Dodongos Cavern Boss Room Chest",
+   "scene": 18,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997863,
+   "name": "Dodongos Cavern Map Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997864,
+   "name": "Dodongos Cavern Compass Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997865,
+   "name": "Dodongos Cavern Bomb Flower Platform Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997866,
+   "name": "Dodongos Cavern Bomb Bag Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997867,
+   "name": "Dodongos Cavern End Of Bridge Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997868,
+   "name": "Dodongos Cavern Deku Scrub Near Bomb Bag Left",
+   "scene": 1,
+   "type": 0,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997869,
+   "name": "Dodongos Cavern Deku Scrub Side Room Near Dodongos",
+   "scene": 1,
+   "type": 0,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997870,
+   "name": "Dodongos Cavern Deku Scrub Near Bomb Bag Right",
+   "scene": 1,
+   "type": 0,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3997871,
+   "name": "Dodongos Cavern Deku Scrub Lobby",
+   "scene": 1,
+   "type": 0,
+   "flag": 41,
+   "master_quest": false
+  },
+  {
+   "id": 3997872,
+   "name": "Dodongos Cavern MQ Map Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997873,
+   "name": "Dodongos Cavern MQ Bomb Bag Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3997874,
+   "name": "Dodongos Cavern MQ Compass Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997875,
+   "name": "Dodongos Cavern MQ Larvae Room Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997876,
+   "name": "Dodongos Cavern MQ Torch Puzzle Room Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997877,
+   "name": "Dodongos Cavern MQ Under Grave Chest",
+   "scene": 1,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997878,
+   "name": "Dodongos Cavern Deku Scrub Lobby Rear",
+   "scene": 1,
+   "type": 0,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3997879,
+   "name": "Dodongos Cavern Deku Scrub Lobby Front",
+   "scene": 1,
+   "type": 0,
+   "flag": 105,
+   "master_quest": true
+  },
+  {
+   "id": 3997880,
+   "name": "Dodongos Cavern Deku Scrub Staircase",
+   "scene": 1,
+   "type": 0,
+   "flag": 41,
+   "master_quest": true
+  },
+  {
+   "id": 3997881,
+   "name": "Dodongos Cavern Deku Scrub Near Lower Lizalfos",
+   "scene": 1,
+   "type": 0,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3997882,
+   "name": "Jabu Jabus Belly Map Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997883,
+   "name": "Jabu Jabus Belly Compass Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997884,
+   "name": "Jabu Jabus Belly Boomerang Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997885,
+   "name": "Jabu Jabus Belly Deku Scrub",
+   "scene": 2,
+   "type": 0,
+   "flag": 99,
+   "master_quest": false
+  },
+  {
+   "id": 3997886,
+   "name": "Jabu Jabus Belly MQ First Room Side Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997887,
+   "name": "Jabu Jabus Belly MQ Map Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997888,
+   "name": "Jabu Jabus Belly MQ Second Room Lower Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997889,
+   "name": "Jabu Jabus Belly MQ Compass Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997890,
+   "name": "Jabu Jabus Belly MQ Second Room Upper Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3997891,
+   "name": "Jabu Jabus Belly MQ Basement Near Switches Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3997892,
+   "name": "Jabu Jabus Belly MQ Basement Near Vines Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3997893,
+   "name": "Jabu Jabus Belly MQ Near Boss Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 10,
+   "master_quest": true
+  },
+  {
+   "id": 3997894,
+   "name": "Jabu Jabus Belly MQ Falling Like Like Room Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 9,
+   "master_quest": true
+  },
+  {
+   "id": 3997895,
+   "name": "Jabu Jabus Belly MQ Boomerang Room Small Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997896,
+   "name": "Jabu Jabus Belly MQ Boomerang Chest",
+   "scene": 2,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997897,
+   "name": "Forest Temple First Room Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997898,
+   "name": "Forest Temple First Stalfos Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997899,
+   "name": "Forest Temple Raised Island Courtyard Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997900,
+   "name": "Forest Temple Map Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997901,
+   "name": "Forest Temple Well Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997902,
+   "name": "Forest Temple Falling Ceiling Room Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997903,
+   "name": "Forest Temple Eye Switch Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997904,
+   "name": "Forest Temple Boss Key Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3997905,
+   "name": "Forest Temple Floormaster Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997906,
+   "name": "Forest Temple Bow Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997907,
+   "name": "Forest Temple Red Poe Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3997908,
+   "name": "Forest Temple Blue Poe Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3997909,
+   "name": "Forest Temple Basement Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3997910,
+   "name": "Forest Temple MQ First Room Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997911,
+   "name": "Forest Temple MQ Wolfos Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997912,
+   "name": "Forest Temple MQ Bow Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 12,
+   "master_quest": true
+  },
+  {
+   "id": 3997913,
+   "name": "Forest Temple MQ Raised Island Lower Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997914,
+   "name": "Forest Temple MQ Raised Island Upper Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997915,
+   "name": "Forest Temple MQ Well Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 9,
+   "master_quest": true
+  },
+  {
+   "id": 3997916,
+   "name": "Forest Temple MQ Map Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 13,
+   "master_quest": true
+  },
+  {
+   "id": 3997917,
+   "name": "Forest Temple MQ Compass Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 15,
+   "master_quest": true
+  },
+  {
+   "id": 3997918,
+   "name": "Forest Temple MQ Falling Ceiling Room Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997919,
+   "name": "Forest Temple MQ Basement Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 11,
+   "master_quest": true
+  },
+  {
+   "id": 3997920,
+   "name": "Forest Temple MQ Redead Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997921,
+   "name": "Forest Temple MQ Boss Key Chest",
+   "scene": 3,
+   "type": 1,
+   "flag": 14,
+   "master_quest": true
+  },
+  {
+   "id": 3997922,
+   "name": "Fire Temple Near Boss Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997923,
+   "name": "Fire Temple Flare Dancer Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997924,
+   "name": "Fire Temple Boss Key Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997925,
+   "name": "Fire Temple Big Lava Room Blocked Door Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997926,
+   "name": "Fire Temple Big Lava Room Lower Open Door Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997927,
+   "name": "Fire Temple Boulder Maze Lower Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997928,
+   "name": "Fire Temple Boulder Maze Upper Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997929,
+   "name": "Fire Temple Boulder Maze Side Room Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997930,
+   "name": "Fire Temple Boulder Maze Shortcut Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3997931,
+   "name": "Fire Temple Scarecrow Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3997932,
+   "name": "Fire Temple Map Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997933,
+   "name": "Fire Temple Compass Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997934,
+   "name": "Fire Temple Highest Goron Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997935,
+   "name": "Fire Temple Megaton Hammer Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997936,
+   "name": "Fire Temple MQ Near Boss Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3997937,
+   "name": "Fire Temple MQ Megaton Hammer Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997938,
+   "name": "Fire Temple MQ Compass Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 11,
+   "master_quest": true
+  },
+  {
+   "id": 3997939,
+   "name": "Fire Temple MQ Lizalfos Maze Lower Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997940,
+   "name": "Fire Temple MQ Lizalfos Maze Upper Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997941,
+   "name": "Fire Temple MQ Chest on Fire",
+   "scene": 4,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997942,
+   "name": "Fire Temple MQ Map Room Side Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997943,
+   "name": "Fire Temple MQ Map Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 12,
+   "master_quest": true
+  },
+  {
+   "id": 3997944,
+   "name": "Fire Temple MQ Boss Key Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3997945,
+   "name": "Fire Temple MQ Big Lava Room Blocked Door Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997946,
+   "name": "Fire Temple MQ Lizalfos Maze Side Room Chest",
+   "scene": 4,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3997947,
+   "name": "Fire Temple MQ Freestanding Key",
+   "scene": 4,
+   "type": 2,
+   "flag": 28,
+   "master_quest": true
+  },
+  {
+   "id": 3997948,
+   "name": "Water Temple Map Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997949,
+   "name": "Water Temple Compass Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997950,
+   "name": "Water Temple Torches Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997951,
+   "name": "Water Temple Dragon Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997952,
+   "name": "Water Temple Central Bow Target Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997953,
+   "name": "Water Temple Central Pillar Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997954,
+   "name": "Water Temple Cracked Wall Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997955,
+   "name": "Water Temple Boss Key Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997956,
+   "name": "Water Temple Longshot Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997957,
+   "name": "Water Temple River Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997958,
+   "name": "Water Temple MQ Central Pillar Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997959,
+   "name": "Water Temple MQ Boss Key Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3997960,
+   "name": "Water Temple MQ Longshot Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997961,
+   "name": "Water Temple MQ Compass Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997962,
+   "name": "Water Temple MQ Map Chest",
+   "scene": 5,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997963,
+   "name": "Water Temple MQ Freestanding Key",
+   "scene": 5,
+   "type": 2,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997964,
+   "name": "Spirit Temple Silver Gauntlets Chest",
+   "scene": 92,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3997965,
+   "name": "Spirit Temple Mirror Shield Chest",
+   "scene": 92,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3997966,
+   "name": "Spirit Temple Child Bridge Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3997967,
+   "name": "Spirit Temple Child Early Torches Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3997968,
+   "name": "Spirit Temple Compass Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3997969,
+   "name": "Spirit Temple Early Adult Right Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3997970,
+   "name": "Spirit Temple First Mirror Left Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3997971,
+   "name": "Spirit Temple First Mirror Right Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3997972,
+   "name": "Spirit Temple Map Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3997973,
+   "name": "Spirit Temple Child Climb North Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3997974,
+   "name": "Spirit Temple Child Climb East Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3997975,
+   "name": "Spirit Temple Sun Block Room Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3997976,
+   "name": "Spirit Temple Statue Room Hand Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3997977,
+   "name": "Spirit Temple Statue Room Northeast Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3997978,
+   "name": "Spirit Temple Near Four Armos Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3997979,
+   "name": "Spirit Temple Hallway Right Invisible Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3997980,
+   "name": "Spirit Temple Hallway Left Invisible Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3997981,
+   "name": "Spirit Temple Boss Key Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3997982,
+   "name": "Spirit Temple Topmost Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 18,
+   "master_quest": false
+  },
+  {
+   "id": 3997983,
+   "name": "Spirit Temple MQ Entrance Front Left Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 26,
+   "master_quest": true
+  },
+  {
+   "id": 3997984,
+   "name": "Spirit Temple MQ Entrance Back Right Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 31,
+   "master_quest": true
+  },
+  {
+   "id": 3997985,
+   "name": "Spirit Temple MQ Entrance Front Right Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 27,
+   "master_quest": true
+  },
+  {
+   "id": 3997986,
+   "name": "Spirit Temple MQ Entrance Back Left Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 30,
+   "master_quest": true
+  },
+  {
+   "id": 3997987,
+   "name": "Spirit Temple MQ Child Hammer Switch Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 29,
+   "master_quest": true
+  },
+  {
+   "id": 3997988,
+   "name": "Spirit Temple MQ Map Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3997989,
+   "name": "Spirit Temple MQ Map Room Enemy Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3997990,
+   "name": "Spirit Temple MQ Child Climb North Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3997991,
+   "name": "Spirit Temple MQ Child Climb South Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 12,
+   "master_quest": true
+  },
+  {
+   "id": 3997992,
+   "name": "Spirit Temple MQ Compass Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3997993,
+   "name": "Spirit Temple MQ Statue Room Lullaby Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 15,
+   "master_quest": true
+  },
+  {
+   "id": 3997994,
+   "name": "Spirit Temple MQ Statue Room Invisible Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3997995,
+   "name": "Spirit Temple MQ Silver Block Hallway Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 28,
+   "master_quest": true
+  },
+  {
+   "id": 3997996,
+   "name": "Spirit Temple MQ Sun Block Room Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3997997,
+   "name": "Spirit Temple MQ Symphony Room Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3997998,
+   "name": "Spirit Temple MQ Leever Room Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3997999,
+   "name": "Spirit Temple MQ Beamos Room Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 25,
+   "master_quest": true
+  },
+  {
+   "id": 3998000,
+   "name": "Spirit Temple MQ Chest Switch Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 24,
+   "master_quest": true
+  },
+  {
+   "id": 3998001,
+   "name": "Spirit Temple MQ Boss Key Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3998002,
+   "name": "Spirit Temple MQ Mirror Puzzle Invisible Chest",
+   "scene": 6,
+   "type": 1,
+   "flag": 18,
+   "master_quest": true
+  },
+  {
+   "id": 3998003,
+   "name": "Shadow Temple Map Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998004,
+   "name": "Shadow Temple Hover Boots Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998005,
+   "name": "Shadow Temple Compass Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998006,
+   "name": "Shadow Temple Early Silver Rupee Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998007,
+   "name": "Shadow Temple Invisible Blades Visible Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3998008,
+   "name": "Shadow Temple Invisible Blades Invisible Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 22,
+   "master_quest": false
+  },
+  {
+   "id": 3998009,
+   "name": "Shadow Temple Falling Spikes Lower Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998010,
+   "name": "Shadow Temple Falling Spikes Upper Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998011,
+   "name": "Shadow Temple Falling Spikes Switch Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998012,
+   "name": "Shadow Temple Invisible Spikes Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3998013,
+   "name": "Shadow Temple Wind Hint Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998014,
+   "name": "Shadow Temple After Wind Enemy Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998015,
+   "name": "Shadow Temple After Wind Hidden Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3998016,
+   "name": "Shadow Temple Spike Walls Left Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998017,
+   "name": "Shadow Temple Boss Key Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3998018,
+   "name": "Shadow Temple Invisible Floormaster Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3998019,
+   "name": "Shadow Temple Freestanding Key",
+   "scene": 7,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998020,
+   "name": "Shadow Temple MQ Compass Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998021,
+   "name": "Shadow Temple MQ Hover Boots Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3998022,
+   "name": "Shadow Temple MQ Early Gibdos Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3998023,
+   "name": "Shadow Temple MQ Map Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998024,
+   "name": "Shadow Temple MQ Beamos Silver Rupees Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 15,
+   "master_quest": true
+  },
+  {
+   "id": 3998025,
+   "name": "Shadow Temple MQ Falling Spikes Switch Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998026,
+   "name": "Shadow Temple MQ Falling Spikes Lower Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3998027,
+   "name": "Shadow Temple MQ Falling Spikes Upper Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3998028,
+   "name": "Shadow Temple MQ Invisible Spikes Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 9,
+   "master_quest": true
+  },
+  {
+   "id": 3998029,
+   "name": "Shadow Temple MQ Boss Key Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 11,
+   "master_quest": true
+  },
+  {
+   "id": 3998030,
+   "name": "Shadow Temple MQ Spike Walls Left Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 10,
+   "master_quest": true
+  },
+  {
+   "id": 3998031,
+   "name": "Shadow Temple MQ Stalfos Room Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998032,
+   "name": "Shadow Temple MQ Invisible Blades Invisible Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 22,
+   "master_quest": true
+  },
+  {
+   "id": 3998033,
+   "name": "Shadow Temple MQ Invisible Blades Visible Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 12,
+   "master_quest": true
+  },
+  {
+   "id": 3998034,
+   "name": "Shadow Temple MQ Bomb Flower Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 13,
+   "master_quest": true
+  },
+  {
+   "id": 3998035,
+   "name": "Shadow Temple MQ Wind Hint Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 21,
+   "master_quest": true
+  },
+  {
+   "id": 3998036,
+   "name": "Shadow Temple MQ After Wind Hidden Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 20,
+   "master_quest": true
+  },
+  {
+   "id": 3998037,
+   "name": "Shadow Temple MQ After Wind Enemy Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998038,
+   "name": "Shadow Temple MQ Near Ship Invisible Chest",
+   "scene": 7,
+   "type": 1,
+   "flag": 14,
+   "master_quest": true
+  },
+  {
+   "id": 3998039,
+   "name": "Shadow Temple MQ Freestanding Key",
+   "scene": 7,
+   "type": 2,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3998040,
+   "name": "Bottom of the Well Front Left Fake Wall Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998041,
+   "name": "Bottom of the Well Front Center Bombable Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998042,
+   "name": "Bottom of the Well Right Bottom Fake Wall Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998043,
+   "name": "Bottom of the Well Compass Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998044,
+   "name": "Bottom of the Well Center Skulltula Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3998045,
+   "name": "Bottom of the Well Back Left Bombable Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998046,
+   "name": "Bottom of the Well Lens of Truth Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998047,
+   "name": "Bottom of the Well Invisible Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3998048,
+   "name": "Bottom of the Well Underwater Front Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998049,
+   "name": "Bottom of the Well Underwater Left Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3998050,
+   "name": "Bottom of the Well Map Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998051,
+   "name": "Bottom of the Well Fire Keese Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998052,
+   "name": "Bottom of the Well Like Like Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3998053,
+   "name": "Bottom of the Well Freestanding Key",
+   "scene": 8,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998054,
+   "name": "Bottom of the Well MQ Map Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3998055,
+   "name": "Bottom of the Well MQ Lens of Truth Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998056,
+   "name": "Bottom of the Well MQ Compass Chest",
+   "scene": 8,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998057,
+   "name": "Bottom of the Well MQ Dead Hand Freestanding Key",
+   "scene": 8,
+   "type": 2,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998058,
+   "name": "Bottom of the Well MQ Inner Room Freestanding Key",
+   "scene": 8,
+   "type": 2,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998059,
+   "name": "Ice Cavern Map Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3998060,
+   "name": "Ice Cavern Compass Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998061,
+   "name": "Ice Cavern Iron Boots Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998062,
+   "name": "Ice Cavern Freestanding PoH",
+   "scene": 9,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998063,
+   "name": "Ice Cavern MQ Iron Boots Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998064,
+   "name": "Ice Cavern MQ Compass Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3998065,
+   "name": "Ice Cavern MQ Map Chest",
+   "scene": 9,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998066,
+   "name": "Ice Cavern MQ Freestanding PoH",
+   "scene": 9,
+   "type": 2,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998067,
+   "name": "Gerudo Training Grounds Lobby Left Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 19,
+   "master_quest": false
+  },
+  {
+   "id": 3998068,
+   "name": "Gerudo Training Grounds Lobby Right Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998069,
+   "name": "Gerudo Training Grounds Stalfos Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3998070,
+   "name": "Gerudo Training Grounds Beamos Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998071,
+   "name": "Gerudo Training Grounds Hidden Ceiling Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3998072,
+   "name": "Gerudo Training Grounds Maze Path First Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998073,
+   "name": "Gerudo Training Grounds Maze Path Second Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998074,
+   "name": "Gerudo Training Grounds Maze Path Third Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3998075,
+   "name": "Gerudo Training Grounds Maze Path Final Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3998076,
+   "name": "Gerudo Training Grounds Maze Right Central Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998077,
+   "name": "Gerudo Training Grounds Maze Right Side Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998078,
+   "name": "Gerudo Training Grounds Water Room Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3998079,
+   "name": "Gerudo Training Grounds Hammer Room Clear Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 18,
+   "master_quest": false
+  },
+  {
+   "id": 3998080,
+   "name": "Gerudo Training Grounds Hammer Room Switch Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998081,
+   "name": "Gerudo Training Grounds Eye Statue Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998082,
+   "name": "Gerudo Training Grounds Near Scarecrow Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998083,
+   "name": "Gerudo Training Grounds Before Heavy Block Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3998084,
+   "name": "Gerudo Training Grounds Heavy Block First Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3998085,
+   "name": "Gerudo Training Grounds Heavy Block Second Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3998086,
+   "name": "Gerudo Training Grounds Heavy Block Third Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3998087,
+   "name": "Gerudo Training Grounds Heavy Block Fourth Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998088,
+   "name": "Gerudo Training Grounds Freestanding Key",
+   "scene": 11,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998089,
+   "name": "Gerudo Training Grounds MQ Lobby Right Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3998090,
+   "name": "Gerudo Training Grounds MQ Lobby Left Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 19,
+   "master_quest": true
+  },
+  {
+   "id": 3998091,
+   "name": "Gerudo Training Grounds MQ First Iron Knuckle Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3998092,
+   "name": "Gerudo Training Grounds MQ Before Heavy Block Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 17,
+   "master_quest": true
+  },
+  {
+   "id": 3998093,
+   "name": "Gerudo Training Grounds MQ Eye Statue Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3998094,
+   "name": "Gerudo Training Grounds MQ Flame Circle Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 14,
+   "master_quest": true
+  },
+  {
+   "id": 3998095,
+   "name": "Gerudo Training Grounds MQ 2nd Iron Knuckle Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 18,
+   "master_quest": true
+  },
+  {
+   "id": 3998096,
+   "name": "Gerudo Training Grounds MQ Dinolfos Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998097,
+   "name": "Gerudo Training Grounds MQ Ice Arrows Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998098,
+   "name": "Gerudo Training Grounds MQ Maze Right Central Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3998099,
+   "name": "Gerudo Training Grounds MQ Maze Path First Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3998100,
+   "name": "Gerudo Training Grounds MQ Maze Right Side Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998101,
+   "name": "Gerudo Training Grounds MQ Maze Path Third Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 9,
+   "master_quest": true
+  },
+  {
+   "id": 3998102,
+   "name": "Gerudo Training Grounds MQ Maze Path Second Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 10,
+   "master_quest": true
+  },
+  {
+   "id": 3998103,
+   "name": "Gerudo Training Grounds MQ Hidden Ceiling Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 11,
+   "master_quest": true
+  },
+  {
+   "id": 3998104,
+   "name": "Gerudo Training Grounds MQ Water Room Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 13,
+   "master_quest": true
+  },
+  {
+   "id": 3998105,
+   "name": "Gerudo Training Grounds MQ Heavy Block Chest",
+   "scene": 11,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998106,
+   "name": "Ganon's Tower Boss Key Chest",
+   "scene": 10,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3998107,
+   "name": "Ganon's Castle Forest Trial Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3998108,
+   "name": "Ganon's Castle Water Trial Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998109,
+   "name": "Ganon's Castle Water Trial Right Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998110,
+   "name": "Ganon's Castle Shadow Trial Front Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998111,
+   "name": "Ganon's Castle Shadow Trial Golden Gauntlets Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998112,
+   "name": "Ganon's Castle Spirit Trial Crystal Switch Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 18,
+   "master_quest": false
+  },
+  {
+   "id": 3998113,
+   "name": "Ganon's Castle Spirit Trial Invisible Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3998114,
+   "name": "Ganon's Castle Light Trial First Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3998115,
+   "name": "Ganon's Castle Light Trial Second Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3998116,
+   "name": "Ganon's Castle Light Trial Third Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3998117,
+   "name": "Ganon's Castle Light Trial First Right Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3998118,
+   "name": "Ganon's Castle Light Trial Second Right Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998119,
+   "name": "Ganon's Castle Light Trial Third Right Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3998120,
+   "name": "Ganon's Castle Light Trial Invisible Enemies Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998121,
+   "name": "Ganon's Castle Light Trial Lullaby Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3998122,
+   "name": "Ganon's Castle Deku Scrub Center-Left",
+   "scene": 13,
+   "type": 0,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998123,
+   "name": "Ganon's Castle Deku Scrub Center-Right",
+   "scene": 13,
+   "type": 0,
+   "flag": 105,
+   "master_quest": false
+  },
+  {
+   "id": 3998124,
+   "name": "Ganon's Castle Deku Scrub Right",
+   "scene": 13,
+   "type": 0,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998125,
+   "name": "Ganon's Castle Deku Scrub Left",
+   "scene": 13,
+   "type": 0,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3998126,
+   "name": "Ganon's Castle MQ Water Trial Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998127,
+   "name": "Ganon's Castle MQ Forest Trial Eye Switch Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998128,
+   "name": "Ganon's Castle MQ Forest Trial Frozen Eye Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3998129,
+   "name": "Ganon's Castle MQ Light Trial Lullaby Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998130,
+   "name": "Ganon's Castle MQ Shadow Trial Bomb Flower Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 0,
+   "master_quest": true
+  },
+  {
+   "id": 3998131,
+   "name": "Ganon's Castle MQ Shadow Trial Eye Switch Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 5,
+   "master_quest": true
+  },
+  {
+   "id": 3998132,
+   "name": "Ganon's Castle MQ Spirit Trial Gauntlets Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 6,
+   "master_quest": true
+  },
+  {
+   "id": 3998133,
+   "name": "Ganon's Castle MQ Spirit Trial Sun Back Right Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 7,
+   "master_quest": true
+  },
+  {
+   "id": 3998134,
+   "name": "Ganon's Castle MQ Spirit Trial Sun Back Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998135,
+   "name": "Ganon's Castle MQ Spirit Trial Sun Front Left Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 9,
+   "master_quest": true
+  },
+  {
+   "id": 3998136,
+   "name": "Ganon's Castle MQ Spirit Trial First Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 10,
+   "master_quest": true
+  },
+  {
+   "id": 3998137,
+   "name": "Ganon's Castle MQ Spirit Trial Invisible Chest",
+   "scene": 13,
+   "type": 1,
+   "flag": 20,
+   "master_quest": true
+  },
+  {
+   "id": 3998138,
+   "name": "Ganon's Castle MQ Forest Trial Freestanding Key",
+   "scene": 13,
+   "type": 2,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998139,
+   "name": "Ganon's Castle MQ Deku Scrub Right",
+   "scene": 13,
+   "type": 0,
+   "flag": 48,
+   "master_quest": true
+  },
+  {
+   "id": 3998140,
+   "name": "Ganon's Castle MQ Deku Scrub Center-Left",
+   "scene": 13,
+   "type": 0,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998141,
+   "name": "Ganon's Castle MQ Deku Scrub Center",
+   "scene": 13,
+   "type": 0,
+   "flag": 105,
+   "master_quest": true
+  },
+  {
+   "id": 3998142,
+   "name": "Ganon's Castle MQ Deku Scrub Center-Right",
+   "scene": 13,
+   "type": 0,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998143,
+   "name": "Ganon's Castle MQ Deku Scrub Left",
+   "scene": 13,
+   "type": 0,
+   "flag": 17,
+   "master_quest": true
+  },
+  {
+   "id": 3998144,
+   "name": "Deku Tree GS Basement Back Room",
+   "scene": 0,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998145,
+   "name": "Deku Tree GS Basement Gate",
+   "scene": 0,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998146,
+   "name": "Deku Tree GS Basement Vines",
+   "scene": 0,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998147,
+   "name": "Deku Tree GS Compass Room",
+   "scene": 0,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998148,
+   "name": "Deku Tree MQ GS Lobby",
+   "scene": 0,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998149,
+   "name": "Deku Tree MQ GS Compass Room",
+   "scene": 0,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998150,
+   "name": "Deku Tree MQ GS Basement Graves Room",
+   "scene": 0,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998151,
+   "name": "Deku Tree MQ GS Basement Back Room",
+   "scene": 0,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998152,
+   "name": "Dodongos Cavern GS Vines Above Stairs",
+   "scene": 1,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998153,
+   "name": "Dodongos Cavern GS Scarecrow",
+   "scene": 1,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998154,
+   "name": "Dodongos Cavern GS Alcove Above Stairs",
+   "scene": 1,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998155,
+   "name": "Dodongos Cavern GS Back Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998156,
+   "name": "Dodongos Cavern GS Side Room Near Lower Lizalfos",
+   "scene": 1,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998157,
+   "name": "Dodongos Cavern MQ GS Scrub Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998158,
+   "name": "Dodongos Cavern MQ GS Song of Time Block Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998159,
+   "name": "Dodongos Cavern MQ GS Lizalfos Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998160,
+   "name": "Dodongos Cavern MQ GS Larvae Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998161,
+   "name": "Dodongos Cavern MQ GS Back Room",
+   "scene": 1,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998162,
+   "name": "Jabu Jabus Belly GS Lobby Basement Lower",
+   "scene": 2,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998163,
+   "name": "Jabu Jabus Belly GS Lobby Basement Upper",
+   "scene": 2,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998164,
+   "name": "Jabu Jabus Belly GS Near Boss",
+   "scene": 2,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998165,
+   "name": "Jabu Jabus Belly GS Water Switch Room",
+   "scene": 2,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998166,
+   "name": "Jabu Jabus Belly MQ GS Tail Parasan Room",
+   "scene": 2,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998167,
+   "name": "Jabu Jabus Belly MQ GS Invisible Enemies Room",
+   "scene": 2,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998168,
+   "name": "Jabu Jabus Belly MQ GS Boomerang Chest Room",
+   "scene": 2,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998169,
+   "name": "Jabu Jabus Belly MQ GS Near Boss",
+   "scene": 2,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998170,
+   "name": "Forest Temple GS Raised Island Courtyard",
+   "scene": 3,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998171,
+   "name": "Forest Temple GS First Room",
+   "scene": 3,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998172,
+   "name": "Forest Temple GS Level Island Courtyard",
+   "scene": 3,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998173,
+   "name": "Forest Temple GS Lobby",
+   "scene": 3,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998174,
+   "name": "Forest Temple GS Basement",
+   "scene": 3,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998175,
+   "name": "Forest Temple MQ GS First Hallway",
+   "scene": 3,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998176,
+   "name": "Forest Temple MQ GS Block Push Room",
+   "scene": 3,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998177,
+   "name": "Forest Temple MQ GS Raised Island Courtyard",
+   "scene": 3,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998178,
+   "name": "Forest Temple MQ GS Level Island Courtyard",
+   "scene": 3,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998179,
+   "name": "Forest Temple MQ GS Well",
+   "scene": 3,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998180,
+   "name": "Fire Temple GS Song of Time Room",
+   "scene": 4,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998181,
+   "name": "Fire Temple GS Boss Key Loop",
+   "scene": 4,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998182,
+   "name": "Fire Temple GS Boulder Maze",
+   "scene": 4,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998183,
+   "name": "Fire Temple GS Scarecrow Top",
+   "scene": 4,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998184,
+   "name": "Fire Temple GS Scarecrow Climb",
+   "scene": 4,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998185,
+   "name": "Fire Temple MQ GS Above Fire Wall Maze",
+   "scene": 4,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998186,
+   "name": "Fire Temple MQ GS Fire Wall Maze Center",
+   "scene": 4,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998187,
+   "name": "Fire Temple MQ GS Big Lava Room Open Door",
+   "scene": 4,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998188,
+   "name": "Fire Temple MQ GS Fire Wall Maze Side Room",
+   "scene": 4,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998189,
+   "name": "Fire Temple MQ GS Skull on Fire",
+   "scene": 4,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998190,
+   "name": "Water Temple GS Behind Gate",
+   "scene": 5,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998191,
+   "name": "Water Temple GS Falling Platform Room",
+   "scene": 5,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998192,
+   "name": "Water Temple GS Central Pillar",
+   "scene": 5,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998193,
+   "name": "Water Temple GS Near Boss Key Chest",
+   "scene": 5,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998194,
+   "name": "Water Temple GS River",
+   "scene": 5,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998195,
+   "name": "Water Temple MQ GS Before Upper Water Switch",
+   "scene": 5,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998196,
+   "name": "Water Temple MQ GS Freestanding Key Area",
+   "scene": 5,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998197,
+   "name": "Water Temple MQ GS Lizalfos Hallway",
+   "scene": 5,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998198,
+   "name": "Water Temple MQ GS River",
+   "scene": 5,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998199,
+   "name": "Water Temple MQ GS Triple Wall Torch",
+   "scene": 5,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998200,
+   "name": "Spirit Temple GS Hall After Sun Block Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998201,
+   "name": "Spirit Temple GS Boulder Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998202,
+   "name": "Spirit Temple GS Lobby",
+   "scene": 6,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998203,
+   "name": "Spirit Temple GS Sun on Floor Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998204,
+   "name": "Spirit Temple GS Metal Fence",
+   "scene": 6,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998205,
+   "name": "Spirit Temple MQ GS Symphony Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998206,
+   "name": "Spirit Temple MQ GS Leever Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998207,
+   "name": "Spirit Temple MQ GS Nine Thrones Room West",
+   "scene": 6,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998208,
+   "name": "Spirit Temple MQ GS Nine Thrones Room North",
+   "scene": 6,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998209,
+   "name": "Spirit Temple MQ GS Sun Block Room",
+   "scene": 6,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998210,
+   "name": "Shadow Temple GS Single Giant Pot",
+   "scene": 7,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998211,
+   "name": "Shadow Temple GS Falling Spikes Room",
+   "scene": 7,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998212,
+   "name": "Shadow Temple GS Triple Giant Pot",
+   "scene": 7,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998213,
+   "name": "Shadow Temple GS Like Like Room",
+   "scene": 7,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998214,
+   "name": "Shadow Temple GS Near Ship",
+   "scene": 7,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998215,
+   "name": "Shadow Temple MQ GS Falling Spikes Room",
+   "scene": 7,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998216,
+   "name": "Shadow Temple MQ GS Wind Hint Room",
+   "scene": 7,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998217,
+   "name": "Shadow Temple MQ GS After Wind",
+   "scene": 7,
+   "type": 3,
+   "flag": 8,
+   "master_quest": true
+  },
+  {
+   "id": 3998218,
+   "name": "Shadow Temple MQ GS After Ship",
+   "scene": 7,
+   "type": 3,
+   "flag": 16,
+   "master_quest": true
+  },
+  {
+   "id": 3998219,
+   "name": "Shadow Temple MQ GS Near Boss",
+   "scene": 7,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998220,
+   "name": "Bottom of the Well GS Like Like Cage",
+   "scene": 8,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998221,
+   "name": "Bottom of the Well GS East Inner Room",
+   "scene": 8,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998222,
+   "name": "Bottom of the Well GS West Inner Room",
+   "scene": 8,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998223,
+   "name": "Bottom of the Well MQ GS Basement",
+   "scene": 8,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998224,
+   "name": "Bottom of the Well MQ GS Coffin Room",
+   "scene": 8,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998225,
+   "name": "Bottom of the Well MQ GS West Inner Room",
+   "scene": 8,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998226,
+   "name": "Ice Cavern GS Push Block Room",
+   "scene": 9,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998227,
+   "name": "Ice Cavern GS Spinning Scythe Room",
+   "scene": 9,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998228,
+   "name": "Ice Cavern GS Heart Piece Room",
+   "scene": 9,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998229,
+   "name": "Ice Cavern MQ GS Scarecrow",
+   "scene": 9,
+   "type": 3,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998230,
+   "name": "Ice Cavern MQ GS Ice Block",
+   "scene": 9,
+   "type": 3,
+   "flag": 4,
+   "master_quest": true
+  },
+  {
+   "id": 3998231,
+   "name": "Ice Cavern MQ GS Red Ice",
+   "scene": 9,
+   "type": 3,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998232,
+   "name": "KF GS Bean Patch",
+   "scene": 12,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998233,
+   "name": "KF GS Know It All House",
+   "scene": 12,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998234,
+   "name": "KF GS House of Twins",
+   "scene": 12,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998235,
+   "name": "LW GS Bean Patch Near Bridge",
+   "scene": 13,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998236,
+   "name": "LW GS Bean Patch Near Theater",
+   "scene": 13,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998237,
+   "name": "LW GS Above Theater",
+   "scene": 13,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998238,
+   "name": "SFM GS",
+   "scene": 13,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998239,
+   "name": "HF GS Cow Grotto",
+   "scene": 10,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998240,
+   "name": "HF GS Near Kak Grotto",
+   "scene": 10,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998241,
+   "name": "LH GS Bean Patch",
+   "scene": 18,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998242,
+   "name": "LH GS Small Island",
+   "scene": 18,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998243,
+   "name": "LH GS Lab Wall",
+   "scene": 18,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998244,
+   "name": "LH GS Lab Crate",
+   "scene": 18,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998245,
+   "name": "LH GS Tree",
+   "scene": 18,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998246,
+   "name": "GV GS Bean Patch",
+   "scene": 19,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998247,
+   "name": "GV GS Small Bridge",
+   "scene": 19,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998248,
+   "name": "GV GS Pillar",
+   "scene": 19,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998249,
+   "name": "GV GS Behind Tent",
+   "scene": 19,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998250,
+   "name": "GF GS Archery Range",
+   "scene": 20,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998251,
+   "name": "GF GS Top Floor",
+   "scene": 20,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998252,
+   "name": "Wasteland GS",
+   "scene": 21,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998253,
+   "name": "Colossus GS Bean Patch",
+   "scene": 21,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998254,
+   "name": "Colossus GS Hill",
+   "scene": 21,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998255,
+   "name": "Colossus GS Tree",
+   "scene": 21,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998256,
+   "name": "OGC GS",
+   "scene": 14,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998257,
+   "name": "HC GS Storms Grotto",
+   "scene": 14,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998258,
+   "name": "HC GS Tree",
+   "scene": 14,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998259,
+   "name": "Market GS Guard House",
+   "scene": 14,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998260,
+   "name": "Kak GS House Under Construction",
+   "scene": 16,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998261,
+   "name": "Kak GS Skulltula House",
+   "scene": 16,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998262,
+   "name": "Kak GS Guards House",
+   "scene": 16,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998263,
+   "name": "Kak GS Tree",
+   "scene": 16,
+   "type": 3,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998264,
+   "name": "Kak GS Watchtower",
+   "scene": 16,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998265,
+   "name": "Kak GS Above Impas House",
+   "scene": 16,
+   "type": 3,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998266,
+   "name": "Graveyard GS Wall",
+   "scene": 16,
+   "type": 3,
+   "flag": 128,
+   "master_quest": false
+  },
+  {
+   "id": 3998267,
+   "name": "Graveyard GS Bean Patch",
+   "scene": 16,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998268,
+   "name": "DMC GS Bean Patch",
+   "scene": 15,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998269,
+   "name": "DMC GS Crate",
+   "scene": 15,
+   "type": 3,
+   "flag": 128,
+   "master_quest": false
+  },
+  {
+   "id": 3998270,
+   "name": "DMT GS Bean Patch",
+   "scene": 15,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998271,
+   "name": "DMT GS Near Kak",
+   "scene": 15,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998272,
+   "name": "DMT GS Above Dodongos Cavern",
+   "scene": 15,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998273,
+   "name": "DMT GS Falling Rocks Path",
+   "scene": 15,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998274,
+   "name": "GC GS Center Platform",
+   "scene": 15,
+   "type": 3,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998275,
+   "name": "GC GS Boulder Maze",
+   "scene": 15,
+   "type": 3,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998276,
+   "name": "ZR GS Ladder",
+   "scene": 17,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998277,
+   "name": "ZR GS Tree",
+   "scene": 17,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998278,
+   "name": "ZR GS Above Bridge",
+   "scene": 17,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998279,
+   "name": "ZR GS Near Raised Grottos",
+   "scene": 17,
+   "type": 3,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998280,
+   "name": "ZD GS Frozen Waterfall",
+   "scene": 17,
+   "type": 3,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998281,
+   "name": "ZF GS Above The Log",
+   "scene": 17,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998282,
+   "name": "ZF GS Hidden Cave",
+   "scene": 17,
+   "type": 3,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998283,
+   "name": "ZF GS Tree",
+   "scene": 17,
+   "type": 3,
+   "flag": 128,
+   "master_quest": false
+  },
+  {
+   "id": 3998284,
+   "name": "LLR GS Back Wall",
+   "scene": 11,
+   "type": 3,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998285,
+   "name": "LLR GS Rain Shed",
+   "scene": 11,
+   "type": 3,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998286,
+   "name": "LLR GS House Window",
+   "scene": 11,
+   "type": 3,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998287,
+   "name": "LLR GS Tree",
+   "scene": 11,
+   "type": 3,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998288,
+   "name": "Link's Pocket",
+   "scene": 255,
+   "type": 6,
+   "flag": 255,
+   "master_quest": false
+  },
+  {
+   "id": 3998289,
+   "name": "Queen Gohma",
+   "scene": 255,
+   "type": 6,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3998290,
+   "name": "King Dodongo",
+   "scene": 255,
+   "type": 6,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998291,
+   "name": "Barinade",
+   "scene": 255,
+   "type": 6,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998292,
+   "name": "Phantom Ganon",
+   "scene": 255,
+   "type": 6,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998293,
+   "name": "Volvagia",
+   "scene": 255,
+   "type": 6,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998294,
+   "name": "Morpha",
+   "scene": 255,
+   "type": 6,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998295,
+   "name": "Twinrova",
+   "scene": 255,
+   "type": 6,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998296,
+   "name": "Bongo Bongo",
+   "scene": 255,
+   "type": 6,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998297,
+   "name": "Deku Tree Queen Gohma Heart Container",
+   "scene": 17,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998298,
+   "name": "Dodongos Cavern King Dodongo Heart Container",
+   "scene": 18,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998299,
+   "name": "Jabu Jabus Belly Barinade Heart Container",
+   "scene": 19,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998300,
+   "name": "Forest Temple Phantom Ganon Heart Container",
+   "scene": 20,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998301,
+   "name": "Fire Temple Volvagia Heart Container",
+   "scene": 21,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998302,
+   "name": "Water Temple Morpha Heart Container",
+   "scene": 22,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998303,
+   "name": "Spirit Temple Twinrova Heart Container",
+   "scene": 23,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998304,
+   "name": "Shadow Temple Bongo Bongo Heart Container",
+   "scene": 24,
+   "type": 0,
+   "flag": 79,
+   "master_quest": false
+  },
+  {
+   "id": 3998305,
+   "name": "ToT Master Sword",
+   "scene": 255,
+   "type": 5,
+   "flag": 0,
+   "master_quest": false
+  },
+  {
+   "id": 3998306,
+   "name": "ToT Light Arrow Cutscene",
+   "scene": 255,
+   "type": 5,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998307,
+   "name": "LW Gift From Saria",
+   "scene": 255,
+   "type": 5,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998308,
+   "name": "HC Zeldas Letter",
+   "scene": 255,
+   "type": 5,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998309,
+   "name": "ZF Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998310,
+   "name": "HC Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998311,
+   "name": "Colossus Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998312,
+   "name": "DMT Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998313,
+   "name": "DMC Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 8,
+   "master_quest": false
+  },
+  {
+   "id": 3998314,
+   "name": "OGC Great Fairy Reward",
+   "scene": 255,
+   "type": 5,
+   "flag": 9,
+   "master_quest": false
+  },
+  {
+   "id": 3998315,
+   "name": "Sheik in Forest",
+   "scene": 255,
+   "type": 5,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998316,
+   "name": "Sheik in Crater",
+   "scene": 255,
+   "type": 5,
+   "flag": 11,
+   "master_quest": false
+  },
+  {
+   "id": 3998317,
+   "name": "Sheik in Ice Cavern",
+   "scene": 255,
+   "type": 5,
+   "flag": 12,
+   "master_quest": false
+  },
+  {
+   "id": 3998318,
+   "name": "Sheik at Colossus",
+   "scene": 255,
+   "type": 5,
+   "flag": 13,
+   "master_quest": false
+  },
+  {
+   "id": 3998319,
+   "name": "Sheik in Kakariko",
+   "scene": 255,
+   "type": 5,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3998320,
+   "name": "Sheik at Temple",
+   "scene": 255,
+   "type": 5,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3998321,
+   "name": "Song from Impa",
+   "scene": 255,
+   "type": 5,
+   "flag": 16,
+   "master_quest": false
+  },
+  {
+   "id": 3998322,
+   "name": "Song from Malon",
+   "scene": 255,
+   "type": 5,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3998323,
+   "name": "Song from Saria",
+   "scene": 255,
+   "type": 5,
+   "flag": 18,
+   "master_quest": false
+  },
+  {
+   "id": 3998324,
+   "name": "Song from Composers Grave",
+   "scene": 255,
+   "type": 5,
+   "flag": 19,
+   "master_quest": false
+  },
+  {
+   "id": 3998325,
+   "name": "Song from Ocarina of Time",
+   "scene": 255,
+   "type": 5,
+   "flag": 20,
+   "master_quest": false
+  },
+  {
+   "id": 3998326,
+   "name": "Song from Windmill",
+   "scene": 255,
+   "type": 5,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998327,
+   "name": "KF Links House Cow",
+   "scene": 52,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998328,
+   "name": "HF Cow Grotto Cow",
+   "scene": 62,
+   "type": 0,
+   "flag": 22,
+   "master_quest": false
+  },
+  {
+   "id": 3998329,
+   "name": "LLR Stables Left Cow",
+   "scene": 54,
+   "type": 0,
+   "flag": 22,
+   "master_quest": false
+  },
+  {
+   "id": 3998330,
+   "name": "LLR Stables Right Cow",
+   "scene": 54,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998331,
+   "name": "LLR Tower Left Cow",
+   "scene": 76,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998332,
+   "name": "LLR Tower Right Cow",
+   "scene": 76,
+   "type": 0,
+   "flag": 22,
+   "master_quest": false
+  },
+  {
+   "id": 3998333,
+   "name": "Kak Impas House Cow",
+   "scene": 55,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998334,
+   "name": "DMT Cow Grotto Cow",
+   "scene": 62,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998335,
+   "name": "GV Cow",
+   "scene": 90,
+   "type": 0,
+   "flag": 21,
+   "master_quest": false
+  },
+  {
+   "id": 3998336,
+   "name": "Jabu Jabus Belly MQ Cow",
+   "scene": 2,
+   "type": 0,
+   "flag": 21,
+   "master_quest": true
+  },
+  {
+   "id": 3998337,
+   "name": "KF Shop Item 1",
+   "scene": 45,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998338,
+   "name": "KF Shop Item 2",
+   "scene": 45,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998339,
+   "name": "KF Shop Item 3",
+   "scene": 45,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998340,
+   "name": "KF Shop Item 4",
+   "scene": 45,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998341,
+   "name": "KF Shop Item 5",
+   "scene": 45,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998342,
+   "name": "KF Shop Item 6",
+   "scene": 45,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998343,
+   "name": "KF Shop Item 7",
+   "scene": 45,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998344,
+   "name": "KF Shop Item 8",
+   "scene": 45,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998345,
+   "name": "Kak Potion Shop Item 1",
+   "scene": 48,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998346,
+   "name": "Kak Potion Shop Item 2",
+   "scene": 48,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998347,
+   "name": "Kak Potion Shop Item 3",
+   "scene": 48,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998348,
+   "name": "Kak Potion Shop Item 4",
+   "scene": 48,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998349,
+   "name": "Kak Potion Shop Item 5",
+   "scene": 48,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998350,
+   "name": "Kak Potion Shop Item 6",
+   "scene": 48,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998351,
+   "name": "Kak Potion Shop Item 7",
+   "scene": 48,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998352,
+   "name": "Kak Potion Shop Item 8",
+   "scene": 48,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998353,
+   "name": "MK Bombchu Shop Item 1",
+   "scene": 50,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998354,
+   "name": "MK Bombchu Shop Item 2",
+   "scene": 50,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998355,
+   "name": "MK Bombchu Shop Item 3",
+   "scene": 50,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998356,
+   "name": "MK Bombchu Shop Item 4",
+   "scene": 50,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998357,
+   "name": "MK Bombchu Shop Item 5",
+   "scene": 50,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998358,
+   "name": "MK Bombchu Shop Item 6",
+   "scene": 50,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998359,
+   "name": "MK Bombchu Shop Item 7",
+   "scene": 50,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998360,
+   "name": "MK Bombchu Shop Item 8",
+   "scene": 50,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998361,
+   "name": "MK Potion Shop Item 1",
+   "scene": 49,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998362,
+   "name": "MK Potion Shop Item 2",
+   "scene": 49,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998363,
+   "name": "MK Potion Shop Item 3",
+   "scene": 49,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998364,
+   "name": "MK Potion Shop Item 4",
+   "scene": 49,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998365,
+   "name": "MK Potion Shop Item 5",
+   "scene": 49,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998366,
+   "name": "MK Potion Shop Item 6",
+   "scene": 49,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998367,
+   "name": "MK Potion Shop Item 7",
+   "scene": 49,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998368,
+   "name": "MK Potion Shop Item 8",
+   "scene": 49,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998369,
+   "name": "MK Bazaar Item 1",
+   "scene": 44,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998370,
+   "name": "MK Bazaar Item 2",
+   "scene": 44,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998371,
+   "name": "MK Bazaar Item 3",
+   "scene": 44,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998372,
+   "name": "MK Bazaar Item 4",
+   "scene": 44,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998373,
+   "name": "MK Bazaar Item 5",
+   "scene": 44,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998374,
+   "name": "MK Bazaar Item 6",
+   "scene": 44,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998375,
+   "name": "MK Bazaar Item 7",
+   "scene": 44,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998376,
+   "name": "MK Bazaar Item 8",
+   "scene": 44,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998377,
+   "name": "Kak Bazaar Item 1",
+   "scene": 44,
+   "type": 0,
+   "flag": 56,
+   "master_quest": false
+  },
+  {
+   "id": 3998378,
+   "name": "Kak Bazaar Item 2",
+   "scene": 44,
+   "type": 0,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998379,
+   "name": "Kak Bazaar Item 3",
+   "scene": 44,
+   "type": 0,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998380,
+   "name": "Kak Bazaar Item 4",
+   "scene": 44,
+   "type": 0,
+   "flag": 59,
+   "master_quest": false
+  },
+  {
+   "id": 3998381,
+   "name": "Kak Bazaar Item 5",
+   "scene": 44,
+   "type": 0,
+   "flag": 60,
+   "master_quest": false
+  },
+  {
+   "id": 3998382,
+   "name": "Kak Bazaar Item 6",
+   "scene": 44,
+   "type": 0,
+   "flag": 61,
+   "master_quest": false
+  },
+  {
+   "id": 3998383,
+   "name": "Kak Bazaar Item 7",
+   "scene": 44,
+   "type": 0,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3998384,
+   "name": "Kak Bazaar Item 8",
+   "scene": 44,
+   "type": 0,
+   "flag": 63,
+   "master_quest": false
+  },
+  {
+   "id": 3998385,
+   "name": "ZD Shop Item 1",
+   "scene": 47,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998386,
+   "name": "ZD Shop Item 2",
+   "scene": 47,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998387,
+   "name": "ZD Shop Item 3",
+   "scene": 47,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998388,
+   "name": "ZD Shop Item 4",
+   "scene": 47,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998389,
+   "name": "ZD Shop Item 5",
+   "scene": 47,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998390,
+   "name": "ZD Shop Item 6",
+   "scene": 47,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998391,
+   "name": "ZD Shop Item 7",
+   "scene": 47,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998392,
+   "name": "ZD Shop Item 8",
+   "scene": 47,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998393,
+   "name": "GC Shop Item 1",
+   "scene": 46,
+   "type": 0,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998394,
+   "name": "GC Shop Item 2",
+   "scene": 46,
+   "type": 0,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998395,
+   "name": "GC Shop Item 3",
+   "scene": 46,
+   "type": 0,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998396,
+   "name": "GC Shop Item 4",
+   "scene": 46,
+   "type": 0,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998397,
+   "name": "GC Shop Item 5",
+   "scene": 46,
+   "type": 0,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998398,
+   "name": "GC Shop Item 6",
+   "scene": 46,
+   "type": 0,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998399,
+   "name": "GC Shop Item 7",
+   "scene": 46,
+   "type": 0,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998400,
+   "name": "GC Shop Item 8",
+   "scene": 46,
+   "type": 0,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998401,
+   "name": "KF End of Bridge Blue Rupee",
+   "scene": 85,
+   "type": 2,
+   "flag": 17,
+   "master_quest": false
+  },
+  {
+   "id": 3998402,
+   "name": "KF Behind Mido's house Blue Rupee",
+   "scene": 85,
+   "type": 2,
+   "flag": 18,
+   "master_quest": false
+  },
+  {
+   "id": 3998403,
+   "name": "KF Boulder Maze Blue Rupee 1",
+   "scene": 85,
+   "type": 2,
+   "flag": 15,
+   "master_quest": false
+  },
+  {
+   "id": 3998404,
+   "name": "KF Boulder Maze Blue Rupee 2",
+   "scene": 85,
+   "type": 2,
+   "flag": 14,
+   "master_quest": false
+  },
+  {
+   "id": 3998405,
+   "name": "KF Near Ramp Green Rupee 1",
+   "scene": 85,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998406,
+   "name": "KF Near Ramp Green Rupee 2",
+   "scene": 85,
+   "type": 2,
+   "flag": 39,
+   "master_quest": false
+  },
+  {
+   "id": 3998407,
+   "name": "KF Near Mido's House Green Rupee 1",
+   "scene": 85,
+   "type": 2,
+   "flag": 37,
+   "master_quest": false
+  },
+  {
+   "id": 3998408,
+   "name": "KF Near Mido's House Green Rupee 2",
+   "scene": 85,
+   "type": 2,
+   "flag": 38,
+   "master_quest": false
+  },
+  {
+   "id": 3998409,
+   "name": "KF Rupee circle Green Rupee 1",
+   "scene": 85,
+   "type": 2,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998410,
+   "name": "KF Rupee circle Green Rupee 2",
+   "scene": 85,
+   "type": 2,
+   "flag": 65,
+   "master_quest": false
+  },
+  {
+   "id": 3998411,
+   "name": "KF Rupee circle Green Rupee 3",
+   "scene": 85,
+   "type": 2,
+   "flag": 66,
+   "master_quest": false
+  },
+  {
+   "id": 3998412,
+   "name": "KF Rupee circle Green Rupee 4",
+   "scene": 85,
+   "type": 2,
+   "flag": 67,
+   "master_quest": false
+  },
+  {
+   "id": 3998413,
+   "name": "KF Rupee circle Green Rupee 5",
+   "scene": 85,
+   "type": 2,
+   "flag": 68,
+   "master_quest": false
+  },
+  {
+   "id": 3998414,
+   "name": "KF Rupee circle Green Rupee 6",
+   "scene": 85,
+   "type": 2,
+   "flag": 69,
+   "master_quest": false
+  },
+  {
+   "id": 3998415,
+   "name": "KF Rupee circle Red Rupee",
+   "scene": 85,
+   "type": 2,
+   "flag": 70,
+   "master_quest": false
+  },
+  {
+   "id": 3998416,
+   "name": "LW in boulder blue rupee",
+   "scene": 91,
+   "type": 2,
+   "flag": 19,
+   "master_quest": false
+  },
+  {
+   "id": 3998417,
+   "name": "LW in water near ZR Shortcut Green Rupee 1",
+   "scene": 91,
+   "type": 2,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998418,
+   "name": "LW in water near ZR Shortcut Green Rupee 2",
+   "scene": 91,
+   "type": 2,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998419,
+   "name": "LW in water near ZR Shortcut Green Rupee 3",
+   "scene": 91,
+   "type": 2,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998420,
+   "name": "LW in water near ZR Shortcut Green Rupee 4",
+   "scene": 91,
+   "type": 2,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998421,
+   "name": "LW in water near ZR Shortcut Green Rupee 5",
+   "scene": 91,
+   "type": 2,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998422,
+   "name": "LW in water near ZR Shortcut Green Rupee 6",
+   "scene": 91,
+   "type": 2,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998423,
+   "name": "LW in water near ZR Shortcut Green Rupee 7",
+   "scene": 91,
+   "type": 2,
+   "flag": 59,
+   "master_quest": false
+  },
+  {
+   "id": 3998424,
+   "name": "LW in water near ZR Shortcut Green Rupee 8",
+   "scene": 91,
+   "type": 2,
+   "flag": 60,
+   "master_quest": false
+  },
+  {
+   "id": 3998425,
+   "name": "LH Under water green rupee 1",
+   "scene": 87,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998426,
+   "name": "LH Under water green rupee 2",
+   "scene": 87,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998427,
+   "name": "LH Under water green rupee 3",
+   "scene": 87,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998428,
+   "name": "LH Lab Dive Red rupee 1",
+   "scene": 56,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998429,
+   "name": "LH Lab Dive Red rupee 2",
+   "scene": 56,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998430,
+   "name": "LH Lab Dive Red rupee 3",
+   "scene": 56,
+   "type": 2,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998431,
+   "name": "GV Octorock Grotto Blue Rupee 1",
+   "scene": 62,
+   "type": 2,
+   "flag": 56,
+   "master_quest": false
+  },
+  {
+   "id": 3998432,
+   "name": "GV Octorock Grotto Blue Rupee 2",
+   "scene": 62,
+   "type": 2,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998433,
+   "name": "GV Octorock Grotto Blue Rupee 3",
+   "scene": 62,
+   "type": 2,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998434,
+   "name": "GV Octorock Grotto Green Rupee 1",
+   "scene": 62,
+   "type": 2,
+   "flag": 59,
+   "master_quest": false
+  },
+  {
+   "id": 3998435,
+   "name": "GV Octorock Grotto Green Rupee 2",
+   "scene": 62,
+   "type": 2,
+   "flag": 60,
+   "master_quest": false
+  },
+  {
+   "id": 3998436,
+   "name": "GV Octorock Grotto Green Rupee 3",
+   "scene": 62,
+   "type": 2,
+   "flag": 61,
+   "master_quest": false
+  },
+  {
+   "id": 3998437,
+   "name": "GV Octorock Grotto Green Rupee 4",
+   "scene": 62,
+   "type": 2,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3998438,
+   "name": "GV Octorock Grotto Red Rupee",
+   "scene": 62,
+   "type": 2,
+   "flag": 63,
+   "master_quest": false
+  },
+  {
+   "id": 3998439,
+   "name": "DMT Rock Blue Rupee",
+   "scene": 96,
+   "type": 2,
+   "flag": 7,
+   "master_quest": false
+  },
+  {
+   "id": 3998440,
+   "name": "DMT Rock Red Rupee",
+   "scene": 96,
+   "type": 2,
+   "flag": 10,
+   "master_quest": false
+  },
+  {
+   "id": 3998441,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 1",
+   "scene": 62,
+   "type": 2,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998442,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 2",
+   "scene": 62,
+   "type": 2,
+   "flag": 65,
+   "master_quest": false
+  },
+  {
+   "id": 3998443,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 3",
+   "scene": 62,
+   "type": 2,
+   "flag": 66,
+   "master_quest": false
+  },
+  {
+   "id": 3998444,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 4",
+   "scene": 62,
+   "type": 2,
+   "flag": 67,
+   "master_quest": false
+  },
+  {
+   "id": 3998445,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 5",
+   "scene": 62,
+   "type": 2,
+   "flag": 68,
+   "master_quest": false
+  },
+  {
+   "id": 3998446,
+   "name": "DMT Cow Grotto rupee circle Green Rupee 6",
+   "scene": 62,
+   "type": 2,
+   "flag": 69,
+   "master_quest": false
+  },
+  {
+   "id": 3998447,
+   "name": "DMT Cow Grotto rupee circle Red Rupee",
+   "scene": 62,
+   "type": 2,
+   "flag": 70,
+   "master_quest": false
+  },
+  {
+   "id": 3998448,
+   "name": "DMC Lower Red Rupee 1",
+   "scene": 97,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998449,
+   "name": "DMC Lower Red Rupee 2",
+   "scene": 97,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998450,
+   "name": "DMC Lower Blue Rupee 1",
+   "scene": 97,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998451,
+   "name": "DMC Lower Blue Rupee 2",
+   "scene": 97,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998452,
+   "name": "DMC Lower Blue Rupee 3",
+   "scene": 97,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998453,
+   "name": "DMC Lower Blue Rupee 4",
+   "scene": 97,
+   "type": 2,
+   "flag": 37,
+   "master_quest": false
+  },
+  {
+   "id": 3998454,
+   "name": "DMC Lower Blue Rupee 5",
+   "scene": 97,
+   "type": 2,
+   "flag": 38,
+   "master_quest": false
+  },
+  {
+   "id": 3998455,
+   "name": "DMC Lower Blue Rupee 6",
+   "scene": 97,
+   "type": 2,
+   "flag": 39,
+   "master_quest": false
+  },
+  {
+   "id": 3998456,
+   "name": "DMC Scare crow rupee circle Green Rupee 1",
+   "scene": 97,
+   "type": 2,
+   "flag": 64,
+   "master_quest": false
+  },
+  {
+   "id": 3998457,
+   "name": "DMC Scare crow rupee circle Green Rupee 2",
+   "scene": 97,
+   "type": 2,
+   "flag": 65,
+   "master_quest": false
+  },
+  {
+   "id": 3998458,
+   "name": "DMC Scare crow rupee circle Green Rupee 3",
+   "scene": 97,
+   "type": 2,
+   "flag": 66,
+   "master_quest": false
+  },
+  {
+   "id": 3998459,
+   "name": "DMC Scare crow rupee circle Green Rupee 4",
+   "scene": 97,
+   "type": 2,
+   "flag": 67,
+   "master_quest": false
+  },
+  {
+   "id": 3998460,
+   "name": "DMC Scare crow rupee circle Green Rupee 5",
+   "scene": 97,
+   "type": 2,
+   "flag": 68,
+   "master_quest": false
+  },
+  {
+   "id": 3998461,
+   "name": "DMC Scare crow rupee circle Green Rupee 6",
+   "scene": 97,
+   "type": 2,
+   "flag": 69,
+   "master_quest": false
+  },
+  {
+   "id": 3998462,
+   "name": "DMC Scare crow rupee circle Red Rupee",
+   "scene": 97,
+   "type": 2,
+   "flag": 70,
+   "master_quest": false
+  },
+  {
+   "id": 3998463,
+   "name": "ZR Waterfall Red Rupee 1",
+   "scene": 84,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998464,
+   "name": "ZR Waterfall Red Rupee 2",
+   "scene": 84,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998465,
+   "name": "ZR Waterfall Red Rupee 3",
+   "scene": 84,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998466,
+   "name": "ZR Waterfall Red Rupee 4",
+   "scene": 84,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998467,
+   "name": "ZF Underwater Green Rupee 1",
+   "scene": 89,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998468,
+   "name": "ZF Underwater Green Rupee 2",
+   "scene": 89,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998469,
+   "name": "ZF Underwater Green Rupee 3",
+   "scene": 89,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998470,
+   "name": "ZF Underwater Green Rupee 4",
+   "scene": 89,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998471,
+   "name": "ZF Underwater Green Rupee 5",
+   "scene": 89,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998472,
+   "name": "ZF Underwater Green Rupee 6",
+   "scene": 89,
+   "type": 2,
+   "flag": 37,
+   "master_quest": false
+  },
+  {
+   "id": 3998473,
+   "name": "ZF Underwater Green Rupee 7",
+   "scene": 89,
+   "type": 2,
+   "flag": 38,
+   "master_quest": false
+  },
+  {
+   "id": 3998474,
+   "name": "ZF Underwater Green Rupee 8",
+   "scene": 89,
+   "type": 2,
+   "flag": 39,
+   "master_quest": false
+  },
+  {
+   "id": 3998475,
+   "name": "ZF Underwater Green Rupee 9",
+   "scene": 89,
+   "type": 2,
+   "flag": 40,
+   "master_quest": false
+  },
+  {
+   "id": 3998476,
+   "name": "ZF Underwater Green Rupee 10",
+   "scene": 89,
+   "type": 2,
+   "flag": 41,
+   "master_quest": false
+  },
+  {
+   "id": 3998477,
+   "name": "ZF Underwater Green Rupee 11",
+   "scene": 89,
+   "type": 2,
+   "flag": 42,
+   "master_quest": false
+  },
+  {
+   "id": 3998478,
+   "name": "ZF Underwater Green Rupee 12",
+   "scene": 89,
+   "type": 2,
+   "flag": 43,
+   "master_quest": false
+  },
+  {
+   "id": 3998479,
+   "name": "ZF Underwater Green Rupee 13",
+   "scene": 89,
+   "type": 2,
+   "flag": 44,
+   "master_quest": false
+  },
+  {
+   "id": 3998480,
+   "name": "ZF Underwater Green Rupee 14",
+   "scene": 89,
+   "type": 2,
+   "flag": 45,
+   "master_quest": false
+  },
+  {
+   "id": 3998481,
+   "name": "ZF Underwater Green Rupee 15",
+   "scene": 89,
+   "type": 2,
+   "flag": 46,
+   "master_quest": false
+  },
+  {
+   "id": 3998482,
+   "name": "ZF Underwater Green Rupee 16",
+   "scene": 89,
+   "type": 2,
+   "flag": 47,
+   "master_quest": false
+  },
+  {
+   "id": 3998483,
+   "name": "ZF Underwater Green Rupee 17",
+   "scene": 89,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998484,
+   "name": "ZF Underwater Green Rupee 18",
+   "scene": 89,
+   "type": 2,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998485,
+   "name": "GY Dampe Race Green Rupee 1",
+   "scene": 72,
+   "type": 2,
+   "flag": 56,
+   "master_quest": false
+  },
+  {
+   "id": 3998486,
+   "name": "GY Dampe Race Green Rupee 2",
+   "scene": 72,
+   "type": 2,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998487,
+   "name": "GY Dampe Race Green Rupee 3",
+   "scene": 72,
+   "type": 2,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998488,
+   "name": "GY Dampe Race Green Rupee 4",
+   "scene": 72,
+   "type": 2,
+   "flag": 59,
+   "master_quest": false
+  },
+  {
+   "id": 3998489,
+   "name": "GY Dampe Race Green Rupee 5",
+   "scene": 72,
+   "type": 2,
+   "flag": 60,
+   "master_quest": false
+  },
+  {
+   "id": 3998490,
+   "name": "GY Dampe Race Green Rupee 6",
+   "scene": 72,
+   "type": 2,
+   "flag": 61,
+   "master_quest": false
+  },
+  {
+   "id": 3998491,
+   "name": "GY Dampe Race Green Rupee 7",
+   "scene": 72,
+   "type": 2,
+   "flag": 62,
+   "master_quest": false
+  },
+  {
+   "id": 3998492,
+   "name": "GY Dampe Race Green Rupee 8",
+   "scene": 72,
+   "type": 2,
+   "flag": 63,
+   "master_quest": false
+  },
+  {
+   "id": 3998493,
+   "name": "Ice Cavern Red Ice Blue Rupee",
+   "scene": 9,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998494,
+   "name": "Ice Cavern Block Room Red Rupee 1",
+   "scene": 9,
+   "type": 2,
+   "flag": 46,
+   "master_quest": false
+  },
+  {
+   "id": 3998495,
+   "name": "Ice Cavern Block Room Red Rupee 2",
+   "scene": 9,
+   "type": 2,
+   "flag": 47,
+   "master_quest": false
+  },
+  {
+   "id": 3998496,
+   "name": "Ice Cavern Block Room Red Rupee 3",
+   "scene": 9,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998497,
+   "name": "Bottom of the Well Center Pit fall Blue Rupee 1",
+   "scene": 8,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998498,
+   "name": "Bottom of the Well Center Pit fall Blue Rupee 2",
+   "scene": 8,
+   "type": 2,
+   "flag": 3,
+   "master_quest": false
+  },
+  {
+   "id": 3998499,
+   "name": "Bottom of the Well Center Pit fall Blue Rupee 3",
+   "scene": 8,
+   "type": 2,
+   "flag": 4,
+   "master_quest": false
+  },
+  {
+   "id": 3998500,
+   "name": "Bottom of the Well Center Pit fall Blue Rupee 4",
+   "scene": 8,
+   "type": 2,
+   "flag": 5,
+   "master_quest": false
+  },
+  {
+   "id": 3998501,
+   "name": "Bottom of the Well Center Pit fall Blue Rupee 5",
+   "scene": 8,
+   "type": 2,
+   "flag": 6,
+   "master_quest": false
+  },
+  {
+   "id": 3998502,
+   "name": "Jabu Jabus Belly MQ Near Cow Bottom Green Rupee",
+   "scene": 2,
+   "type": 2,
+   "flag": 1,
+   "master_quest": true
+  },
+  {
+   "id": 3998503,
+   "name": "Jabu Jabus Belly MQ Near Cow Middle Green Rupee",
+   "scene": 2,
+   "type": 2,
+   "flag": 2,
+   "master_quest": true
+  },
+  {
+   "id": 3998504,
+   "name": "Jabu Jabus Belly MQ Near Cow Top Green Rupee",
+   "scene": 2,
+   "type": 2,
+   "flag": 3,
+   "master_quest": true
+  },
+  {
+   "id": 3998505,
+   "name": "KF on Saria's House Heart 1",
+   "scene": 85,
+   "type": 2,
+   "flag": 28,
+   "master_quest": false
+  },
+  {
+   "id": 3998506,
+   "name": "KF on Saria's House Heart 2",
+   "scene": 85,
+   "type": 2,
+   "flag": 29,
+   "master_quest": false
+  },
+  {
+   "id": 3998507,
+   "name": "KF on Saria's House Heart 3",
+   "scene": 85,
+   "type": 2,
+   "flag": 30,
+   "master_quest": false
+  },
+  {
+   "id": 3998508,
+   "name": "KF in Saria's House Heart 1",
+   "scene": 41,
+   "type": 2,
+   "flag": 56,
+   "master_quest": false
+  },
+  {
+   "id": 3998509,
+   "name": "KF in Saria's House Heart 2",
+   "scene": 41,
+   "type": 2,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998510,
+   "name": "KF in Saria's House Heart 3",
+   "scene": 41,
+   "type": 2,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998511,
+   "name": "KF in Saria's House Heart 4",
+   "scene": 41,
+   "type": 2,
+   "flag": 59,
+   "master_quest": false
+  },
+  {
+   "id": 3998512,
+   "name": "Deku Tree 2F Floating Heart",
+   "scene": 0,
+   "type": 2,
+   "flag": 44,
+   "master_quest": false
+  },
+  {
+   "id": 3998513,
+   "name": "Deku Tree 3F Floating Heart",
+   "scene": 0,
+   "type": 2,
+   "flag": 45,
+   "master_quest": false
+  },
+  {
+   "id": 3998514,
+   "name": "Deku Tree B2F Underwater Heart 1",
+   "scene": 0,
+   "type": 2,
+   "flag": 46,
+   "master_quest": false
+  },
+  {
+   "id": 3998515,
+   "name": "Deku Tree B2F Underwater Heart 2",
+   "scene": 0,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998516,
+   "name": "Deku Tree B2F Underwater Heart 3",
+   "scene": 0,
+   "type": 2,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998517,
+   "name": "DMT Cow Grotto Heart 1",
+   "scene": 62,
+   "type": 2,
+   "flag": 40,
+   "master_quest": false
+  },
+  {
+   "id": 3998518,
+   "name": "DMT Cow Grotto Heart 2",
+   "scene": 62,
+   "type": 2,
+   "flag": 41,
+   "master_quest": false
+  },
+  {
+   "id": 3998519,
+   "name": "DMT Cow Grotto Heart 3",
+   "scene": 62,
+   "type": 2,
+   "flag": 42,
+   "master_quest": false
+  },
+  {
+   "id": 3998520,
+   "name": "DMT Cow Grotto Heart 4",
+   "scene": 62,
+   "type": 2,
+   "flag": 43,
+   "master_quest": false
+  },
+  {
+   "id": 3998521,
+   "name": "Dodongo's Cavern 1F Miniboss Heart Behind Lavafall",
+   "scene": 1,
+   "type": 2,
+   "flag": 24,
+   "master_quest": false
+  },
+  {
+   "id": 3998522,
+   "name": "Dodongo's Cavern 2F Blade Traps Heart Behind Block",
+   "scene": 1,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998523,
+   "name": "Dodongo's Cavern 2F Miniboss Room Heart 1",
+   "scene": 1,
+   "type": 2,
+   "flag": 37,
+   "master_quest": false
+  },
+  {
+   "id": 3998524,
+   "name": "Dodongo's Cavern 2F Miniboss Room Heart 2",
+   "scene": 1,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998525,
+   "name": "Forest Temple Well Heart 1",
+   "scene": 3,
+   "type": 2,
+   "flag": 47,
+   "master_quest": false
+  },
+  {
+   "id": 3998526,
+   "name": "Forest Temple Well Heart 2",
+   "scene": 3,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998527,
+   "name": "Forest Temple Level Island Ridge Heart 1",
+   "scene": 3,
+   "type": 2,
+   "flag": 45,
+   "master_quest": false
+  },
+  {
+   "id": 3998528,
+   "name": "Forest Temple Level Island Ridge Heart 2",
+   "scene": 3,
+   "type": 2,
+   "flag": 46,
+   "master_quest": false
+  },
+  {
+   "id": 3998529,
+   "name": "Fire Temple Pillar Room Heart 1",
+   "scene": 4,
+   "type": 2,
+   "flag": 47,
+   "master_quest": false
+  },
+  {
+   "id": 3998530,
+   "name": "Fire Temple Pillar Room Heart 2",
+   "scene": 4,
+   "type": 2,
+   "flag": 48,
+   "master_quest": false
+  },
+  {
+   "id": 3998531,
+   "name": "Fire Temple Pillar Room Heart 3",
+   "scene": 4,
+   "type": 2,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998532,
+   "name": "Fire Temple East Central Room Heart 1",
+   "scene": 4,
+   "type": 2,
+   "flag": 53,
+   "master_quest": false
+  },
+  {
+   "id": 3998533,
+   "name": "Fire Temple East Central Room Heart 2",
+   "scene": 4,
+   "type": 2,
+   "flag": 54,
+   "master_quest": false
+  },
+  {
+   "id": 3998534,
+   "name": "Fire Temple East Central Room Heart 3",
+   "scene": 4,
+   "type": 2,
+   "flag": 55,
+   "master_quest": false
+  },
+  {
+   "id": 3998535,
+   "name": "Fire Temple Fire Wall Chase Pillar Heart 1",
+   "scene": 4,
+   "type": 2,
+   "flag": 49,
+   "master_quest": false
+  },
+  {
+   "id": 3998536,
+   "name": "Fire Temple Fire Wall Chase Pillar Heart 2",
+   "scene": 4,
+   "type": 2,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998537,
+   "name": "Fire Temple Fire Wall Chase Platform Heart",
+   "scene": 4,
+   "type": 2,
+   "flag": 51,
+   "master_quest": false
+  },
+  {
+   "id": 3998538,
+   "name": "Water Temple River Heart 1",
+   "scene": 5,
+   "type": 2,
+   "flag": 42,
+   "master_quest": false
+  },
+  {
+   "id": 3998539,
+   "name": "Water Temple River Heart 2",
+   "scene": 5,
+   "type": 2,
+   "flag": 45,
+   "master_quest": false
+  },
+  {
+   "id": 3998540,
+   "name": "Water Temple River Heart 3",
+   "scene": 5,
+   "type": 2,
+   "flag": 50,
+   "master_quest": false
+  },
+  {
+   "id": 3998541,
+   "name": "Water Temple River Heart 4",
+   "scene": 5,
+   "type": 2,
+   "flag": 52,
+   "master_quest": false
+  },
+  {
+   "id": 3998542,
+   "name": "Spirit Temple Adult Climb Heart 1",
+   "scene": 6,
+   "type": 2,
+   "flag": 1,
+   "master_quest": false
+  },
+  {
+   "id": 3998543,
+   "name": "Spirit Temple Adult Climb Heart 2",
+   "scene": 6,
+   "type": 2,
+   "flag": 2,
+   "master_quest": false
+  },
+  {
+   "id": 3998544,
+   "name": "Shadow Temple Invisible Blades Heart 1",
+   "scene": 7,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998545,
+   "name": "Shadow Temple Invisible Blades Heart 2",
+   "scene": 7,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998546,
+   "name": "Shadow Temple Near Ship Heart 1",
+   "scene": 7,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998547,
+   "name": "Shadow Temple Near Ship Heart 2",
+   "scene": 7,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998548,
+   "name": "Shadow Temple Across Cavern Heart",
+   "scene": 7,
+   "type": 2,
+   "flag": 60,
+   "master_quest": false
+  },
+  {
+   "id": 3998549,
+   "name": "Shadow Temple Across Cavern Scarecrow Heart 1",
+   "scene": 7,
+   "type": 2,
+   "flag": 57,
+   "master_quest": false
+  },
+  {
+   "id": 3998550,
+   "name": "Shadow Temple Across Cavern Scarecrow Heart 2",
+   "scene": 7,
+   "type": 2,
+   "flag": 58,
+   "master_quest": false
+  },
+  {
+   "id": 3998551,
+   "name": "Bottom of the Well Closed Sarcophagus Heart",
+   "scene": 8,
+   "type": 2,
+   "flag": 31,
+   "master_quest": false
+  },
+  {
+   "id": 3998552,
+   "name": "Bottom of the Well Open Sarcophagus Heart",
+   "scene": 8,
+   "type": 2,
+   "flag": 32,
+   "master_quest": false
+  },
+  {
+   "id": 3998553,
+   "name": "Ice Cavern Map Chest Room Heart 1",
+   "scene": 9,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998554,
+   "name": "Ice Cavern Map Chest Room Heart 2",
+   "scene": 9,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998555,
+   "name": "Ice Cavern Map Chest Room Heart 3",
+   "scene": 9,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998556,
+   "name": "Gerudo Training Grounds Beamos Room Heart 1",
+   "scene": 11,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998557,
+   "name": "Gerudo Training Grounds Beamos Room Heart 2",
+   "scene": 11,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  },
+  {
+   "id": 3998558,
+   "name": "Ganon's Castle Fire Trial Heart",
+   "scene": 13,
+   "type": 2,
+   "flag": 36,
+   "master_quest": false
+  },
+  {
+   "id": 3998559,
+   "name": "Ganon's Castle Spirit Trial Heart",
+   "scene": 13,
+   "type": 2,
+   "flag": 38,
+   "master_quest": false
+  },
+  {
+   "id": 3998560,
+   "name": "Ganon's Castle Shadow Trial Heart 1",
+   "scene": 13,
+   "type": 2,
+   "flag": 33,
+   "master_quest": false
+  },
+  {
+   "id": 3998561,
+   "name": "Ganon's Castle Shadow Trial Heart 2",
+   "scene": 13,
+   "type": 2,
+   "flag": 34,
+   "master_quest": false
+  },
+  {
+   "id": 3998562,
+   "name": "Ganon's Castle Shadow Trial Heart 3",
+   "scene": 13,
+   "type": 2,
+   "flag": 35,
+   "master_quest": false
+  }
+ ]
+}

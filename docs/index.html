@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OoT3D Archipelago</title>
+<meta name="description" content="Progress of Archipelago multiworld support for TriAevum, the Ocarina of Time 3D recompilation.">
+<style>
+  :root {
+    --bg: #f6f4ee; --surface: #ffffff; --text: #1d2420; --muted: #5f6b64;
+    --line: #dfe3dd; --accent: #2f7d4f; --accent-soft: #d8eedf; --todo: #c9cfc9;
+    --now-bg: #fff6dd; --now-line: #e6c35c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121614; --surface: #1b211e; --text: #e6ebe7; --muted: #9aa6a0;
+      --line: #2c3530; --accent: #57b97c; --accent-soft: #1f3a2a; --todo: #3a443e;
+      --now-bg: #2a2516; --now-line: #8a7330;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+          padding: 20px; margin-bottom: 18px; }
+  .overall { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .big { font-size: 2.6rem; font-weight: 700; color: var(--accent); }
+  .bar { height: 12px; background: var(--todo); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+  .bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+  .bar.small { height: 8px; margin-top: 8px; }
+  .now { background: var(--now-bg); border-color: var(--now-line); }
+  .now b { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  details { border-top: 1px solid var(--line); padding: 14px 0; }
+  details:first-of-type { border-top: 0; padding-top: 0; }
+  summary { cursor: pointer; list-style: none; display: grid;
+            grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary .name { font-weight: 600; }
+  summary .pct { color: var(--muted); font-variant-numeric: tabular-nums; }
+  summary .bar { grid-column: 1 / -1; }
+  ul.check { list-style: none; padding: 0; margin: 12px 0 0; }
+  ul.check li { padding: 4px 0 4px 30px; position: relative; }
+  ul.check li::before { content: ""; position: absolute; left: 0; top: 7px; width: 18px; height: 18px;
+                        border-radius: 5px; border: 2px solid var(--todo); }
+  ul.check li.done::before { background: var(--accent); border-color: var(--accent); }
+  ul.check li.done::after { content: ""; position: absolute; left: 6px; top: 10px; width: 5px; height: 9px;
+                            border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  ul.check li.done { color: var(--muted); }
+  ol.log { list-style: none; padding: 0; margin: 0; }
+  ol.log li { padding: 8px 0; border-top: 1px solid var(--line); display: grid;
+              grid-template-columns: 110px 1fr; gap: 12px; }
+  ol.log li:first-child { border-top: 0; }
+  ol.log time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  footer { color: var(--muted); font-size: .9rem; }
+  a { color: var(--accent); }
+  @media (max-width: 520px) { ol.log li { grid-template-columns: 1fr; gap: 0; } .big { font-size: 2.1rem; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>OoT3D Archipelago</h1>
+  <p class="sub">Archipelago multiworld support for <a href="https://github.com/coccofresco/TriAevum">TriAevum</a>,
+    the native recompilation of The Legend of Zelda: Ocarina of Time 3D.</p>
+
+  <section class="card">
+    <div class="overall"><h2>Overall progress</h2><span class="big" id="overall">–</span></div>
+    <div class="bar"><span id="overall-bar" style="width:0"></span></div>
+    <p class="sub" style="margin:10px 0 0" id="updated"></p>
+  </section>
+
+  <section class="card now"><b>Working on now</b><span id="now">–</span></section>
+
+  <section class="card"><h2>Phases</h2><div id="phases"></div></section>
+
+  <section class="card"><h2>Log</h2><ol class="log" id="log"></ol></section>
+
+  <footer>
+    No ROMs, game code or extracted assets are in this project; you need your own copy of the game.
+    Source and build steps: <a href="https://github.com/junkx420/oot3d-archipelago">github.com/junkx420/oot3d-archipelago</a>.
+  </footer>
+</main>
+<script>
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const bar = (pct, small) => { const b = el("div", small ? "bar small" : "bar"); const s = el("span"); s.style.width = pct + "%"; b.append(s); return b; };
+
+fetch("status.json", { cache: "no-store" }).then(r => r.json()).then(status => {
+  const total = status.phases.reduce((n, p) => n + p.weight, 0);
+  const done = status.phases.reduce((n, p) => n + p.weight * p.percent / 100, 0);
+  const overall = Math.round(100 * done / total);
+  document.getElementById("overall").textContent = overall + " %";
+  document.getElementById("overall-bar").style.width = overall + "%";
+  document.getElementById("updated").textContent = "Weighted by the effort estimate of each phase. Updated " + status.updated + ".";
+  document.getElementById("now").textContent = status.now;
+
+  const phases = document.getElementById("phases");
+  for (const p of status.phases) {
+    const d = el("details");
+    if (p.percent > 0 && p.percent < 100) d.open = true;
+    const s = el("summary");
+    s.append(el("span", "name", "Phase " + p.id + " · " + p.name), el("span", "pct", p.percent + " %"), bar(p.percent, true));
+    const ul = el("ul", "check");
+    for (const item of p.items) ul.append(el("li", item.done ? "done" : "", item.text));
+    d.append(s, ul);
+    phases.append(d);
+  }
+  const log = document.getElementById("log");
+  for (const entry of status.log) {
+    const li = el("li");
+    const t = el("time", null, entry.date); t.dateTime = entry.date;
+    li.append(t, el("span", null, entry.text));
+    log.append(li);
+  }
+}).catch(() => { document.getElementById("now").textContent = "status.json could not be loaded."; });
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "updated": "2026-10-25",
+  "now": "Phase 4: replacing what a location gives with the multiworld item, and giving received items to Link at a safe moment.",
+  "phases": [
+    {
+      "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
+      "items": [
+        {"text": "Toolchain, reference repositories, ROM identified (EUR Rev 1, never in git)", "done": true},
+        {"text": "Address table from OoT3D_Randomizer, mapped to the executed image", "done": true},
+        {"text": "Hook semantics read; Gate 0 decided (observable exits + block callbacks)", "done": true}
+      ]
+    },
+    {
+      "id": 1, "name": "Hook proof", "weight": 3, "percent": 80,
+      "items": [
+        {"text": "Check observer at Actor_OfferGetItem and Item_Give, address self-check", "done": true},
+        {"text": "Chests and NPC offers detected in a real play test", "done": true},
+        {"text": "Skulltula tokens, freestanding items and songs seen in the game", "done": false}
+      ]
+    },
+    {
+      "id": 2, "name": "AP client in the game", "weight": 5, "percent": 85,
+      "items": [
+        {"text": "apclientpp client on its own thread, F1 Archipelago panel", "done": true},
+        {"text": "Progress sidecar per seed, slot and save file", "done": true},
+        {"text": "End to end against a local Archipelago server", "done": true},
+        {"text": "Connecting from inside the running game", "done": false},
+        {"text": "wss:// against archipelago.gg", "done": false}
+      ]
+    },
+    {
+      "id": 3, "name": "apworld", "weight": 12, "percent": 85,
+      "items": [
+        {"text": "Location and item tables generated from OoT3D_Randomizer", "done": true},
+        {"text": "Logic ported from the Ship of Harkinian apworld", "done": true},
+        {"text": "Logic checked against OoT3D_Randomizer's own C++ logic (never more permissive)", "done": true},
+        {"text": "Seeds generate; Archipelago and world tests pass", "done": true},
+        {"text": "Shuffles beyond the vanilla game (tokens, songs, shops, ...), 3D tricks", "done": false}
+      ]
+    },
+    {
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 0,
+      "items": [
+        {"text": "Locations give the multiworld item instead of their own", "done": false},
+        {"text": "Received items given to Link at a safe moment", "done": false},
+        {"text": "Applied-item count in savestates", "done": false},
+        {"text": "Goal (Ganon) reported to the server", "done": false},
+        {"text": "DeathLink", "done": false}
+      ]
+    },
+    {
+      "id": 5, "name": "Polish", "weight": 10, "percent": 0,
+      "items": [
+        {"text": "Names and models for other games' items", "done": false},
+        {"text": "Player-facing setup guide", "done": false}
+      ]
+    }
+  ],
+  "log": [
+    {"date": "2026-10-25", "text": "Project published. Logic port finished and checked against OoT3D_Randomizer: 6 rules made stricter, no location more permissive than 3D across 7 seeds."},
+    {"date": "2026-10-25", "text": "Phase 2: the client reaches a local Archipelago server, sends a check and receives an item."},
+    {"date": "2026-10-25", "text": "Phase 1: first play test, 19 checks logged; chests and NPC offers detected."}
+  ]
+}

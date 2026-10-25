@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.ps1 text eol=crlf
+# overlay/ and the patch are byte copies of a TriAevum branch; keep them exact.
+# (Later lines win, so these come last.)
+overlay/** -text
+patches/** -text
