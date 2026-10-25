@@ -25,6 +25,22 @@ std::string NewUuid() {
   return text;
 }
 
+// The save slot of the file the game has loaded ("ZELDAZ" present), if any.
+std::optional<int> LoadedSaveSlot(oot3d::recomp::a32::MemoryBus &memory) {
+  char newf[6] = {};
+  for (std::uint32_t i = 0; i < 6U; ++i) {
+    std::uint8_t byte = 0;
+    if (!memory.Read8(kSaveNewf + i, &byte))
+      return std::nullopt;
+    newf[i] = static_cast<char>(byte);
+  }
+  std::uint32_t fileNum = 0;
+  if (std::string_view(newf, 6) != "ZELDAZ" || !memory.Read32(kSaveFileNum, &fileNum) ||
+      fileNum >= static_cast<std::uint32_t>(kSaveSlots))
+    return std::nullopt;
+  return static_cast<int>(fileNum);
+}
+
 } // namespace
 
 Session::Session(Paths paths) : mPaths(std::move(paths)) {
@@ -69,6 +85,8 @@ void Session::LoadSettings() {
       mSettings.Server = document.value("server", mSettings.Server);
       mSettings.Slot = document.value("slot", "");
       mUuid = document.value("uuid", "");
+      mSkips.Cutscenes = document.value("skip_cutscenes", false);
+      mSkips.Intro = document.value("skip_intro", false);
     }
   }
   if (mUuid.empty()) {
@@ -83,9 +101,23 @@ void Session::SaveSettings() const {
   std::ofstream output(mPaths.SettingsFile, std::ios::binary | std::ios::trunc);
   output << nlohmann::json{{"server", mSettings.Server},
                            {"slot", mSettings.Slot},
-                           {"uuid", mUuid}}
+                           {"uuid", mUuid},
+                           {"skip_cutscenes", mSkips.Cutscenes},
+                           {"skip_intro", mSkips.Intro}}
                 .dump(1)
          << '\n';
+}
+
+CutsceneSkipOptions Session::Skips() const {
+  std::lock_guard lock(mMutex);
+  return mSkips;
+}
+
+void Session::SetSkips(const CutsceneSkipOptions &skips) {
+  std::lock_guard lock(mMutex);
+  mSkips = skips;
+  mSkipsLoggedForSlot = -1;
+  SaveSettings();
 }
 
 ConnectionSettings Session::Settings() const {
@@ -206,6 +238,16 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       HandleEvent(event);
   }
   OpenSidecarIfReady(memory);
+  if (mSkips.Cutscenes || mSkips.Intro) {
+    if (const auto slot = LoadedSaveSlot(memory)) {
+      const int set = ApplyCutsceneSkips(mSkips, memory);
+      if (set > 0 && mSkipsLoggedForSlot != *slot) {
+        Log("Cutscene skips: " + std::to_string(set) + " flags set in save slot " +
+            std::to_string(*slot + 1));
+        mSkipsLoggedForSlot = *slot;
+      }
+    }
+  }
   GiveReceivedItems(memory);
 }
 
@@ -267,20 +309,11 @@ void Session::GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory) {
 void Session::OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory) {
   if (!mSlot.has_value())
     return;
-  // The save slot is valid only while a file is loaded ("ZELDAZ" present).
-  char newf[6] = {};
-  for (std::uint32_t i = 0; i < 6U; ++i) {
-    std::uint8_t byte = 0;
-    if (!memory.Read8(kSaveNewf + i, &byte))
-      return;
-    newf[i] = static_cast<char>(byte);
-  }
-  std::uint32_t fileNum = 0;
-  if (std::string_view(newf, 6) != "ZELDAZ" || !memory.Read32(kSaveFileNum, &fileNum) ||
-      fileNum >= static_cast<std::uint32_t>(kSaveSlots))
+  const auto loaded = LoadedSaveSlot(memory);
+  if (!loaded.has_value())
     return;
   SidecarIdentity identity = *mSlot;
-  identity.SaveSlot = static_cast<int>(fileNum);
+  identity.SaveSlot = *loaded;
   if (mSidecar.has_value() && mSidecar->Identity == identity)
     return;
   Persist();

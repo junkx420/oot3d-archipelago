@@ -54,6 +54,15 @@ public:
       ImGui::TextDisabled("No location table: checks are not sent yet.");
 
     ImGui::Separator();
+    CutsceneSkipOptions skips = mSession.Skips();
+    bool changed = ImGui::Checkbox("Skip cutscenes", &skips.Cutscenes);
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("Story and boss cutscenes and first conversations that give nothing.");
+    changed |= ImGui::Checkbox("Skip the intro of a new file (experimental)", &skips.Intro);
+    if (changed)
+      mSession.SetSkips(skips);
+
+    ImGui::Separator();
     if (ImGui::BeginChild("archipelago_console", ImVec2(0.0F, 220.0F), true)) {
       for (const auto &line : mSession.Console())
         ImGui::TextWrapped("%s", line.c_str());

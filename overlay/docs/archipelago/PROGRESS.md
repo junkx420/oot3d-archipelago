@@ -345,3 +345,20 @@ Design and the user's decision: ARCHITECTURE.md, "Items in the game".
   item (songs, most NPC gifts); with the supported options those hold their
   vanilla items.
 - Without a connection in the session, locations keep their own items.
+
+### Cutscene skips (2026-10-25, the user's request)
+
+- Client setting in F1 > Game > Archipelago, off by default, kept in
+  `config/archipelago.json`: "Skip cutscenes" sets ten save flags
+  OoT3D_Randomizer sets for every new file (`ap_cutscene_skip.cpp` lists them:
+  Saria's greeting, Darunia in the Fire Temple, the Lake Hylia and Desert
+  Colossus owls, the Nabooru battle, boss and Dodongo's Cavern intros, Ruto in
+  the Water Temple, the Club Moblin and the Forest Temple Poe sisters
+  cutscenes). "Skip the intro of a new file" (experimental) clears the
+  pending intro cutscene of a file in Link's house.
+- Only cutscenes and conversations: no flag gives an item, opens a path or
+  changes the logic. Left out: the Master Sword and Sheik flags (Link's
+  Pocket), Ruto in Jabu-Jabu, Malon, Nabooru as a child, temple doors, the
+  Dampe race and minigame phases.
+- Host test of both settings. Not tried in the game; whether the intro skip
+  lands before the scene reads the index is open.

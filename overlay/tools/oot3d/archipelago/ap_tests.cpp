@@ -2,6 +2,7 @@
 // memory is a small fake bus.
 
 #include "ap_check_observer.h"
+#include "ap_cutscene_skip.h"
 #include "ap_item_receiver.h"
 #include "ap_item_table.h"
 #include "ap_location_key.h"
@@ -629,6 +630,32 @@ void TestLocationTakenInSave() {
          "an NPC gift has no single flag");
 }
 
+void TestCutsceneSkips() {
+  FakeMemory memory;
+  FillFreshSave(memory);
+  memory.Write32(kSaveContext + kSaveCutsceneIndex, 0xFFF1U);
+  memory.Write16(kSaveContext + kSaveSceneIndex, 0x34U);
+  Expect(ApplyCutsceneSkips({}, memory) == 0, "skips are off by default");
+  Expect(ApplyCutsceneSkips({true, false}, memory) == 10, "every skip flag is set once");
+  Expect(ApplyCutsceneSkips({true, false}, memory) == 0, "set flags are left alone");
+  std::uint16_t bosses = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 7U * 2U, &bosses);
+  Expect(bosses == 0x01FFU, "boss intros are marked as seen");
+  std::uint32_t cutscene = 0;
+  memory.Read32(kSaveContext + kSaveCutsceneIndex, &cutscene);
+  Expect(cutscene == 0xFFF1U, "the intro stays unless its option is on");
+  Expect(ApplyCutsceneSkips({false, true}, memory) == 1, "the intro is skipped");
+  memory.Read32(kSaveContext + kSaveCutsceneIndex, &cutscene);
+  Expect(cutscene == 0U, "a new file starts without the intro");
+  memory.Write32(kSaveContext + kSaveCutsceneIndex, 0xFFF1U);
+  memory.Write16(kSaveContext + kSaveSceneIndex, 0x55U);
+  Expect(ApplyCutsceneSkips({false, true}, memory) == 0, "only a file in Link's house is a new file");
+  // Nothing the logic depends on: no item, no Master Sword or Sheik flag.
+  std::uint16_t masterSword = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 4U * 2U, &masterSword);
+  Expect(masterSword == 0U, "the time travel flags stay untouched");
+}
+
 void TestSessionWithoutConnection() {
   const auto directory = FreshDirectory("triaevum_archipelago_session_test");
   {
@@ -683,6 +710,7 @@ int main(int argc, char **argv) {
     TestGeneratedItemTable(TRIAEVUM_ARCHIPELAGO_ITEMS_JSON);
     TestReceiverGivesThroughPlayer();
     TestLocationTakenInSave();
+    TestCutsceneSkips();
     TestSessionWithoutConnection();
   } catch (const std::exception &error) {
     std::fprintf(stderr, "triaevum_archipelago_tests: %s\n", error.what());

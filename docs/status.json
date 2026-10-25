@@ -54,14 +54,16 @@
       ]
     },
     {
-      "id": 5, "name": "Polish", "weight": 10, "percent": 0,
+      "id": 5, "name": "Polish", "weight": 10, "percent": 10,
       "items": [
         {"text": "Names and models for other games' items", "done": false},
+        {"text": "Optional cutscene skips and intro skip (built, not yet tried in the game)", "done": true},
         {"text": "Player-facing setup guide", "done": false}
       ]
     }
   ],
   "log": [
+    {"date": "2026-10-25", "text": "Optional cutscene skips: story, boss and owl cutscenes can be skipped from the F1 panel, plus an experimental intro skip. Only skips that change nothing in the logic."},
     {"date": "2026-10-25", "text": "Phase 4: locations now give the multiworld item (your own items with their real model), and received items reach Link through the game's own get-item animation. Host tests pass; the play test is next."},
     {"date": "2026-10-25", "text": "Phase 4 started: design decided with the user (server stays the source of items; own items show their real model when found), game structure offsets extracted."},
     {"date": "2026-10-25", "text": "Project published. Logic port finished and checked against OoT3D_Randomizer: 6 rules made stricter, no location more permissive than 3D across 7 seeds."},

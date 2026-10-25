@@ -9,6 +9,7 @@
 // thread, so every public function locks, and the panel gets copies.
 
 #include "ap_check_observer.h"
+#include "ap_cutscene_skip.h"
 #include "ap_item_receiver.h"
 #include "ap_item_table.h"
 #include "ap_location_table.h"
@@ -51,6 +52,10 @@ public:
   void Update(oot3d::recomp::a32::MemoryBus &memory);
 
   [[nodiscard]] ConnectionSettings Settings() const;
+  // Client settings, kept in the settings file; they apply with or without
+  // a connection.
+  [[nodiscard]] CutsceneSkipOptions Skips() const;
+  void SetSkips(const CutsceneSkipOptions &skips);
   void Connect(const ConnectionSettings &settings);
   void Disconnect();
   void Say(std::string text);
@@ -82,6 +87,8 @@ private:
   mutable std::mutex mMutex;
   Paths mPaths;
   ConnectionSettings mSettings;
+  CutsceneSkipOptions mSkips;
+  int mSkipsLoggedForSlot = -1;
   std::string mUuid;
   std::unique_ptr<NetworkClient> mClient;
   std::optional<LocationTable> mLocations;
