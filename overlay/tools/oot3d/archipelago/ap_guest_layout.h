@@ -92,9 +92,12 @@ inline constexpr std::uint32_t kPlayerState1Submerged = 0x08000000U;
 inline constexpr std::uint32_t kPlayerState1Busy = 0xF4AC2485U;
 inline constexpr std::uint32_t kPlayerState2Busy = 0x000C0000U;
 
-// A guest address no title region uses (TriAevum's own regions sit at
-// 0x06100000); the client maps one page there for its item actor.
-inline constexpr std::uint32_t kClientRegionBase = 0x06200000U;
+// A guest address neither the title nor TriAevum uses; the client maps one
+// page there for its item actor. TriAevum maps its own pages at 0x06000000
+// (Link animations), 0x06100000 (actor lights), 0x06200000 (object bank
+// extension, mapped when a scene needs more object slots) and 0x06210000;
+// the window setup asserts that this page overlaps none of them.
+inline constexpr std::uint32_t kClientRegionBase = 0x06F00000U;
 inline constexpr std::uint32_t kClientRegionSize = 0x1000U;
 // Within the page, after the item actor: the progress record (magic,
 // identity hash, applied-item count), which savestates carry with guest

@@ -155,3 +155,10 @@ right half; not investigated.
   ocarina is out (B leaves the ocarina), as on hardware when B is pressed.
 - Pots, crates, grass, rocks, bushes and trees are not locations: neither
   OoT3D_Randomizer nor this client has their data; their options are hidden.
+## Savestates from builds before the page move
+
+Builds before 2026-10-26 (v0.1.0-alpha.2 and older) mapped the client's page
+at 0x06200000, TriAevum's object bank extension; leaving Kokiri Forest
+crashed with "guest memory regions overlap". The page is now at 0x06F00000.
+Savestates taken with an old build still hold the page at the old address
+and can crash the same way; use the in-game save instead.

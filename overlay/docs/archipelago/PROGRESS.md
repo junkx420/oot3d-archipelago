@@ -555,3 +555,17 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   world version 0.4.0. The packed apworld loads and generates on Archipelago
   0.6.8 (the installed launcher's version) and 0.6.9; apworld suite 486
   passed, 33 skipped.
+### Crash on leaving Kokiri Forest (2026-10-26)
+
+- Reported by the user: the game stopped with "oot3d_native_game: guest
+  memory regions overlap" when leaving Kokiri Forest (Lost Woods, the Deku
+  Tree, the path to the sword chest). The client's item page sat at
+  0x06200000, where TriAevum maps its object bank extension when a scene
+  needs more object slots than the title has; Kokiri Forest never did, the
+  next scenes do.
+- The page moved to 0x06F00000. The window setup asserts at compile time
+  that it overlaps none of TriAevum's own regions (Link animations, actor
+  lights, object bank extension, release queue, dash blend).
+- Verified headless: a received item still reached Link through the moved
+  page; host tests pass. Savestates made with the old build carry the page
+  at 0x06200000 and can hit the same overlap; they should not be loaded.
