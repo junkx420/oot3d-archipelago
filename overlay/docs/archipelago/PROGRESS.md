@@ -440,5 +440,19 @@ client (`private/deathlink-peer.py`):
   default options and the generation steps up to the fill. The rebuilt world
   has the same locations and the same reachable locations (events only, with
   no items and with seven key items). apworld suite: 479 passed, 33 skipped.
-- Not tried with Universal Tracker itself; the setup guide says how to
-  install it.
+- Live test (2026-10-26) with Universal Tracker 0.3.6 (`tracker.apworld`
+  from FarisTheAncient/Archipelago, release Tracker_v0.3.6, SHA-256
+  39e9bc0f...cb750) in the local Archipelago 0.6.9 checkout, headless
+  (`Launcher.py "Universal Tracker" -- --nogui --list|--count`), against the
+  DeathLink seed 89757102641179993453 on a local server:
+  - The tracker generated the world without a yaml from slot_data and
+    connected to slot Link3D with the `Tracker` tag.
+  - No items: 5 locations in logic (Kokiri Sword chest, Mido's four chests),
+    the same as `private/ut-expect.py` (the world rebuilt offline from the
+    seed's slot_data).
+  - After `!getitem Kokiri Sword`: 11 in logic (`--count`), the same as
+    offline (the six Deku Tree chests added).
+  - `--list` also prints the tracker's "glitched" locations (29 here),
+    reached only with Ship of Harkinian's `Glitched` item, so with N64 glitch
+    rules that are not checked for 3D. The tracker can hide them in its
+    settings.
