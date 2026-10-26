@@ -115,8 +115,10 @@ class SohWorld(CachedRuleBuilderWorld):
     item_name_groups = create_groups(item_data_table)
     location_name_groups = create_groups(location_data_table)
 
-    # Universal Tracker stuff, does not do anything in normal gen
-    glitches_item_name = Items.GLITCHED
+    # Universal Tracker stuff, does not do anything in normal gen.
+    # No glitches_item_name: the Glitched item opens Ship of Harkinian's N64
+    # tricks (LogicHelpers.can_do_trick), which are not checked for 3D, so the
+    # tracker shows no "glitched" locations. The item stays for the tests.
     using_ut: bool  # so we can check if we're using UT only once
     passthrough: dict[str, Any]  # slot data that got passed through
     ut_can_gen_without_yaml = True  # class var that tells it to ignore the player yaml

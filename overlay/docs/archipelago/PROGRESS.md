@@ -456,3 +456,8 @@ client (`private/deathlink-peer.py`):
     reached only with Ship of Harkinian's `Glitched` item, so with N64 glitch
     rules that are not checked for 3D. The tracker can hide them in its
     settings.
+- The world no longer names a glitches item (`glitches_item_name`), so the
+  tracker shows no glitched list (decided with the user, 2026-10-26). The
+  `Glitched Item` stays for the imported trick tests. Live again: `--list`
+  gives the 11 in-logic locations only. apworld suite: 480 passed, 33
+  skipped.

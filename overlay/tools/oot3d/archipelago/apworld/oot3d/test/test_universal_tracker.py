@@ -82,6 +82,12 @@ class TestUniversalTracker(unittest.TestCase):
             with self.subTest(items=items):
                 self.assertEqual(reachable(original, items), reachable(rebuilt, items))
 
+    def test_no_glitched_locations_for_the_tracker(self) -> None:
+        # The tracker lists "glitched" locations only for a world that names
+        # a glitches item; Ship of Harkinian's N64 tricks do not apply to 3D.
+        world_type = AutoWorldRegister.world_types[GAME]
+        self.assertFalse(getattr(world_type, "glitches_item_name", ""))
+
     def test_slot_data_names_every_option_the_tracker_reads(self) -> None:
         _, slot_data = generate_seed(99)
         rebuilt = regenerate(slot_data)

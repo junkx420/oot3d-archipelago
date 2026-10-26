@@ -35,7 +35,7 @@
         {"text": "Logic ported from the Ship of Harkinian apworld", "done": true},
         {"text": "Logic checked against OoT3D_Randomizer's own C++ logic (never more permissive)", "done": true},
         {"text": "Seeds generate; Archipelago and world tests pass", "done": true},
-        {"text": "Universal Tracker: world rebuilt from slot data (tried live with Universal Tracker 0.3.6)", "done": true},
+        {"text": "Universal Tracker: world rebuilt from slot data, only real 3D logic shown (tried live with 0.3.6)", "done": true},
         {"text": "Shuffles beyond the vanilla game (tokens, songs, shops, ...), 3D tricks", "done": false}
       ]
     },
@@ -67,6 +67,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-26", "text": "Universal Tracker no longer lists Ship of Harkinian's N64 glitch routes as glitched locations; it shows only the 3D logic."},
     {"date": "2026-10-26", "text": "Universal Tracker tried live against a local seed: it shows the same locations in logic as the apworld (5 at the start, 11 after a Kokiri Sword)."},
     {"date": "2026-10-26", "text": "Universal Tracker support: the tracker can rebuild the world from the seed's slot data and show what is in logic; a test rebuilds it the same way."},
     {"date": "2026-10-25", "text": "The title and file selection now show an Archipelago badge with the connection state, so the Archipelago version is recognizable at a glance."},
