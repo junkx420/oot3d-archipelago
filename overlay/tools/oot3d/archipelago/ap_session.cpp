@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <random>
 #include <variant>
@@ -43,7 +44,37 @@ std::optional<int> LoadedSaveSlot(oot3d::recomp::a32::MemoryBus &memory) {
   return static_cast<int>(fileNum);
 }
 
+nlohmann::json ReadSettings(const std::filesystem::path &file) {
+  std::ifstream input(file, std::ios::binary);
+  if (!input)
+    return nlohmann::json::object();
+  std::ostringstream text;
+  text << input.rdbuf();
+  auto document = nlohmann::json::parse(text.str(), nullptr, false);
+  return document.is_object() ? document : nlohmann::json::object();
+}
+
+bool WriteSettings(const std::filesystem::path &file, const nlohmann::json &document) {
+  std::error_code created;
+  std::filesystem::create_directories(file.parent_path(), created);
+  std::ofstream output(file, std::ios::binary | std::ios::trunc);
+  output << document.dump(1) << '\n';
+  return static_cast<bool>(output);
+}
+
 } // namespace
+
+bool EnabledInSettings(const std::filesystem::path &settingsFile) {
+  if (const char *environment = std::getenv("TRIAEVUM_ARCHIPELAGO"); environment != nullptr)
+    return std::string_view(environment) == "1";
+  return ReadSettings(settingsFile).value("enabled", false);
+}
+
+bool SetEnabledInSettings(const std::filesystem::path &settingsFile, bool enabled) {
+  auto document = ReadSettings(settingsFile);
+  document["enabled"] = enabled;
+  return WriteSettings(settingsFile, document);
+}
 
 Session::Session(Paths paths) : mPaths(std::move(paths)) {
   LoadSettings();
@@ -58,6 +89,14 @@ Session::Session(Paths paths) : mPaths(std::move(paths)) {
     Log("Item table: " + std::to_string(mItems->Size()) + " items");
   else
     Log("No item table (" + error + "); locations keep their own items and nothing is received.");
+  // Before a file is loaded, so the save's first checks are not given as the
+  // game's own items. The password is not saved: a server that needs one
+  // refuses, and the panel connects with it.
+  if (mOptions.AutoConnect && !mSettings.Slot.empty()) {
+    mClient = std::make_unique<NetworkClient>(mUuid);
+    Log("Connecting automatically to " + mSettings.Server + " as " + mSettings.Slot);
+    mClient->Connect(mSettings);
+  }
 }
 
 void Session::SetGuestRegionMapper(GuestRegionMapper mapper) {
@@ -68,6 +107,7 @@ void Session::SetGuestRegionMapper(GuestRegionMapper mapper) {
 Session::~Session() {
   std::lock_guard lock(mMutex);
   Persist();
+  FlushPersist();
 }
 
 void Session::Log(std::string line) {
@@ -77,37 +117,58 @@ void Session::Log(std::string line) {
     mConsole.pop_front();
 }
 
+void Session::Notify(Notification::Kind kind, std::string text) {
+  mNotifications.push_back({kind, std::move(text), std::chrono::steady_clock::now()});
+  while (mNotifications.size() > kMaximumNotifications)
+    mNotifications.pop_front();
+}
+
+std::vector<Notification> Session::Notifications(std::chrono::steady_clock::time_point now) const {
+  std::lock_guard lock(mMutex);
+  while (!mNotifications.empty() && now - mNotifications.front().Time >= kNotificationLifetime)
+    mNotifications.pop_front();
+  if (!mOptions.Notifications)
+    return {};
+  return {mNotifications.begin(), mNotifications.end()};
+}
+
 void Session::LoadSettings() {
-  std::ifstream input(mPaths.SettingsFile, std::ios::binary);
-  if (input) {
-    std::ostringstream text;
-    text << input.rdbuf();
-    const auto document = nlohmann::json::parse(text.str(), nullptr, false);
-    if (document.is_object()) {
-      mSettings.Server = document.value("server", mSettings.Server);
-      mSettings.Slot = document.value("slot", "");
-      mUuid = document.value("uuid", "");
-      mSkips.Cutscenes = document.value("skip_cutscenes", false);
-      mSkips.Intro = document.value("skip_intro", false);
-    }
-  }
+  const auto document = ReadSettings(mPaths.SettingsFile);
+  mSettings.Server = document.value("server", mSettings.Server);
+  mSettings.Slot = document.value("slot", "");
+  mUuid = document.value("uuid", "");
+  mSkips.Cutscenes = document.value("skip_cutscenes", false);
+  mSkips.Intro = document.value("skip_intro", false);
+  mOptions.AutoConnect = document.value("auto_connect", mOptions.AutoConnect);
+  mOptions.Notifications = document.value("notifications", mOptions.Notifications);
   if (mUuid.empty()) {
     mUuid = NewUuid();
     SaveSettings();
   }
 }
 
+// Keeps keys this session does not own ("enabled").
 void Session::SaveSettings() const {
-  std::error_code created;
-  std::filesystem::create_directories(mPaths.SettingsFile.parent_path(), created);
-  std::ofstream output(mPaths.SettingsFile, std::ios::binary | std::ios::trunc);
-  output << nlohmann::json{{"server", mSettings.Server},
-                           {"slot", mSettings.Slot},
-                           {"uuid", mUuid},
-                           {"skip_cutscenes", mSkips.Cutscenes},
-                           {"skip_intro", mSkips.Intro}}
-                .dump(1)
-         << '\n';
+  auto document = ReadSettings(mPaths.SettingsFile);
+  document["server"] = mSettings.Server;
+  document["slot"] = mSettings.Slot;
+  document["uuid"] = mUuid;
+  document["skip_cutscenes"] = mSkips.Cutscenes;
+  document["skip_intro"] = mSkips.Intro;
+  document["auto_connect"] = mOptions.AutoConnect;
+  document["notifications"] = mOptions.Notifications;
+  WriteSettings(mPaths.SettingsFile, document);
+}
+
+ClientOptions Session::Options() const {
+  std::lock_guard lock(mMutex);
+  return mOptions;
+}
+
+void Session::SetOptions(const ClientOptions &options) {
+  std::lock_guard lock(mMutex);
+  mOptions = options;
+  SaveSettings();
 }
 
 CutsceneSkipOptions Session::Skips() const {
@@ -189,6 +250,18 @@ void Session::OnCheck(const CheckEvent &event) {
     Log("Check without a location id: " + Describe(*event.Key));
     return;
   }
+  // Another player's item leaves only as a placeholder in the game: say
+  // what it was, once per location.
+  const bool fresh = !mSidecar.has_value() || mSidecar->ReportedLocations.count(*id) == 0U;
+  if (fresh && mSlot.has_value()) {
+    const auto placement = mPlacements.find(*id);
+    const auto names = mPlacementNames.find(*id);
+    if (placement != mPlacements.end() && placement->second.Player != mSlot->Slot &&
+        names != mPlacementNames.end())
+      Notify(Notification::Kind::ItemSent,
+             "Sent " + (names->second.first.empty() ? std::string("an item") : names->second.first) +
+                 " to " + (names->second.second.empty() ? std::string("another player") : names->second.second));
+  }
   ReportLocation(*id);
   // The game gave this world's item at its location itself; the server's
   // copy of it is skipped while the save records the location.
@@ -258,6 +331,7 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
   GiveReceivedItems(memory);
   ApplyDeathLink(memory);
   WatchGoal(memory);
+  FlushPersist();
 }
 
 void Session::OnDeath() {
@@ -270,6 +344,7 @@ void Session::OnDeath() {
   if (mDeathLink && mClient && mSlot.has_value()) {
     mClient->SendDeath(mSettings.Slot + " fell in Hyrule.");
     Log("DeathLink: your death was sent");
+    Notify(Notification::Kind::Death, "DeathLink: your death was shared");
   }
 }
 
@@ -306,8 +381,23 @@ void Session::WatchGoal(oot3d::recomp::a32::MemoryBus &memory) {
   mSidecar->GoalReached = true;
   Persist();
   Log("Goal: Ganon is defeated");
+  Notify(Notification::Kind::Goal, "Goal complete: Ganon is defeated!");
   if (mClient)
     mClient->SendGoal();
+}
+
+// Items found in this world come back without a message: the location
+// showed them, or the placeholder's message named them on sending.
+void Session::NotifyReceived(const ReceivedItem &item, const std::string &name) {
+  if (!mSlot.has_value())
+    return;
+  if (item.Player != mSlot->Slot)
+    Notify(Notification::Kind::ItemReceived,
+           "Received " + name + " from " + (item.PlayerName.empty() ? std::string("another player") : item.PlayerName));
+  else if (item.Location <= 0)
+    Notify(Notification::Kind::ItemReceived, "Received " + name);
+  else if (mSidecar.has_value() && mSidecar->GivenAtLocation.count(item.Location) == 0U)
+    Notify(Notification::Kind::ItemReceived, "Got " + name);
 }
 
 // Received items are always items of this game, whoever found them.
@@ -352,10 +442,12 @@ void Session::GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory) {
       if (result == ItemReceiver::Result::Waiting)
         return; // one item at a time, when Link can take it
       Log("Received " + name);
+      NotifyReceived(item, name);
     } else if (const auto *direct = std::get_if<GiveDirect>(&plan)) {
       if (!ApplyDirect(*direct, memory))
         return;
       Log("Received " + name);
+      NotifyReceived(item, name);
     } else {
       Log("Not given: " + std::get<GiveUnsupported>(plan).Reason);
     }
@@ -377,6 +469,8 @@ void Session::OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory) {
   if (mSidecar.has_value() && mSidecar->Identity == identity)
     return;
   Persist();
+  FlushPersist(); // the previous save's sidecar, before it is replaced
+  mWriter.WaitIdle(); // the file read next may still be queued
   std::string error;
   auto state = LoadSidecar(mPaths.SidecarDirectory, identity, &error);
   if (!state.has_value()) {
@@ -413,11 +507,20 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
   if (const auto *changed = std::get_if<NetworkEvent::StateChanged>(&variant)) {
     Log(std::string("Connection: ") + ToString(changed->State) +
         (changed->Detail.empty() ? "" : " (" + changed->Detail + ")"));
+    if (changed->State != ConnectionState::SlotConnected && mWasConnected) {
+      mWasConnected = false;
+      Notify(Notification::Kind::Warning, changed->State == ConnectionState::Disconnected
+                                              ? "Disconnected from Archipelago"
+                                              : "Connection to Archipelago lost; reconnecting");
+    }
   } else if (const auto *slot = std::get_if<NetworkEvent::SlotConnected>(&variant)) {
+    mWasConnected = true;
+    Notify(Notification::Kind::Info, "Connected to Archipelago as " + mSettings.Slot);
     mSlot = SidecarIdentity{slot->Seed, slot->Team, slot->Slot, -1};
     mServerChecked = {slot->CheckedLocations.begin(), slot->CheckedLocations.end()};
     mServerItems.clear();
     mPlacements.clear();
+    mPlacementNames.clear();
     mSidecar.reset();
     const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
     mDeathLink = slotData.is_object() && slotData.value("death_link", false);
@@ -432,6 +535,7 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     for (const auto &error : refused->Errors)
       errors += (errors.empty() ? "" : ", ") + error;
     Log("Slot refused: " + errors);
+    Notify(Notification::Kind::Warning, "Archipelago refused the slot: " + errors);
   } else if (const auto *items = std::get_if<NetworkEvent::ItemsReceived>(&variant)) {
     // Update gives them in the game and advances AppliedItems. The server
     // resends from index 0 on every connection.
@@ -443,8 +547,10 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
           " from player " + std::to_string(item.Player));
     }
   } else if (const auto *scouted = std::get_if<NetworkEvent::LocationsScouted>(&variant)) {
-    for (const auto &item : scouted->Items)
+    for (const auto &item : scouted->Items) {
       mPlacements[item.Location] = Placement{item.Item, item.Player, item.Flags};
+      mPlacementNames[item.Location] = {item.ItemName, item.PlayerName};
+    }
     if (mSidecar.has_value()) {
       for (const auto &[location, placement] : mPlacements)
         mSidecar->Placements[location] = placement;
@@ -457,18 +563,26 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     if (mDeathLink) {
       mKillPending = true;
       Log("DeathLink: " + death->Source + " died" + (death->Cause.empty() ? "" : " (" + death->Cause + ")"));
+      Notify(Notification::Kind::Death,
+             "DeathLink: " + (death->Cause.empty() ? death->Source + " died" : death->Cause));
     }
   } else if (const auto *message = std::get_if<NetworkEvent::Message>(&variant)) {
     Log(message->Text);
   }
 }
 
-void Session::Persist() {
-  if (!mSidecar.has_value())
+// Marks the sidecar for writing at the end of the frame (FlushPersist): a
+// new file receiving many items, or the scouts on connecting, would
+// otherwise write the whole file once per item.
+void Session::Persist() { mPersistPending = mSidecar.has_value(); }
+
+void Session::FlushPersist() {
+  if (auto error = mWriter.TakeError())
+    Log("Cannot save Archipelago progress: " + *error);
+  if (!mPersistPending || !mSidecar.has_value())
     return;
-  std::string error;
-  if (!SaveSidecar(mPaths.SidecarDirectory, *mSidecar, &error))
-    Log("Cannot save Archipelago progress: " + error);
+  mPersistPending = false;
+  mWriter.Write(*mSidecar);
 }
 
 } // namespace Oot3dArchipelago

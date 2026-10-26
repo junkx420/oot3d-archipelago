@@ -1,6 +1,6 @@
 {
     "game": "Ocarina of Time 3D",
     "authors": ["TriAevum Archipelago contributors", "Ship of Harkinian apworld authors (aMannus et al., logic base)"],
-    "world_version": "0.2.0",
+    "world_version": "0.3.0",
     "minimum_ap_version": "0.6.7"
 }

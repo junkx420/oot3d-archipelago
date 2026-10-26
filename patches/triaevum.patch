@@ -142,7 +142,7 @@ index 5f59a070..490e21f7 100644
        pc, state, memory, runtime.ActorVisibility);
    if (pc == Oot3dNativeGame::kNativeQbfA4Blit && runtime.HdFonts && runtime.TraceMemory)
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
-index 01026912..69e6beb9 100644
+index 01026912..785b7fc6 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_frame.cpp
 @@ -513,6 +513,11 @@ bool NativeA32WindowSession::RunFrame() {
@@ -157,19 +157,20 @@ index 01026912..69e6beb9 100644
      }
      if (presentHostFrame) {
        PresentVisualFrame(presentationElapsedSeconds, visualInterpolationAlpha);
-@@ -599,6 +604,11 @@ bool NativeA32WindowSession::RunFrame() {
+@@ -599,6 +604,12 @@ bool NativeA32WindowSession::RunFrame() {
    phaseStart = std::chrono::steady_clock::now();
    CpuProbe::Scope cpuPresent(CpuProbe::Phase::Present);
    Fast::Renderer3ds::SlowStepTrace presentSteps("present");
 +#ifdef TRIAEVUM_ENABLE_ARCHIPELAGO
-+  // Title and file selection only; under the preparation screen.
++  // Badge on the title and file selection, messages; under the preparation
++  // screen.
 +  if (archipelagoSession)
-+    Oot3dArchipelago::DrawBadge(*archipelagoSession);
++    Oot3dArchipelago::DrawOverlay(*archipelagoSession);
 +#endif
    // The first frames render under the preparation screen.
    preparationScreen.Draw(preparationStatus);
    gui->EndDraw();
-@@ -1093,11 +1103,19 @@ bool NativeA32WindowSession::UpdateGuestServicesForRefresh(
+@@ -1093,11 +1104,19 @@ bool NativeA32WindowSession::UpdateGuestServicesForRefresh(
                                       pauseInputs.SceneMode == 3U &&
                                       (pauseInputs.RuntimeMode == 1U ||
                                        pauseInputs.RuntimeMode == 2U);
@@ -207,20 +208,22 @@ index b6cfceec..fc68bbb7 100644
    std::optional<Oot3dNativeGame::Menu::MenuFontTextureProvider> menuFontProviderStorage;
    std::optional<oot3d::ui::N64UiFast3dRenderer> n64UiRendererStorage;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-index 81150d82..ca9b37ed 100644
+index 81150d82..b1c5907d 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-@@ -228,6 +228,49 @@ void NativeA32WindowSession::Setup() {
+@@ -228,6 +228,50 @@ void NativeA32WindowSession::Setup() {
                           objectBankHooks.end());
    const auto rainHooks = Oot3dNativeGame::TopScreenRainAdapter::HookPcs();
    blockEntryHooks.insert(blockEntryHooks.end(), rainHooks.begin(), rainHooks.end());
 +#ifdef TRIAEVUM_ENABLE_ARCHIPELAGO
-+  // Built in, but off unless TRIAEVUM_ARCHIPELAGO=1: then the game runs
-+  // exactly as without the module. TRIAEVUM_ARCHIPELAGO_PROBE=<hex pc> adds
-+  // a counted hook for the hook experiment; TRIAEVUM_ARCHIPELAGO_LOG appends
-+  // check events to a file.
-+  if (const char *enabled = std::getenv("TRIAEVUM_ARCHIPELAGO");
-+      enabled != nullptr && std::string_view(enabled) == "1") {
++  // Built in, but off unless enabled in F1 > Archipelago (archipelago.json
++  // beside the game's config) or with TRIAEVUM_ARCHIPELAGO=1; off, the game
++  // runs exactly as without the module. TRIAEVUM_ARCHIPELAGO_PROBE=<hex pc>
++  // adds a counted hook for the hook experiment; TRIAEVUM_ARCHIPELAGO_LOG
++  // appends check events to a file.
++  const auto archipelagoSettings =
++      std::filesystem::path(launch.Host.ConfigurationPath).parent_path() / "archipelago.json";
++  if (Oot3dArchipelago::EnabledInSettings(archipelagoSettings)) {
 +    auto &archipelago = archipelagoStorage.emplace();
 +    const char *logPath = std::getenv("TRIAEVUM_ARCHIPELAGO_LOG");
 +    const auto writeLine = [log = std::string(logPath != nullptr ? logPath : "")](
@@ -229,9 +232,8 @@ index 81150d82..ca9b37ed 100644
 +      if (!log.empty())
 +        std::ofstream(log, std::ios::app) << line << '\n';
 +    };
-+    const auto configDirectory = std::filesystem::path(launch.Host.ConfigurationPath).parent_path();
 +    archipelagoSession = std::make_unique<Oot3dArchipelago::Session>(Oot3dArchipelago::Session::Paths{
-+        configDirectory / "archipelago.json", saveDataDirectory / "archipelago",
++        archipelagoSettings, saveDataDirectory / "archipelago",
 +        std::filesystem::path(launch.Host.ResourceRoot) / "archipelago" / "locations.json",
 +        std::filesystem::path(launch.Host.ResourceRoot) / "archipelago" / "items.json"});
 +    archipelago.SetSink([writeLine, session = archipelagoSession.get()](
@@ -260,7 +262,7 @@ index 81150d82..ca9b37ed 100644
    widescreenProjection.ActorVisibility.Diagnostics =
        std::getenv("OOT3D_ACTOR_VISIBILITY_DIAGNOSTICS") != nullptr;
    picaCompositionHooks =
-@@ -532,6 +575,13 @@ void NativeA32WindowSession::Setup() {
+@@ -532,6 +576,13 @@ void NativeA32WindowSession::Setup() {
          wholeAotObservableExitBlocks.end(),
          topScreenObservableExitBlocks.begin(),
          topScreenObservableExitBlocks.end());
@@ -274,7 +276,7 @@ index 81150d82..ca9b37ed 100644
  #else
      // The product runs the same TopScreen source port as developer builds:
      // every block is an observable exit of the whole-AOT graph, because the
-@@ -643,6 +693,13 @@ void NativeA32WindowSession::Setup() {
+@@ -643,6 +694,13 @@ void NativeA32WindowSession::Setup() {
        Oot3dNativeGame::Oot3dNativeA32Registry(), hostServices);
    widescreenProjection.TraceMemory = &process.Memory();
    widescreenProjection.ActorVisibility.HostMemory = &process.Memory();
@@ -288,13 +290,16 @@ index 81150d82..ca9b37ed 100644
    process.Memory().EnableWriteTraceFingerprint(
        widescreenProjection.TraceA32Blocks);
    auto &uiLifecycleBridge = uiLifecycleBridgeStorage.emplace(
-@@ -856,6 +913,10 @@ void NativeA32WindowSession::Setup() {
+@@ -856,6 +914,13 @@ void NativeA32WindowSession::Setup() {
    }
    applicationSettingsTabs.push_back(
        Oot3dNativeGame::CreateSavestatePanel(savestateLibrary));
 +#ifdef TRIAEVUM_ENABLE_ARCHIPELAGO
 +  if (archipelagoSession)
 +    applicationSettingsTabs.push_back(Oot3dArchipelago::CreatePanel(*archipelagoSession));
++  else
++    applicationSettingsTabs.push_back(Oot3dArchipelago::CreateDisabledPanel(
++        std::filesystem::path(launch.Host.ConfigurationPath).parent_path() / "archipelago.json"));
 +#endif
    applicationSettingsTabs.push_back(Oot3dNativeGame::CreateGameLanguagePanel(languageSettings));
    applicationSettingsTabs.push_back(

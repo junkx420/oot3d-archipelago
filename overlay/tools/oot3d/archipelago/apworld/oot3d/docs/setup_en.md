@@ -1,26 +1,47 @@
 # Ocarina of Time 3D (TriAevum) setup
 
-Development state: the logic is ported from the Ship of Harkinian apworld
-and checked against OoT3D_Randomizer, but only the options the TriAevum
-client supports can be generated.
+Alpha. The logic is ported from the Ship of Harkinian apworld and checked
+against OoT3D_Randomizer. Only the options the TriAevum client supports can
+be generated: the game's own item locations (chests, NPC gifts, heart pieces
+and the like), with dungeon keys, maps and compasses in their own dungeon.
 
-1. Build TriAevum with `-DTRIAEVUM_ENABLE_ARCHIPELAGO=ON`.
-2. Start the game with the environment variable `TRIAEVUM_ARCHIPELAGO=1`.
-   The title and file selection then show an Archipelago badge.
-3. Press F1, open **Game > Archipelago**, enter server, slot name and
-   password, and select **Connect**.
-4. Load a save file. Checks are sent from then on; progress is kept per save
-   slot in `savedata/archipelago/`.
+## What you need
+
+- Your own Ocarina of Time 3D ROM (EUR). It is never distributed.
+- TriAevum built from source with the Archipelago module
+  (`-DTRIAEVUM_ENABLE_ARCHIPELAGO=ON`); the project's `docs/BUILD.md` says
+  how. No game build can be distributed, because it contains code compiled
+  from the ROM.
+- This world's `oot3d.apworld` in the Archipelago launcher's
+  `custom_worlds` folder, to generate and host seeds.
+
+## Playing
+
+1. Start the game, press F1, open **Game > Archipelago** and turn on
+   **Archipelago enabled**. Restart the game.
+2. In the same tab enter server, slot name and password, and select
+   **Connect**. The title and file selection show an Archipelago badge with
+   the connection state.
+3. Load a save file. Checks are sent from then on; progress is kept per save
+   slot in `savedata/archipelago/`. The server stays the source of items:
+   received items arrive again on a new file.
+
+With **Connect automatically at start** (on by default) the game connects to
+the saved server and slot by itself; the password is not saved. A lost
+connection is reopened automatically. **In-game messages** show items sent
+and received, DeathLink deaths, the goal and the connection.
+
+`TRIAEVUM_ARCHIPELAGO=1` (or `0`) still overrides the switch.
 
 ## Universal Tracker
 
-The world supports [Universal Tracker](https://github.com/FarrakKilhn/UniversalTracker),
+The world supports [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases),
 which shows the locations that are in logic. It needs no player yaml: it
-rebuilds the world from the seed's slot data.
+rebuilds the world from the seed's slot data. It shows no "glitched"
+locations: Ship of Harkinian's N64 tricks are not checked for 3D.
 
-1. Put this world's `.apworld` and Universal Tracker's `.apworld` into the
-   Archipelago launcher's `custom_worlds` folder.
+1. Put this world's `.apworld` and Universal Tracker's `tracker.apworld` into
+   the Archipelago launcher's `custom_worlds` folder.
 2. Open **Universal Tracker** from the launcher and connect it to the same
    server and slot as the game (it connects beside the game, which stays
    connected too).
-3. Locations in logic are listed as items arrive from the server.

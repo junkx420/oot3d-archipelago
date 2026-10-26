@@ -16,7 +16,9 @@
 
 #include <nlohmann/json.hpp>
 
+#include <chrono>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <map>
 #include <stdexcept>
@@ -487,6 +489,34 @@ void TestSidecarRoundTripAndMismatch() {
   std::filesystem::remove_all(directory);
 }
 
+void TestSidecarWriter() {
+  const auto directory = FreshDirectory("triaevum_archipelago_writer_test");
+  const SidecarIdentity first{"AP 1", 0, 1, 0}, second{"AP 1", 0, 1, 2};
+  std::string error;
+  {
+    SidecarWriter writer(directory);
+    SidecarState state;
+    state.Identity = first;
+    for (std::int64_t applied = 1; applied <= 50; ++applied) {
+      state.AppliedItems = applied;
+      writer.Write(state);
+    }
+    state.Identity = second;
+    state.AppliedItems = 3;
+    writer.Write(state);
+    writer.WaitIdle();
+    const auto loaded = LoadSidecar(directory, first, &error);
+    Expect(loaded.has_value() && loaded->AppliedItems == 50, "the newest queued state is written");
+    Expect(!writer.TakeError().has_value(), "no write error");
+    state.AppliedItems = 4;
+    writer.Write(state); // written by the destructor at the latest
+  }
+  const auto loaded = LoadSidecar(directory, second, &error);
+  Expect(loaded.has_value() && loaded->AppliedItems == 4,
+         "each save's file is written, the last one before the writer stops");
+  std::filesystem::remove_all(directory);
+}
+
 // An empty save as the game starts one: item slots hold ITEM_NONE and the
 // dungeon key counters -1.
 void FillFreshSave(FakeMemory &memory) {
@@ -696,6 +726,48 @@ void TestSessionWithoutConnection() {
   const auto document = nlohmann::json::parse(text.str());
   Expect(document.value("uuid", "").size() == 32U, "the session stores an installation uuid");
   Expect(!document.contains("password"), "the password is never written");
+  Expect(document.value("auto_connect", false) && document.value("notifications", false),
+         "auto-connect and messages are on by default");
+  std::filesystem::remove_all(directory);
+}
+
+void TestRetryDelay() {
+  Expect(RetryDelay(1) == std::chrono::seconds(5) && RetryDelay(2) == std::chrono::seconds(10) &&
+             RetryDelay(4) == std::chrono::seconds(40),
+         "failed connections are retried after 5, 10, 20, 40 seconds");
+  Expect(RetryDelay(5) == std::chrono::seconds(60) && RetryDelay(50) == std::chrono::seconds(60),
+         "retries wait at most a minute");
+}
+
+void TestEnabledSettingAndAutoConnect() {
+  if (std::getenv("TRIAEVUM_ARCHIPELAGO") != nullptr)
+    return; // the variable decides instead of the file
+  const auto directory = FreshDirectory("triaevum_archipelago_enable_test");
+  const auto settings = directory / "archipelago.json";
+  Expect(!EnabledInSettings(settings), "Archipelago is off without a settings file");
+  Expect(SetEnabledInSettings(settings, true) && EnabledInSettings(settings),
+         "the switch turns it on for the next start");
+  std::ofstream(directory / "locations.json") << kTableJson;
+  {
+    // A slot from an earlier session: the session connects by itself (to a
+    // port nothing listens on) and keeps the switch while saving.
+    auto document = nlohmann::json::parse(std::ifstream(settings));
+    document["server"] = "127.0.0.1:1";
+    document["slot"] = "Tester";
+    std::ofstream(settings) << document.dump();
+    Session session({settings, directory / "sidecars", directory / "locations.json",
+                     TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
+    Expect(session.State() != ConnectionState::Disconnected, "a saved slot is connected at start");
+    Expect(session.Notifications().empty(), "no messages before anything happened");
+    session.SetOptions({false, false});
+  }
+  Expect(EnabledInSettings(settings), "saving the session keeps the switch");
+  {
+    Session session({settings, directory / "sidecars", directory / "locations.json",
+                     TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
+    Expect(session.State() == ConnectionState::Disconnected, "auto-connect can be turned off");
+    Expect(!session.Options().Notifications, "the message option is kept");
+  }
   std::filesystem::remove_all(directory);
 }
 
@@ -717,6 +789,9 @@ int main(int argc, char **argv) {
     TestHookPcsAreSorted();
     TestProbeCountsOnlyItsPc();
     TestObserverReportsDeath();
+    TestRetryDelay();
+    TestSidecarWriter();
+    TestEnabledSettingAndAutoConnect();
     TestLocationTable();
     TestGeneratedLocationTable(TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON);
     TestSidecarRoundTripAndMismatch();

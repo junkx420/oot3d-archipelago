@@ -461,3 +461,39 @@ client (`private/deathlink-peer.py`):
   `Glitched Item` stays for the imported trick tests. Live again: `--list`
   gives the 11 in-logic locations only. apworld suite: 480 passed, 33
   skipped.
+### Alpha preparation (2026-10-26)
+
+Features and quality of life, decided with the user:
+
+- Enable without an environment variable: F1 > Game > Archipelago has an
+  "Archipelago enabled" switch, kept as `enabled` in `archipelago.json`
+  beside the game's config and read at the next start (the check observer's
+  hooks are installed with the game). While off, the tab shows only the
+  switch and the game runs unchanged. `TRIAEVUM_ARCHIPELAGO=1` or `0` still
+  decides when set.
+- Auto-connect: with a saved server and slot the session connects at
+  startup, before a file is loaded (option, on by default; the password is
+  not saved). Reconnect: apclientpp reopens a socket the server closed; a
+  session that fails with an error is now started again after 5, 10, 20, 40,
+  then 60 seconds until Disconnect. A repeated socket error is logged once.
+- In-game messages (option, on by default), top center, six seconds each,
+  at most five: "Sent X to Y" when this world's location holds another
+  player's item (names from the server's data package, resolved with the
+  scouts), "Received X from Y" or "Got X" when an item is given, DeathLink
+  deaths sent and received, the goal, connected, lost and refused.
+
+Optimization, measured headless (title, file selection, gameplay in the Deku
+Tree, 5,400 frames): `Session::Update` costs 7 to 20 microseconds per guest
+frame on average. Writing the progress file (temporary file and rename) took
+several milliseconds on the game thread after every check and item; it now
+happens at most once per frame and on a writer thread (`SidecarWriter`). The
+one remaining spike is reading the file when a save is loaded (about 6 ms,
+during the load).
+
+Verified: host tests (retry delays, the switch and options in the settings
+file, auto-connect, the writer); a headless run enabled only by the settings
+file auto-connected, showed the badge and "Connected to Archipelago as
+Link3D"; with the server stopped and started again the game reconnected and
+scouted again by itself; in gameplay "Received Kokiri Sword" appeared and the
+item was given; `triaevum_archipelago_net_smoke` passed with a second
+DeathLink client.

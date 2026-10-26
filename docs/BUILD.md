@@ -13,8 +13,17 @@
    development machine, including the playable whole-AOT developer build,
    are in `overlay/docs/archipelago/RECON.md`, section 1.
 
-3. Start the game with `TRIAEVUM_ARCHIPELAGO=1` in the environment. The
-   client is under F1 > Game > Archipelago.
+3. Start the game, press F1, open Game > Archipelago, turn on
+   "Archipelago enabled" and restart. Connect from the same tab; the game
+   then connects to the saved server and slot at every start. Setting
+   `TRIAEVUM_ARCHIPELAGO=1` (or `0`) in the environment overrides the switch.
+   Player guide: `overlay/tools/oot3d/archipelago/apworld/oot3d/docs/setup_en.md`.
+
+The apworld for the Archipelago launcher (`custom_worlds`) is built with
+
+```powershell
+python tools/build_apworld.py C:\path\to\TriAevum oot3d.apworld
+```
 
 Tests without a ROM: the CMake target `triaevum_archipelago_tests`. The
 apworld's tests run in an Archipelago checkout with the world linked or

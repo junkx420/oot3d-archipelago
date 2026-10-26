@@ -16,6 +16,7 @@
 #include "ap_network_client.h"
 #include "ap_sidecar.h"
 
+#include <chrono>
 #include <cstdint>
 #include <deque>
 #include <filesystem>
@@ -31,6 +32,29 @@ namespace Oot3dArchipelago {
 
 inline constexpr std::uint32_t kSaveFileNum = kSaveContext + 0x14DCU;
 inline constexpr std::uint32_t kSaveNewf = kSaveContext + 0x0030U; // "ZELDAZ"
+
+// Whether the module runs, read once at startup: TRIAEVUM_ARCHIPELAGO=1 or 0
+// when set, otherwise "enabled" in the settings file (off by default).
+bool EnabledInSettings(const std::filesystem::path &settingsFile);
+// Writes "enabled", keeping the file's other keys; takes effect at the next
+// start, since the check observer's hooks are installed with the game.
+bool SetEnabledInSettings(const std::filesystem::path &settingsFile, bool enabled);
+
+// Client options kept in the settings file.
+struct ClientOptions {
+  bool AutoConnect = true;   // connect at startup with the saved server and slot
+  bool Notifications = true; // in-game messages (items, DeathLink, goal)
+};
+
+// One in-game message for the overlay.
+struct Notification {
+  enum class Kind : std::uint8_t { Info, ItemReceived, ItemSent, Death, Goal, Warning };
+  Kind Type = Kind::Info;
+  std::string Text;
+  std::chrono::steady_clock::time_point Time;
+};
+inline constexpr auto kNotificationLifetime = std::chrono::seconds(6);
+inline constexpr std::size_t kMaximumNotifications = 5;
 
 class Session final {
 public:
@@ -54,10 +78,17 @@ public:
   void Update(oot3d::recomp::a32::MemoryBus &memory);
 
   [[nodiscard]] ConnectionSettings Settings() const;
+  [[nodiscard]] const std::filesystem::path &SettingsFile() const noexcept { return mPaths.SettingsFile; }
   // Client settings, kept in the settings file; they apply with or without
   // a connection.
   [[nodiscard]] CutsceneSkipOptions Skips() const;
   void SetSkips(const CutsceneSkipOptions &skips);
+  [[nodiscard]] ClientOptions Options() const;
+  void SetOptions(const ClientOptions &options);
+  // Messages younger than kNotificationLifetime, oldest first; empty while
+  // notifications are off.
+  [[nodiscard]] std::vector<Notification> Notifications(
+      std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now()) const;
   void Connect(const ConnectionSettings &settings);
   void Disconnect();
   void Say(std::string text);
@@ -82,11 +113,14 @@ public:
 
 private:
   void Log(std::string line);
+  void Notify(Notification::Kind kind, std::string text);
+  void NotifyReceived(const ReceivedItem &item, const std::string &name);
   void LoadSettings();
   void SaveSettings() const;
   void HandleEvent(const NetworkEventVariant &event);
   void OpenSidecarIfReady(oot3d::recomp::a32::MemoryBus &memory);
   void Persist();
+  void FlushPersist();
   void ReportLocation(std::int64_t id);
   void GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory);
   void ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory);
@@ -97,6 +131,12 @@ private:
   Paths mPaths;
   ConnectionSettings mSettings;
   CutsceneSkipOptions mSkips;
+  ClientOptions mOptions;
+  mutable std::deque<Notification> mNotifications;
+  // The slot was connected in this session (for "connection lost").
+  bool mWasConnected = false;
+  // Names of what this slot's locations hold, from the scouts (owner's game).
+  std::map<std::int64_t, std::pair<std::string, std::string>> mPlacementNames;
   int mSkipsLoggedForSlot = -1;
   std::string mUuid;
   std::unique_ptr<NetworkClient> mClient;
@@ -116,6 +156,8 @@ private:
   bool mDiedInScene = false;
   std::deque<std::string> mConsole;
   bool mFrontend = false;
+  bool mPersistPending = false;
+  SidecarWriter mWriter{mPaths.SidecarDirectory};
 
   // From SlotConnected.
   std::optional<SidecarIdentity> mSlot;

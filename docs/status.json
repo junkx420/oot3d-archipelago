@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-26",
-  "now": "Phase 4: the file selection is visible again; next are a save reload test, a new file receiving everything, the savestate item counter and the goal at Ganon.",
+  "now": "Alpha v0.1.0-alpha.1 released (apworld + source). Next: a save reload test, a new file receiving everything, the savestate item counter and the goal at Ganon.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -19,12 +19,12 @@
       ]
     },
     {
-      "id": 2, "name": "AP client in the game", "weight": 5, "percent": 85,
+      "id": 2, "name": "AP client in the game", "weight": 5, "percent": 95,
       "items": [
         {"text": "apclientpp client on its own thread, F1 Archipelago panel", "done": true},
         {"text": "Progress sidecar per seed, slot and save file", "done": true},
         {"text": "End to end against a local Archipelago server", "done": true},
-        {"text": "Connecting from inside the running game", "done": false},
+        {"text": "Connecting from inside the running game, auto-connect and reconnect", "done": true},
         {"text": "wss:// against archipelago.gg", "done": false}
       ]
     },
@@ -57,16 +57,20 @@
       ]
     },
     {
-      "id": 5, "name": "Polish", "weight": 10, "percent": 15,
+      "id": 5, "name": "Polish", "weight": 10, "percent": 50,
       "items": [
         {"text": "Names and models for other games' items", "done": false},
         {"text": "Optional cutscene skips and intro skip (built, not yet tried in the game)", "done": true},
         {"text": "Archipelago badge with the connection state on the title and file selection", "done": true},
-        {"text": "Player-facing setup guide", "done": false}
+        {"text": "Enable switch in the F1 menu instead of an environment variable", "done": true},
+        {"text": "In-game messages: items sent and received, DeathLink, goal, connection", "done": true},
+        {"text": "Progress file written off the game thread", "done": true},
+        {"text": "Player-facing setup guide", "done": true}
       ]
     }
   ],
   "log": [
+    {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.1: oot3d.apworld and source on GitHub. New: Archipelago switch in the F1 menu, auto-connect and reconnect, in-game messages for sent and received items, DeathLink and the goal; saving progress no longer stalls the game."},
     {"date": "2026-10-26", "text": "Universal Tracker no longer lists Ship of Harkinian's N64 glitch routes as glitched locations; it shows only the 3D logic."},
     {"date": "2026-10-26", "text": "Universal Tracker tried live against a local seed: it shows the same locations in logic as the apworld (5 at the start, 11 after a Kokiri Sword)."},
     {"date": "2026-10-26", "text": "Universal Tracker support: the tracker can rebuild the world from the seed's slot data and show what is in logic; a test rebuilds it the same way."},

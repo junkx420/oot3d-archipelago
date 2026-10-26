@@ -8,6 +8,7 @@
 // frame. Nothing here reads or writes guest memory.
 
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <deque>
 #include <memory>
@@ -37,12 +38,20 @@ enum class ConnectionState : std::uint8_t {
 
 const char *ToString(ConnectionState state) noexcept;
 
+// Wait before the given retry (1-based) of a connection that failed:
+// 5, 10, 20, 40, then 60 seconds.
+std::chrono::seconds RetryDelay(int attempt) noexcept;
+
 struct ReceivedItem {
   std::int64_t Index = 0;    // position in the server's item list
   std::int64_t Item = 0;     // AP item id
   std::int64_t Location = 0; // AP location id it came from
   int Player = 0;            // ReceivedItems: finding player's slot; scouts: owner
   unsigned Flags = 0;
+  // For messages, from the server's data package: the item's name in its
+  // own game (scouts: the owner's game) and Player's name. Empty if unknown.
+  std::string ItemName;
+  std::string PlayerName;
 };
 
 namespace NetworkEvent {
@@ -98,6 +107,8 @@ public:
   NetworkClient &operator=(const NetworkClient &) = delete;
 
   // Game thread. All calls only queue work and return immediately.
+  // A connection that fails with an error is tried again (RetryDelay) until
+  // Disconnect; apclientpp itself reopens a socket the server closed.
   void Connect(const ConnectionSettings &settings);
   void Disconnect();
   void SendLocationChecks(std::vector<std::int64_t> locations);

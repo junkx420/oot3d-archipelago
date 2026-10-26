@@ -138,3 +138,14 @@ without Reframed's layout (full-width heading, unscaled names); both together
 show Reframed's layout. Verified headless at the file selection with
 Archipelago off and on. Still missing there: Link and the title logo on the
 right half; not investigated.
+
+## Client (alpha)
+
+- Auto-connect does not save the password: a server that needs one refuses
+  the slot until it is entered and Connect is selected.
+- A server address without `ws://` or `wss://` first tries a secure
+  connection; against a plain local server the log shows one "TLS handshake
+  failed" before it connects.
+- Loading a save reads its progress file on the game thread (about 6 ms).
+- Messages name another game's item only when the server's data package has
+  arrived before the scouts; otherwise they say "an item".

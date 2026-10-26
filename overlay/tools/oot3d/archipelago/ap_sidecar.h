@@ -6,12 +6,15 @@
 // sidecar remembers how many were applied, which checks were sent, what the
 // slot's locations hold and which of this world's items were given where.
 
+#include <condition_variable>
 #include <cstdint>
 #include <filesystem>
 #include <map>
+#include <mutex>
 #include <optional>
 #include <set>
 #include <string>
+#include <thread>
 
 namespace Oot3dArchipelago {
 
@@ -62,5 +65,35 @@ std::optional<SidecarState> LoadSidecar(const std::filesystem::path &directory,
 // Writes a temporary file and renames it over the old one.
 bool SaveSidecar(const std::filesystem::path &directory, const SidecarState &state,
                  std::string *error);
+
+// SaveSidecar on a thread of its own: the rename takes milliseconds on
+// Windows, too long for the game thread on every check and item. Write
+// queues a copy; a newer state of the same file replaces a queued one.
+class SidecarWriter final {
+public:
+  explicit SidecarWriter(std::filesystem::path directory);
+  ~SidecarWriter(); // writes what is queued, then stops
+  SidecarWriter(const SidecarWriter &) = delete;
+  SidecarWriter &operator=(const SidecarWriter &) = delete;
+
+  void Write(const SidecarState &state);
+  // Returns once every queued state is on disk (before reading a file back).
+  void WaitIdle();
+  // The last write error since the previous call, if any.
+  std::optional<std::string> TakeError();
+
+private:
+  void Run();
+
+  std::filesystem::path mDirectory;
+  std::mutex mMutex;
+  std::condition_variable mWake;
+  std::condition_variable mIdle;
+  std::map<std::filesystem::path, SidecarState> mQueued;
+  bool mWriting = false;
+  bool mStop = false;
+  std::optional<std::string> mError;
+  std::thread mThread;
+};
 
 } // namespace Oot3dArchipelago

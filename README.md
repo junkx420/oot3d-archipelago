@@ -4,8 +4,16 @@
 [TriAevum](https://github.com/coccofresco/TriAevum), the native
 recompilation of *The Legend of Zelda: Ocarina of Time 3D*.
 
-Work in progress; the current state is on the
-[status page](https://junkx420.github.io/oot3d-archipelago/).
+**Alpha.** The current state is on the
+[status page](https://junkx420.github.io/oot3d-archipelago/); releases carry
+`oot3d.apworld` for the Archipelago launcher. Playing needs TriAevum built
+from source with your own ROM: a game build cannot be distributed, because it
+contains code compiled from the ROM.
+
+What works in the alpha: the game's own item locations send checks and give
+multiworld items (your own with their real model), received items arrive in
+the game, the goal (Ganon), DeathLink, optional cutscene skips, auto-connect
+and reconnect, in-game messages, and Universal Tracker.
 
 ## What is here
 
@@ -45,7 +53,9 @@ GPL-3.0-or-later, like TriAevum (`LICENSE`). Parts derived from other
 projects keep their notices: the apworld comes from Ship of Harkinian's
 Archipelago world (MIT, `overlay/tools/oot3d/archipelago/apworld/oot3d/LICENSE`),
 and the location tables are generated from
-[OoT3D_Randomizer](https://github.com/gamestabled/OoT3D_Randomizer) (MIT). The
+[OoT3D_Randomizer](https://github.com/gamestabled/OoT3D_Randomizer), whose
+license text carries OoT-Randomizer's MIT License (both in the apworld, with
+`NOTICE.md`). The
 full list is in TriAevum's `THIRD_PARTY_NOTICES.md` as patched by
 `patches/triaevum.patch`.
 

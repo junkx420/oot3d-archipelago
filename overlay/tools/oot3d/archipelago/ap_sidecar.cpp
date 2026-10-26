@@ -5,6 +5,7 @@
 #include <cctype>
 #include <fstream>
 #include <sstream>
+#include <utility>
 
 namespace Oot3dArchipelago {
 namespace {
@@ -109,6 +110,64 @@ bool SaveSidecar(const std::filesystem::path &directory, const SidecarState &sta
   if (renamed)
     return Fail(error, "cannot replace " + path.string() + ": " + renamed.message());
   return true;
+}
+
+SidecarWriter::SidecarWriter(std::filesystem::path directory)
+    : mDirectory(std::move(directory)), mThread([this] { Run(); }) {}
+
+SidecarWriter::~SidecarWriter() {
+  {
+    std::lock_guard lock(mMutex);
+    mStop = true;
+  }
+  mWake.notify_one();
+  if (mThread.joinable())
+    mThread.join();
+}
+
+void SidecarWriter::Write(const SidecarState &state) {
+  {
+    std::lock_guard lock(mMutex);
+    mQueued[SidecarPath(mDirectory, state.Identity)] = state;
+  }
+  mWake.notify_one();
+}
+
+void SidecarWriter::WaitIdle() {
+  std::unique_lock lock(mMutex);
+  mIdle.wait(lock, [this] { return mQueued.empty() && !mWriting; });
+}
+
+std::optional<std::string> SidecarWriter::TakeError() {
+  std::lock_guard lock(mMutex);
+  return std::exchange(mError, std::nullopt);
+}
+
+void SidecarWriter::Run() {
+  std::unique_lock lock(mMutex);
+  for (;;) {
+    mWake.wait(lock, [this] { return mStop || !mQueued.empty(); });
+    if (mQueued.empty()) {
+      if (mStop)
+        return;
+      continue;
+    }
+    auto queued = std::move(mQueued);
+    mQueued.clear();
+    mWriting = true;
+    lock.unlock();
+    std::optional<std::string> failure;
+    for (const auto &[path, state] : queued) {
+      std::string error;
+      if (!SaveSidecar(mDirectory, state, &error))
+        failure = error;
+    }
+    lock.lock();
+    mWriting = false;
+    if (failure.has_value())
+      mError = failure;
+    mIdle.notify_all();
+  }
 }
 
 } // namespace Oot3dArchipelago

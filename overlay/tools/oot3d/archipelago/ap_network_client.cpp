@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <optional>
 
 namespace Oot3dArchipelago {
 
@@ -16,6 +17,11 @@ constexpr int kItemsHandlingAll = 0b111;
 constexpr auto kPollInterval = std::chrono::milliseconds(5);
 
 } // namespace
+
+std::chrono::seconds RetryDelay(int attempt) noexcept {
+  const int exponent = std::clamp(attempt, 1, 5) - 1;
+  return std::chrono::seconds(std::min(5 << exponent, 60));
+}
 
 const char *ToString(ConnectionState state) noexcept {
   switch (state) {
@@ -39,10 +45,16 @@ public:
         mClient(std::make_unique<APClient>(owner.mUuid, kGameName, settings.Server,
                                            owner.mCertStore)) {
     mClient->set_socket_connected_handler([this] {
+      mLastSocketError.clear();
       mOwner.mState = ConnectionState::SocketConnected;
       mOwner.Emit(NetworkEvent::StateChanged{ConnectionState::SocketConnected, mSettings.Server});
     });
+    // apclientpp retries a closed socket every few seconds; say each
+    // different error once.
     mClient->set_socket_error_handler([this](const std::string &error) {
+      if (error == mLastSocketError)
+        return;
+      mLastSocketError = error;
       mOwner.Emit(NetworkEvent::Message{"Socket error: " + error});
     });
     mClient->set_socket_disconnected_handler([this] {
@@ -75,7 +87,9 @@ public:
     mClient->set_location_info_handler([this](const std::list<APClient::NetworkItem> &items) {
       NetworkEvent::LocationsScouted event;
       for (const auto &item : items)
-        event.Items.push_back({0, item.item, item.location, item.player, item.flags});
+        event.Items.push_back({0, item.item, item.location, item.player, item.flags,
+                               Known(mClient->get_item_name(item.item, mClient->get_player_game(item.player))),
+                               Known(mClient->get_player_alias(item.player))});
       mOwner.Emit(std::move(event));
     });
     mClient->set_slot_refused_handler([this](const std::list<std::string> &errors) {
@@ -88,7 +102,9 @@ public:
     mClient->set_items_received_handler([this](const std::list<APClient::NetworkItem> &items) {
       NetworkEvent::ItemsReceived event;
       for (const auto &item : items)
-        event.Items.push_back({item.index, item.item, item.location, item.player, item.flags});
+        event.Items.push_back({item.index, item.item, item.location, item.player, item.flags,
+                               Known(mClient->get_item_name(item.item, kGameName)),
+                               Known(mClient->get_player_alias(item.player))});
       mOwner.Emit(std::move(event));
     });
     mClient->set_location_checked_handler([this](const std::list<std::int64_t> &locations) {
@@ -113,8 +129,12 @@ public:
   APClient &Client() { return *mClient; }
 
 private:
+  // apclientpp names what its data package lacks "Unknown".
+  static std::string Known(std::string name) { return name == "Unknown" ? std::string() : name; }
+
   NetworkClient &mOwner;
   ConnectionSettings mSettings;
+  std::string mLastSocketError;
   std::unique_ptr<APClient> mClient;
 };
 
@@ -129,6 +149,7 @@ NetworkClient::~NetworkClient() {
 }
 
 void NetworkClient::Connect(const ConnectionSettings &settings) {
+  mState = ConnectionState::Connecting; // at once, not when the thread gets to it
   Command command;
   command.Type = Command::Kind::Connect;
   command.Settings = settings;
@@ -192,6 +213,25 @@ void NetworkClient::Run() {
   bool pendingGoal = false;
   bool deathLink = false;
   bool tagsSent = false;
+  // The last Connect, kept until Disconnect: a session that fails with an
+  // error is started again after RetryDelay.
+  std::optional<ConnectionSettings> wanted;
+  int failures = 0;
+  auto retryAt = std::chrono::steady_clock::time_point::max();
+  const auto fail = [&](const std::exception &error) {
+    session.reset();
+    if (!wanted.has_value()) {
+      mState = ConnectionState::Disconnected;
+      Emit(NetworkEvent::StateChanged{ConnectionState::Disconnected, error.what()});
+      return;
+    }
+    const auto delay = RetryDelay(++failures);
+    retryAt = std::chrono::steady_clock::now() + delay;
+    mState = ConnectionState::Connecting;
+    Emit(NetworkEvent::StateChanged{ConnectionState::Connecting,
+                                    std::string(error.what()) + "; retrying in " +
+                                        std::to_string(delay.count()) + " s"});
+  };
   while (!mStop) {
     std::deque<Command> commands;
     {
@@ -203,11 +243,16 @@ void NetworkClient::Run() {
         switch (command.Type) {
         case Command::Kind::Connect:
           session.reset();
+          wanted = command.Settings;
+          failures = 0;
+          retryAt = std::chrono::steady_clock::time_point::max();
           mState = ConnectionState::Connecting;
           Emit(NetworkEvent::StateChanged{ConnectionState::Connecting, command.Settings.Server});
           session = std::make_unique<Session>(*this, command.Settings);
           break;
         case Command::Kind::Disconnect:
+          wanted.reset();
+          retryAt = std::chrono::steady_clock::time_point::max();
           session.reset();
           mState = ConnectionState::Disconnected;
           Emit(NetworkEvent::StateChanged{ConnectionState::Disconnected, "by request"});
@@ -240,9 +285,16 @@ void NetworkClient::Run() {
           break;
         }
       } catch (const std::exception &error) {
-        session.reset();
-        mState = ConnectionState::Disconnected;
-        Emit(NetworkEvent::StateChanged{ConnectionState::Disconnected, error.what()});
+        fail(error);
+      }
+    }
+    if (!session && wanted.has_value() && std::chrono::steady_clock::now() >= retryAt) {
+      retryAt = std::chrono::steady_clock::time_point::max();
+      try {
+        Emit(NetworkEvent::StateChanged{ConnectionState::Connecting, "retry " + std::to_string(failures)});
+        session = std::make_unique<Session>(*this, *wanted);
+      } catch (const std::exception &error) {
+        fail(error);
       }
     }
     if (session) {
@@ -251,6 +303,7 @@ void NetworkClient::Run() {
         if (mState != ConnectionState::SlotConnected)
           tagsSent = false; // a new slot connection starts without tags
         if (mState == ConnectionState::SlotConnected) {
+          failures = 0;
           if (!tagsSent) {
             const std::list<std::string> tags = deathLink ? std::list<std::string>{"DeathLink"}
                                                           : std::list<std::string>{};
@@ -263,9 +316,7 @@ void NetworkClient::Run() {
             pendingGoal = false;
         }
       } catch (const std::exception &error) {
-        session.reset();
-        mState = ConnectionState::Disconnected;
-        Emit(NetworkEvent::StateChanged{ConnectionState::Disconnected, error.what()});
+        fail(error);
       }
     }
     std::this_thread::sleep_for(kPollInterval);
