@@ -62,6 +62,9 @@ CLIENT_HOOK_BLOCKS = {
     "QuickTextCheckControlCodeBlock": ("CheckForTextControlCode", -8, "block_after_branch"),
     # The block that dispatches a control code: unskippable and instant-off.
     "QuickTextHandleControlCodeBlock": ("HandleTextControlCode", -4, "block_after_branch"),
+    # A child blue warp's scene change (OoT3D_Randomizer cutscenes.c,
+    # Cutscene_BlueWarpOverride): the site itself starts a block.
+    "ChildBlueWarpBlock": ("ChildBlueWarpOverride", 0, "block_after_branch"),
 }
 
 

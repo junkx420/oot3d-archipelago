@@ -2,9 +2,12 @@
 
 The imported SoH options describe Ship of Harkinian's game changes. A value
 is allowed here only when the unmodified 3DS game already behaves that way,
-or when it needs no more from the client than replacing what a location
-gives (chests, keys and dungeon items inside their own dungeon). Everything
-else waits until the client implements it.
+when it needs no more from the client than replacing what a location gives
+(chests, keys and dungeon items inside their own dungeon), when the client
+sets it as save flags the way OoT3D_Randomizer does for a new save (Jabu-Jabu,
+King Zora, the rainbow bridge, Ganon's trials: ap_world_state.h), or when it
+is an item the server gives at the start (start_with_*). Everything else
+waits until the client implements it.
 
 Defaults are set to the supported value, and a player who asks for an
 unsupported value gets an OptionError naming it, never a silent override.
@@ -23,15 +26,15 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "closed_forest": ("on", frozenset({"on"})),
     "kakariko_gate": ("closed", frozenset({"closed"})),
     "door_of_time": ("closed", frozenset({"closed"})),
-    "zoras_fountain": ("closed", frozenset({"closed"})),
+    "zoras_fountain": ("closed", frozenset({"closed", "open"})),
     "sleeping_waterfall": ("closed", frozenset({"closed"})),
-    "jabu_jabu": ("closed", frozenset({"closed"})),
+    "jabu_jabu": ("closed", frozenset({"closed", "open"})),
     "lock_overworld_doors": (False, frozenset({False})),
     "fortress_carpenters": ("normal", frozenset({"normal"})),
-    "rainbow_bridge": ("vanilla", frozenset({"vanilla"})),
+    "rainbow_bridge": ("vanilla", frozenset({"vanilla", "always_open"})),
     "rainbow_bridge_greg_modifier": ("off", frozenset({"off"})),
-    "ganons_trials": ("set_number", frozenset({"set_number"})),
-    "ganons_trials_count": (6, frozenset({6})),
+    "ganons_trials": ("set_number", frozenset({"set_number", "skip"})),
+    "ganons_trials_count": (6, frozenset(range(7))),
     "triforce_hunt": (False, frozenset({False})),
     "ganons_castle_boss_key": ("vanilla", frozenset({"vanilla"})),
     "ganons_castle_boss_key_greg_modifier": ("off", frozenset({"off"})),
@@ -100,13 +103,13 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "shuffle_grass": ("off", frozenset({"off"})),
     "shuffle_dungeon_rewards": ("off", frozenset({"off"})),
     "shuffle_100_gs_reward": (False, frozenset({False})),
-    "start_with_kokiri_sword": (False, frozenset({False})),
+    "start_with_kokiri_sword": (False, frozenset({False, True})),
     "start_with_master_sword": (False, frozenset({False})),
-    "start_with_deku_shield": (False, frozenset({False})),
-    "start_with_ocarina": ("off", frozenset({"off"})),
+    "start_with_deku_shield": (False, frozenset({False, True})),
+    "start_with_ocarina": ("off", frozenset({"off", "fairy_ocarina", "ocarina_of_time"})),
     "start_with_stick_ammo": (False, frozenset({False})),
     "start_with_nut_ammo": (False, frozenset({False})),
-    "start_with_magic_beans": (False, frozenset({False})),
+    "start_with_magic_beans": (False, frozenset({False, True})),
     "start_with_zeldas_lullaby": (False, frozenset({False})),
     "start_with_eponas_song": (False, frozenset({False})),
     "start_with_sarias_song": (False, frozenset({False})),
@@ -171,6 +174,13 @@ def apply_visibility(options_dataclass: type) -> None:
         if len(allowed) < 2:
             option_class.visibility = Visibility.none
             continue
+        choices = getattr(option_class, "options", None)
+        if choices is not None:
+            every = {key == "true" if key in ("true", "false") else key for key in choices}
+        else:
+            every = set(range(getattr(option_class, "range_start", 0), getattr(option_class, "range_end", -1) + 1))
+        if every <= set(allowed):
+            continue  # every value works: nothing to note
         values = ", ".join(sorted(str(value).lower() for value in allowed))
         note = f"\n\nOcarina of Time 3D (TriAevum) supports: {values}."
         if note not in (option_class.__doc__ or ""):

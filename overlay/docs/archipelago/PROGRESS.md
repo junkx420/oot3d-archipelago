@@ -569,3 +569,38 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
 - Verified headless: a received item still reached Link through the moved
   page; host tests pass. Savestates made with the old build carry the page
   at 0x06200000 and can hit the same overlap; they should not be loaded.
+
+### World settings, blue warp skips, missed checks (2026-10-26)
+
+- Play test by the user (Deku Tree, Lost Woods, Hyrule Castle) showed three
+  checks that never reached the server: Queen Gohma's reward, Saria's gift
+  (Fairy Ocarina, given in a cutscene) and Zelda's Letter (offered by child
+  Zelda, actor 0x01D3, keyed as a base item). Dungeon rewards given by
+  Item_Give now form their temple keys (stones by boss, medallions by
+  dungeon, the Light Medallion as Link's Pocket); the Fairy Ocarina and
+  Zelda's offer form the delayed keys 2 and 3 (OoT3D_Randomizer
+  item_override.c). The same log showed a Gold Skulltula token taking a
+  nearby chest's key, because player->getItemId still held an earlier
+  chest's item: a token now matches only a token's offer.
+- Blue warp cutscenes: the Deku Tree's speech and death and the Goron Ruby
+  cutscene are skipped with "Skip cutscenes" while a save is connected. A
+  block-entry hook at OoT3D_Randomizer's ChildBlueWarpOverride site
+  (0x003F5774, addresses.json ChildBlueWarpBlock, block_after_branch) sets
+  the dungeon's events before the game reads them; the game's own code then
+  takes its "already done" path to entrance 0x0457 (0x047A) without a
+  cutscene (disassembly 0x003F5774 to 0x003F58A8). The reward location is
+  reported and its item comes from the server. Jabu-Jabu and the adult
+  dungeons are not covered yet.
+- World settings from the seed (ap_world_state.cpp): Jabu-Jabu open, Zora's
+  Fountain open, rainbow bridge always open and Ganon's trials (skip, or any
+  count; slot_data required_trials) are set as save flags while a connected
+  save plays, as SaveFile_Init sets them. Settings that need code changes in
+  the game (open forest, Kakariko gate, Door of Time, fortress carpenters)
+  stay unsupported.
+- Starting items (Kokiri Sword, Deku Shield, ocarinas, magic beans): Ship
+  of Harkinian pushes them as events, which the server never sends; they
+  are real items now, sent like Archipelago's start inventory.
+- apworld 0.5.0: those options are shown in the Options Creator. A seed with
+  all of them generates (slot_data and starting items checked); host tests
+  cover the new keys, the token fix, the warp flags and the world flags.
+  Not yet seen in the game: the warp skip and the world flags.

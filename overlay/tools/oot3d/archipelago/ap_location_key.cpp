@@ -30,6 +30,10 @@ std::optional<LocationKey> KeyForOffer(const OfferSource &source) {
   case kActorWitheredDekuBaba:
     return std::nullopt;
   default:
+    // Zelda's Letter: a delayed location in the randomizer (play test
+    // 2026-10-26: child Zelda offers it like any NPC).
+    if (source.ActorId == kActorChildZelda && source.GetItemId == kGetItemZeldasLetter)
+      return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedZeldasLetter};
     if (source.Scene == kSceneGrottos && source.ActorId == kActorBusinessScrubSalesman)
       return LocationKey{source.RespawnReturnScene, OverrideType::GrottoScrub,
                          source.GetItemId};
@@ -38,6 +42,21 @@ std::optional<LocationKey> KeyForOffer(const OfferSource &source) {
 }
 
 std::optional<LocationKey> KeyForDirectGive(std::uint8_t item) {
+  // Saria's gift on the Lost Woods bridge, given in a cutscene (play test
+  // 2026-10-26). The game gives no Fairy Ocarina anywhere else; one from the
+  // server comes through an offer.
+  if (item == kItemFairyOcarina)
+    return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSariasGift};
+  if (item >= kItemMedallionForest && item <= kItemZoraSapphire) {
+    // Dungeon rewards: the stones in their boss rooms' warps, the medallions
+    // from the sages, the Light Medallion from Rauru (Link's Pocket).
+    if (item == kItemMedallionLight)
+      return LocationKey{kTempleScene, OverrideType::Temple, kLinksPocketFlag};
+    return LocationKey{kTempleScene, OverrideType::Temple,
+                       item >= kItemKokiriEmerald
+                           ? static_cast<std::uint8_t>(item - kItemKokiriEmerald)
+                           : static_cast<std::uint8_t>(3U + (item - kItemMedallionForest))};
+  }
   if (item < kItemSongMinuet || item > kItemSongStorms)
     return std::nullopt;
   return LocationKey{kDelayedScene, OverrideType::Delayed,

@@ -8,7 +8,8 @@
 // title-module rebuild. The observer reads guest state; its one write is the
 // get-item argument of Actor_OfferGetItem (r2, which block-entry callbacks
 // may change) when the override names another item. It never writes memory
-// and never raises an observable exit.
+// itself (its blue warp sink may set save flags) and never raises an
+// observable exit.
 
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
@@ -40,14 +41,20 @@ inline constexpr std::uint32_t kItemGive = 0x00376A78U;
 // site, which runs once when Link dies without a fairy (addresses.json kind
 // hook_block). It starts after a call, so every execution mode enters it.
 inline constexpr std::uint32_t kGameOverStartBlock = 0x00252420U;
+// Not a function: OoT3D_Randomizer's ChildBlueWarpOverride site, the block
+// where a child blue warp starts its scene change (after a branch, so every
+// execution mode enters it). r7 holds the play state.
+inline constexpr std::uint32_t kChildBlueWarpBlock = 0x003F5774U;
 
-inline constexpr std::array<GuestFunction, 3> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 4> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
      "e4f40f57614484da8e6cad178fc76bc97f1a26418815587c7c735c1be5c401c5"},
     {"GameOverStartBlock", kGameOverStartBlock,
      "6a643f94311062f2ce147592b043023f63114857eef0a2b5aacb4254f8db40cd"},
+    {"ChildBlueWarpBlock", kChildBlueWarpBlock,
+     "f99ffc6b35545504883b7964b0ada1a0032aeb6af75df5010414c94a487ad101"},
 }};
 
 struct CheckEvent {
@@ -92,6 +99,10 @@ public:
   void SetSink(std::function<void(const CheckEvent &)> sink) { mSink = std::move(sink); }
   // Called when Link dies without a fairy.
   void SetDeathSink(std::function<void()> sink) { mDeathSink = std::move(sink); }
+  // Called when a child blue warp changes the scene, with the scene it
+  // leaves; the sink may set save flags (ap_cutscene_skip.h).
+  using BlueWarpSink = std::function<void(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory)>;
+  void SetBlueWarpSink(BlueWarpSink sink) { mBlueWarpSink = std::move(sink); }
   // Called for every offer that forms a location key; a value replaces the
   // offered get-item id (its sign is kept).
   using GetItemOverride = std::function<std::optional<std::uint16_t>(const LocationKey &key,
@@ -109,6 +120,7 @@ public:
     std::uint64_t ActorOfferGetItem = 0;
     std::uint64_t ItemGive = 0;
     std::uint64_t GameOver = 0;
+    std::uint64_t BlueWarp = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -128,6 +140,7 @@ private:
   std::function<void(const std::string &)> mReportSink;
   GetItemOverride mOverride;
   std::function<void()> mDeathSink;
+  BlueWarpSink mBlueWarpSink;
   std::optional<Offer> mLastOffer;
   std::optional<std::uint32_t> mProbePc;
   HookHits mHits{};

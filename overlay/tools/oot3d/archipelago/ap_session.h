@@ -16,6 +16,7 @@
 #include "ap_network_client.h"
 #include "ap_save_sync.h"
 #include "ap_sidecar.h"
+#include "ap_world_state.h"
 
 #include <chrono>
 #include <cstdint>
@@ -77,6 +78,10 @@ public:
   void SetGuestRegionMapper(GuestRegionMapper mapper);
   // The check observer saw Link die without a fairy.
   void OnDeath();
+  // The check observer saw a child blue warp leave a scene: with cutscene
+  // skips on and a connected save, skips the dungeon's cutscene and reports
+  // its reward location.
+  void OnBlueWarp(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory);
   void Update(oot3d::recomp::a32::MemoryBus &memory);
 
   [[nodiscard]] ConnectionSettings Settings() const;
@@ -176,6 +181,8 @@ private:
 
   // From SlotConnected.
   std::optional<SidecarIdentity> mSlot;
+  WorldState mWorld;
+  int mWorldLoggedForSlot = -1;
   std::set<std::int64_t> mServerChecked;
   std::vector<ReceivedItem> mServerItems;
   std::map<std::int64_t, Placement> mPlacements;

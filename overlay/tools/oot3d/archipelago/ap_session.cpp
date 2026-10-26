@@ -342,6 +342,13 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       }
     }
   }
+  if (mSidecar.has_value() && !mFrontend && !mWorld.Empty()) {
+    const int set = ApplyWorldState(mWorld, memory);
+    if (set > 0 && mWorldLoggedForSlot != mSidecar->Identity.SaveSlot) {
+      Log("World settings of the seed: " + std::to_string(set) + " flags set");
+      mWorldLoggedForSlot = mSidecar->Identity.SaveSlot;
+    }
+  }
   GiveReceivedItems(memory);
   ApplyDeathLink(memory);
   WatchGoal(memory);
@@ -440,6 +447,23 @@ void Session::OnDeath() {
     Log("DeathLink: your death was sent");
     Notify(Notification::Kind::Death, "DeathLink: your death was shared");
   }
+}
+
+void Session::OnBlueWarp(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory) {
+  std::lock_guard lock(mMutex);
+  // Without a connected save the reward could not come from the server, so
+  // the warp plays as usual and the game gives it.
+  if (!mSkips.Cutscenes || !mSidecar.has_value() || !mLocations.has_value())
+    return;
+  const auto dungeon = SkipBlueWarpCutscene(scene, memory);
+  if (!dungeon.has_value())
+    return;
+  const LocationKey key{kTempleScene, OverrideType::Temple, *dungeon};
+  Log("Blue warp: cutscene skipped (" + Describe(key) + ")");
+  if (const auto id = mLocations->Find(key, nullptr))
+    ReportLocation(*id);
+  else
+    ++mUnmapped;
 }
 
 void Session::ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory) {
@@ -618,6 +642,8 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     mSidecar.reset();
     const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
     mDeathLink = slotData.is_object() && slotData.value("death_link", false);
+    mWorld = ParseWorldState(slot->SlotDataJson);
+    mWorldLoggedForSlot = -1;
     if (mClient)
       mClient->SetDeathLink(mDeathLink);
     Log("Slot connected: seed " + slot->Seed + ", team " + std::to_string(slot->Team) +

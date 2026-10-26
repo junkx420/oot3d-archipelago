@@ -22,7 +22,10 @@ class TestOptionsCreator(SohTestBase):
         shown = {name for name, option in self.world.options_dataclass.type_hints.items()
                  if name not in common and option.visibility & Visibility.simple_ui}
         self.assertEqual(shown, {"death_link", "item_pool", "start_inventory_from_pool", "shuffle_kokiri_sword",
-                                 "small_key_shuffle", "boss_key_shuffle", "maps_and_compasses"})
+                                 "small_key_shuffle", "boss_key_shuffle", "maps_and_compasses",
+                                 "zoras_fountain", "jabu_jabu", "rainbow_bridge", "ganons_trials",
+                                 "ganons_trials_count", "start_with_kokiri_sword", "start_with_deku_shield",
+                                 "start_with_ocarina", "start_with_magic_beans"})
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility
@@ -79,3 +82,42 @@ class TestSupportedOptions(SohTestBase):
         self.assertFalse(self.can_reach_location(Locations.SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST))
         self.collect_by_name([Items.DINS_FIRE])
         self.assertTrue(self.can_reach_location(Locations.SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST))
+
+
+class TestWorldSettings(SohTestBase):
+    """World settings the client sets as save flags, and items it is given at
+    the start, generate and reach the client through slot data."""
+    skip_client_option_check = False
+    options = {
+        "zoras_fountain": "open",
+        "jabu_jabu": "open",
+        "rainbow_bridge": "always_open",
+        "ganons_trials": "set_number",
+        "ganons_trials_count": 2,
+        "start_with_kokiri_sword": True,
+        "start_with_ocarina": "fairy_ocarina",
+    }
+
+    def test_settings_reach_the_world(self) -> None:
+        # fill_slot_data sends these values (and ganons_trials as
+        # required_trials); it needs a filled world, so a generated seed
+        # checks the slot data itself.
+        self.assertEqual(self.world.options.zoras_fountain.value, 2)
+        self.assertEqual(self.world.options.jabu_jabu.value, 1)
+        self.assertEqual(self.world.options.rainbow_bridge.value, 1)
+        self.assertEqual(len(self.world.ganons_trials), 2)
+
+    def test_starting_items_are_precollected(self) -> None:
+        names = {item.name for item in self.multiworld.precollected_items[self.player]}
+        self.assertIn(Items.KOKIRI_SWORD, names)
+        self.assertIn(Items.PROGRESSIVE_OCARINA, names)
+
+    def test_kakariko_gate_stays_closed(self) -> None:
+        option = self.world.options.kakariko_gate
+        original = option.value
+        try:
+            option.value = option.options["open"]
+            with self.assertRaises(OptionError):
+                oot3d_options.validate(self.world.options, "Tester")
+        finally:
+            option.value = original

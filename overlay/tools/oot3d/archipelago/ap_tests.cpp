@@ -11,6 +11,7 @@
 #include "ap_session.h"
 #include "ap_sha256.h"
 #include "ap_sidecar.h"
+#include "ap_world_state.h"
 
 #include <filesystem>
 #include <sstream>
@@ -129,8 +130,8 @@ void TestKeysTheRandomizerSkips() {
   const auto scrub = KeyForOffer({kActorBusinessScrubSalesman, 0x0000U, kSceneGrottos, 0x2EU, 0U, 0x51U});
   Expect(scrub.has_value() && *scrub == LocationKey{0x51U, OverrideType::GrottoScrub, 0x2EU},
          "grotto scrubs use the grotto's return scene");
-  Expect(!KeyForDirectGive(0x59U) && !KeyForDirectGive(0x66U),
-         "only songs are direct-give locations");
+  Expect(!KeyForDirectGive(0x59U) && !KeyForDirectGive(0x6FU),
+         "only songs and dungeon rewards are direct-give locations");
 }
 
 void TestSha256() {
@@ -461,9 +462,10 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 5U, "checks, deaths and quick text need five hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 6U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 5U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 6U,
+         "checks, deaths, blue warps and quick text need six hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 7U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 6U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -474,6 +476,134 @@ void TestObserverReportsDeath() {
   oot3d::recomp::a32::GuestState state{};
   observer.ObserveBlockEntry(kGameOverStartBlock, state, memory);
   Expect(deaths == 1 && observer.Hits().GameOver == 1U, "the game-over block reports a death");
+}
+
+// Play test 2026-10-26, Deku Tree: a token collected beside a chest that
+// offered a recovery heart, with getItemId still holding the heart of the
+// chest opened before, took that chest's key.
+void TestTokenIgnoresNearbyChestOffer() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kChest = 0x08100000U;
+  constexpr std::uint32_t kPlayer = 0x08200000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, 0x00U);
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  memory.Write16(kChest + kActorId, kActorChest);
+  memory.Write16(kChest + kActorParams, 0x5906U);
+  memory.Write8(kSaveRespawnReturnData, 0U);
+  memory.Write8(kPlayer + kPlayerGetItemId, 0x48U); // left over from the last chest
+  memory.Write32(kPlayer + kPlayerInteractRangeActor, 0U);
+  CheckObserver observer{false};
+  std::vector<CheckEvent> events;
+  observer.SetSink([&](const CheckEvent &event) { events.push_back(event); });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[0] = kChest;
+  state.r[1] = kPlay;
+  state.r[2] = 0x48U;
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  state.r[0] = kPlay;
+  state.r[1] = kItemSkullToken;
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(events.size() == 1U && !events[0].Key.has_value(), "a token never takes a chest's key");
+  // The chest's own give still matches its offer.
+  state.r[1] = 0x83U; // ITEM_RECOVERY_HEART
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(events.size() == 2U && events[1].Key.has_value() &&
+             *events[1].Key == LocationKey{0x00U, OverrideType::Chest, 0x06U},
+         "the chest keeps its offer for its own give");
+}
+
+void TestDungeonRewardKeys() {
+  Expect(KeyForDirectGive(kItemKokiriEmerald) == LocationKey{kTempleScene, OverrideType::Temple, 0U},
+         "Kokiri's Emerald is Queen Gohma's location");
+  Expect(KeyForDirectGive(kItemZoraSapphire) == LocationKey{kTempleScene, OverrideType::Temple, 2U},
+         "Zora's Sapphire is Barinade's location");
+  Expect(KeyForDirectGive(kItemMedallionForest) == LocationKey{kTempleScene, OverrideType::Temple, 3U},
+         "the Forest Medallion is Phantom Ganon's location");
+  Expect(KeyForDirectGive(0x6AU) == LocationKey{kTempleScene, OverrideType::Temple, 7U},
+         "the Shadow Medallion is Bongo Bongo's location");
+  Expect(KeyForDirectGive(kItemMedallionLight) ==
+             LocationKey{kTempleScene, OverrideType::Temple, kLinksPocketFlag},
+         "the Light Medallion is Link's Pocket");
+  Expect(!KeyForDirectGive(kItemSkullToken).has_value(), "a token is no direct give");
+  // Play test 2026-10-26: both were never reported.
+  Expect(KeyForDirectGive(kItemFairyOcarina) ==
+             LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSariasGift},
+         "Saria's ocarina is LW Gift From Saria");
+  Expect(KeyForOffer({kActorChildZelda, 0x0000U, 0x4AU, kGetItemZeldasLetter, 0U, 0U}) ==
+             LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedZeldasLetter},
+         "Zelda's offer of her letter is HC Zeldas Letter");
+}
+
+void TestBlueWarpSkip() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, kSceneDekuTreeBoss);
+  memory.Write16(kSaveContext + kSaveEventChkInf, 0U);
+  memory.Write16(kSaveContext + kSaveEventChkInf + 2U, 0U);
+  memory.Write16(kSaveContext + kSaveEventChkInf + 4U, 0U);
+  CheckObserver observer{false};
+  std::vector<std::uint8_t> scenes;
+  observer.SetBlueWarpSink([&](std::uint8_t scene, oot3d::recomp::a32::MemoryBus &bus) {
+    scenes.push_back(scene);
+    const auto dungeon = SkipBlueWarpCutscene(scene, bus);
+    Expect(dungeon == kDungeonDekuTree, "the Deku Tree warp is skipped once");
+    Expect(!SkipBlueWarpCutscene(scene, bus).has_value(), "a second warp plays as usual");
+  });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[7] = kPlay;
+  observer.ObserveBlockEntry(kChildBlueWarpBlock, state, memory);
+  Expect(scenes.size() == 1U && scenes[0] == kSceneDekuTreeBoss && observer.Hits().BlueWarp == 1U,
+         "the warp block passes the scene it leaves");
+  std::uint16_t events0 = 0;
+  std::uint16_t events1 = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf, &events0);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 2U, &events1);
+  Expect(events0 == 0x0280U && events1 == 0x1000U,
+         "the Deku Tree's death, its cutscene and Mido's talk are set");
+  Expect(SkipBlueWarpCutscene(kSceneDodongosCavernBoss, memory) == kDungeonDodongosCavern,
+         "King Dodongo's warp is skipped");
+  std::uint16_t events2 = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 4U, &events2);
+  Expect(events2 == 0x0020U, "event 0x25 is set");
+  Expect(!SkipBlueWarpCutscene(0x13U, memory).has_value(), "Jabu-Jabu's warp is not handled here");
+}
+
+void TestWorldState() {
+  const auto vanilla = ParseWorldState(
+      R"({"jabu_jabu":0,"zoras_fountain":0,"rainbow_bridge":0,"ganons_trials":1,"ganons_trials_count":6,)"
+      R"("required_trials":["Forest Trial","Fire Trial","Water Trial","Shadow Trial","Spirit Trial","Light Trial"]})");
+  Expect(vanilla.Empty(), "the game's own settings set nothing");
+  Expect(ParseWorldState("not json").Empty() && ParseWorldState("{}").Empty(),
+         "old or broken slot data sets nothing");
+
+  const auto open = ParseWorldState(
+      R"({"jabu_jabu":1,"zoras_fountain":2,"rainbow_bridge":1,"ganons_trials":1,"ganons_trials_count":2,)"
+      R"("required_trials":["Light Trial","Fire Trial"]})");
+  Expect(open.OpenJabuJabu && open.OpenZorasFountain && open.OpenRainbowBridge,
+         "open settings are read");
+  Expect(open.SkippedTrials.size() == 4U, "trials the seed does not require are skipped");
+  Expect(!ParseWorldState(R"({"zoras_fountain":1})").OpenZorasFountain,
+         "closed as child is not open");
+
+  FakeMemory memory;
+  for (std::uint32_t i = 0; i < 14U; ++i)
+    memory.Write16(kSaveContext + kSaveEventChkInf + i * 2U, 0U);
+  Expect(ApplyWorldState(open, memory) == 7, "three settings and four trials set flags");
+  Expect(ApplyWorldState(open, memory) == 0, "a second pass sets nothing");
+  std::uint16_t row3 = 0, row4 = 0, row10 = 0, row11 = 0, row12 = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 3U * 2U, &row3);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 4U * 2U, &row4);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 10U * 2U, &row10);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 11U * 2U, &row11);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 12U * 2U, &row12);
+  Expect(row3 == 0x0408U && row4 == 0x2000U, "Jabu-Jabu, King Zora and the bridge");
+  Expect(row10 == 0x2000U && row11 == (0x0800U | 0x1000U | 0x2000U) && row12 == 0U,
+         "Forest, Water, Shadow and Spirit done; the barrier stays");
+
+  const auto none = ParseWorldState(R"({"ganons_trials":0})");
+  Expect(none.SkippedTrials.size() == 6U, "skip means every trial is done");
+  Expect(ApplyWorldState(none, memory) == 3, "the last two trials and the barrier");
 }
 
 void TestProbeCountsOnlyItsPc() {
@@ -943,6 +1073,10 @@ int main(int argc, char **argv) {
     TestHookPcsAreSorted();
     TestProbeCountsOnlyItsPc();
     TestObserverReportsDeath();
+    TestTokenIgnoresNearbyChestOffer();
+    TestDungeonRewardKeys();
+    TestBlueWarpSkip();
+    TestWorldState();
     TestRetryDelay();
     TestSidecarWriter();
     TestNewFileAndProgressRecord();

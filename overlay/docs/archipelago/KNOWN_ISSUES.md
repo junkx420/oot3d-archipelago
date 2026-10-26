@@ -2,11 +2,15 @@
 
 ## Check detection not yet seen in the game
 
-Play test 1 confirmed chests and offer matching. Not yet seen in the game:
+Play test 1 confirmed chests and offer matching. Seen in the user's play
+test of 2026-10-26: a boss heart container, a song (Zelda's Lullaby as Song
+from Impa) and a Gold Skulltula token (tokens are not locations with the
+supported options; one took a nearby chest's key, fixed since). Not yet seen
+in the game:
 
-- Skulltula tokens after the fix in `a5560858` (host-tested only).
 - Freestanding items (heart pieces, keys): collectable keys, host-tested.
-- Songs: delayed keys from a direct `Item_Give`, host-tested.
+- Great Fairy rewards, the Master Sword and the Light Arrow cutscene
+  (delayed locations without a client key yet).
 - Shops: the randomizer keys shop slots (`0x30+`), the observer keys item
   ids. Matters only with shopsanity.
 

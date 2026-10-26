@@ -638,25 +638,28 @@ def get_filler_bottle(world: "SohWorld") -> str:
 
 
 def give_starting_items(world: "SohWorld") -> None:
+    # TriAevum: the Kokiri Sword, Deku Shield, ocarinas and magic beans to start
+    # with are real items (not events), so the server sends them at the start
+    # like Archipelago's start inventory; the client gives nothing by itself.
     if world.options.start_with_kokiri_sword:
-        world.push_precollected(world.create_item(Items.KOKIRI_SWORD, True))
+        world.push_precollected(world.create_item(Items.KOKIRI_SWORD))
 
     if world.options.start_with_master_sword and world.options.shuffle_master_sword:
         world.push_precollected(world.create_item(Items.MASTER_SWORD, True))
 
     # doesn't actually do anything logically since deku shields can be lost
     if world.options.start_with_deku_shield:
-        world.push_precollected(world.create_item(Items.DEKU_SHIELD, True))
+        world.push_precollected(world.create_item(Items.DEKU_SHIELD))
 
     if world.options.start_with_ocarina == "fairy_ocarina":
-        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA, True))
+        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA))
 
     if world.options.start_with_ocarina == "ocarina_of_time":
-        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA, True))
-        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA, True))
+        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA))
+        world.push_precollected(world.create_item(Items.PROGRESSIVE_OCARINA))
     
     if world.options.start_with_magic_beans:
-        world.push_precollected(world.create_item(Items.MAGIC_BEAN_PACK, True))
+        world.push_precollected(world.create_item(Items.MAGIC_BEAN_PACK))
     
         # Songs
     starting_songs =  set(song_vanilla_locations.values()) - get_shuffled_songs(world)

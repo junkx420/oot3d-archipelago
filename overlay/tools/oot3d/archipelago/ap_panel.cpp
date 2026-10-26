@@ -64,7 +64,8 @@ public:
     CutsceneSkipOptions skips = mSession.Skips();
     bool changed = ImGui::Checkbox("Skip cutscenes", &skips.Cutscenes);
     if (ImGui::IsItemHovered())
-      ImGui::SetTooltip("Story and boss cutscenes and first conversations that give nothing.");
+      ImGui::SetTooltip("Story and boss cutscenes and first conversations that give nothing.\n"
+                      "Connected to a save, also the Deku Tree's and Dodongo's Cavern's blue warps.");
     changed |= ImGui::Checkbox("Skip the intro of a new file (experimental)", &skips.Intro);
     if (changed)
       mSession.SetSkips(skips);

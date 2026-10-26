@@ -50,6 +50,20 @@ inline constexpr std::uint8_t kItem00RecoveryHeart = 0x03U;
 inline constexpr std::uint8_t kItem00HeartPiece = 0x06U;
 inline constexpr std::uint8_t kItem00SmallKey = 0x11U;
 inline constexpr std::uint8_t kItemSkullToken = 0x71U;
+inline constexpr std::uint8_t kItemFairyOcarina = 0x07U;
+inline constexpr std::uint16_t kActorChildZelda = 0x01D3U;
+inline constexpr std::uint8_t kGetItemZeldasLetter = 0x0BU;
+// Delayed locations (flags) besides the songs.
+inline constexpr std::uint8_t kDelayedSariasGift = 2U;
+inline constexpr std::uint8_t kDelayedZeldasLetter = 3U;
+inline constexpr std::uint8_t kItemMedallionForest = 0x66U; // then Fire, Water, Spirit, Shadow
+inline constexpr std::uint8_t kItemMedallionLight = 0x6BU;
+inline constexpr std::uint8_t kItemKokiriEmerald = 0x6CU;   // then Goron Ruby
+inline constexpr std::uint8_t kItemZoraSapphire = 0x6EU;
+// Dungeon reward locations (type temple): flag = dungeon index, Link's Pocket
+// apart (OoT3D_Randomizer item_override.c).
+inline constexpr std::uint8_t kTempleScene = 0xFFU;
+inline constexpr std::uint8_t kLinksPocketFlag = 0xFFU;
 inline constexpr std::uint8_t kItemSongMinuet = 0x5AU;
 inline constexpr std::uint8_t kItemSongStorms = 0x65U;
 // DelayedOverride: DLYOVR_SONG_MINUET is the eleventh entry and the songs

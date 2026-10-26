@@ -3,7 +3,10 @@
 Alpha. The logic is ported from the Ship of Harkinian apworld and checked
 against OoT3D_Randomizer. Only the options the TriAevum client supports can
 be generated: the game's own item locations (chests, NPC gifts, heart pieces
-and the like), with dungeon keys, maps and compasses in their own dungeon.
+and the like), with dungeon keys, maps and compasses in their own dungeon,
+plus world settings the client sets in the save (Jabu-Jabu and Zora's
+Fountain open, the rainbow bridge open, fewer of Ganon's trials) and items
+to start with.
 
 ## What you need
 
@@ -16,8 +19,10 @@ and the like), with dungeon keys, maps and compasses in their own dungeon.
   Archipelago launcher: **Install APWorld** in the launcher, or copy it into
   the `custom_worlds` folder (Archipelago 0.6.7 or newer). The launcher's
   Options Creator then lists "Ocarina of Time 3D" with the options the client
-  supports: dungeon keys, maps, compasses and the Kokiri Sword, the item
-  pool, DeathLink and Archipelago's own options.
+  supports: dungeon keys, maps, compasses and the Kokiri Sword; Zora's
+  Fountain, Jabu-Jabu, the rainbow bridge and Ganon's trials; starting with
+  the Kokiri Sword, a Deku Shield, an ocarina or magic beans; the item pool,
+  DeathLink and Archipelago's own options.
 
 ## Playing
 
@@ -39,6 +44,11 @@ and received, DeathLink deaths, the goal and the connection.
 *Instant, hold B to skip* also advances and closes text boxes while B (the
 sword button, whichever controller button it is mapped to) is held. Off by
 default.
+
+**Skip cutscenes** (same tab) skips story and boss cutscenes and first
+conversations. Connected to a save, it also skips the Deku Tree's and
+Dodongo's Cavern's blue warp cutscenes: the warp takes Link straight back
+to the dungeon's entrance, and the stone comes from the server.
 
 `TRIAEVUM_ARCHIPELAGO=1` (or `0`) still overrides the switch.
 

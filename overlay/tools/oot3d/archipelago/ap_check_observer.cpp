@@ -12,8 +12,10 @@ namespace {
 using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
-constexpr std::array<std::uint32_t, 3> kCheckHooks{kGameOverStartBlock, kActorOfferGetItem, kItemGive};
-static_assert(kCheckHooks[0] < kCheckHooks[1] && kCheckHooks[1] < kCheckHooks[2]);
+constexpr std::array<std::uint32_t, 4> kCheckHooks{kGameOverStartBlock, kActorOfferGetItem, kItemGive,
+                                                   kChildBlueWarpBlock};
+static_assert(kCheckHooks[0] < kCheckHooks[1] && kCheckHooks[1] < kCheckHooks[2] &&
+              kCheckHooks[2] < kCheckHooks[3]);
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -46,13 +48,14 @@ CheckObserver::~CheckObserver() {
   const auto &quick = mQuickText.Counts();
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
-                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu "
+                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
                 static_cast<unsigned long long>(mHits.ActorOfferGetItem),
                 static_cast<unsigned long long>(mHits.ItemGive),
-                static_cast<unsigned long long>(mHits.GameOver), ToString(mQuickText.Mode()),
+                static_cast<unsigned long long>(mHits.GameOver),
+                static_cast<unsigned long long>(mHits.BlueWarp), ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
                 static_cast<unsigned long long>(quick.TurboPresses),
@@ -123,6 +126,11 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
     if (mDeathSink)
       mDeathSink();
     break;
+  case kChildBlueWarpBlock:
+    ++mHits.BlueWarp;
+    if (mBlueWarpSink)
+      mBlueWarpSink(static_cast<std::uint8_t>(Read16(memory, state.r[7] + kPlaySceneNum)), memory);
+    break;
   default:
     mQuickText.ObserveBlockEntry(pc, state, memory);
     break;
@@ -172,14 +180,16 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
 
   // A collected token reaches Item_Give after the player has already cleared
   // getItemId and interactRangeActor (seen in play, 2026-10-25), so it
-  // matches the latest offer by actor kind instead.
-  const bool tokenFromOffer = mLastOffer.has_value() && event.ItemId == kItemSkullToken &&
-                              mLastOffer->Source.ActorId == kActorSkullToken;
+  // matches the latest offer by actor kind instead, and only a token's offer:
+  // getItemId may still hold an earlier chest's item, which a nearby chest
+  // offering the same item matched (seen in play, 2026-10-26).
+  const bool token = event.ItemId == kItemSkullToken;
   const bool offerAccepted =
       mLastOffer.has_value() &&
-      (interactActor == mLastOffer->Actor || tokenFromOffer ||
-       (event.PlayerGetItemId != 0U && (event.PlayerGetItemId == mLastOffer->Source.GetItemId ||
-                                        event.PlayerGetItemId == mLastOffer->OverrideGetItemId)));
+      (token ? mLastOffer->Source.ActorId == kActorSkullToken
+             : (interactActor == mLastOffer->Actor ||
+                (event.PlayerGetItemId != 0U && (event.PlayerGetItemId == mLastOffer->Source.GetItemId ||
+                                                 event.PlayerGetItemId == mLastOffer->OverrideGetItemId))));
   if (offerAccepted) {
     event.Source = "offer";
     event.ActorId = mLastOffer->Source.ActorId;

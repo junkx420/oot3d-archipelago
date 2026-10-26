@@ -49,7 +49,8 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
         tools/oot3d/archipelago/ap_save_sync.cpp
         tools/oot3d/archipelago/ap_session.cpp
         tools/oot3d/archipelago/ap_sha256.cpp
-        tools/oot3d/archipelago/ap_sidecar.cpp)
+        tools/oot3d/archipelago/ap_sidecar.cpp
+        tools/oot3d/archipelago/ap_world_state.cpp)
     target_include_directories(triaevum_archipelago PUBLIC tools/oot3d/archipelago)
     target_include_directories(triaevum_archipelago SYSTEM PRIVATE
         "${triaevum_ap_asio_SOURCE_DIR}/asio/include"

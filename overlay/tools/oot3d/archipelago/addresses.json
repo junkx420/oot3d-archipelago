@@ -2,10 +2,10 @@
  "format": "triaevum_archipelago_addresses_v1",
  "code_sha256": "16a6b0aa4c4784680220a6f780f7f8a73cfb205557aa9f9f0e705179e0613220",
  "source": "OoT3D_Randomizer code/oot.ld",
- "source_commit": "ae0fcf56cbc7166c809f675668b43e24a9640fe1",
+ "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 366,
+  "verified": 367,
   "unverified": 557
  },
  "entries": [
@@ -13487,6 +13487,21 @@
    "ld_line": 419,
    "section": "text",
    "signature": "sha256:bf8c4f9033b201aef02db0166fcefe830c56a78ffa47e2cfd9fb12e6e50612a6",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ChildBlueWarpBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F5774",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F5774",
+   "ld_line": 723,
+   "section": "text",
+   "signature": "sha256:f99ffc6b35545504883b7964b0ada1a0032aeb6af75df5010414c94a487ad101",
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_branch"
