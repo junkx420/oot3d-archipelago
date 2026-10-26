@@ -525,3 +525,33 @@ gave both again on loading the file; touching the save file in a run noted
 the count ("The game saved: 2 received items are in the save"), and the next
 run gave nothing twice. Host tests cover the new-file check, the record and
 the decisions. Not seen in a run: a new file (name entry is not scripted).
+### Quick text and the Options Creator (2026-10-26)
+
+- Quick text after OoT3D_Randomizer's setting, an option in F1 >
+  Archipelago ("Text boxes": normal, instant, instant and hold B to skip;
+  `quick_text` in archipelago.json, off by default). Instant: block-entry
+  hooks at the blocks before the randomizer's CheckForTextControlCode and
+  HandleTextControlCode sites (`addresses.json`, kind hook_block, evidence
+  block_after_branch) perform Message_SetInstantText from the host at a
+  box's first character and after a box break, and turn "instant off" and
+  "unskippable" codes into "instant on". Turbo: the randomizer's B checks
+  are not block starts the hooks reach in every execution mode (the advance
+  and close blocks were never entered in a run), so held B is filtered
+  instead: while the message object 0x005C1878 (Message_GetState's literal)
+  has a text box open (+0xF38 not 0), B reaches the game 2 refreshes
+  pressed, 2 released. It follows the game's B, so a remapped controller
+  works with whatever button is mapped to B.
+- Verified headless: 17 to 18 boxes made instant per run; with B held while
+  the Heart Container box waited, a turbo press closed it and the game went
+  on. Host tests cover the instant command, the code replacement and the
+  B pattern.
+- Options Creator: options the client cannot honour are hidden
+  (`Visibility.none`): Ship of Harkinian's hints, its shuffles, every option
+  with a single supported value. Shown: Archipelago's common options,
+  DeathLink, the item pool, starting inventory from the pool, the Kokiri
+  Sword and the dungeon item options, whose help names the supported values.
+  Archipelago's own option classes are never changed. The apworld manifest
+  gained `version` and `compatible_version` (required from Archipelago 0.7),
+  world version 0.4.0. The packed apworld loads and generates on Archipelago
+  0.6.8 (the installed launcher's version) and 0.6.9; apworld suite 486
+  passed, 33 skipped.

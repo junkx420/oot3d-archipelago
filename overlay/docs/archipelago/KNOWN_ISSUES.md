@@ -151,4 +151,7 @@ right half; not investigated.
   arrived before the scouts; otherwise they say "an item".- The game's save is noticed by the save file's write time, up to half a
   second late; an item given in that moment would count as saved.
 - A new file is recognized by an empty inventory in Link's house; not yet
-  seen in a run.
+  seen in a run.- Holding B with quick text on also presses B in choice boxes and while the
+  ocarina is out (B leaves the ocarina), as on hardware when B is pressed.
+- Pots, crates, grass, rocks, bushes and trees are not locations: neither
+  OoT3D_Randomizer nor this client has their data; their options are hidden.

@@ -12,6 +12,27 @@ from .. import oot3d_options
 from .bases import SohTestBase
 
 
+class TestOptionsCreator(SohTestBase):
+    """The Options Creator and the template show only what a player can
+    choose for the TriAevum client."""
+
+    def test_only_choosable_options_are_shown(self) -> None:
+        from Options import PerGameCommonOptions, Visibility
+        common = set(PerGameCommonOptions.type_hints)
+        shown = {name for name, option in self.world.options_dataclass.type_hints.items()
+                 if name not in common and option.visibility & Visibility.simple_ui}
+        self.assertEqual(shown, {"death_link", "item_pool", "start_inventory_from_pool", "shuffle_kokiri_sword",
+                                 "small_key_shuffle", "boss_key_shuffle", "maps_and_compasses"})
+
+    def test_core_options_stay_visible_for_other_games(self) -> None:
+        from Options import DeathLink, Visibility
+        self.assertEqual(DeathLink.visibility, Visibility.all)
+
+    def test_partial_choices_name_their_supported_values(self) -> None:
+        doc = self.world.options_dataclass.type_hints["small_key_shuffle"].__doc__
+        self.assertIn("supports: own_dungeon, vanilla", doc)
+
+
 class TestSupportedOptions(SohTestBase):
     """Default options: what the TriAevum client supports. Setting the world
     up at all shows the defaults pass the client's option check (the world

@@ -165,6 +165,107 @@ void TestAddressTableMatchesJson(const char *path) {
     }
     Expect(found, "hooked function is listed in addresses.json");
   }
+  for (const QuickTextSite &site : kQuickTextSites) {
+    bool found = false;
+    for (const auto &entry : document.at("entries")) {
+      if (entry.at("name") != site.Name)
+        continue;
+      found = true;
+      char address[16];
+      std::snprintf(address, sizeof(address), "0x%08X", site.Address);
+      Expect(entry.at("exec_addr") == address, "quick text address matches addresses.json");
+      Expect(entry.at("signature") == std::string("sha256:") + site.WindowSha256,
+             "quick text signature matches addresses.json");
+      Expect(entry.at("status") == "signature_pinned", "quick text site is signature pinned");
+    }
+    Expect(found, "quick text site is listed in addresses.json");
+  }
+}
+
+// Quick text on a fake text object: its command list (0xD4), count (0xD8),
+// pool (0xDC) and pool use (0xE0).
+void TestQuickText() {
+  constexpr std::uint32_t kText = 0x08300000U, kList = 0x08310000U, kPool = 0x08320000U;
+  constexpr std::uint32_t kParse = 0x08330000U, kChars = 0x08340000U;
+  FakeMemory memory;
+  memory.Write32(kText + 0xD4U, kList);
+  memory.Write32(kText + 0xD8U, 2U);
+  memory.Write32(kText + 0xDCU, kPool);
+  memory.Write32(kText + 0xE0U, 0x10U);
+  QuickText::SetInstantText(kText, memory);
+  std::uint32_t count = 0, used = 0, listed = 0, tag = 0;
+  std::uint8_t type = 0;
+  memory.Read32(kText + 0xD8U, &count);
+  memory.Read32(kText + 0xE0U, &used);
+  memory.Read32(kList + 2U * 4U, &listed);
+  memory.Read32(kPool + 0x10U, &tag);
+  memory.Read8(kPool + 0x10U + 4U, &type);
+  Expect(count == 3U && used == 0x18U && listed == kPool + 0x10U && tag == 0x004ED174U && type == 6U,
+         "SetInstantText appends the instant command as the game does");
+  memory.Write32(kText + 0xD8U, 0x200U);
+  QuickText::SetInstantText(kText, memory);
+  memory.Read32(kText + 0xE0U, &used);
+  Expect(used == 0x18U, "a full command list is left alone");
+  memory.Write32(kText + 0xD8U, 3U);
+
+  QuickText text{false};
+  oot3d::recomp::a32::GuestState state{};
+  state.r[5] = kText;
+  state.r[6] = kParse;
+  state.r[8] = kChars;
+  state.r[9] = 0U;
+  memory.Write8(kParse + 4U, kTextInstantOff);
+  text.ObserveBlockEntry(kQuickTextCheckControlCodeBlock, state, memory);
+  text.ObserveBlockEntry(kQuickTextHandleControlCodeBlock, state, memory);
+  memory.Read32(kText + 0xD8U, &count);
+  std::uint8_t code = 0;
+  memory.Read8(kParse + 4U, &code);
+  Expect(count == 3U && code == kTextInstantOff, "off changes nothing");
+
+  text.SetMode(QuickTextMode::Instant);
+  text.ObserveBlockEntry(kQuickTextCheckControlCodeBlock, state, memory);
+  memory.Read32(kText + 0xD8U, &count);
+  Expect(count == 4U, "a box's first character makes it instant");
+  state.r[9] = 5U;
+  memory.Write8(kChars - 2U, kTextControlCode);
+  memory.Write8(kChars - 1U, 0x1CU); // a new line, not a box break
+  text.ObserveBlockEntry(kQuickTextCheckControlCodeBlock, state, memory);
+  memory.Read32(kText + 0xD8U, &count);
+  Expect(count == 4U, "inside a box nothing is added");
+  memory.Write8(kChars - 1U, kTextWaitForInput);
+  text.ObserveBlockEntry(kQuickTextCheckControlCodeBlock, state, memory);
+  memory.Read32(kText + 0xD8U, &count);
+  Expect(count == 5U, "after a box break the next box is instant too");
+  text.ObserveBlockEntry(kQuickTextHandleControlCodeBlock, state, memory);
+  memory.Read8(kParse + 4U, &code);
+  Expect(code == kTextInstantOn, "instant-off becomes instant-on");
+  memory.Write8(kParse + 4U, kTextUnskippable);
+  text.ObserveBlockEntry(kQuickTextHandleControlCodeBlock, state, memory);
+  memory.Read8(kParse + 4U, &code);
+  Expect(code == kTextInstantOn, "unskippable text becomes skippable");
+
+  // Turbo: B held in an open text box reaches the game as 2 refreshes
+  // pressed, 2 released.
+  constexpr std::uint32_t kB = 0x2U, kA = 0x1U;
+  const auto filtered = [&](std::uint32_t buttons) {
+    text.FilterInput(buttons, kB, memory);
+    return buttons;
+  };
+  memory.Write8(kMessageObject + kMessageObjectState, 0U);
+  Expect(filtered(kB | kA) == (kB | kA), "instant alone leaves B alone");
+  text.SetMode(QuickTextMode::Turbo);
+  Expect(filtered(kB) == kB && filtered(kB) == kB, "without a text box B is the player's");
+  memory.Write8(kMessageObject + kMessageObjectState, 3U);
+  std::array<std::uint32_t, 6> seen{};
+  for (auto &buttons : seen)
+    buttons = filtered(kB | kA);
+  Expect(seen == std::array<std::uint32_t, 6>{kB | kA, kB | kA, kA, kA, kB | kA, kB | kA},
+         "held B in a text box is pressed every other game frame, A untouched");
+  Expect(text.Counts().TurboPresses == 1U, "each new press is counted");
+  Expect(filtered(kA) == kA && filtered(kB) == kB, "releasing B starts over with a press");
+
+  Expect(ParseQuickTextMode("turbo") == QuickTextMode::Turbo && !ParseQuickTextMode("fast").has_value(),
+         "modes parse by name");
 }
 
 // A chest is offered for a few frames, accepted, then given.
@@ -360,9 +461,9 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 3U, "checks and deaths need three hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 4U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 3U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 5U, "checks, deaths and quick text need five hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 6U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 5U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -846,6 +947,7 @@ int main(int argc, char **argv) {
     TestSidecarWriter();
     TestNewFileAndProgressRecord();
     TestDecideProgress();
+    TestQuickText();
     TestEnabledSettingAndAutoConnect();
     TestLocationTable();
     TestGeneratedLocationTable(TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON);

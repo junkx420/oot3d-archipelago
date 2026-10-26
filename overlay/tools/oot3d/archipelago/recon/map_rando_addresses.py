@@ -15,9 +15,12 @@ evidence per entry:
   independently discovered whole-AOT function selection.
 * ``arm_prologue``: the first instruction is a PUSH/STMFD that saves LR, a
   single-register LR push, or a SUB SP.
-* ``block_after_call``: a client hook block (CLIENT_HOOK_BLOCKS) starts right
-  after a BL, where every execution mode starts a block, and its next
-  instruction is the randomizer's patch site.
+* ``block_after_call`` / ``block_after_branch``: a client hook block
+  (CLIENT_HOOK_BLOCKS) starts right after a BL or another branch, where every
+  execution mode starts a block, at a fixed distance from the randomizer's
+  patch site.
+* ``branch_target``: a client hook block is the target of the branch at a
+  fixed distance from the patch site.
 
 An entry without either is reported as unverified, not dropped.
 
@@ -45,13 +48,35 @@ SIGNATURE_BYTES = 32
 
 OFFSET_RE = re.compile(r"_LD_OFF\s*=\s*_LD_EUR\s*\?\s*(-?0x[0-9A-Fa-f]+|-?\d+)\s*:\s*_LD_OFF\s*;")
 SYMBOL_RE = re.compile(r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)\s*\+\s*_LD_OFF\s*;")
-# Patch sites the client observes through the block that holds them: a
-# block-entry hook needs a block start, and a call's return is one. Name ->
-# patch site name; the block starts one instruction before the site.
+# Patch sites the client observes through a block near them: a block-entry
+# hook needs a block start. Name -> (patch site name, block start relative to
+# the site, evidence). Evidence: "block_after_call" or "block_after_branch"
+# (the instruction before the block is a BL or any branch, after which every
+# execution mode starts a block), or ("branch_target", offset): the branch at
+# site + offset targets the block.
 CLIENT_HOOK_BLOCKS = {
     # Link's death without a fairy: the game-over state is set just before.
-    "GameOverStartBlock": "GameOverStart",
+    "GameOverStartBlock": ("GameOverStart", -4, "block_after_call"),
+    # Quick text (OoT3D_Randomizer message.c, settings.c Settings_IsTurboText).
+    # The block before the Message_CheckForControlCodes call: instant text.
+    "QuickTextCheckControlCodeBlock": ("CheckForTextControlCode", -8, "block_after_branch"),
+    # The block that dispatches a control code: unskippable and instant-off.
+    "QuickTextHandleControlCodeBlock": ("HandleTextControlCode", -4, "block_after_branch"),
 }
+
+
+def is_branch(word: int) -> bool:
+    """B, BL (any condition) or BX/BLX register."""
+    return (word & 0x0E000000) == 0x0A000000 or (word & 0x0FFFFFD0) == 0x012FFF10
+
+
+def branch_target(word: int, address: int) -> int | None:
+    if (word & 0x0E000000) != 0x0A000000:
+        return None
+    offset = word & 0x00FFFFFF
+    if offset & 0x00800000:
+        offset -= 0x01000000
+    return address + 8 + offset * 4
 
 PATCH_RE = re.compile(r"^\s*\.patch_(\w+)\s+0x([0-9A-Fa-f]+)\s*\+\s*_LD_OFF\s*:")
 
@@ -148,12 +173,22 @@ def main() -> int:
         entry["eur_offset"] = f"{entry['eur_offset']:+#x}"
 
     by_name = {entry["name"]: entry for entry in entries}
-    for name, site_name in CLIENT_HOOK_BLOCKS.items():
+    for name, (site_name, block_offset, evidence) in CLIENT_HOOK_BLOCKS.items():
         site = by_name[site_name]
-        start = int(site["exec_addr"], 16) - 4
+        site_address = int(site["exec_addr"], 16)
+        start = site_address + block_offset
         previous = struct.unpack_from("<I", code, start - 4 - CODE_BASE)[0]
-        if (previous & 0x0F000000) != 0x0B000000:  # BL, any condition
-            print(f"error: {name}: 0x{start:08X} does not follow a call", file=sys.stderr)
+        if evidence == "block_after_call":
+            ok = (previous & 0x0F000000) == 0x0B000000  # BL, any condition
+        elif evidence == "block_after_branch":
+            ok = is_branch(previous)
+        else:
+            branch_address = site_address + evidence[1]
+            word = struct.unpack_from("<I", code, branch_address - CODE_BASE)[0]
+            ok = branch_target(word, branch_address) == start
+            evidence = "branch_target"
+        if not ok:
+            print(f"error: {name}: 0x{start:08X} lacks its evidence ({evidence})", file=sys.stderr)
             return 1
         window = code[start - CODE_BASE:start - CODE_BASE + SIGNATURE_BYTES]
         entries.append({
@@ -165,7 +200,7 @@ def main() -> int:
             "ld_line": site["ld_line"],
             "section": "text",
             "signature": "sha256:" + hashlib.sha256(window).hexdigest(),
-            "verified_by": ["oot3d_randomizer_ld_eur_offset", "block_after_call"],
+            "verified_by": ["oot3d_randomizer_ld_eur_offset", evidence],
             "status": "signature_pinned",
         })
         counts["verified"] += 1

@@ -71,6 +71,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.2: quick text (instant boxes, hold B to skip), received items survive reloads and savestates, and the Options Creator shows only supported options."},
     {"date": "2026-10-26", "text": "Nothing received is lost any more: loading a save that was not saved after an item, or loading an older savestate, gives those items again; a game save is noticed, so nothing comes twice."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.1: oot3d.apworld and source on GitHub. New: Archipelago switch in the F1 menu, auto-connect and reconnect, in-game messages for sent and received items, DeathLink and the goal; saving progress no longer stalls the game."},
     {"date": "2026-10-26", "text": "Universal Tracker no longer lists Ship of Harkinian's N64 glitch routes as glitched locations; it shows only the 3D logic."},

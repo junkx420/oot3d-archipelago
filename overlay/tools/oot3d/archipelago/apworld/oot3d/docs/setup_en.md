@@ -12,8 +12,12 @@ and the like), with dungeon keys, maps and compasses in their own dungeon.
   (`-DTRIAEVUM_ENABLE_ARCHIPELAGO=ON`); the project's `docs/BUILD.md` says
   how. No game build can be distributed, because it contains code compiled
   from the ROM.
-- This world's `oot3d.apworld` in the Archipelago launcher's
-  `custom_worlds` folder, to generate and host seeds.
+- This world's `oot3d.apworld` (from the project's GitHub releases) in the
+  Archipelago launcher: **Install APWorld** in the launcher, or copy it into
+  the `custom_worlds` folder (Archipelago 0.6.7 or newer). The launcher's
+  Options Creator then lists "Ocarina of Time 3D" with the options the client
+  supports: dungeon keys, maps, compasses and the Kokiri Sword, the item
+  pool, DeathLink and Archipelago's own options.
 
 ## Playing
 
@@ -30,6 +34,11 @@ With **Connect automatically at start** (on by default) the game connects to
 the saved server and slot by itself; the password is not saved. A lost
 connection is reopened automatically. **In-game messages** show items sent
 and received, DeathLink deaths, the goal and the connection.
+
+**Text boxes** (same tab): *Instant* fills every text box at once;
+*Instant, hold B to skip* also advances and closes text boxes while B (the
+sword button, whichever controller button it is mapped to) is held. Off by
+default.
 
 `TRIAEVUM_ARCHIPELAGO=1` (or `0`) still overrides the switch.
 

@@ -141,6 +141,9 @@ void Session::LoadSettings() {
   mSkips.Intro = document.value("skip_intro", false);
   mOptions.AutoConnect = document.value("auto_connect", mOptions.AutoConnect);
   mOptions.Notifications = document.value("notifications", mOptions.Notifications);
+  mOptions.QuickText =
+      ParseQuickTextMode(document.value("quick_text", std::string(ToString(mOptions.QuickText))))
+          .value_or(mOptions.QuickText);
   if (mUuid.empty()) {
     mUuid = NewUuid();
     SaveSettings();
@@ -157,7 +160,15 @@ void Session::SaveSettings() const {
   document["skip_intro"] = mSkips.Intro;
   document["auto_connect"] = mOptions.AutoConnect;
   document["notifications"] = mOptions.Notifications;
+  document["quick_text"] = ToString(mOptions.QuickText);
   WriteSettings(mPaths.SettingsFile, document);
+}
+
+void Session::SetOptionsSink(std::function<void(const ClientOptions &)> sink) {
+  std::lock_guard lock(mMutex);
+  mOptionsSink = std::move(sink);
+  if (mOptionsSink)
+    mOptionsSink(mOptions);
 }
 
 ClientOptions Session::Options() const {
@@ -169,6 +180,8 @@ void Session::SetOptions(const ClientOptions &options) {
   std::lock_guard lock(mMutex);
   mOptions = options;
   SaveSettings();
+  if (mOptionsSink)
+    mOptionsSink(mOptions);
 }
 
 CutsceneSkipOptions Session::Skips() const {

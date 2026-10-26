@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from Options import Choice, OptionError, Toggle
+from Options import Choice, OptionError, PerGameCommonOptions, Toggle, Visibility
 
 # option name -> (default, allowed values). Choice and Toggle values are the
 # option's internal names; Range values are numbers.
@@ -146,6 +146,35 @@ def apply_defaults(options_dataclass: type) -> None:
             option_class.default = choices[default]
         else:
             option_class.default = default
+
+
+# Shown besides Archipelago's common options and the SUPPORTED options with
+# more than one value. They change what the seed holds, not what the client
+# must do in the game.
+SHOWN = frozenset({"death_link", "item_pool", "start_inventory_from_pool"})
+
+
+def apply_visibility(options_dataclass: type) -> None:
+    """Show only what a player can choose: Ship of Harkinian's other options
+    (hints, shuffles the client lacks, single supported values) are hidden
+    from the Options Creator, the web pages and the template yaml. Their
+    values stay as apply_defaults set them."""
+    import typing
+    hints = typing.get_type_hints(options_dataclass)
+    common = set(PerGameCommonOptions.type_hints)
+    package = __name__.rsplit(".", 1)[0]
+    for name, option_class in hints.items():
+        # Archipelago's own option classes are shared with every game.
+        if name in common or name in SHOWN or not option_class.__module__.startswith(package):
+            continue
+        allowed = SUPPORTED.get(name, (None, frozenset()))[1]
+        if len(allowed) < 2:
+            option_class.visibility = Visibility.none
+            continue
+        values = ", ".join(sorted(str(value).lower() for value in allowed))
+        note = f"\n\nOcarina of Time 3D (TriAevum) supports: {values}."
+        if note not in (option_class.__doc__ or ""):
+            option_class.__doc__ = (option_class.__doc__ or "").rstrip() + note
 
 
 def validate(options: Any, player_name: str) -> None:

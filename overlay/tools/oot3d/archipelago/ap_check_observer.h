@@ -12,6 +12,7 @@
 
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
+#include "ap_quick_text.h"
 #include "recomp/a32_runtime.h"
 
 #include <array>
@@ -67,7 +68,8 @@ std::string FormatEvent(const CheckEvent &event);
 class CheckObserver final {
 public:
   // verifyAddresses=false is for host tests whose fake memory holds no code.
-  explicit CheckObserver(bool verifyAddresses = true) : mVerified(!verifyAddresses) {}
+  explicit CheckObserver(bool verifyAddresses = true)
+      : mVerified(!verifyAddresses), mQuickText(verifyAddresses) {}
   // With a report sink, the hook hit counts are reported once on destruction
   // (the end of the game session).
   ~CheckObserver();
@@ -110,6 +112,9 @@ public:
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
+  // Quick text rides on the same hooks (HookPcs includes its blocks).
+  [[nodiscard]] QuickText &Text() noexcept { return mQuickText; }
+
 private:
   struct Offer {
     std::uint32_t Actor = 0;
@@ -128,6 +133,7 @@ private:
   HookHits mHits{};
   std::uint64_t mSequence = 0;
   bool mVerified = false;
+  QuickText mQuickText;
 };
 
 } // namespace Oot3dArchipelago

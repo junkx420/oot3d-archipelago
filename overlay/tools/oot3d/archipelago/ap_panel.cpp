@@ -76,6 +76,15 @@ public:
     optionsChanged |= ImGui::Checkbox("In-game messages", &options.Notifications);
     if (ImGui::IsItemHovered())
       ImGui::SetTooltip("Items sent and received, DeathLink, goal and connection.");
+    constexpr std::array<const char *, 3> kQuickTextLabels{"Normal", "Instant", "Instant, hold B to skip"};
+    int quickText = static_cast<int>(options.QuickText);
+    if (ImGui::Combo("Text boxes", &quickText, kQuickTextLabels.data(), static_cast<int>(kQuickTextLabels.size()))) {
+      options.QuickText = static_cast<QuickTextMode>(quickText);
+      optionsChanged = true;
+    }
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("Instant: text boxes fill at once and cannot be made slow or unskippable.\n"
+                        "Hold B: holding B (sword) also advances and closes every text box.");
     if (optionsChanged)
       mSession.SetOptions(options);
     if (ImGui::Checkbox("Archipelago enabled", &mEnabled))

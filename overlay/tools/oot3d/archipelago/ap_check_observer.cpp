@@ -42,20 +42,28 @@ std::uint8_t AbsoluteGetItemId(std::uint32_t value) {
 CheckObserver::~CheckObserver() {
   if (!mReportSink)
     return;
-  char text[192];
+  char text[320];
+  const auto &quick = mQuickText.Counts();
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
-                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu",
+                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu "
+                "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
                 static_cast<unsigned long long>(mHits.ActorOfferGetItem),
                 static_cast<unsigned long long>(mHits.ItemGive),
-                static_cast<unsigned long long>(mHits.GameOver));
+                static_cast<unsigned long long>(mHits.GameOver), ToString(mQuickText.Mode()),
+                static_cast<unsigned long long>(quick.Instant),
+                static_cast<unsigned long long>(quick.ControlCodes),
+                static_cast<unsigned long long>(quick.TurboPresses),
+                mQuickText.Disabled().empty() ? "" : " disabled: ", mQuickText.Disabled().c_str());
   mReportSink(text);
 }
 
 std::vector<std::uint32_t> CheckObserver::HookPcs(std::optional<std::uint32_t> probePc) {
   std::vector<std::uint32_t> pcs(kCheckHooks.begin(), kCheckHooks.end());
+  const auto text = QuickText::HookPcs();
+  pcs.insert(pcs.end(), text.begin(), text.end());
   if (probePc.has_value())
     pcs.push_back(*probePc);
   std::sort(pcs.begin(), pcs.end());
@@ -116,6 +124,7 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       mDeathSink();
     break;
   default:
+    mQuickText.ObserveBlockEntry(pc, state, memory);
     break;
   }
 }

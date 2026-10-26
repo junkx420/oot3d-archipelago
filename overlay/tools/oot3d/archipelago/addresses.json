@@ -5,7 +5,7 @@
  "source_commit": "ae0fcf56cbc7166c809f675668b43e24a9640fe1",
  "signature_bytes": 32,
  "counts": {
-  "verified": 364,
+  "verified": 366,
   "unverified": 557
  },
  "entries": [
@@ -13460,6 +13460,36 @@
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "QuickTextCheckControlCodeBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002E0490",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002E0488",
+   "ld_line": 418,
+   "section": "text",
+   "signature": "sha256:d9c58e795e665a99cc82483cdde1ab9cd0bbd0ad5960f69d1d01dd2d5fc6869d",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "QuickTextHandleControlCodeBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002E057C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002E0578",
+   "ld_line": 419,
+   "section": "text",
+   "signature": "sha256:bf8c4f9033b201aef02db0166fcefe830c56a78ffa47e2cfd9fb12e6e50612a6",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
    ],
    "status": "signature_pinned"
   }

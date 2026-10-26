@@ -45,6 +45,7 @@ bool SetEnabledInSettings(const std::filesystem::path &settingsFile, bool enable
 struct ClientOptions {
   bool AutoConnect = true;   // connect at startup with the saved server and slot
   bool Notifications = true; // in-game messages (items, DeathLink, goal)
+  QuickTextMode QuickText = QuickTextMode::Off;
 };
 
 // One in-game message for the overlay.
@@ -86,6 +87,9 @@ public:
   void SetSkips(const CutsceneSkipOptions &skips);
   [[nodiscard]] ClientOptions Options() const;
   void SetOptions(const ClientOptions &options);
+  // Called with the options now and on every change (the window passes the
+  // quick text mode to the check observer).
+  void SetOptionsSink(std::function<void(const ClientOptions &)> sink);
   // Messages younger than kNotificationLifetime, oldest first; empty while
   // notifications are off.
   [[nodiscard]] std::vector<Notification> Notifications(
@@ -136,6 +140,7 @@ private:
   ConnectionSettings mSettings;
   CutsceneSkipOptions mSkips;
   ClientOptions mOptions;
+  std::function<void(const ClientOptions &)> mOptionsSink;
   mutable std::deque<Notification> mNotifications;
   // The slot was connected in this session (for "connection lost").
   bool mWasConnected = false;

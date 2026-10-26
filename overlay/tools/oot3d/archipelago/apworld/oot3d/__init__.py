@@ -99,6 +99,7 @@ def create_groups(obj: dict[Items, SohItemData] | dict[str, SohLocData]) -> dict
     return groups
 
 oot3d_options.apply_defaults(SohOptions)
+oot3d_options.apply_visibility(SohOptions)
 
 
 class SohWorld(CachedRuleBuilderWorld):
