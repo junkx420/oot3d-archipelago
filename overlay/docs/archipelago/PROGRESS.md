@@ -497,3 +497,31 @@ Link3D"; with the server stopped and started again the game reconnected and
 scouted again by itself; in gameplay "Received Kokiri Sword" appeared and the
 item was given; `triaevum_archipelago_net_smoke` passed with a second
 DeathLink client.
+### Saves, reloads and savestates (2026-10-26)
+
+The native save file stays untouched (its spare bytes are not documented and
+OoT3D_Randomizer keeps its own data elsewhere), so the applied-item count
+follows the game in three ways (`ap_save_sync.{h,cpp}`):
+
+- The game saved: the session checks the save file's write time twice a
+  second and then notes the count in the sidecar (`applied_at_last_save`).
+- Loaded from disk: when gameplay starts from the file selection, or the
+  save's sidecar opens for the first time in a run while playing, the count
+  goes back to the noted one; items given after the game last saved come
+  again.
+- New file: in Link's house without any item or quest item, the count, the
+  given-at-location and given-by-server sets and the goal start over; every
+  received item comes again.
+- Savestates: the client page in guest memory (which savestates carry)
+  holds a progress record (magic, identity hash, count), written every frame
+  in gameplay; after a load the count follows the record of that moment. A
+  savestate of a run without the page has none and changes nothing; the page
+  is mapped again when it is missing.
+
+Verified headless against a local server (seed 89757102641179993453, two
+items for the slot): a savestate taken before the items and loaded after
+them gave both again; a second run on the same saves, the game not saved,
+gave both again on loading the file; touching the save file in a run noted
+the count ("The game saved: 2 received items are in the save"), and the next
+run gave nothing twice. Host tests cover the new-file check, the record and
+the decisions. Not seen in a run: a new file (name entry is not scripted).

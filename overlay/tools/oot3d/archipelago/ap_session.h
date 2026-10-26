@@ -14,6 +14,7 @@
 #include "ap_item_table.h"
 #include "ap_location_table.h"
 #include "ap_network_client.h"
+#include "ap_save_sync.h"
 #include "ap_sidecar.h"
 
 #include <chrono>
@@ -123,6 +124,9 @@ private:
   void FlushPersist();
   void ReportLocation(std::int64_t id);
   void GiveReceivedItems(oot3d::recomp::a32::MemoryBus &memory);
+  void SyncProgress(oot3d::recomp::a32::MemoryBus &memory);
+  void WatchGameSave();
+  [[nodiscard]] std::filesystem::path GameSavePath(int saveSlot) const;
   void ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory);
   void WatchGoal(oot3d::recomp::a32::MemoryBus &memory);
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
@@ -157,6 +161,12 @@ private:
   std::deque<std::string> mConsole;
   bool mFrontend = false;
   bool mPersistPending = false;
+  // ap_save_sync.h: the save synced since the last file selection, and the
+  // game save file's last write time.
+  std::optional<SidecarIdentity> mSyncedIdentity;
+  int mSaveCheckCountdown = 0;
+  std::optional<std::filesystem::file_time_type> mSaveStamp;
+  int mSaveStampSlot = -1;
   SidecarWriter mWriter{mPaths.SidecarDirectory};
 
   // From SlotConnected.

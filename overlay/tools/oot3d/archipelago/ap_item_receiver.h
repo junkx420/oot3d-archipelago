@@ -48,6 +48,10 @@ public:
   // Withdraws an offer that was not taken (the item changed, or the save
   // was closed).
   void Cancel(oot3d::recomp::a32::MemoryBus &memory);
+  // Maps the client page if it is not (again); false if it cannot be.
+  bool EnsurePage(oot3d::recomp::a32::MemoryBus &memory, std::string *error);
+  // Forgets the actor and any offer: guest memory was replaced (savestate).
+  void Reset() noexcept;
 
 private:
   bool EnsureActor(oot3d::recomp::a32::MemoryBus &memory, std::string *error);

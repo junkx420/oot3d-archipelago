@@ -7,6 +7,7 @@
 #include "ap_item_table.h"
 #include "ap_location_key.h"
 #include "ap_location_table.h"
+#include "ap_save_sync.h"
 #include "ap_session.h"
 #include "ap_sha256.h"
 #include "ap_sidecar.h"
@@ -461,6 +462,7 @@ void TestSidecarRoundTripAndMismatch() {
   Expect(fresh.has_value() && fresh->AppliedItems == 0 && fresh->ReportedLocations.empty(),
          "a missing sidecar is a fresh state");
   fresh->AppliedItems = 7;
+  fresh->AppliedAtLastSave = 5;
   fresh->ReportedLocations = {1000, 1001};
   fresh->Placements[1000] = Placement{3997700, 2, 1U};
   fresh->GivenAtLocation = {1000};
@@ -470,7 +472,7 @@ void TestSidecarRoundTripAndMismatch() {
   Expect(SidecarPath(directory, identity).filename() == "AP_1234_x-0-2-save1.json",
          "the seed is reduced to a safe file name");
   const auto loaded = LoadSidecar(directory, identity, &error);
-  Expect(loaded.has_value() && loaded->AppliedItems == 7 &&
+  Expect(loaded.has_value() && loaded->AppliedItems == 7 && loaded->AppliedAtLastSave == 5 &&
              loaded->ReportedLocations == std::set<std::int64_t>{1000, 1001} &&
              loaded->Placements.at(1000) == Placement{3997700, 2, 1U} &&
              loaded->GivenAtLocation == std::set<std::int64_t>{1000} &&
@@ -643,6 +645,10 @@ void TestReceiverGivesThroughPlayer() {
   memory.Read32(kClientRegionBase + kActorParent, &parent);
   Expect(parent == 0U, "the actor is free for the next item");
 
+  // A savestate of a run without the page: it is mapped again.
+  FakeMemory restored;
+  Expect(receiver.EnsurePage(restored, &error) && maps == 2, "a page lost with a savestate is mapped again");
+
   ItemReceiver unavailable([](std::uint32_t, std::uint32_t, std::string *error) {
     *error = "no page";
     return false;
@@ -731,6 +737,53 @@ void TestSessionWithoutConnection() {
   std::filesystem::remove_all(directory);
 }
 
+void TestNewFileAndProgressRecord() {
+  FakeMemory memory;
+  FillFreshSave(memory);
+  memory.Write16(kSaveContext + kSaveSceneIndex, kSceneLinksHouse);
+  Expect(IsNewFile(memory), "a fresh save in Link's house is a new file");
+  memory.Write8(kSaveContext + kSaveItems, 0x00U); // Deku Stick
+  Expect(!IsNewFile(memory), "any item makes it an old file");
+  memory.Write8(kSaveContext + kSaveItems, kItemNone);
+  memory.Write16(kSaveContext + kSaveSceneIndex, 0x55U);
+  Expect(!IsNewFile(memory), "only Link's house starts a new file");
+
+  Expect(!ReadProgressRecord(memory).has_value(), "no record on an unmapped page");
+  for (std::uint32_t offset = 0; offset < 12U; ++offset)
+    memory.Write8(kClientProgressRecord + offset, 0U);
+  Expect(!ReadProgressRecord(memory).has_value(), "no record without the magic");
+  const SidecarIdentity first{"AP 1", 0, 1, 0}, third{"AP 1", 0, 1, 2};
+  Expect(IdentityHash(first) != IdentityHash(third), "each save slot has its own identity");
+  Expect(WriteProgressRecord(memory, {IdentityHash(first), 9U}), "the record is written");
+  const auto record = ReadProgressRecord(memory);
+  Expect(record.has_value() && record->Identity == IdentityHash(first) && record->AppliedItems == 9U,
+         "the record reads back");
+}
+
+void TestDecideProgress() {
+  SidecarState state;
+  state.Identity = {"AP 1", 0, 1, 0};
+  state.AppliedItems = 7;
+  state.AppliedAtLastSave = 4;
+  const auto ours = [&](std::uint32_t applied) {
+    return std::optional<ProgressRecord>(ProgressRecord{IdentityHash(state.Identity), applied});
+  };
+  auto decision = DecideProgress(state, true, false, ours(7));
+  Expect(decision.Event == ProgressEvent::LoadedFromDisk && decision.AppliedItems == 4,
+         "a file loaded from disk holds the items given until the game saved");
+  decision = DecideProgress(state, true, true, std::nullopt);
+  Expect(decision.Event == ProgressEvent::NewFile && decision.AppliedItems == 0,
+         "a new file receives everything again");
+  decision = DecideProgress(state, false, false, ours(5));
+  Expect(decision.Event == ProgressEvent::Savestate && decision.AppliedItems == 5,
+         "a savestate brings its own count");
+  decision = DecideProgress(state, false, false, ProgressRecord{IdentityHash({"AP 2", 0, 1, 0}), 1U});
+  Expect(decision.Event == ProgressEvent::None, "another seed's record is ignored");
+  Expect(DecideProgress(state, false, false, ours(7)).Event == ProgressEvent::None &&
+             DecideProgress(state, false, false, std::nullopt).Event == ProgressEvent::None,
+         "nothing changes while playing on");
+}
+
 void TestRetryDelay() {
   Expect(RetryDelay(1) == std::chrono::seconds(5) && RetryDelay(2) == std::chrono::seconds(10) &&
              RetryDelay(4) == std::chrono::seconds(40),
@@ -791,6 +844,8 @@ int main(int argc, char **argv) {
     TestObserverReportsDeath();
     TestRetryDelay();
     TestSidecarWriter();
+    TestNewFileAndProgressRecord();
+    TestDecideProgress();
     TestEnabledSettingAndAutoConnect();
     TestLocationTable();
     TestGeneratedLocationTable(TRIAEVUM_ARCHIPELAGO_LOCATIONS_JSON);

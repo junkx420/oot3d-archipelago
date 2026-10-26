@@ -39,7 +39,6 @@ constexpr std::array<SkipFlag, 10> kSkipFlags{{
     {"Forest Temple Poe sisters cutscene", SceneSwitch(0x03U), Width::U32, 0x08000000U},
 }};
 
-constexpr std::uint16_t kSceneLinksHouse = 0x34U;
 constexpr std::uint32_t kIntroCutscene = 0xFFF1U;
 
 bool SetBits(MemoryBus &memory, const SkipFlag &flag) {

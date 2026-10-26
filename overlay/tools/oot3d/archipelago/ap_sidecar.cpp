@@ -69,6 +69,8 @@ std::optional<SidecarState> LoadSidecar(const std::filesystem::path &directory,
     for (const auto &location : document.value("given_by_server", nlohmann::json::array()))
       state.GivenByServer.insert(location.get<std::int64_t>());
     state.GoalReached = document.value("goal_reached", false);
+    // Files from before keep their count as the saved one.
+    state.AppliedAtLastSave = document.value("applied_at_last_save", state.AppliedItems);
   } catch (const nlohmann::json::exception &) {
     Fail(error, "Archipelago save data is unreadable: " + path.string());
     return std::nullopt;
@@ -91,6 +93,7 @@ bool SaveSidecar(const std::filesystem::path &directory, const SidecarState &sta
       {"slot", state.Identity.Slot},
       {"save_slot", state.Identity.SaveSlot},
       {"applied_items", state.AppliedItems},
+      {"applied_at_last_save", state.AppliedAtLastSave},
       {"reported_locations", state.ReportedLocations},
       {"placements", placements},
       {"given_at_location", state.GivenAtLocation},

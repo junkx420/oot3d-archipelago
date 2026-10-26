@@ -148,4 +148,7 @@ right half; not investigated.
   failed" before it connects.
 - Loading a save reads its progress file on the game thread (about 6 ms).
 - Messages name another game's item only when the server's data package has
-  arrived before the scouts; otherwise they say "an item".
+  arrived before the scouts; otherwise they say "an item".- The game's save is noticed by the save file's write time, up to half a
+  second late; an item given in that moment would count as saved.
+- A new file is recognized by an empty inventory in Link's house; not yet
+  seen in a run.

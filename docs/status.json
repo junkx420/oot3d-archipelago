@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-26",
-  "now": "Alpha v0.1.0-alpha.1 released (apworld + source). Next: a save reload test, a new file receiving everything, the savestate item counter and the goal at Ganon.",
+  "now": "Received items now survive reloads and savestates. Next: a new file seen in the game, the goal at Ganon, and checks beyond chests (tokens, songs, freestanding items).",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 72,
+      "id": 4, "name": "Gameplay integration", "weight": 28, "percent": 82,
       "items": [
         {"text": "Design: server stays the only item source, own items show their model when found", "done": true},
         {"text": "Structure offsets from the z3D headers compiled for the 3DS", "done": true},
@@ -50,8 +50,9 @@
         {"text": "Received items given to Link at a safe moment (seen in the game)", "done": true},
         {"text": "Play test: chests and received items", "done": true},
         {"text": "File selection visible in the developer TopScreen build (was only sky)", "done": true},
-        {"text": "Play test: reloaded save and a new file receiving everything", "done": false},
-        {"text": "Applied-item count in savestates", "done": false},
+        {"text": "Reloaded save: items given after the last in-game save come again (tested headless)", "done": true},
+        {"text": "Applied-item count follows savestates (tested headless)", "done": true},
+        {"text": "New file receives everything again (built and unit-tested, not yet seen in the game)", "done": false},
         {"text": "Goal (Ganon) reported to the server (built, not yet seen in the game)", "done": true},
         {"text": "DeathLink (seen in the game, both directions)", "done": true}
       ]
@@ -70,6 +71,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-26", "text": "Nothing received is lost any more: loading a save that was not saved after an item, or loading an older savestate, gives those items again; a game save is noticed, so nothing comes twice."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.1: oot3d.apworld and source on GitHub. New: Archipelago switch in the F1 menu, auto-connect and reconnect, in-game messages for sent and received items, DeathLink and the goal; saving progress no longer stalls the game."},
     {"date": "2026-10-26", "text": "Universal Tracker no longer lists Ship of Harkinian's N64 glitch routes as glitched locations; it shows only the 3D logic."},
     {"date": "2026-10-26", "text": "Universal Tracker tried live against a local seed: it shows the same locations in logic as the apworld (5 at the start, 11 after a Kokiri Sword)."},

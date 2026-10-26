@@ -318,6 +318,7 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       HandleEvent(event);
   }
   OpenSidecarIfReady(memory);
+  SyncProgress(memory);
   if (mSkips.Cutscenes || mSkips.Intro) {
     if (const auto slot = LoadedSaveSlot(memory)) {
       const int set = ApplyCutsceneSkips(mSkips, memory);
@@ -331,7 +332,87 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
   GiveReceivedItems(memory);
   ApplyDeathLink(memory);
   WatchGoal(memory);
+  // The count of this moment, for a savestate taken now.
+  if (mSidecar.has_value() && !mFrontend && mReceiver.EnsurePage(memory, nullptr))
+    (void)WriteProgressRecord(memory, {IdentityHash(mSidecar->Identity),
+                                       static_cast<std::uint32_t>(mSidecar->AppliedItems)});
   FlushPersist();
+}
+
+// The save file the game writes for the loaded save slot.
+std::filesystem::path Session::GameSavePath(int saveSlot) const {
+  char name[16];
+  std::snprintf(name, sizeof(name), "save%02d.bin", saveSlot);
+  return mPaths.SidecarDirectory.parent_path() / name;
+}
+
+// Notes the count whenever the game writes its save file (checked twice a
+// second): a later load of the file holds what was applied until then.
+void Session::WatchGameSave() {
+  if (--mSaveCheckCountdown > 0)
+    return;
+  mSaveCheckCountdown = 15;
+  std::error_code failed;
+  const auto stamp = std::filesystem::last_write_time(GameSavePath(mSidecar->Identity.SaveSlot), failed);
+  if (failed)
+    return;
+  const bool known = mSaveStamp.has_value() && mSaveStampSlot == mSidecar->Identity.SaveSlot;
+  const bool written = known && *mSaveStamp != stamp;
+  mSaveStamp = stamp;
+  mSaveStampSlot = mSidecar->Identity.SaveSlot;
+  if (!written || mSidecar->AppliedAtLastSave == mSidecar->AppliedItems)
+    return;
+  mSidecar->AppliedAtLastSave = mSidecar->AppliedItems;
+  Persist();
+  Log("The game saved: " + std::to_string(mSidecar->AppliedItems) + " received items are in the save");
+}
+
+void Session::SyncProgress(oot3d::recomp::a32::MemoryBus &memory) {
+  if (mFrontend)
+    mSyncedIdentity.reset(); // the next gameplay comes from the file selection
+  if (!mSidecar.has_value())
+    return;
+  WatchGameSave();
+  if (mFrontend)
+    return;
+  // Gameplay started from the file selection, or this save's sidecar opened
+  // for the first time in this run while playing: the save came from disk.
+  const bool entered = !(mSyncedIdentity.has_value() && *mSyncedIdentity == mSidecar->Identity);
+  mSyncedIdentity = mSidecar->Identity;
+  std::optional<ProgressRecord> record;
+  if (!entered && mReceiver.EnsurePage(memory, nullptr))
+    record = ReadProgressRecord(memory);
+  const auto decision = DecideProgress(*mSidecar, entered, entered && IsNewFile(memory), record);
+  auto &sidecar = *mSidecar;
+  switch (decision.Event) {
+  case ProgressEvent::None:
+    return;
+  case ProgressEvent::NewFile:
+    sidecar.AppliedItems = 0;
+    sidecar.AppliedAtLastSave = 0;
+    sidecar.GivenAtLocation.clear();
+    sidecar.GivenByServer.clear();
+    sidecar.GoalReached = false;
+    Log("New file: every received item is given again");
+    if (!mServerItems.empty())
+      Notify(Notification::Kind::Info,
+             "New file: receiving " + std::to_string(mServerItems.size()) + " items again");
+    break;
+  case ProgressEvent::LoadedFromDisk:
+    if (decision.AppliedItems == sidecar.AppliedItems)
+      return;
+    Log("Loaded save: items " + std::to_string(decision.AppliedItems) + " to " +
+        std::to_string(sidecar.AppliedItems - 1) + " were given after it was saved and come again");
+    sidecar.AppliedItems = decision.AppliedItems;
+    break;
+  case ProgressEvent::Savestate:
+    Log("Savestate: received items counted from " + std::to_string(decision.AppliedItems) +
+        " (was " + std::to_string(sidecar.AppliedItems) + ")");
+    sidecar.AppliedItems = decision.AppliedItems;
+    break;
+  }
+  mReceiver.Reset();
+  Persist();
 }
 
 void Session::OnDeath() {

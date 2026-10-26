@@ -38,6 +38,9 @@ struct SidecarState {
   SidecarIdentity Identity;
   // Items with index < AppliedItems are in the game already.
   std::int64_t AppliedItems = 0;
+  // AppliedItems when the game last wrote the save file: what a load of
+  // the file from disk holds (ap_save_sync.h).
+  std::int64_t AppliedAtLastSave = 0;
   std::set<std::int64_t> ReportedLocations;
   // Kept so locations give their items without a connection.
   std::map<std::int64_t, Placement> Placements;

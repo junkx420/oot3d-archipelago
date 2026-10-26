@@ -96,5 +96,12 @@ inline constexpr std::uint32_t kPlayerState2Busy = 0x000C0000U;
 // 0x06100000); the client maps one page there for its item actor.
 inline constexpr std::uint32_t kClientRegionBase = 0x06200000U;
 inline constexpr std::uint32_t kClientRegionSize = 0x1000U;
+// Within the page, after the item actor: the progress record (magic,
+// identity hash, applied-item count), which savestates carry with guest
+// memory.
+inline constexpr std::uint32_t kClientProgressRecord = kClientRegionBase + 0x800U;
+inline constexpr std::uint32_t kProgressRecordMagic = 0x31435041U; // "APC1"
+// Link's house: where a new file starts (OoT3D_Randomizer's new-file setup).
+inline constexpr std::uint16_t kSceneLinksHouse = 0x34U;
 
 } // namespace Oot3dArchipelago

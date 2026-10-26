@@ -82,18 +82,32 @@ std::optional<bool> LocationTakenInSave(const LocationKey &key, MemoryBus &memor
   return ((flags >> key.Flag) & 1U) != 0U;
 }
 
-bool ItemReceiver::EnsureActor(MemoryBus &memory, std::string *error) {
-  if (mActorReady)
+bool ItemReceiver::EnsurePage(MemoryBus &memory, std::string *error) {
+  std::uint8_t probe = 0;
+  if (memory.Read8(kClientRegionBase, &probe))
     return true;
+  // Not mapped: the first use, or a savestate of a run without the page.
+  mActorReady = false;
+  mOffered = false;
   if (mUnavailable)
     return false;
-  std::uint8_t probe = 0;
-  if (!memory.Read8(kItemActor, &probe)) {
-    if (!mMapper || !mMapper(kClientRegionBase, kClientRegionSize, error)) {
-      mUnavailable = true;
-      return false;
-    }
+  if (!mMapper || !mMapper(kClientRegionBase, kClientRegionSize, error)) {
+    mUnavailable = true;
+    return false;
   }
+  return true;
+}
+
+void ItemReceiver::Reset() noexcept {
+  mActorReady = false;
+  mOffered = false;
+}
+
+bool ItemReceiver::EnsureActor(MemoryBus &memory, std::string *error) {
+  if (!EnsurePage(memory, error))
+    return false;
+  if (mActorReady)
+    return true;
   for (std::uint32_t offset = 0; offset < kActorSize; offset += 4U)
     (void)memory.Write32(kItemActor + offset, 0U);
   // The minimum Player needs to hand an item over (ItemOverride_Init).
