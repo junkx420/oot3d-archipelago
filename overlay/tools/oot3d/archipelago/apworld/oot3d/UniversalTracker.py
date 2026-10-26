@@ -50,7 +50,7 @@ def setup_options_from_slot_data(world: "SohWorld") -> None:
                 "shuffle_ocarina_buttons"]
             world.options.shuffle_swim.value = world.passthrough["shuffle_swim"]
             world.options.shuffle_weird_egg.value = world.passthrough["shuffle_weird_egg"]
-            world.options.shuffle_gerudo_membership_card = world.passthrough[
+            world.options.shuffle_gerudo_membership_card.value = world.passthrough[
                 "shuffle_gerudo_membership_card"]
             world.options.shuffle_fishing_pole.value = world.passthrough["shuffle_fishing_pole"]
             world.options.shuffle_deku_stick_bag.value = world.passthrough[

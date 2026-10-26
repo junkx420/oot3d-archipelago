@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "now": "Phase 4: the file selection is visible again; next are a save reload test, a new file receiving everything, the savestate item counter and the goal at Ganon.",
   "phases": [
     {
@@ -35,6 +35,7 @@
         {"text": "Logic ported from the Ship of Harkinian apworld", "done": true},
         {"text": "Logic checked against OoT3D_Randomizer's own C++ logic (never more permissive)", "done": true},
         {"text": "Seeds generate; Archipelago and world tests pass", "done": true},
+        {"text": "Universal Tracker: world rebuilt from slot data (tested, not yet tried with the tracker)", "done": true},
         {"text": "Shuffles beyond the vanilla game (tokens, songs, shops, ...), 3D tricks", "done": false}
       ]
     },
@@ -66,6 +67,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-26", "text": "Universal Tracker support: the tracker can rebuild the world from the seed's slot data and show what is in logic; a test rebuilds it the same way."},
     {"date": "2026-10-25", "text": "The title and file selection now show an Archipelago badge with the connection state, so the Archipelago version is recognizable at a glance."},
     {"date": "2026-10-25", "text": "The file selection shows its files again in the developer TopScreen build: a speed barrier skipped the code that draws them on the upper screen."},
     {"date": "2026-10-25", "text": "DeathLink works in the game: Link's death reached another player, and a death from another player killed Link without being sent back."},

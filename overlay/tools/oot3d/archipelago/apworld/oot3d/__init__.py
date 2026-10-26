@@ -121,6 +121,12 @@ class SohWorld(CachedRuleBuilderWorld):
     passthrough: dict[str, Any]  # slot data that got passed through
     ut_can_gen_without_yaml = True  # class var that tells it to ignore the player yaml
 
+    @staticmethod
+    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
+        # Universal Tracker regenerates the world with this as
+        # multiworld.re_gen_passthrough[GAME] (UniversalTracker.py).
+        return slot_data
+
     def __init__(self, multiworld, player):
         super().__init__(multiworld, player)
         self.item_pool = list[SohItem]()

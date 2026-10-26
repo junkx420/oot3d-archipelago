@@ -426,3 +426,19 @@ client (`private/deathlink-peer.py`):
   is not 0, so never in gameplay; the preparation screen covers it.
 - Verified headless at the file selection: badge with the module on, none
   with it off. Not seen in a window yet.
+### Universal Tracker (2026-10-25)
+
+- The world came with Ship of Harkinian's Universal Tracker support
+  (`ut_can_gen_without_yaml`, `UniversalTracker.py` reading every
+  logic-relevant option back from slot_data). Added `interpret_slot_data`,
+  which hands the slot data to the tracker's regeneration, as other
+  tracker-ready worlds do, and fixed the imported passthrough of
+  `shuffle_gerudo_membership_card` (it replaced the option instead of
+  setting its value).
+- `test/test_universal_tracker.py` does what the tracker does: a generated
+  seed's slot_data after a JSON round trip, a world rebuilt from it with
+  default options and the generation steps up to the fill. The rebuilt world
+  has the same locations and the same reachable locations (events only, with
+  no items and with seven key items). apworld suite: 479 passed, 33 skipped.
+- Not tried with Universal Tracker itself; the setup guide says how to
+  install it.
