@@ -73,7 +73,7 @@
     }
   ],
   "log": [
-    {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.4: more options (Zora's Fountain and Jabu-Jabu open, rainbow bridge open, Ganon's trials, starting items), the Deku Tree's and Dodongo's Cavern's blue warp cutscenes skipped, and checks that never reached the server fixed (boss rewards, Saria's gift, Zelda's Letter, a token beside a chest)."},
+    {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.4, the first release with a game executable (a replacement TriAevum.exe for an installed TriAevum beta.1.2): more options (Zora's Fountain and Jabu-Jabu open, rainbow bridge open, Ganon's trials, starting items), the Deku Tree's and Dodongo's Cavern's blue warp cutscenes skipped, and checks that never reached the server fixed (boss rewards, Saria's gift, Zelda's Letter, a token beside a chest)."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.3 fixes a crash when leaving Kokiri Forest: the client's memory page collided with one TriAevum maps for scenes with many objects. Savestates from older builds should not be loaded."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.2: quick text (instant boxes, hold B to skip), received items survive reloads and savestates, and the Options Creator shows only supported options."},
     {"date": "2026-10-26", "text": "Nothing received is lost any more: loading a save that was not saved after an item, or loading an older savestate, gives those items again; a game save is noticed, so nothing comes twice."},

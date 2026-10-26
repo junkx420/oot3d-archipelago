@@ -32,3 +32,29 @@ copied to `worlds/oot3d`:
 ```powershell
 python -m pytest worlds/oot3d
 ```
+
+## Release runtime (the replacement TriAevum.exe)
+
+The released `TriAevum.exe` is TriAevum's public runtime with the module on:
+the title code stays in TriAevum's `triaevum_title_aot.dll`, which Forge
+activates from the user's ROM. The client's hooks are runtime data (the
+generated title code has an observed variant of every function), so the
+unchanged title module works with it. Configure as TriAevum's release does,
+plus the option:
+
+```
+-G Ninja -DCMAKE_BUILD_TYPE=Release
+-DOOT3D_WHOLE_AOT_PRODUCT_MODE=ON -DOOT3D_DIRECT_AOT_PLUGIN=ON
+-DOOT3D_ENABLE_VULKAN_RENDERER=ON -DTHREE_DS_RECOMP_ENABLE_SSSR=ON
+-DTRIAEVUM_DEVELOPER_TOOLS=OFF -DTHREE_DS_RECOMP_OFFER_EXPERIMENTAL_GI=OFF
+-DTRIAEVUM_ENABLE_ARCHIPELAGO=ON
+```
+
+with the same toolchain and vcpkg settings as the developer build, inside a
+Visual Studio x64 developer environment, and build the target
+`triaevum_public_runtime`. The package holds `TriAevum.exe`,
+`resources/archipelago/{locations,items}.json` (from
+`runtime/triaevum_resources/archipelago/`) and the licence notices of
+TriAevum, apclientpp, wswrap, WebSocket++, asio, OpenSSL and zlib. It must
+not hold `triaevum_title_aot.dll`, the iMMERSE or DLSS modules, or anything
+from the ROM; those come from the user's TriAevum installation.

@@ -5,10 +5,8 @@
 recompilation of *The Legend of Zelda: Ocarina of Time 3D*.
 
 **Alpha.** The current state is on the
-[status page](https://junkx420.github.io/oot3d-archipelago/); releases carry
-`oot3d.apworld` for the Archipelago launcher. Playing needs TriAevum built
-from source with your own ROM: a game build cannot be distributed, because it
-contains code compiled from the ROM.
+[status page](https://junkx420.github.io/oot3d-archipelago/). Releases carry
+`oot3d.apworld` for the Archipelago launcher and, from v0.1.0-alpha.4, a `TriAevum.exe` with the Archipelago client for an installed v0.8.0-beta.1.2 that Forge has prepared from your own ROM (EUR). replacement holds TriAevum's runtime only; the game's code comes from's own release and your ROM, as before. Building from source works ([docs/BUILD.md](docs/BUILD.md)).
 
 What works in the alpha: the game's own item locations send checks and give
 multiworld items (your own with their real model), received items arrive in
