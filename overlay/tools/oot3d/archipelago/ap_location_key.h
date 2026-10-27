@@ -8,6 +8,8 @@
 // generable from the randomizer's location data.
 
 #include <cstdint>
+#include <span>
+#include <vector>
 #include <optional>
 #include <string>
 
@@ -106,6 +108,10 @@ std::optional<LocationKey> KeyForOffer(const OfferSource &source);
 // Item_Give without an accepted offer: the songs are the randomizer's
 // delayed overrides (scene 0xFF). Other direct gives have no location key.
 std::optional<LocationKey> KeyForDirectGive(std::uint8_t item);
+
+// The skull keys of the tokens a save's gsFlags record (array index and bit,
+// as KeyForOffer forms them from a token's params).
+std::vector<LocationKey> TokenKeys(std::span<const std::uint8_t> gsFlags);
 
 std::string Describe(const LocationKey &key);
 

@@ -192,6 +192,8 @@ void CheckObserver::OnOffer(GuestState &state, MemoryBus &memory) {
       }
     }
   }
+  if (offer.Source.ActorId == kActorSkullToken)
+    mLastTokenKey = KeyForOffer(offer.Source);
   mLastOffer = offer;
 }
 
@@ -212,13 +214,32 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
   // getItemId may still hold an earlier chest's item, which a nearby chest
   // offering the same item matched (seen in play, 2026-10-26).
   const bool token = event.ItemId == kItemSkullToken;
+  const bool receiving = mReceiving && mReceiving();
+  // The token's location (its own offer, kept apart from other offers) may
+  // hold another item: the token then becomes what the session says.
+  std::optional<LocationKey> tokenKey;
+  if (token && !receiving) {
+    tokenKey = mLastTokenKey;
+    mLastTokenKey.reset();
+    if (tokenKey.has_value() && mDirectOverride)
+      if (const auto replacement = mDirectOverride(*tokenKey, memory)) {
+        state.r[1] = *replacement;
+        event.OverrideGetItemId = *replacement;
+      }
+  }
   const bool offerAccepted =
       mLastOffer.has_value() &&
       (token ? mLastOffer->Source.ActorId == kActorSkullToken
              : (interactActor == mLastOffer->Actor ||
                 (event.PlayerGetItemId != 0U && (event.PlayerGetItemId == mLastOffer->Source.GetItemId ||
                                                  event.PlayerGetItemId == mLastOffer->OverrideGetItemId))));
-  if (offerAccepted) {
+  if (tokenKey.has_value()) {
+    event.Source = "offer";
+    event.ActorId = kActorSkullToken;
+    event.Key = tokenKey;
+    if (mLastOffer.has_value() && mLastOffer->Source.ActorId == kActorSkullToken)
+      mLastOffer.reset();
+  } else if (offerAccepted) {
     event.Source = "offer";
     event.ActorId = mLastOffer->Source.ActorId;
     event.ActorParams = mLastOffer->Source.ActorParams;
@@ -228,7 +249,7 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
     // One offer, one check: a later give without its own offer must not
     // inherit this one.
     mLastOffer.reset();
-  } else if (mReceiving && mReceiving()) {
+  } else if (receiving) {
     // The client's own get-item (a received item) reaches Item_Give without
     // an offer too; it is no location.
     event.Source = "received";

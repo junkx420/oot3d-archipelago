@@ -642,3 +642,30 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   beta.1.2: the hooks verified against the running image, a seed with the
   new options set its flags. Not seen in the game: the warp skips, the
   fairies and the forest guard.
+
+### Token and scrub shuffles (2026-10-27)
+
+- Gold Skulltula tokens (shuffle_skull_tokens dungeon, overworld, all) are
+  reported from the save: the game sets the token's gsFlags bit (save
+  +0xEB4, 22 bytes; array index and bit are the randomizer's skull key)
+  however the token was taken, so a token taken while disconnected counts
+  too. The token's offer is kept apart from other offers (a chest beside it
+  offers every frame); when its location is part of the seed, the token's
+  Item_Give becomes a recovery heart and the location's item comes from the
+  server. Offers of tokens are not overridden.
+- Business scrubs (shuffle_scrubs one_time_only, all): offers already form
+  the randomizer's keys (grotto scrubs by return scene and get-item, others
+  as base items). The game's scrubs sell again; once a scrub's location is
+  reported it sells its own item. Prices stay the game's (all below 99
+  rupees, so the logic's wallet needs hold); Ship of Harkinian's price
+  options are hidden.
+- skulls_sun_song (logic only) is allowed.
+- Not done: cows need an empty bottle in the game, which the logic does not
+  ask for, and a key per cow the game does not have; shops need a bought
+  flag and a shown item the game does not have. Both need code changes in
+  the game (OoT3D_Randomizer cow.c, shops.c).
+- Tests: host tests for token keys and per-token replacement; apworld 0.7.0
+  suite 492 passed, 33 skipped; a seed with all tokens and scrubs has 408
+  locations, all in the client's table. Headless against it (dev build and
+  release exe in the TriAevum beta.1.2 copy): the dev save's two Deku Tree
+  tokens were reported on connecting and the server's item came back.

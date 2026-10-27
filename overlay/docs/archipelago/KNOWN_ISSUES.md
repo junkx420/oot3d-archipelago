@@ -11,8 +11,11 @@ in the game:
 - Freestanding items (heart pieces, keys): collectable keys, host-tested.
 - Great Fairy rewards, the Master Sword and the Light Arrow cutscene
   (delayed locations without a client key yet).
-- Shops: the randomizer keys shop slots (`0x30+`), the observer keys item
-  ids. Matters only with shopsanity.
+- Shops and cows are not shuffled yet: both need code changes in the game
+  (a bought flag and a shown item for shop slots; cows give only into an
+  empty bottle and share a key per scene).
+- Tokens taken before a seed shuffled them still count in the game's own
+  token count; the server's tokens add to it.
 
 ## Developer whole-AOT build faults when Link becomes controllable
 

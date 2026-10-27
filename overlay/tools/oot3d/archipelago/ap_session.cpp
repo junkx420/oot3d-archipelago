@@ -286,11 +286,21 @@ void Session::OnCheck(const CheckEvent &event) {
 std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
                                                       oot3d::recomp::a32::MemoryBus &memory) {
   std::lock_guard lock(mMutex);
-  if (!mSidecar.has_value() || !mSlot.has_value() || !mLocations.has_value())
+  // A token's offer keeps the token; its Item_Give becomes a heart instead
+  // (CheckObserver::SetTokenShuffleProbe).
+  if (!mSidecar.has_value() || !mSlot.has_value() || !mLocations.has_value() || key.Type == OverrideType::Skull)
     return std::nullopt;
   const auto id = mLocations->Find(key, nullptr);
   if (!id.has_value())
     return std::nullopt;
+  // A business scrub sells again after its location's item: the game's own
+  // item from then on (OoT3D_Randomizer makes scrubs one-time instead).
+  if (mSidecar->ReportedLocations.count(*id) != 0U) {
+    const auto *entry = mLocations->ById(*id);
+    if (key.Type == OverrideType::GrottoScrub ||
+        (entry != nullptr && entry->Name.find("Deku Scrub") != std::string::npos))
+      return std::nullopt;
+  }
   const auto placement = mSidecar->Placements.find(*id);
   if (placement == mSidecar->Placements.end())
     return std::nullopt; // not scouted yet: the game's own item
@@ -316,11 +326,15 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   // locations of the seed: once its placements are known, the game's own item
   // becomes a recovery heart and the location's item comes from the server.
   // Songs, Saria's gift and the dungeon rewards hold their own item with the
-  // supported options and stay as they are.
-  if (key.Type != OverrideType::Delayed ||
+  // supported options and stay as they are. A Gold Skulltula token's location
+  // is replaced the same way when the seed shuffles it (it is reported from
+  // the save's gsFlags, WatchTokens).
+  const bool token = key.Type == OverrideType::Skull;
+  if (!token && (key.Type != OverrideType::Delayed ||
       (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedFairyZorasFountain &&
-       key.Flag != kDelayedFairyHyruleCastle && key.Flag != kDelayedFairyColossus) ||
-      !mSidecar.has_value() || !mLocations.has_value())
+       key.Flag != kDelayedFairyHyruleCastle && key.Flag != kDelayedFairyColossus)))
+    return std::nullopt;
+  if (!mSidecar.has_value() || !mLocations.has_value())
     return std::nullopt;
   const auto id = mLocations->Find(key, nullptr);
   if (!id.has_value() || mSidecar->Placements.count(*id) == 0U)
@@ -379,8 +393,42 @@ void Session::WatchFairyFountain(oot3d::recomp::a32::MemoryBus &memory) {
   ReportLocation(*id);
 }
 
-void Session::ReportLocation(std::int64_t id) {
-  if (!mSidecar.has_value()) {
+// Every token the save records, reported once: the game sets the token's
+// gsFlags bit (index and bit of its params, the randomizer's skull key)
+// however the token was taken, and a token taken while disconnected counts
+// too.
+void Session::WatchTokens(oot3d::recomp::a32::MemoryBus &memory) {
+  // Whether any scouted location of this slot is a token's, recounted when
+  // the placements change.
+  const std::size_t placements = mSidecar.has_value() ? mSidecar->Placements.size() : 0U;
+  if (placements != mTokenPlacementCount) {
+    mTokenPlacementCount = placements;
+    mTokensShuffled = false;
+    if (mSidecar.has_value() && mLocations.has_value())
+      for (const auto &[location, placement] : mSidecar->Placements)
+        if (const auto *entry = mLocations->ById(location); entry != nullptr && entry->Key.Type == OverrideType::Skull) {
+          mTokensShuffled = true;
+          break;
+        }
+    mTokenFlags.reset();
+  }
+  if (!mTokensShuffled || mFrontend || !mSidecar.has_value() || !mLocations.has_value())
+    return;
+  std::array<std::uint8_t, kSaveGsFlagCount> flags{};
+  for (std::uint32_t i = 0; i < kSaveGsFlagCount; ++i)
+    if (!memory.Read8(kSaveContext + kSaveGsFlags + i, &flags[i]))
+      return;
+  if (mTokenFlags.has_value() && *mTokenFlags == flags)
+    return;
+  mTokenFlags = flags;
+  for (const LocationKey &key : TokenKeys(flags)) {
+    const auto id = mLocations->Find(key, nullptr);
+    if (id.has_value() && mSidecar->Placements.count(*id) != 0U && mSidecar->ReportedLocations.count(*id) == 0U)
+      ReportLocation(*id);
+  }
+}
+
+void Session::ReportLocation(std::int64_t id) {  if (!mSidecar.has_value()) {
     mUnsentChecks.push_back(id);
     return;
   }
@@ -421,6 +469,7 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
     }
   }
   WatchFairyFountain(memory);
+  WatchTokens(memory);
   GiveReceivedItems(memory);
   ApplyDeathLink(memory);
   WatchGoal(memory);

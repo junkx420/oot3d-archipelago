@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-27",
-  "now": "Played up to Hyrule Castle by a tester. Next: more of Ship of Harkinian's options and shuffles (tokens, scrubs, cows, shops).",
+  "now": "Played up to Hyrule Castle by a tester. Next: cows and shops (they need changes in the game's code), then more of Ship of Harkinian's options.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -73,6 +73,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.6: Gold Skulltula tokens and Deku scrubs can be shuffled. Tokens count from the save, so none is missed."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.5: every dungeon's blue warp cutscene can be skipped, the Great Fairies and the Light Arrow cutscene are real checks, and the forest, the Kakariko gate and the Door of Time can start open."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.4, the first release with a game executable (a replacement TriAevum.exe for an installed TriAevum beta.1.2): more options (Zora's Fountain and Jabu-Jabu open, rainbow bridge open, Ganon's trials, starting items), the Deku Tree's and Dodongo's Cavern's blue warp cutscenes skipped, and checks that never reached the server fixed (boss rewards, Saria's gift, Zelda's Letter, a token beside a chest)."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.3 fixes a crash when leaving Kokiri Forest: the client's memory page collided with one TriAevum maps for scenes with many objects. Savestates from older builds should not be loaded."},

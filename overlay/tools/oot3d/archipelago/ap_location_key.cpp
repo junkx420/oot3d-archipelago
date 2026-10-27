@@ -77,6 +77,16 @@ std::optional<LocationKey> KeyForDirectGive(std::uint8_t item) {
                      static_cast<std::uint8_t>(kDelayedSongMinuet + (item - kItemSongMinuet))};
 }
 
+std::vector<LocationKey> TokenKeys(std::span<const std::uint8_t> gsFlags) {
+  std::vector<LocationKey> keys;
+  for (std::size_t index = 0; index < gsFlags.size(); ++index)
+    for (std::uint32_t bit = 0; bit < 8U; ++bit)
+      if ((gsFlags[index] & (1U << bit)) != 0U)
+        keys.push_back(LocationKey{static_cast<std::uint8_t>(index), OverrideType::Skull,
+                                   static_cast<std::uint8_t>(1U << bit)});
+  return keys;
+}
+
 std::string Describe(const LocationKey &key) {
   static constexpr const char *kTypes[] = {
       "base", "chest", "collectable", "skull", "grotto_scrub", "delayed", "temple"};

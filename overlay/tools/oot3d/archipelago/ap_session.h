@@ -19,6 +19,7 @@
 #include "ap_sidecar.h"
 #include "ap_world_state.h"
 
+#include <array>
 #include <chrono>
 #include <cstdint>
 #include <deque>
@@ -147,6 +148,7 @@ private:
   void ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory);
   void WatchGoal(oot3d::recomp::a32::MemoryBus &memory);
   void WatchFairyFountain(oot3d::recomp::a32::MemoryBus &memory);
+  void WatchTokens(oot3d::recomp::a32::MemoryBus &memory);
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
 
   mutable std::mutex mMutex;
@@ -194,6 +196,10 @@ private:
   int mWorldLoggedForSlot = -1;
   // The upgrade fountain's rewards in the save on the previous frame.
   std::optional<FairyUpgrades> mFairyBaseline;
+  // Set when the placements are scouted; the save's gsFlags last seen.
+  bool mTokensShuffled = false;
+  std::size_t mTokenPlacementCount = 0;
+  std::optional<std::array<std::uint8_t, kSaveGsFlagCount>> mTokenFlags;
   std::set<std::int64_t> mServerChecked;
   std::vector<ReceivedItem> mServerItems;
   std::map<std::int64_t, Placement> mPlacements;

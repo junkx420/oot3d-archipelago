@@ -19,6 +19,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <array>
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
@@ -634,6 +635,59 @@ void TestForestExitGuard() {
   memory.Read32(kSaveContext + kSaveQuestItems, &quest);
   Expect(quest == 0x1U && observer.Hits().ForestExit == 1U, "an unexpected register changes nothing");
 }
+// Tokens: the save's gsFlags name every collected token, and a token's own
+// Item_Give takes its key from the token's offer even with a chest offering
+// in between.
+void TestTokenShuffle() {
+  std::array<std::uint8_t, kSaveGsFlagCount> flags{};
+  flags[0] = 0x05U;  // Deku Tree: bits 0 and 2
+  flags[21] = 0x80U;
+  const auto keys = TokenKeys(flags);
+  Expect(keys.size() == 3U && keys[0] == LocationKey{0x00U, OverrideType::Skull, 0x01U} &&
+             keys[1] == LocationKey{0x00U, OverrideType::Skull, 0x04U} &&
+             keys[2] == LocationKey{0x15U, OverrideType::Skull, 0x80U},
+         "gsFlags bits are skull keys");
+
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kToken = 0x08100000U;
+  constexpr std::uint32_t kChest = 0x08180000U;
+  constexpr std::uint32_t kPlayer = 0x08200000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, 0x00U);
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  memory.Write16(kToken + kActorId, kActorSkullToken);
+  memory.Write16(kToken + kActorParams, 0x0004U);
+  memory.Write16(kChest + kActorId, kActorChest);
+  memory.Write16(kChest + kActorParams, 0x5906U);
+  memory.Write8(kSaveRespawnReturnData, 0U);
+  memory.Write8(kPlayer + kPlayerGetItemId, 0U);
+  memory.Write32(kPlayer + kPlayerInteractRangeActor, 0U);
+  CheckObserver observer{false};
+  std::vector<CheckEvent> events;
+  std::vector<LocationKey> asked;
+  observer.SetSink([&](const CheckEvent &event) { events.push_back(event); });
+  observer.SetDirectGiveOverride([&](const LocationKey &key, oot3d::recomp::a32::MemoryBus &) {
+    asked.push_back(key);
+    return std::optional<std::uint8_t>(kItemRecoveryHeart);
+  });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[0] = kToken;
+  state.r[1] = kPlay;
+  state.r[2] = 0x5BU;
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  state.r[0] = kChest; // the chest beside it offers every frame
+  state.r[2] = 0x48U;
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  state.r[0] = kPlay;
+  state.r[1] = kItemSkullToken;
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(asked.size() == 1U && asked[0] == LocationKey{0x00U, OverrideType::Skull, 0x04U} &&
+             state.r[1] == kItemRecoveryHeart,
+         "the token asks with its own key and becomes a heart");
+  Expect(events.size() == 1U && events[0].Key.has_value() &&
+             *events[0].Key == LocationKey{0x00U, OverrideType::Skull, 0x04U},
+         "the token reports its own location, not the chest");
+}
 void TestBlueWarpSkip() {
   constexpr std::uint32_t kPlay = 0x08000000U;
   FakeMemory memory;
@@ -1220,6 +1274,7 @@ int main(int argc, char **argv) {
     TestTokenIgnoresNearbyChestOffer();
     TestDungeonRewardKeys();
     TestBlueWarpSkip();
+    TestTokenShuffle();
     TestForestExitGuard();
     TestFairyRewards();
     TestDirectGiveReceivedAndReplaced();

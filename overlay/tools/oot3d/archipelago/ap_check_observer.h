@@ -181,6 +181,9 @@ private:
   DirectGiveOverride mDirectOverride;
   std::function<bool()> mReceiving;
   std::function<bool()> mForestExitOpen;
+  // The latest token's offer: chests nearby offer every frame and would
+  // replace it in mLastOffer.
+  std::optional<LocationKey> mLastTokenKey;
   // questItems as it was before the guard's test: address and value.
   std::optional<std::pair<std::uint32_t, std::uint32_t>> mGuardRestore;
   std::function<void()> mDeathSink;
