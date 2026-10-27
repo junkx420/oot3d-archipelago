@@ -52,6 +52,8 @@ public:
   bool EnsurePage(oot3d::recomp::a32::MemoryBus &memory, std::string *error);
   // Forgets the actor and any offer: guest memory was replaced (savestate).
   void Reset() noexcept;
+  // An item is offered and not yet confirmed taken.
+  [[nodiscard]] bool Offering() const noexcept { return mOffered; }
 
 private:
   bool EnsureActor(oot3d::recomp::a32::MemoryBus &memory, std::string *error);

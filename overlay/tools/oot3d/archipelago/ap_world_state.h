@@ -3,8 +3,11 @@
 // World settings from the seed (slot_data) that the unmodified game expresses
 // in save flags, set as OoT3D_Randomizer's SaveFile_Init sets them for a new
 // save. Only settings that need nothing else from the game are here: Jabu-Jabu
-// open, King Zora moved, the rainbow bridge built, and Ganon's trials that the
-// seed does not require.
+// open, King Zora moved, the rainbow bridge built, Ganon's trials that the
+// seed does not require, the Door of Time open, the Kakariko gate open (its
+// guard has heard about the mask shop, so the shop opens early too) and Mido
+// moved aside. The forest exit is a check in the game's code instead
+// (ap_check_observer.h, Kokiri guard).
 
 #include "recomp/a32_runtime.h"
 
@@ -18,10 +21,15 @@ struct WorldState {
   bool OpenJabuJabu = false;
   bool OpenZorasFountain = false;
   bool OpenRainbowBridge = false;
+  bool OpenDoorOfTime = false;
+  bool OpenKakarikoGate = false;
+  bool MidoMoved = false;       // closed_forest off
+  bool OpenForestExit = false;  // closed_forest deku_only or off
   // Trials already done when the file starts, by name ("Forest Trial", ...).
   std::vector<std::string> SkippedTrials;
   [[nodiscard]] bool Empty() const noexcept {
-    return !OpenJabuJabu && !OpenZorasFountain && !OpenRainbowBridge && SkippedTrials.empty();
+    return !OpenJabuJabu && !OpenZorasFountain && !OpenRainbowBridge && !OpenDoorOfTime && !OpenKakarikoGate &&
+           !MidoMoved && SkippedTrials.empty();
   }
 };
 

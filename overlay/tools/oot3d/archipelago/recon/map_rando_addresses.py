@@ -65,6 +65,17 @@ CLIENT_HOOK_BLOCKS = {
     # A child blue warp's scene change (OoT3D_Randomizer cutscenes.c,
     # Cutscene_BlueWarpOverride): the site itself starts a block.
     "ChildBlueWarpBlock": ("ChildBlueWarpOverride", 0, "block_after_branch"),
+    # The same for the adult dungeons (AdultBlueWarpOverride).
+    "AdultBlueWarpBlock": ("AdultBlueWarpOverride", 0, "block_after_branch"),
+    # Jabu-Jabu's warp (RutoBlueWarpOverride) has no "already done" path: the
+    # block after its scene change, where the cutscene index can be cleared.
+    "RutoBlueWarpDoneBlock": ("RutoBlueWarpOverride", 0x44, ("branch_target", 0x38)),
+    # The Kokiri at the forest exit (OoT3D_Randomizer kokiri.c,
+    # EnKo_CheckOpenForest): the block that tests the Kokiri Emerald, and the
+    # two blocks after it (he stays, he moves aside).
+    "KokiriGuardCheckBlock": ("KokiriCheckOpenForest", -8, "block_after_branch"),
+    "KokiriGuardStaysBlock": ("KokiriCheckOpenForest", 8, "block_after_branch"),
+    "KokiriGuardMovesBlock": ("KokiriCheckOpenForest", 0x2C, ("branch_target", 4)),
 }
 
 

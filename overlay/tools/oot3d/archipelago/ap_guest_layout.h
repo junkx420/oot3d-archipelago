@@ -38,6 +38,7 @@ inline constexpr std::uint32_t kSaveItemGetInf = 0x0F08U;       // u16[4]
 inline constexpr std::uint32_t kSaveInfTable = 0x0F10U;         // u16[30]
 inline constexpr std::uint32_t kSaveOtherNewEventFlags = 0x13D4U; // u8
 inline constexpr std::uint32_t kSaveGameMode = 0x14E4U;         // s32, 0 in gameplay
+inline constexpr std::uint32_t kSaveNextCutsceneIndex = 0x15A0U; // u16 (blue warp code: 0x00588E58 + 0xA0)
 inline constexpr std::uint32_t kSaveMagicMeterSize = 0x1584U;   // u16
 inline constexpr std::uint32_t kSaveHealthAccumulator = 0x15B2U; // s16
 inline constexpr std::uint32_t kSceneFlagsSize = 0x1CU;

@@ -40,6 +40,7 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
     add_library(triaevum_archipelago STATIC
         tools/oot3d/archipelago/ap_check_observer.cpp
         tools/oot3d/archipelago/ap_cutscene_skip.cpp
+        tools/oot3d/archipelago/ap_fairy_rewards.cpp
         tools/oot3d/archipelago/ap_item_receiver.cpp
         tools/oot3d/archipelago/ap_item_table.cpp
         tools/oot3d/archipelago/ap_location_key.cpp

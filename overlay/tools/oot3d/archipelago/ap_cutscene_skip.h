@@ -38,16 +38,31 @@ struct CutsceneSkipOptions {
 // again.
 int ApplyCutsceneSkips(const CutsceneSkipOptions &options, oot3d::recomp::a32::MemoryBus &memory);
 
-// Boss rooms of the child dungeons and their dungeon index (the flag of the
-// dungeon reward's location, type temple).
+// Boss rooms and their dungeon index (the flag of the dungeon reward's
+// location, type temple): Deku Tree 0x11 to Shadow Temple 0x18, in the
+// randomizer's dungeon order.
 inline constexpr std::uint8_t kSceneDekuTreeBoss = 0x11U;
 inline constexpr std::uint8_t kSceneDodongosCavernBoss = 0x12U;
+inline constexpr std::uint8_t kSceneJabuJabuBoss = 0x13U;
+inline constexpr std::uint8_t kSceneForestTempleBoss = 0x14U;
+inline constexpr std::uint8_t kSceneShadowTempleBoss = 0x18U;
 inline constexpr std::uint8_t kDungeonDekuTree = 0U;
 inline constexpr std::uint8_t kDungeonDodongosCavern = 1U;
+inline constexpr std::uint8_t BossSceneDungeon(std::uint8_t scene) {
+  return static_cast<std::uint8_t>(scene - kSceneDekuTreeBoss);
+}
 
-// At ChildBlueWarpBlock in a boss room: sets the dungeon's events if the
-// save lacks them, so the game skips the cutscene. Returns the dungeon index
-// when it did, nothing when the warp plays as usual.
+// At ChildBlueWarpBlock or AdultBlueWarpBlock in a boss room: sets what the
+// game checks for the dungeon (its event; for the Spirit and Shadow Temples
+// the medallion, as the game asks for that) if the save lacks it, so the game
+// skips the cutscene. Returns the dungeon index when it did, nothing when the
+// warp plays as usual.
 std::optional<std::uint8_t> SkipBlueWarpCutscene(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory);
+
+// At RutoBlueWarpDoneBlock: Jabu-Jabu's warp has no path without its
+// cutscene, so the cutscene it just chose (0xFFF0, Zora's Sapphire at Zora's
+// Fountain) is cleared; the game has given the sapphire itself. True when it
+// cleared one.
+bool ClearJabuJabuWarpCutscene(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory);
 
 } // namespace Oot3dArchipelago

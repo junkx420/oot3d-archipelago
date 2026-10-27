@@ -47,6 +47,20 @@ std::optional<LocationKey> KeyForDirectGive(std::uint8_t item) {
   // server comes through an offer.
   if (item == kItemFairyOcarina)
     return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSariasGift};
+  // The spells of the Great Fairies and the Light Arrows of the Temple of
+  // Time cutscene: nothing else in the game gives them.
+  switch (item) {
+  case kItemFaroresWind:
+    return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedFairyZorasFountain};
+  case kItemDinsFire:
+    return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedFairyHyruleCastle};
+  case kItemNayrusLove:
+    return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedFairyColossus};
+  case kItemLightArrows:
+    return LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedLightArrowCutscene};
+  default:
+    break;
+  }
   if (item >= kItemMedallionForest && item <= kItemZoraSapphire) {
     // Dungeon rewards: the stones in their boss rooms' warps, the medallions
     // from the sages, the Light Medallion from Rauru (Link's Pocket).

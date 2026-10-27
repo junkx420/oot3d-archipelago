@@ -37,6 +37,30 @@ constexpr std::array<SaveFlag, 3> kDekuTreeWarpFlags{{
 }};
 constexpr SaveFlag kDodongosCavernWarpFlag = Event("King Dodongo defeated", 0x25U);
 
+// Cutscene_OverrideForestTemple to Cutscene_OverrideShadowTemple, by boss
+// scene from 0x14. The game's adult warp (0x001E3F50) checks the event for
+// the Forest, Fire and Water Temples and the medallion for the Spirit and
+// Shadow Temples; the randomizer's events decide here, and the medallion is
+// set with them (the location's item, the same medallion, comes again).
+struct AdultWarp {
+  SaveFlag Done;  // the randomizer's event for the dungeon: decides the skip
+  SaveFlag Extra; // what the game's warp code tests besides, or what the
+                  // skipped cutscene would have set
+};
+constexpr SaveFlag kNoFlag{"", 0U, FlagWidth::U8, 0U};
+constexpr std::array<AdultWarp, 5> kAdultWarps{{
+    {Event("Phantom Ganon defeated", 0x48U), kNoFlag},
+    {Event("Volvagia defeated", 0x49U),
+     SaveFlag{"Death Mountain's cloud normal again", EventChkInf(0x2U), FlagWidth::U16, 0x8000U}},
+    {Event("Morpha defeated", 0x4AU),
+     SaveFlag{"Lake Hylia's water raised", EventChkInf(0x6U), FlagWidth::U16, 0x0200U}},
+    {Event("Twinrova defeated", 0x47U),
+     SaveFlag{"Spirit Medallion", kSaveQuestItems, FlagWidth::U32, 0x00000008U}},
+    {Event("Bongo Bongo defeated", 0x46U),
+     SaveFlag{"Shadow Medallion", kSaveQuestItems, FlagWidth::U32, 0x00000010U}},
+}};
+constexpr std::uint16_t kJabuJabuWarpCutscene = 0xFFF0U;
+
 } // namespace
 
 int ApplyCutsceneSkips(const CutsceneSkipOptions &options, MemoryBus &memory) {
@@ -71,8 +95,22 @@ std::optional<std::uint8_t> SkipBlueWarpCutscene(std::uint8_t scene, MemoryBus &
       return std::nullopt;
     return kDungeonDodongosCavern;
   default:
-    return std::nullopt;
+    break;
   }
+  if (scene < kSceneForestTempleBoss || scene > kSceneShadowTempleBoss)
+    return std::nullopt;
+  const AdultWarp &warp = kAdultWarps[scene - kSceneForestTempleBoss];
+  if (!SetSaveFlag(memory, warp.Done))
+    return std::nullopt;
+  if (warp.Extra.Bits != 0U)
+    (void)SetSaveFlag(memory, warp.Extra);
+  return BossSceneDungeon(scene);
+}
+
+bool ClearJabuJabuWarpCutscene(std::uint8_t scene, MemoryBus &memory) {
+  std::uint16_t cutscene = 0;
+  return scene == kSceneJabuJabuBoss && memory.Read16(kSaveContext + kSaveNextCutsceneIndex, &cutscene) &&
+         cutscene == kJabuJabuWarpCutscene && memory.Write16(kSaveContext + kSaveNextCutsceneIndex, 0U);
 }
 
 } // namespace Oot3dArchipelago

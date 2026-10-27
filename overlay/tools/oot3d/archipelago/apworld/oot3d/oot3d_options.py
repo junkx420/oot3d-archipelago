@@ -5,7 +5,8 @@ is allowed here only when the unmodified 3DS game already behaves that way,
 when it needs no more from the client than replacing what a location gives
 (chests, keys and dungeon items inside their own dungeon), when the client
 sets it as save flags the way OoT3D_Randomizer does for a new save (Jabu-Jabu,
-King Zora, the rainbow bridge, Ganon's trials: ap_world_state.h), or when it
+King Zora, the rainbow bridge, Ganon's trials, the Door of Time, the Kakariko
+gate, Mido: ap_world_state.h) or in a hooked check (the forest exit), or when it
 is an item the server gives at the start (start_with_*). Everything else
 waits until the client implements it.
 
@@ -23,9 +24,9 @@ from Options import Choice, OptionError, PerGameCommonOptions, Toggle, Visibilit
 # option's internal names; Range values are numbers.
 SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     # The 3DS game as it is.
-    "closed_forest": ("on", frozenset({"on"})),
-    "kakariko_gate": ("closed", frozenset({"closed"})),
-    "door_of_time": ("closed", frozenset({"closed"})),
+    "closed_forest": ("on", frozenset({"on", "deku_only", "off"})),
+    "kakariko_gate": ("closed", frozenset({"closed", "open"})),
+    "door_of_time": ("closed", frozenset({"closed", "open"})),
     "zoras_fountain": ("closed", frozenset({"closed", "open"})),
     "sleeping_waterfall": ("closed", frozenset({"closed"})),
     "jabu_jabu": ("closed", frozenset({"closed", "open"})),

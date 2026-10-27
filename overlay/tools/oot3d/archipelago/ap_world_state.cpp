@@ -16,10 +16,17 @@ constexpr int kJabuJabuOpen = 1;
 constexpr int kZorasFountainOpen = 2;
 constexpr int kRainbowBridgeAlwaysOpen = 1;
 constexpr int kGanonsTrialsSkip = 0;
+constexpr int kDoorOfTimeOpen = 2;
+constexpr int kKakarikoGateOpen = 1;
+constexpr int kClosedForestDekuOnly = 1;
+constexpr int kClosedForestOff = 2;
 
 constexpr SaveFlag kJabuJabuFlag{"offered a fish to Jabu-Jabu", EventChkInf(0x3U), FlagWidth::U16, 0x0400U};
 constexpr SaveFlag kKingZoraFlag{"King Zora moved aside", EventChkInf(0x3U), FlagWidth::U16, 0x0008U};
 constexpr SaveFlag kRainbowBridgeFlag{"rainbow bridge built", EventChkInf(0x4U), FlagWidth::U16, 0x2000U};
+constexpr SaveFlag kDoorOfTimeFlag{"Door of Time open", EventChkInf(0x4U), FlagWidth::U16, 0x0800U};
+constexpr SaveFlag kKakarikoGateFlag{"spoke to the gate guard about the mask shop", InfTable(0x7U), FlagWidth::U16, 0x0040U};
+constexpr SaveFlag kMidoFlag{"Mido moved aside", EventChkInf(0x0U), FlagWidth::U16, 0x0010U};
 constexpr SaveFlag kBarrierFlag{"Ganon's Tower barrier dispelled", EventChkInf(0xCU), FlagWidth::U16, 0x0008U};
 
 struct Trial {
@@ -50,6 +57,11 @@ WorldState ParseWorldState(const std::string &slotDataJson) {
   state.OpenJabuJabu = IntField(data, "jabu_jabu", 0) == kJabuJabuOpen;
   state.OpenZorasFountain = IntField(data, "zoras_fountain", 0) == kZorasFountainOpen;
   state.OpenRainbowBridge = IntField(data, "rainbow_bridge", 0) == kRainbowBridgeAlwaysOpen;
+  state.OpenDoorOfTime = IntField(data, "door_of_time", 0) == kDoorOfTimeOpen;
+  state.OpenKakarikoGate = IntField(data, "kakariko_gate", 0) == kKakarikoGateOpen;
+  const int forest = IntField(data, "closed_forest", 0);
+  state.MidoMoved = forest == kClosedForestOff;
+  state.OpenForestExit = forest == kClosedForestDekuOnly || forest == kClosedForestOff;
   const int trials = IntField(data, "ganons_trials", -1);
   const auto required = data.find("required_trials");
   if (trials == kGanonsTrialsSkip) {
@@ -73,6 +85,12 @@ int ApplyWorldState(const WorldState &state, MemoryBus &memory) {
     set += SetSaveFlag(memory, kKingZoraFlag) ? 1 : 0;
   if (state.OpenRainbowBridge)
     set += SetSaveFlag(memory, kRainbowBridgeFlag) ? 1 : 0;
+  if (state.OpenDoorOfTime)
+    set += SetSaveFlag(memory, kDoorOfTimeFlag) ? 1 : 0;
+  if (state.OpenKakarikoGate)
+    set += SetSaveFlag(memory, kKakarikoGateFlag) ? 1 : 0;
+  if (state.MidoMoved)
+    set += SetSaveFlag(memory, kMidoFlag) ? 1 : 0;
   for (const Trial &trial : kTrials)
     if (std::find(state.SkippedTrials.begin(), state.SkippedTrials.end(), trial.Name) !=
         state.SkippedTrials.end())

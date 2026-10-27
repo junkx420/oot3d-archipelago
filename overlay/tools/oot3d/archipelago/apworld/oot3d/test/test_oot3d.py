@@ -25,7 +25,8 @@ class TestOptionsCreator(SohTestBase):
                                  "small_key_shuffle", "boss_key_shuffle", "maps_and_compasses",
                                  "zoras_fountain", "jabu_jabu", "rainbow_bridge", "ganons_trials",
                                  "ganons_trials_count", "start_with_kokiri_sword", "start_with_deku_shield",
-                                 "start_with_ocarina", "start_with_magic_beans"})
+                                 "start_with_ocarina", "start_with_magic_beans",
+                                 "closed_forest", "kakariko_gate", "door_of_time"})
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility
@@ -43,10 +44,10 @@ class TestSupportedOptions(SohTestBase):
     skip_client_option_check = False
 
     def test_unsupported_value_is_rejected(self) -> None:
-        option = self.world.options.closed_forest
+        option = self.world.options.door_of_time
         original = option.value
         try:
-            option.value = option.options["off"]
+            option.value = option.options["song_only"]
             with self.assertRaises(OptionError):
                 oot3d_options.validate(self.world.options, "Tester")
         finally:
@@ -96,6 +97,9 @@ class TestWorldSettings(SohTestBase):
         "ganons_trials_count": 2,
         "start_with_kokiri_sword": True,
         "start_with_ocarina": "fairy_ocarina",
+        "closed_forest": "off",
+        "kakariko_gate": "open",
+        "door_of_time": "open",
     }
 
     def test_settings_reach_the_world(self) -> None:
@@ -112,11 +116,11 @@ class TestWorldSettings(SohTestBase):
         self.assertIn(Items.KOKIRI_SWORD, names)
         self.assertIn(Items.PROGRESSIVE_OCARINA, names)
 
-    def test_kakariko_gate_stays_closed(self) -> None:
-        option = self.world.options.kakariko_gate
+    def test_fortress_carpenters_stay_normal(self) -> None:
+        option = self.world.options.fortress_carpenters
         original = option.value
         try:
-            option.value = option.options["open"]
+            option.value = option.options["fast"]
             with self.assertRaises(OptionError):
                 oot3d_options.validate(self.world.options, "Tester")
         finally:

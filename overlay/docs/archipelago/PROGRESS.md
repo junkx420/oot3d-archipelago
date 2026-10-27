@@ -604,3 +604,41 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   all of them generates (slot_data and starting items checked); host tests
   cover the new keys, the token fix, the warp flags and the world flags.
   Not yet seen in the game: the warp skip and the world flags.
+
+### All blue warps, Great Fairies, open forest, gate and door (2026-10-27)
+
+- Blue warps: "Skip cutscenes" with a connected save now covers every
+  dungeon. The adult warp (AdultBlueWarpBlock 0x001E3F50, r8 = play) gets the
+  randomizer's event set first (0x48, 0x49 with Death Mountain's cloud, 0x4A
+  with Lake Hylia's water, 0x47 and 0x46 with the Spirit and Shadow
+  Medallions, which the game's code tests for those two) and takes the
+  game's own path to the warp pad. Jabu-Jabu's warp has no such path; at
+  RutoBlueWarpDoneBlock (0x001A1944, the target of the branch that ends it)
+  the cutscene index 0xFFF0 is cleared, and the game gives the sapphire.
+- Great Fairies and the Light Arrow cutscene are ordinary locations in Ship
+  of Harkinian's world (the user's seed held bombs, nuts and heart pieces
+  there), and none was reported. Spells and Light Arrows come through a
+  direct Item_Give: they form delayed keys 4 to 6 and 1, and once the seed's
+  placements are known the item becomes a recovery heart (r1 at Item_Give),
+  the location's item coming from the server. The upgrade fountain (scene
+  0x3B) writes magic, double magic and double defense itself: the client
+  sees the change, reports DMT, DMC or OGC (7 to 9) and takes the reward
+  back unless the location holds this world's same upgrade.
+- Received items also reach Item_Give without an offer; while the client's
+  get-item is offered, a give is "received" and forms no key (a Fairy
+  Ocarina from the starting inventory had formed Saria's gift).
+- World options: Door of Time open (eventChkInf[4] 0x0800), Kakariko gate
+  open (infTable[7] 0x40, as the N64 randomizer; the mask shop opens early
+  too), closed_forest deku_only and off. The exit Kokiri tests the Kokiri
+  Emerald (questItems at r8 + 0xBC against the mask at r6 + 0x48); with the
+  exit open the client adds the emerald bit for that one block
+  (KokiriGuardCheckBlock 0x003ACCF4) and restores the save in both blocks
+  after it (0x003ACD04, 0x003ACD28). Setting the Deku Tree's event instead
+  would have broken its warp. "off" also moves Mido (eventChkInf[0] 0x10).
+- Tests: host tests cover the warp flags, the Jabu-Jabu cutscene, the fairy
+  rewards and their reverts, received gives, the replacement and the
+  forest guard; apworld 0.6.0 suite 492 passed, 33 skipped. Headless, dev
+  build and the release exe in a copy of a Forge-prepared TriAevum
+  beta.1.2: the hooks verified against the running image, a seed with the
+  new options set its flags. Not seen in the game: the warp skips, the
+  fairies and the forest guard.

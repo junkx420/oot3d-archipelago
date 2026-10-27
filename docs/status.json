@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-26",
-  "now": "Played up to Hyrule Castle by a tester. Next: blue warp skips for the other dungeons, more world options (open forest, Door of Time), Great Fairy rewards as checks.",
+  "updated": "2026-10-27",
+  "now": "Played up to Hyrule Castle by a tester. Next: more of Ship of Harkinian's options and shuffles (tokens, scrubs, cows, shops).",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -36,7 +36,7 @@
         {"text": "Logic checked against OoT3D_Randomizer's own C++ logic (never more permissive)", "done": true},
         {"text": "Seeds generate; Archipelago and world tests pass", "done": true},
         {"text": "Universal Tracker: world rebuilt from slot data, only real 3D logic shown (tried live with 0.3.6)", "done": true},
-        {"text": "World options the game keeps in save flags (Jabu-Jabu, Zora's Fountain, rainbow bridge, trials) and starting items", "done": true},
+        {"text": "World options: Jabu-Jabu, Zora's Fountain, rainbow bridge, trials, forest, Kakariko gate, Door of Time; starting items", "done": true},
         {"text": "Shuffles beyond the vanilla game (tokens, songs, shops, ...), 3D tricks", "done": false}
       ]
     },
@@ -63,7 +63,7 @@
       "items": [
         {"text": "Names and models for other games' items", "done": false},
         {"text": "Optional cutscene skips and intro skip (built, not yet tried in the game)", "done": true},
-        {"text": "Blue warp cutscenes skipped for the Deku Tree and Dodongo's Cavern (built, not yet seen in the game)", "done": true},
+        {"text": "Blue warp cutscenes skipped for every dungeon (built, not yet seen in the game)", "done": true},
         {"text": "Archipelago badge with the connection state on the title and file selection", "done": true},
         {"text": "Enable switch in the F1 menu instead of an environment variable", "done": true},
         {"text": "In-game messages: items sent and received, DeathLink, goal, connection", "done": true},
@@ -73,6 +73,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.5: every dungeon's blue warp cutscene can be skipped, the Great Fairies and the Light Arrow cutscene are real checks, and the forest, the Kakariko gate and the Door of Time can start open."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.4, the first release with a game executable (a replacement TriAevum.exe for an installed TriAevum beta.1.2): more options (Zora's Fountain and Jabu-Jabu open, rainbow bridge open, Ganon's trials, starting items), the Deku Tree's and Dodongo's Cavern's blue warp cutscenes skipped, and checks that never reached the server fixed (boss rewards, Saria's gift, Zelda's Letter, a token beside a chest)."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.3 fixes a crash when leaving Kokiri Forest: the client's memory page collided with one TriAevum maps for scenes with many objects. Savestates from older builds should not be loaded."},
     {"date": "2026-10-26", "text": "Alpha v0.1.0-alpha.2: quick text (instant boxes, hold B to skip), received items survive reloads and savestates, and the Options Creator shows only supported options."},

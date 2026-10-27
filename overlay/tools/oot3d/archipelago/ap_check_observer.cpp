@@ -12,10 +12,11 @@ namespace {
 using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
-constexpr std::array<std::uint32_t, 4> kCheckHooks{kGameOverStartBlock, kActorOfferGetItem, kItemGive,
-                                                   kChildBlueWarpBlock};
-static_assert(kCheckHooks[0] < kCheckHooks[1] && kCheckHooks[1] < kCheckHooks[2] &&
-              kCheckHooks[2] < kCheckHooks[3]);
+constexpr std::array<std::uint32_t, 9> kCheckHooks{
+    kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,    kGameOverStartBlock,
+    kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
+    kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kChildBlueWarpBlock};
+static_assert(std::is_sorted(kCheckHooks.begin(), kCheckHooks.end()));
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -44,18 +45,19 @@ std::uint8_t AbsoluteGetItemId(std::uint32_t value) {
 CheckObserver::~CheckObserver() {
   if (!mReportSink)
     return;
-  char text[320];
+  char text[384];
   const auto &quick = mQuickText.Counts();
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
-                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu "
+                "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
                 static_cast<unsigned long long>(mHits.ActorOfferGetItem),
                 static_cast<unsigned long long>(mHits.ItemGive),
                 static_cast<unsigned long long>(mHits.GameOver),
-                static_cast<unsigned long long>(mHits.BlueWarp), ToString(mQuickText.Mode()),
+                static_cast<unsigned long long>(mHits.BlueWarp),
+                static_cast<unsigned long long>(mHits.ForestExit), ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
                 static_cast<unsigned long long>(quick.TurboPresses),
@@ -127,9 +129,35 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       mDeathSink();
     break;
   case kChildBlueWarpBlock:
-    ++mHits.BlueWarp;
+  case kRutoBlueWarpDoneBlock:
+  case kAdultBlueWarpBlock: {
+    // The play state is in r7 at the child and Jabu-Jabu blocks, r8 at the
+    // adult one.
+    const std::uint32_t play = pc == kAdultBlueWarpBlock ? state.r[8] : state.r[7];
+    if (pc != kRutoBlueWarpDoneBlock)
+      ++mHits.BlueWarp;
     if (mBlueWarpSink)
-      mBlueWarpSink(static_cast<std::uint8_t>(Read16(memory, state.r[7] + kPlaySceneNum)), memory);
+      mBlueWarpSink(pc, static_cast<std::uint8_t>(Read16(memory, play + kPlaySceneNum)), memory);
+    break;
+  }
+  case kKokiriGuardCheckBlock:
+    if (mForestExitOpen && mForestExitOpen()) {
+      const std::uint32_t questItems = state.r[8] + kSaveQuestItems;
+      const std::uint32_t emerald = Read32(memory, state.r[6] + 0x48U);
+      std::uint32_t value = 0;
+      if (questItems == kSaveContext + kSaveQuestItems && emerald != 0U && memory.Read32(questItems, &value) &&
+          (value & emerald) == 0U && memory.Write32(questItems, value | emerald)) {
+        mGuardRestore.emplace(questItems, value);
+        ++mHits.ForestExit;
+      }
+    }
+    break;
+  case kKokiriGuardStaysBlock:
+  case kKokiriGuardMovesBlock:
+    if (mGuardRestore.has_value()) {
+      (void)memory.Write32(mGuardRestore->first, mGuardRestore->second);
+      mGuardRestore.reset();
+    }
     break;
   default:
     mQuickText.ObserveBlockEntry(pc, state, memory);
@@ -200,9 +228,19 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
     // One offer, one check: a later give without its own offer must not
     // inherit this one.
     mLastOffer.reset();
+  } else if (mReceiving && mReceiving()) {
+    // The client's own get-item (a received item) reaches Item_Give without
+    // an offer too; it is no location.
+    event.Source = "received";
   } else if (const auto key = KeyForDirectGive(event.ItemId)) {
     event.Source = "direct";
     event.Key = key;
+    if (mDirectOverride) {
+      if (const auto replacement = mDirectOverride(*key, memory)) {
+        state.r[1] = *replacement;
+        event.OverrideGetItemId = *replacement;
+      }
+    }
   }
   if (mSink)
     mSink(event);

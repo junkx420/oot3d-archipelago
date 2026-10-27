@@ -45,8 +45,20 @@ inline constexpr std::uint32_t kGameOverStartBlock = 0x00252420U;
 // where a child blue warp starts its scene change (after a branch, so every
 // execution mode enters it). r7 holds the play state.
 inline constexpr std::uint32_t kChildBlueWarpBlock = 0x003F5774U;
+// The same for the adult dungeons (AdultBlueWarpOverride); r8 holds the play
+// state.
+inline constexpr std::uint32_t kAdultBlueWarpBlock = 0x001E3F50U;
+// After Jabu-Jabu's warp has started its scene change (RutoBlueWarpOverride
+// + 0x44, the target of the branch that ends it); r7 holds the play state.
+inline constexpr std::uint32_t kRutoBlueWarpDoneBlock = 0x001A1944U;
+// The Kokiri at the forest exit (EnKo, params 3): the block that tests the
+// Kokiri Emerald (r8 + 0xBC questItems against the mask at r6 + 0x48), and
+// the two blocks after it.
+inline constexpr std::uint32_t kKokiriGuardCheckBlock = 0x003ACCF4U;
+inline constexpr std::uint32_t kKokiriGuardStaysBlock = 0x003ACD04U;
+inline constexpr std::uint32_t kKokiriGuardMovesBlock = 0x003ACD28U;
 
-inline constexpr std::array<GuestFunction, 4> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 9> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -55,6 +67,16 @@ inline constexpr std::array<GuestFunction, 4> kGuestFunctions{{
      "6a643f94311062f2ce147592b043023f63114857eef0a2b5aacb4254f8db40cd"},
     {"ChildBlueWarpBlock", kChildBlueWarpBlock,
      "f99ffc6b35545504883b7964b0ada1a0032aeb6af75df5010414c94a487ad101"},
+    {"AdultBlueWarpBlock", kAdultBlueWarpBlock,
+     "1bcabfbc271fa0697a9675bcc66dcde6eea3d0b563373a2560f9dfaa914bae0a"},
+    {"RutoBlueWarpDoneBlock", kRutoBlueWarpDoneBlock,
+     "d0d6e3fe56a65f5c096d6ac2d05b7143060754472dbd2abde000f89c9a9c1daa"},
+    {"KokiriGuardCheckBlock", kKokiriGuardCheckBlock,
+     "e73746039b96870608cab2c8d3711a2f0dab3606eac05554d9977acd126166ca"},
+    {"KokiriGuardStaysBlock", kKokiriGuardStaysBlock,
+     "61fb640fcd37e9e39de6f9fc329aa848f5459535bd238d5d69059ea477e21ce5"},
+    {"KokiriGuardMovesBlock", kKokiriGuardMovesBlock,
+     "9148a8d4f0d91bf185b43544dd27dbb51dbf3e5e8466d9001f6ace2fb744a655"},
 }};
 
 struct CheckEvent {
@@ -67,7 +89,7 @@ struct CheckEvent {
   std::uint8_t OfferGetItemId = 0;  // the matched offer's get-item id
   std::uint8_t OverrideGetItemId = 0; // what the override gave instead, 0 for none
   std::optional<LocationKey> Key;
-  const char *Source = "none"; // "offer", "direct" or "none"
+  const char *Source = "none"; // "offer", "direct", "received" or "none"
 };
 
 std::string FormatEvent(const CheckEvent &event);
@@ -99,15 +121,31 @@ public:
   void SetSink(std::function<void(const CheckEvent &)> sink) { mSink = std::move(sink); }
   // Called when Link dies without a fairy.
   void SetDeathSink(std::function<void()> sink) { mDeathSink = std::move(sink); }
-  // Called when a child blue warp changes the scene, with the scene it
-  // leaves; the sink may set save flags (ap_cutscene_skip.h).
-  using BlueWarpSink = std::function<void(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory)>;
+  // Called at the blue warp blocks (kChildBlueWarpBlock, kAdultBlueWarpBlock,
+  // kRutoBlueWarpDoneBlock) with the block and the scene being left; the sink
+  // may set save flags (ap_cutscene_skip.h).
+  using BlueWarpSink =
+      std::function<void(std::uint32_t pc, std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory)>;
   void SetBlueWarpSink(BlueWarpSink sink) { mBlueWarpSink = std::move(sink); }
   // Called for every offer that forms a location key; a value replaces the
   // offered get-item id (its sign is kept).
   using GetItemOverride = std::function<std::optional<std::uint16_t>(const LocationKey &key,
                                                                      oot3d::recomp::a32::MemoryBus &memory)>;
   void SetOverride(GetItemOverride override) { mOverride = std::move(override); }
+  // Called for a direct give (no offer) that forms a location key; a value
+  // replaces the item Item_Give receives (r1), so the game keeps nothing of
+  // its own where the location holds another item.
+  using DirectGiveOverride =
+      std::function<std::optional<std::uint8_t>(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory)>;
+  void SetDirectGiveOverride(DirectGiveOverride override) { mDirectOverride = std::move(override); }
+  // Whether the client is giving a received item right now: its Item_Give
+  // has no offer either and must not form a key.
+  void SetReceivingProbe(std::function<bool()> probe) { mReceiving = std::move(probe); }
+  // Whether the forest exit is open (closed_forest deku_only or off): the
+  // Kokiri there then sees the Kokiri Emerald for the one block that tests
+  // it, and the save is restored in the block after (the observer's only
+  // write of its own).
+  void SetForestExitProbe(std::function<bool()> probe) { mForestExitOpen = std::move(probe); }
   // Called for every hooked block entry of the window, not only the
   // observer's own pcs: the first call runs VerifyAddresses (guest code is
   // mapped by then) and throws std::runtime_error on a mismatch.
@@ -121,6 +159,7 @@ public:
     std::uint64_t ItemGive = 0;
     std::uint64_t GameOver = 0;
     std::uint64_t BlueWarp = 0;
+    std::uint64_t ForestExit = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -139,6 +178,11 @@ private:
   std::function<void(const CheckEvent &)> mSink;
   std::function<void(const std::string &)> mReportSink;
   GetItemOverride mOverride;
+  DirectGiveOverride mDirectOverride;
+  std::function<bool()> mReceiving;
+  std::function<bool()> mForestExitOpen;
+  // questItems as it was before the guard's test: address and value.
+  std::optional<std::pair<std::uint32_t, std::uint32_t>> mGuardRestore;
   std::function<void()> mDeathSink;
   BlueWarpSink mBlueWarpSink;
   std::optional<Offer> mLastOffer;

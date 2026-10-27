@@ -53,9 +53,22 @@ inline constexpr std::uint8_t kItemSkullToken = 0x71U;
 inline constexpr std::uint8_t kItemFairyOcarina = 0x07U;
 inline constexpr std::uint16_t kActorChildZelda = 0x01D3U;
 inline constexpr std::uint8_t kGetItemZeldasLetter = 0x0BU;
-// Delayed locations (flags) besides the songs.
+inline constexpr std::uint8_t kItemDinsFire = 0x05U;
+inline constexpr std::uint8_t kItemFaroresWind = 0x0DU;
+inline constexpr std::uint8_t kItemLightArrows = 0x12U;
+inline constexpr std::uint8_t kItemNayrusLove = 0x13U;
+inline constexpr std::uint8_t kItemRecoveryHeart = 0x83U;
+// Delayed locations (flags) besides the songs (OoT3D_Randomizer
+// s_item_override.h, DelayedOverride).
+inline constexpr std::uint8_t kDelayedLightArrowCutscene = 1U;
 inline constexpr std::uint8_t kDelayedSariasGift = 2U;
 inline constexpr std::uint8_t kDelayedZeldasLetter = 3U;
+inline constexpr std::uint8_t kDelayedFairyZorasFountain = 4U;
+inline constexpr std::uint8_t kDelayedFairyHyruleCastle = 5U;
+inline constexpr std::uint8_t kDelayedFairyColossus = 6U;
+inline constexpr std::uint8_t kDelayedFairyMountainTrail = 7U;
+inline constexpr std::uint8_t kDelayedFairyCrater = 8U;
+inline constexpr std::uint8_t kDelayedFairyOutsideGanonsCastle = 9U;
 inline constexpr std::uint8_t kItemMedallionForest = 0x66U; // then Fire, Water, Spirit, Shadow
 inline constexpr std::uint8_t kItemMedallionLight = 0x6BU;
 inline constexpr std::uint8_t kItemKokiriEmerald = 0x6CU;   // then Goron Ruby

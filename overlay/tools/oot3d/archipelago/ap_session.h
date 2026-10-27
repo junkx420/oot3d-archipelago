@@ -10,6 +10,7 @@
 
 #include "ap_check_observer.h"
 #include "ap_cutscene_skip.h"
+#include "ap_fairy_rewards.h"
 #include "ap_item_receiver.h"
 #include "ap_item_table.h"
 #include "ap_location_table.h"
@@ -75,13 +76,20 @@ public:
   // save of a connected slot is open; nothing (the game's own item) before.
   std::optional<std::uint16_t> OverrideGetItem(const LocationKey &key,
                                                oot3d::recomp::a32::MemoryBus &memory);
+  // What a direct give (no offer) of a location gives instead of the game's
+  // own item; nothing to keep the game's.
+  std::optional<std::uint8_t> ReplaceDirectGive(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory);
+  // The client is giving a received item (its Item_Give is no location).
+  [[nodiscard]] bool Receiving() const;
+  // The seed opens the forest exit and a save of the slot is open.
+  [[nodiscard]] bool ForestExitOpen() const;
   void SetGuestRegionMapper(GuestRegionMapper mapper);
   // The check observer saw Link die without a fairy.
   void OnDeath();
-  // The check observer saw a child blue warp leave a scene: with cutscene
+  // The check observer saw a blue warp leave a scene: with cutscene
   // skips on and a connected save, skips the dungeon's cutscene and reports
   // its reward location.
-  void OnBlueWarp(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory);
+  void OnBlueWarp(std::uint32_t pc, std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory);
   void Update(oot3d::recomp::a32::MemoryBus &memory);
 
   [[nodiscard]] ConnectionSettings Settings() const;
@@ -138,6 +146,7 @@ private:
   [[nodiscard]] std::filesystem::path GameSavePath(int saveSlot) const;
   void ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory);
   void WatchGoal(oot3d::recomp::a32::MemoryBus &memory);
+  void WatchFairyFountain(oot3d::recomp::a32::MemoryBus &memory);
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
 
   mutable std::mutex mMutex;
@@ -183,6 +192,8 @@ private:
   std::optional<SidecarIdentity> mSlot;
   WorldState mWorld;
   int mWorldLoggedForSlot = -1;
+  // The upgrade fountain's rewards in the save on the previous frame.
+  std::optional<FairyUpgrades> mFairyBaseline;
   std::set<std::int64_t> mServerChecked;
   std::vector<ReceivedItem> mServerItems;
   std::map<std::int64_t, Placement> mPlacements;

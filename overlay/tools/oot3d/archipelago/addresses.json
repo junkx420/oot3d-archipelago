@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 367,
+  "verified": 372,
   "unverified": 557
  },
  "entries": [
@@ -13505,6 +13505,81 @@
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "AdultBlueWarpBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001E3F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001E3F50",
+   "ld_line": 225,
+   "section": "text",
+   "signature": "sha256:1bcabfbc271fa0697a9675bcc66dcde6eea3d0b563373a2560f9dfaa914bae0a",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "RutoBlueWarpDoneBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001A1900",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001A1944",
+   "ld_line": 164,
+   "section": "text",
+   "signature": "sha256:d0d6e3fe56a65f5c096d6ac2d05b7143060754472dbd2abde000f89c9a9c1daa",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "KokiriGuardCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003ACCFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003ACCF4",
+   "ld_line": 636,
+   "section": "text",
+   "signature": "sha256:e73746039b96870608cab2c8d3711a2f0dab3606eac05554d9977acd126166ca",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "KokiriGuardStaysBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003ACCFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003ACD04",
+   "ld_line": 636,
+   "section": "text",
+   "signature": "sha256:61fb640fcd37e9e39de6f9fc329aa848f5459535bd238d5d69059ea477e21ce5",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "KokiriGuardMovesBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003ACCFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003ACD28",
+   "ld_line": 636,
+   "section": "text",
+   "signature": "sha256:9148a8d4f0d91bf185b43544dd27dbb51dbf3e5e8466d9001f6ace2fb744a655",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
    ],
    "status": "signature_pinned"
   }

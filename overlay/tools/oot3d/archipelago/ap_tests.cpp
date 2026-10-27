@@ -3,6 +3,7 @@
 
 #include "ap_check_observer.h"
 #include "ap_cutscene_skip.h"
+#include "ap_fairy_rewards.h"
 #include "ap_item_receiver.h"
 #include "ap_item_table.h"
 #include "ap_location_key.h"
@@ -462,10 +463,10 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 6U,
-         "checks, deaths, blue warps and quick text need six hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 7U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 6U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 11U,
+         "checks, deaths, blue warps, the forest guard and quick text need eleven hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 12U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 11U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -535,6 +536,104 @@ void TestDungeonRewardKeys() {
          "Zelda's offer of her letter is HC Zeldas Letter");
 }
 
+void TestFairyRewards() {
+  // Spells and the Light Arrows are direct gives of their fairy or cutscene.
+  Expect(KeyForDirectGive(kItemDinsFire) ==
+             LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedFairyHyruleCastle},
+         "Din's Fire is HC Great Fairy Reward");
+  Expect(KeyForDirectGive(kItemLightArrows) ==
+             LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedLightArrowCutscene},
+         "the Light Arrows are ToT Light Arrow Cutscene");
+
+  // The upgrade fountain: which change is which fairy.
+  const FairyUpgrades none{};
+  Expect(FairyRewardLocation(none, {true, false, false}) == kDelayedFairyMountainTrail, "magic is DMT");
+  Expect(FairyRewardLocation({true, false, false}, {true, true, false}) == kDelayedFairyCrater,
+         "double magic is DMC");
+  Expect(FairyRewardLocation(none, {true, true, false}) == kDelayedFairyCrater, "both at once is DMC");
+  Expect(FairyRewardLocation(none, {false, false, true}) == kDelayedFairyOutsideGanonsCastle,
+         "double defense is OGC");
+  Expect(!FairyRewardLocation({true, false, false}, {true, false, false}).has_value(), "no change, no fairy");
+
+  FakeMemory memory;
+  memory.Write8(kSaveContext + kSaveMagicAcquired, 1U);
+  memory.Write8(kSaveContext + kSaveDoubleMagic, 1U);
+  memory.Write8(kSaveContext + kSaveDoubleDefense, 0U);
+  memory.Write8(kSaveContext + kSaveMagicLevel, 2U);
+  memory.Write8(kSaveContext + kSaveMagic, 0x60U);
+  memory.Write16(kSaveContext + kSaveMagicMeterSize, 0x60U);
+  Expect(RevertFairyReward(kDelayedFairyCrater, {true, false, false}, memory), "double magic taken back");
+  const auto after = ReadFairyUpgrades(memory);
+  std::uint8_t level = 0, magic = 0;
+  std::uint16_t size = 0;
+  memory.Read8(kSaveContext + kSaveMagicLevel, &level);
+  memory.Read8(kSaveContext + kSaveMagic, &magic);
+  memory.Read16(kSaveContext + kSaveMagicMeterSize, &size);
+  Expect(after.has_value() && after->Magic && !after->DoubleMagic && level == 1U && magic == 0x30U &&
+             size == 0x30U,
+         "back to a single meter");
+}
+
+// A received item's Item_Give has no offer: it is no direct location, and a
+// direct give is replaced when the session says so.
+void TestDirectGiveReceivedAndReplaced() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, 0x3DU);
+  memory.Write32(kPlay + kPlayPlayerActor, 0U);
+  CheckObserver observer{false};
+  std::vector<CheckEvent> events;
+  bool receiving = true;
+  observer.SetSink([&](const CheckEvent &event) { events.push_back(event); });
+  observer.SetReceivingProbe([&] { return receiving; });
+  observer.SetDirectGiveOverride([](const LocationKey &key, oot3d::recomp::a32::MemoryBus &) {
+    return key.Flag == kDelayedFairyHyruleCastle ? std::optional<std::uint8_t>(kItemRecoveryHeart)
+                                                 : std::nullopt;
+  });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[0] = kPlay;
+  state.r[1] = kItemDinsFire;
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(events.size() == 1U && !events[0].Key.has_value() && std::string_view(events[0].Source) == "received" &&
+             state.r[1] == kItemDinsFire,
+         "a received Din's Fire is no location and stays Din's Fire");
+  receiving = false;
+  observer.ObserveBlockEntry(kItemGive, state, memory);
+  Expect(events.size() == 2U && events[1].Key.has_value() && state.r[1] == kItemRecoveryHeart &&
+             events[1].OverrideGetItemId == kItemRecoveryHeart,
+         "the fairy's Din's Fire becomes a heart and reports her location");
+}
+// closed_forest deku_only/off: the exit Kokiri sees the Kokiri Emerald for
+// his test only.
+void TestForestExitGuard() {
+  constexpr std::uint32_t kTable = 0x08300000U;
+  constexpr std::uint32_t kEmerald = 0x00040000U;
+  FakeMemory memory;
+  memory.Write32(kSaveContext + kSaveQuestItems, 0x00000001U);
+  memory.Write32(kTable + 0x48U, kEmerald);
+  CheckObserver observer{false};
+  bool open = false;
+  observer.SetForestExitProbe([&] { return open; });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[8] = kSaveContext;
+  state.r[6] = kTable;
+  std::uint32_t quest = 0;
+  observer.ObserveBlockEntry(kKokiriGuardCheckBlock, state, memory);
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(quest == 0x1U && observer.Hits().ForestExit == 0U, "a closed forest changes nothing");
+  open = true;
+  observer.ObserveBlockEntry(kKokiriGuardCheckBlock, state, memory);
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(quest == (0x1U | kEmerald) && observer.Hits().ForestExit == 1U, "the test sees the emerald");
+  observer.ObserveBlockEntry(kKokiriGuardMovesBlock, state, memory);
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(quest == 0x1U, "the save is restored right after");
+  state.r[8] = 0x08400000U; // not the save context: left alone
+  observer.ObserveBlockEntry(kKokiriGuardCheckBlock, state, memory);
+  observer.ObserveBlockEntry(kKokiriGuardStaysBlock, state, memory);
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(quest == 0x1U && observer.Hits().ForestExit == 1U, "an unexpected register changes nothing");
+}
 void TestBlueWarpSkip() {
   constexpr std::uint32_t kPlay = 0x08000000U;
   FakeMemory memory;
@@ -544,7 +643,8 @@ void TestBlueWarpSkip() {
   memory.Write16(kSaveContext + kSaveEventChkInf + 4U, 0U);
   CheckObserver observer{false};
   std::vector<std::uint8_t> scenes;
-  observer.SetBlueWarpSink([&](std::uint8_t scene, oot3d::recomp::a32::MemoryBus &bus) {
+  observer.SetBlueWarpSink([&](std::uint32_t pc, std::uint8_t scene, oot3d::recomp::a32::MemoryBus &bus) {
+    Expect(pc == kChildBlueWarpBlock, "the sink learns the block");
     scenes.push_back(scene);
     const auto dungeon = SkipBlueWarpCutscene(scene, bus);
     Expect(dungeon == kDungeonDekuTree, "the Deku Tree warp is skipped once");
@@ -566,7 +666,44 @@ void TestBlueWarpSkip() {
   std::uint16_t events2 = 0;
   memory.Read16(kSaveContext + kSaveEventChkInf + 4U, &events2);
   Expect(events2 == 0x0020U, "event 0x25 is set");
-  Expect(!SkipBlueWarpCutscene(0x13U, memory).has_value(), "Jabu-Jabu's warp is not handled here");
+  Expect(!SkipBlueWarpCutscene(kSceneJabuJabuBoss, memory).has_value(), "Jabu-Jabu's warp is not handled here");
+
+  // Adult dungeons: the randomizer's event decides; Volvagia also clears the
+  // cloud, Bongo Bongo also gives the medallion the game's code tests.
+  for (std::uint32_t i = 0; i < 14U; ++i)
+    memory.Write16(kSaveContext + kSaveEventChkInf + i * 2U, 0U);
+  memory.Write32(kSaveContext + kSaveQuestItems, 0U);
+  Expect(SkipBlueWarpCutscene(0x15U, memory) == 4U, "Volvagia's warp is the Fire Temple's");
+  Expect(SkipBlueWarpCutscene(kSceneShadowTempleBoss, memory) == 7U, "Bongo Bongo's warp is the Shadow Temple's");
+  Expect(!SkipBlueWarpCutscene(kSceneShadowTempleBoss, memory).has_value(), "a done dungeon warps as usual");
+  std::uint16_t row2 = 0, row4 = 0;
+  std::uint32_t quest = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 2U * 2U, &row2);
+  memory.Read16(kSaveContext + kSaveEventChkInf + 4U * 2U, &row4);
+  memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  Expect(row2 == 0x8000U && row4 == (0x0200U | 0x0040U) && quest == 0x10U,
+         "events 0x49 and 0x46, the cloud and the Shadow Medallion are set");
+
+  // Jabu-Jabu: the cutscene the game chose is cleared, nothing else.
+  memory.Write16(kSaveContext + kSaveNextCutsceneIndex, 0xFFF0U);
+  Expect(!ClearJabuJabuWarpCutscene(kSceneDekuTreeBoss, memory), "only Barinade's room");
+  Expect(ClearJabuJabuWarpCutscene(kSceneJabuJabuBoss, memory), "Barinade's warp loses its cutscene");
+  std::uint16_t next = 1;
+  memory.Read16(kSaveContext + kSaveNextCutsceneIndex, &next);
+  Expect(next == 0U && !ClearJabuJabuWarpCutscene(kSceneJabuJabuBoss, memory), "cleared once");
+
+  // The adult block passes r8's play state.
+  CheckObserver adult{false};
+  std::vector<std::pair<std::uint32_t, std::uint8_t>> seen;
+  adult.SetBlueWarpSink([&](std::uint32_t pc, std::uint8_t scene, oot3d::recomp::a32::MemoryBus &) {
+    seen.emplace_back(pc, scene);
+  });
+  memory.Write16(0x08100000U + kPlaySceneNum, 0x16U);
+  oot3d::recomp::a32::GuestState adultState{};
+  adultState.r[8] = 0x08100000U;
+  adult.ObserveBlockEntry(kAdultBlueWarpBlock, adultState, memory);
+  Expect(seen.size() == 1U && seen[0] == std::make_pair(kAdultBlueWarpBlock, std::uint8_t{0x16U}),
+         "the adult block reads the scene through r8");
 }
 
 void TestWorldState() {
@@ -600,6 +737,13 @@ void TestWorldState() {
   Expect(row3 == 0x0408U && row4 == 0x2000U, "Jabu-Jabu, King Zora and the bridge");
   Expect(row10 == 0x2000U && row11 == (0x0800U | 0x1000U | 0x2000U) && row12 == 0U,
          "Forest, Water, Shadow and Spirit done; the barrier stays");
+
+  const auto gates = ParseWorldState(R"({"door_of_time":2,"kakariko_gate":1,"closed_forest":2})");
+  Expect(gates.OpenDoorOfTime && gates.OpenKakarikoGate && gates.MidoMoved && gates.OpenForestExit,
+         "door, gate and forest are read");
+  const auto dekuOnly = ParseWorldState(R"({"door_of_time":1,"closed_forest":1})");
+  Expect(!dekuOnly.OpenDoorOfTime && !dekuOnly.MidoMoved && dekuOnly.OpenForestExit && dekuOnly.Empty(),
+         "song only is not open; deku only opens the exit, not Mido's path");
 
   const auto none = ParseWorldState(R"({"ganons_trials":0})");
   Expect(none.SkippedTrials.size() == 6U, "skip means every trial is done");
@@ -1076,6 +1220,9 @@ int main(int argc, char **argv) {
     TestTokenIgnoresNearbyChestOffer();
     TestDungeonRewardKeys();
     TestBlueWarpSkip();
+    TestForestExitGuard();
+    TestFairyRewards();
+    TestDirectGiveReceivedAndReplaced();
     TestWorldState();
     TestRetryDelay();
     TestSidecarWriter();

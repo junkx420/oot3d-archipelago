@@ -308,6 +308,77 @@ std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
   return kPlaceholderGetItem; // no get-item in the game: given by the server
 }
 
+std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
+                                                      oot3d::recomp::a32::MemoryBus &memory) {
+  (void)memory;
+  std::lock_guard lock(mMutex);
+  // The Great Fairies' spells and the Light Arrow cutscene are ordinary
+  // locations of the seed: once its placements are known, the game's own item
+  // becomes a recovery heart and the location's item comes from the server.
+  // Songs, Saria's gift and the dungeon rewards hold their own item with the
+  // supported options and stay as they are.
+  if (key.Type != OverrideType::Delayed ||
+      (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedFairyZorasFountain &&
+       key.Flag != kDelayedFairyHyruleCastle && key.Flag != kDelayedFairyColossus) ||
+      !mSidecar.has_value() || !mLocations.has_value())
+    return std::nullopt;
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value() || mSidecar->Placements.count(*id) == 0U)
+    return std::nullopt;
+  return kItemRecoveryHeart;
+}
+
+bool Session::ForestExitOpen() const {
+  std::lock_guard lock(mMutex);
+  return mSidecar.has_value() && mWorld.OpenForestExit;
+}
+
+bool Session::Receiving() const {
+  std::lock_guard lock(mMutex);
+  return mReceiver.Offering();
+}
+
+void Session::WatchFairyFountain(oot3d::recomp::a32::MemoryBus &memory) {
+  const auto now = ReadFairyUpgrades(memory);
+  std::uint32_t play = 0;
+  std::uint16_t scene = 0;
+  const bool inFountain = memory.Read32(kGlobalContextPointer, &play) && play != 0U &&
+                          memory.Read16(play + kPlaySceneNum, &scene) && scene == kSceneGreatFairyUpgrades;
+  // A received magic upgrade changes the same fields; it is never a fairy's.
+  if (!now.has_value() || !inFountain || mFrontend || !mSidecar.has_value() || !mLocations.has_value() ||
+      !mFairyBaseline.has_value() || mReceiver.Offering()) {
+    mFairyBaseline = now;
+    return;
+  }
+  const auto flag = FairyRewardLocation(*mFairyBaseline, *now);
+  if (!flag.has_value()) {
+    mFairyBaseline = now;
+    return;
+  }
+  const LocationKey key{kDelayedScene, OverrideType::Delayed, *flag};
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value()) {
+    ++mUnmapped;
+    mFairyBaseline = now;
+    return;
+  }
+  // The game's reward stays when the location holds this world's same
+  // upgrade (the server's copy is then skipped); otherwise it is taken back
+  // and the location's item comes from the server.
+  const auto placement = mSidecar->Placements.find(*id);
+  const std::string wanted =
+      *flag == kDelayedFairyOutsideGanonsCastle ? "Double Defense" : "Progressive Magic Meter";
+  const bool keep = placement != mSidecar->Placements.end() && mSlot.has_value() &&
+                    placement->second.Player == mSlot->Slot && ItemName(placement->second.Item) == wanted;
+  if (keep)
+    mSidecar->GivenAtLocation.insert(*id);
+  else
+    (void)RevertFairyReward(*flag, *mFairyBaseline, memory);
+  Log(std::string("Great Fairy: ") + Describe(key) + (keep ? ", her own reward kept" : ", her own reward taken back"));
+  mFairyBaseline = ReadFairyUpgrades(memory);
+  ReportLocation(*id);
+}
+
 void Session::ReportLocation(std::int64_t id) {
   if (!mSidecar.has_value()) {
     mUnsentChecks.push_back(id);
@@ -349,6 +420,7 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       mWorldLoggedForSlot = mSidecar->Identity.SaveSlot;
     }
   }
+  WatchFairyFountain(memory);
   GiveReceivedItems(memory);
   ApplyDeathLink(memory);
   WatchGoal(memory);
@@ -449,8 +521,14 @@ void Session::OnDeath() {
   }
 }
 
-void Session::OnBlueWarp(std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory) {
+void Session::OnBlueWarp(std::uint32_t pc, std::uint8_t scene, oot3d::recomp::a32::MemoryBus &memory) {
   std::lock_guard lock(mMutex);
+  if (pc == kRutoBlueWarpDoneBlock) {
+    // The game gave Zora's Sapphire itself; only its cutscene goes.
+    if (mSkips.Cutscenes && ClearJabuJabuWarpCutscene(scene, memory))
+      Log("Blue warp: Jabu-Jabu's cutscene skipped");
+    return;
+  }
   // Without a connected save the reward could not come from the server, so
   // the warp plays as usual and the game gives it.
   if (!mSkips.Cutscenes || !mSidecar.has_value() || !mLocations.has_value())
