@@ -69,8 +69,9 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "ice_trap_count": (0, frozenset({0})),
     "ice_trap_filler_replacement": (0, frozenset({0})),
     "true_no_logic": (False, frozenset({False})),
-    # SoH's tricks describe N64 techniques; 3D tricks are not ported yet.
-    "enable_all_tricks": (False, frozenset({False})),
+    # Tricks count through their verified OoT3D_Randomizer counterparts only
+    # (oot3d_tricks.py); enabling all enables those.
+    "enable_all_tricks": (False, frozenset({False, True})),
     # Shuffles that only need a location's item replaced in game.
     "shuffle_kokiri_sword": (False, frozenset({False, True})),
     "small_key_shuffle": ("own_dungeon", frozenset({"vanilla", "own_dungeon"})),
@@ -165,7 +166,7 @@ def apply_defaults(options_dataclass: type) -> None:
 # Shown besides Archipelago's common options and the SUPPORTED options with
 # more than one value. They change what the seed holds, not what the client
 # must do in the game.
-SHOWN = frozenset({"death_link", "item_pool", "start_inventory_from_pool"})
+SHOWN = frozenset({"death_link", "item_pool", "start_inventory_from_pool", "tricks_in_logic"})
 
 
 def apply_visibility(options_dataclass: type) -> None:
@@ -207,8 +208,6 @@ def validate(options: Any, player_name: str) -> None:
         value = _option_value(getattr(options, name))
         if value not in allowed:
             unsupported.append(f"{name}={value!r} (supported: {sorted(map(str, allowed))})")
-    if options.tricks_in_logic.value:
-        unsupported.append("tricks_in_logic (3D tricks are not ported yet)")
     if unsupported:
         raise OptionError(f"Ocarina of Time 3D ({player_name}): the TriAevum client does not support "
                           + "; ".join(unsupported))

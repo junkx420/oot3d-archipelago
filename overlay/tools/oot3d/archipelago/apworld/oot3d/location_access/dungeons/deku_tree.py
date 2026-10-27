@@ -126,8 +126,10 @@ def set_region_rules(world: "SohWorld") -> None:
         (Locations.DEKU_TREE_BASEMENT_CHEST, lambda bundle: True_() ),
         (Locations.DEKU_TREE_GS_BASEMENT_GATE, lambda bundle: can_kill_enemy(
             bundle, Enemies.GOLD_SKULLTULA, EnemyDistance.SHORT_JUMPSLASH)),
-        (Locations.DEKU_TREE_GS_BASEMENT_VINES, lambda bundle: can_kill_enemy(
-            bundle, Enemies.GOLD_SKULLTULA, EnemyDistance.SHORT_JUMPSLASH)),
+        # OoT3D_Randomizer gs_deku_tree.cpp: a jump slash only with the trick.
+        (Locations.DEKU_TREE_GS_BASEMENT_VINES, lambda bundle: can_use_projectile(bundle)
+         | can_use(Items.DINS_FIRE, bundle)
+         | (can_do_trick(Tricks.DEKU_B1_VINES_GS, bundle) & can_jump_slash(bundle))),
         (Locations.DEKU_TREE_BASEMENT_GRASS1,
          lambda bundle: can_cut_shrubs(bundle)),
         (Locations.DEKU_TREE_BASEMENT_GRASS2,

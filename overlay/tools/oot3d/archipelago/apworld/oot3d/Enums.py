@@ -3647,6 +3647,8 @@ class Tricks(StrEnum):
     DEKU_B1_SKIP = "Deku B1 Skip"
     DEKU_B1_BOW_WEBS = "Deku B1 Bow Webs"
     DEKU_B1_BACKFLIP_OVER_SPIKED_LOG = "Deku B1 Backflip Over Spiked Log"
+    # TriAevum: OoT3D_Randomizer's DT B1 Vines GS w/ Jump Slash (SoH has no trick there).
+    DEKU_B1_VINES_GS = "Deku B1 Vines GS"
 #    DEKU_MQ_COMPASS_GS = "Deku MQ Compass GS"
 #    DEKU_MQ_LOG = "Deku MQ Log"
     DC_SCARECROW_GS = "DC Scarecrow GS"

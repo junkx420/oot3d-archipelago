@@ -559,7 +559,13 @@ def take_damage(bundle: tuple[Regions, "SohWorld"]) -> Rule:
 
 def can_do_trick(trick: Tricks, bundle: tuple[Regions, "SohWorld"]) -> Rule:
     # check if we have the trick enabled, the GLITCHED item is for Universal Tracker purposes.
-    return OptionFilter(EnableAllTricks, True) | Has(Items.GLITCHED) | OptionFilter(TricksInLogic, trick.value, "contains")
+    # TriAevum: only through the trick's verified OoT3D_Randomizer counterpart,
+    # by its 3D name (oot3d_tricks.py); others are never in logic.
+    from .oot3d_tricks import VERIFIED_TRICKS
+    name = VERIFIED_TRICKS.get(trick.value)
+    if name is None:
+        return Has(Items.GLITCHED)
+    return OptionFilter(EnableAllTricks, True) | Has(Items.GLITCHED) | OptionFilter(TricksInLogic, name, "contains")
 
 
 def can_get_nighttime_gs(bundle: tuple[Regions, "SohWorld"]) -> Rule:

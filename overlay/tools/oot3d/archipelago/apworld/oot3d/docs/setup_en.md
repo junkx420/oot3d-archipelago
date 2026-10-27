@@ -23,7 +23,8 @@ to start with.
   supports: dungeon keys, maps, compasses and the Kokiri Sword; Zora's
   Fountain, Jabu-Jabu, the rainbow bridge, Ganon's trials, the forest, the
   Kakariko gate and the Door of Time; Gold Skulltula tokens, Deku scrubs, cows, shops, ocarinas, the Weird Egg and
-  the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts
+  the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts;
+  logical tricks by their OoT3D Randomizer names, each checked against its logic
   shuffled; starting with
   the Kokiri Sword, a Deku Shield, an ocarina or magic beans; the item pool,
   DeathLink and Archipelago's own options.

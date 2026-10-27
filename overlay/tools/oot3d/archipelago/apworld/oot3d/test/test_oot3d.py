@@ -33,7 +33,8 @@ class TestOptionsCreator(SohTestBase):
                                  "rainbow_bridge_dungeon_rewards_required", "rainbow_bridge_dungeons_required",
                                  "rainbow_bridge_skull_tokens_required", "triforce_hunt", "triforce_hunt_pieces_total",
                                  "triforce_hunt_pieces_required_percentage", "starting_hearts", "shuffle_ocarinas",
-                                 "shuffle_weird_egg", "shuffle_gerudo_membership_card"})
+                                 "shuffle_weird_egg", "shuffle_gerudo_membership_card",
+                                 "tricks_in_logic", "enable_all_tricks"})
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility
@@ -132,3 +133,29 @@ class TestWorldSettings(SohTestBase):
                 oot3d_options.validate(self.world.options, "Tester")
         finally:
             option.value = original
+
+
+class TestTricks(SohTestBase):
+    """Tricks are chosen by their OoT3D_Randomizer names and count only through
+    their verified counterparts."""
+    skip_client_option_check = False
+    options = {"tricks_in_logic": ["DT B1 Navigation w/o Slingshot"]}
+
+    def test_only_verified_tricks_are_offered(self) -> None:
+        from .. import oot3d_tricks
+        option = self.world.options_dataclass.type_hints["tricks_in_logic"]
+        valid = option.valid_keys
+        self.assertEqual(set(valid), set(oot3d_tricks.VERIFIED_TRICKS.values()))
+        self.assertEqual(set(option._valid_keys), set(valid))  # what generation checks
+        self.assertNotIn("Deku B1 Skip", valid)
+        with self.assertRaises(Exception):
+            option.from_any(["Deku B1 Skip"]).verify_keys()
+
+    def test_verified_and_unverified_tricks(self) -> None:
+        from ..LogicHelpers import can_do_trick
+        from ..Enums import Regions, Tricks
+        bundle = (Regions.ROOT, self.world)
+        # An unverified SoH trick is only Universal Tracker's glitched item.
+        self.assertEqual(type(can_do_trick(Tricks.DEKU_B1_BOW_WEBS, bundle)).__name__, "Has")
+        # A verified one also reads the option.
+        self.assertNotEqual(type(can_do_trick(Tricks.DEKU_B1_SKIP, bundle)).__name__, "Has")

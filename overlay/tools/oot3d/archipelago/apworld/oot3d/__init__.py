@@ -27,7 +27,7 @@ from Options import OptionError
 from rule_builder.rules import Has, CanReachLocation, Rule, True_
 from .Hints import CreateNonlocalHints, StaticHint
 from .oot3d_data import GAME
-from . import oot3d_options
+from . import oot3d_options, oot3d_tricks
 
 import logging
 logger = logging.getLogger("SOH_OOT")
@@ -100,6 +100,7 @@ def create_groups(obj: dict[Items, SohItemData] | dict[str, SohLocData]) -> dict
 
 oot3d_options.apply_defaults(SohOptions)
 oot3d_options.apply_visibility(SohOptions)
+oot3d_tricks.apply_tricks(SohOptions)
 
 
 class SohWorld(CachedRuleBuilderWorld):

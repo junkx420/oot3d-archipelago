@@ -88,9 +88,9 @@ PROGRESSION_STEPS = ("generate_early", "create_regions", "create_items", "set_ru
 class OracleSession:
     """One oracle process answering queries one line at a time."""
 
-    def __init__(self, oracle: Path, checks_file: Path) -> None:
+    def __init__(self, oracle: Path, checks_file: Path, extra: dict[str, str] | None = None) -> None:
         args = [str(oracle), "--vanilla-except", str(checks_file)]
-        for name, value in ORACLE_SETTINGS.items():
+        for name, value in {**ORACLE_SETTINGS, **(extra or {})}.items():
             args += ["--set", f"{name}={value}"]
         self._process = subprocess.Popen(args + ["--query"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                          stderr=subprocess.DEVNULL, text=True, encoding="utf-8")
@@ -141,7 +141,7 @@ def oracle_locations(oracle: Path) -> set[str]:
 
 
 class ApworldLogic:
-    def __init__(self, archipelago: Path, world_seed: int = 1) -> None:
+    def __init__(self, archipelago: Path, world_seed: int = 1, options: dict | None = None) -> None:
         os.environ.setdefault("SKIP_REQUIREMENTS_UPDATE", "1")
         os.chdir(archipelago)
         sys.path.insert(0, str(archipelago))
@@ -150,12 +150,17 @@ class ApworldLogic:
         logging.disable(logging.CRITICAL)
         import ModuleUpdate  # noqa: F401  (sets up the import paths like Generate.py)
         from BaseClasses import CollectionState
-        from test.general import setup_solo_multiworld
+        from test.general import setup_multiworld
+        from unittest import mock
         from worlds.AutoWorld import AutoWorldRegister
 
         self._CollectionState = CollectionState
         world_type = AutoWorldRegister.world_types["Ocarina of Time 3D"]
-        self.multiworld = setup_solo_multiworld(world_type, PROGRESSION_STEPS, seed=world_seed)
+        # Options beyond what the client supports (tricks) are compared before
+        # the client's option check allows them.
+        module = sys.modules[world_type.__module__]
+        with mock.patch.object(module.oot3d_options, "validate", lambda options, player_name: None):
+            self.multiworld = setup_multiworld(world_type, PROGRESSION_STEPS, seed=world_seed, options=options or {})
         self.player = 1
         self.world = self.multiworld.worlds[self.player]
         self.locations = [location for location in self.multiworld.get_locations(self.player)
@@ -197,6 +202,18 @@ class ApworldLogic:
         return {location.name for location in self.locations if location.can_reach(state)}
 
 
+def parse_options(entries: list[str]) -> dict:
+    """NAME=VALUE pairs: a JSON value, or else a comma list (option sets) or text."""
+    options = {}
+    for entry in entries:
+        name, text = entry.split("=", 1)
+        try:
+            options[name] = json.loads(text)
+        except json.JSONDecodeError:
+            options[name] = [part for part in text.split(",") if part] if "," in text or name == "tricks_in_logic" else text
+    return options
+
+
 def item_sets(pool: list[str], samples: int, rng: random.Random):
     """Named item sets: none; all; all with only k copies of one item (k from
     0, which tests key counts and progressive steps); all without two item
@@ -226,6 +243,10 @@ def main() -> int:
     parser.add_argument("--world-seed", type=int, default=1,
                         help="generation seed of the apworld, which decides where pre-placed keys land")
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--oracle-set", action="append", default=[], metavar="NAME=VALUE",
+                        help="a further 3D randomizer setting, e.g. 'LW Adult Tree GS w/o Magic Beans=Enabled'")
+    parser.add_argument("--option", action="append", default=[], metavar="NAME=VALUE",
+                        help="an apworld option; a JSON value, or a comma list for option sets")
     parser.add_argument("--minimize", action="store_true",
                         help="shrink each difference's example to a smallest item set that still shows it")
     arguments = parser.parse_args()
@@ -234,7 +255,8 @@ def main() -> int:
 
     known_3d_items = oracle_items(oracle)
     known_3d_locations = oracle_locations(oracle)
-    logic = ApworldLogic(arguments.archipelago.resolve(), arguments.world_seed)
+    oracle_extra = dict(entry.split("=", 1) for entry in arguments.oracle_set)
+    logic = ApworldLogic(arguments.archipelago.resolve(), arguments.world_seed, parse_options(arguments.option))
     pool = logic.progression_pool()
 
     unknown = sorted({name for name in pool if ITEM_ALIASES.get(name, name) not in known_3d_items})
@@ -254,7 +276,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as scratch:
         checks_file = Path(scratch) / "checks.txt"
         checks_file.write_text("".join(name + "\n" for name in empty_checks), encoding="utf-8")
-        session = OracleSession(oracle, checks_file)
+        session = OracleSession(oracle, checks_file, oracle_extra)
         try:
             differences = compare(logic, session, sets, compared_set)
             if arguments.minimize:

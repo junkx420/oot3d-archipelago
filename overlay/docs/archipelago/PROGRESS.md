@@ -724,3 +724,34 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   0.9.0 suite 492 passed, 33 skipped; two seeds with the new options
   generate with every location in the client's table. Headless: the release
   exe connects and scouts. Not seen in the game.
+
+### 3D tricks in logic (2026-10-27)
+
+- Ship of Harkinian's 135 tricks describe the N64 game. recon/map_tricks.py
+  pairs OoT3D_Randomizer's 88 tricks with them by effect: with the same item
+  sets, the locations a trick adds on each side (the 3D side through the
+  logic oracle, which now takes extra settings), matched by Jaccard. With
+  tokens and scrubs shuffled on both sides, 32 pairs matched (31 exactly).
+- recon/verify_tricks.py runs the full logic comparison for each pair with
+  both tricks on: all 32 pairs are never more permissive than the 3D logic.
+- The same comparison found one rule more permissive with tokens shuffled:
+  the Deku Tree basement vines GS took a jump slash without a trick. It now
+  follows gs_deku_tree.cpp (projectile, Din's Fire, or the new trick "Deku
+  B1 Vines GS" = "DT B1 Vines GS w/ Jump Slash", verified the same way); the
+  baseline is then 0 more permissive.
+- oot3d_tricks.py: tricks_in_logic offers the 33 verified tricks by their
+  3D randomizer names (valid_keys and the frozen _valid_keys);
+  can_do_trick reads a SoH trick through its counterpart, and a SoH trick
+  without one is never in logic (only Universal Tracker's glitched item).
+  enable_all_tricks enables the verified ones.
+- 55 3D tricks showed no effect in these item sets (Master Quest, and tricks
+  whose alternative was always at hand); they stay out until a pairing is
+  verified.
+- Glitched logic: OoT3D_Randomizer keeps it as a second rule per entrance and
+  location of its own area graph (732 glitch conditions over 20 glitch kinds
+  with difficulties and 14 single glitches). The apworld uses Ship of
+  Harkinian's graph, so it needs those areas mapped first; not started.
+- Tests: apworld 0.10.0 suite 497 passed, 33 skipped, plus tests that only
+  verified tricks are offered and checked; trick seeds generate with the
+  packed apworld on Archipelago 0.6.8, and an unverified SoH trick is
+  refused there.
