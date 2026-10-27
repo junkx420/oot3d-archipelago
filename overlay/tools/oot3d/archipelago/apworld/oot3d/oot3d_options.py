@@ -32,11 +32,20 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "jabu_jabu": ("closed", frozenset({"closed", "open"})),
     "lock_overworld_doors": (False, frozenset({False})),
     "fortress_carpenters": ("normal", frozenset({"normal"})),
-    "rainbow_bridge": ("vanilla", frozenset({"vanilla", "always_open"})),
+    "rainbow_bridge": ("vanilla", frozenset({"vanilla", "always_open", "stones", "medallions",
+                                             "dungeon_rewards", "dungeons", "tokens"})),
+    # The game has 3 stones, 6 medallions, 8 dungeons with a boss; Greg is not in it.
+    "rainbow_bridge_stones_required": (3, frozenset(range(1, 4))),
+    "rainbow_bridge_medallions_required": (6, frozenset(range(1, 7))),
+    "rainbow_bridge_dungeon_rewards_required": (9, frozenset(range(1, 10))),
+    "rainbow_bridge_dungeons_required": (8, frozenset(range(1, 9))),
+    "rainbow_bridge_skull_tokens_required": (50, frozenset(range(1, 101))),
     "rainbow_bridge_greg_modifier": ("off", frozenset({"off"})),
     "ganons_trials": ("set_number", frozenset({"set_number", "skip"})),
     "ganons_trials_count": (6, frozenset(range(7))),
-    "triforce_hunt": (False, frozenset({False})),
+    "triforce_hunt": (False, frozenset({False, True})),
+    "triforce_hunt_pieces_total": (30, frozenset(range(1, 101))),
+    "triforce_hunt_pieces_required_percentage": (60, frozenset(range(1, 101))),
     "ganons_castle_boss_key": ("vanilla", frozenset({"vanilla"})),
     "ganons_castle_boss_key_greg_modifier": ("off", frozenset({"off"})),
     "big_poe_target_count": (10, frozenset({10})),
@@ -46,7 +55,7 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "skip_scarecrows_song": (False, frozenset({False})),
     "start_with_links_pocket": ("nothing", frozenset({"nothing"})),
     "starting_age": ("child", frozenset({"child"})),
-    "starting_hearts": (3, frozenset({3})),
+    "starting_hearts": (3, frozenset(range(1, 21))),
     "full_wallets": (False, frozenset({False})),
     "bombchu_bag": ("none", frozenset({"none"})),
     "bombchu_drops": (False, frozenset({False})),
@@ -76,11 +85,11 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "shuffle_master_sword": (False, frozenset({False})),
     "shuffle_childs_wallet": (False, frozenset({False})),
     "shuffle_tycoon_wallet": (False, frozenset({False})),
-    "shuffle_ocarinas": (False, frozenset({False})),
+    "shuffle_ocarinas": (False, frozenset({False, True})),
     "shuffle_ocarina_buttons": (False, frozenset({False})),
     "shuffle_swim": (False, frozenset({False})),
-    "shuffle_weird_egg": (False, frozenset({False})),
-    "shuffle_gerudo_membership_card": (False, frozenset({False})),
+    "shuffle_weird_egg": (False, frozenset({False, True})),
+    "shuffle_gerudo_membership_card": (False, frozenset({False, True})),
     "shuffle_fishing_pole": (False, frozenset({False})),
     "shuffle_deku_stick_bag": (False, frozenset({False})),
     "shuffle_deku_nut_bag": (False, frozenset({False})),
@@ -183,7 +192,10 @@ def apply_visibility(options_dataclass: type) -> None:
             every = set(range(getattr(option_class, "range_start", 0), getattr(option_class, "range_end", -1) + 1))
         if every <= set(allowed):
             continue  # every value works: nothing to note
-        values = ", ".join(sorted(str(value).lower() for value in allowed))
+        if choices is None and all(isinstance(value, int) for value in allowed):
+            values = f"{min(allowed)} to {max(allowed)}"
+        else:
+            values = ", ".join(sorted(str(value).lower() for value in allowed))
         note = f"\n\nOcarina of Time 3D (TriAevum) supports: {values}."
         if note not in (option_class.__doc__ or ""):
             option_class.__doc__ = (option_class.__doc__ or "").rstrip() + note

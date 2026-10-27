@@ -28,7 +28,12 @@ class TestOptionsCreator(SohTestBase):
                                  "start_with_ocarina", "start_with_magic_beans",
                                  "closed_forest", "kakariko_gate", "door_of_time",
                                  "shuffle_skull_tokens", "skulls_sun_song", "shuffle_scrubs",
-                                 "shuffle_shops", "shuffle_shops_item_amount", "shuffle_cows"})
+                                 "shuffle_shops", "shuffle_shops_item_amount", "shuffle_cows",
+                                 "rainbow_bridge_stones_required", "rainbow_bridge_medallions_required",
+                                 "rainbow_bridge_dungeon_rewards_required", "rainbow_bridge_dungeons_required",
+                                 "rainbow_bridge_skull_tokens_required", "triforce_hunt", "triforce_hunt_pieces_total",
+                                 "triforce_hunt_pieces_required_percentage", "starting_hearts", "shuffle_ocarinas",
+                                 "shuffle_weird_egg", "shuffle_gerudo_membership_card"})
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility

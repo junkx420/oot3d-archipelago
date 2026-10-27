@@ -701,3 +701,26 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   priced, 9 cows) is fully in the client's table. Headless: dev build and the
   release exe connect and scout it. Not seen in the game: a cow or a shop
   purchase.
+
+### More options in the Options Creator (2026-10-27)
+
+- Rainbow bridge by stones, medallions, dungeon rewards, dungeons or tokens
+  (counts within what the game has: 3 stones, 6 medallions, 8 dungeons):
+  the client counts the save (quest bits, the boss events the blue warps
+  set, gsTokens) and sets the bridge flag once the count is reached.
+- starting_hearts 1 to 20: written to a new file's health capacity.
+- Triforce hunt: the goal is sent once the required Triforce Pieces were
+  received (counted from the server's items; a notification counts them).
+- shuffle_ocarinas: Saria's gift becomes a recovery heart once the seed's
+  placements are known, as the Great Fairies' spells do. shuffle_weird_egg and
+  shuffle_gerudo_membership_card: Malon's and the Gerudo's offers already
+  give the location's item.
+- The Options Creator notes partial ranges as "1 to 6".
+- Not done: the 100 Gold Skulltula reward (no location in OoT3D_Randomizer's
+  table), tricks and glitched logic (next: the 3D randomizer's tricks and
+  glitches, checked one by one against its own logic with the oracle of
+  recon/compare_logic.py).
+- Tests: host tests for the bridge counts, the flag and the hearts; apworld
+  0.9.0 suite 492 passed, 33 skipped; two seeds with the new options
+  generate with every location in the client's table. Headless: the release
+  exe connects and scouts. Not seen in the game.

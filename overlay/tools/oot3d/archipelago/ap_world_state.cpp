@@ -3,6 +3,7 @@
 #include "ap_save_flags.h"
 
 #include <algorithm>
+#include <bit>
 #include <array>
 #include <nlohmann/json.hpp>
 
@@ -15,6 +16,10 @@ using oot3d::recomp::a32::MemoryBus;
 constexpr int kJabuJabuOpen = 1;
 constexpr int kZorasFountainOpen = 2;
 constexpr int kRainbowBridgeAlwaysOpen = 1;
+// stones 2, medallions 3, dungeon rewards 4, dungeons 5, tokens 6 (greg 7 has
+// no item in this game).
+constexpr int kRainbowBridgeStones = 2;
+constexpr int kRainbowBridgeTokens = 6;
 constexpr int kGanonsTrialsSkip = 0;
 constexpr int kDoorOfTimeOpen = 2;
 constexpr int kKakarikoGateOpen = 1;
@@ -28,6 +33,12 @@ constexpr SaveFlag kDoorOfTimeFlag{"Door of Time open", EventChkInf(0x4U), FlagW
 constexpr SaveFlag kKakarikoGateFlag{"spoke to the gate guard about the mask shop", InfTable(0x7U), FlagWidth::U16, 0x0040U};
 constexpr SaveFlag kMidoFlag{"Mido moved aside", EventChkInf(0x0U), FlagWidth::U16, 0x0010U};
 constexpr SaveFlag kBarrierFlag{"Ganon's Tower barrier dispelled", EventChkInf(0xCU), FlagWidth::U16, 0x0008U};
+
+// The boss events the blue warps set (ap_cutscene_skip.cpp), the dungeons
+// of the bridge's dungeons condition.
+constexpr std::array<std::uint32_t, 8> kDungeonEvents{0x07U, 0x25U, 0x37U, 0x48U, 0x49U, 0x4AU, 0x47U, 0x46U};
+constexpr std::uint32_t kQuestMedallions = 0x0000003FU;
+constexpr std::uint32_t kQuestStones = 0x001C0000U;
 
 struct Trial {
   const char *Name; // GanonsTrials in Enums.py
@@ -62,6 +73,17 @@ WorldState ParseWorldState(const std::string &slotDataJson) {
   const int forest = IntField(data, "closed_forest", 0);
   state.MidoMoved = forest == kClosedForestOff;
   state.OpenForestExit = forest == kClosedForestDekuOnly || forest == kClosedForestOff;
+  const int bridge = IntField(data, "rainbow_bridge", 0);
+  if (bridge >= kRainbowBridgeStones && bridge <= kRainbowBridgeTokens) {
+    static constexpr std::array<const char *, 5> kCounts{
+        "rainbow_bridge_stones_required", "rainbow_bridge_medallions_required",
+        "rainbow_bridge_dungeon_rewards_required", "rainbow_bridge_dungeons_required",
+        "rainbow_bridge_skull_tokens_required"};
+    state.BridgeCondition = static_cast<WorldState::Bridge>(bridge - kRainbowBridgeStones + 1);
+    state.BridgeCount = IntField(data, kCounts[static_cast<std::size_t>(bridge - kRainbowBridgeStones)], 0);
+  }
+  if (const int hearts = IntField(data, "starting_hearts", 3); hearts != 3 && hearts >= 1 && hearts <= 20)
+    state.StartingHearts = hearts;
   const int trials = IntField(data, "ganons_trials", -1);
   const auto required = data.find("required_trials");
   if (trials == kGanonsTrialsSkip) {
@@ -91,6 +113,9 @@ int ApplyWorldState(const WorldState &state, MemoryBus &memory) {
     set += SetSaveFlag(memory, kKakarikoGateFlag) ? 1 : 0;
   if (state.MidoMoved)
     set += SetSaveFlag(memory, kMidoFlag) ? 1 : 0;
+  if (state.BridgeCondition != WorldState::Bridge::Game &&
+      BridgeProgress(state.BridgeCondition, memory) >= state.BridgeCount)
+    set += SetSaveFlag(memory, kRainbowBridgeFlag) ? 1 : 0;
   for (const Trial &trial : kTrials)
     if (std::find(state.SkippedTrials.begin(), state.SkippedTrials.end(), trial.Name) !=
         state.SkippedTrials.end())
@@ -98,6 +123,40 @@ int ApplyWorldState(const WorldState &state, MemoryBus &memory) {
   if (state.SkippedTrials.size() == kTrials.size())
     set += SetSaveFlag(memory, kBarrierFlag) ? 1 : 0;
   return set;
+}
+
+int BridgeProgress(WorldState::Bridge condition, MemoryBus &memory) {
+  std::uint32_t quest = 0;
+  (void)memory.Read32(kSaveContext + kSaveQuestItems, &quest);
+  switch (condition) {
+  case WorldState::Bridge::Stones:
+    return std::popcount(quest & kQuestStones);
+  case WorldState::Bridge::Medallions:
+    return std::popcount(quest & kQuestMedallions);
+  case WorldState::Bridge::Rewards:
+    return std::popcount(quest & (kQuestStones | kQuestMedallions));
+  case WorldState::Bridge::Dungeons: {
+    int done = 0;
+    for (const std::uint32_t event : kDungeonEvents)
+      done += SaveFlagSet(memory, Event("dungeon beaten", event)) ? 1 : 0;
+    return done;
+  }
+  case WorldState::Bridge::Tokens: {
+    std::uint16_t tokens = 0;
+    (void)memory.Read16(kSaveContext + kSaveGsTokens, &tokens);
+    return static_cast<std::int16_t>(tokens);
+  }
+  case WorldState::Bridge::Game:
+    break;
+  }
+  return 0;
+}
+
+bool ApplyStartingHearts(const WorldState &state, MemoryBus &memory) {
+  if (state.StartingHearts == 0)
+    return false;
+  const auto health = static_cast<std::uint16_t>(state.StartingHearts * 16);
+  return memory.Write16(kSaveContext + kSaveHealthCapacity, health) && memory.Write16(kSaveContext + kSaveHealth, health);
 }
 
 } // namespace Oot3dArchipelago

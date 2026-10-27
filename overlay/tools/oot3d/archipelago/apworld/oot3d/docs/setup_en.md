@@ -22,7 +22,8 @@ to start with.
   Options Creator then lists "Ocarina of Time 3D" with the options the client
   supports: dungeon keys, maps, compasses and the Kokiri Sword; Zora's
   Fountain, Jabu-Jabu, the rainbow bridge, Ganon's trials, the forest, the
-  Kakariko gate and the Door of Time; Gold Skulltula tokens, Deku scrubs, cows and shops
+  Kakariko gate and the Door of Time; Gold Skulltula tokens, Deku scrubs, cows, shops, ocarinas, the Weird Egg and
+  the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts
   shuffled; starting with
   the Kokiri Sword, a Deku Shield, an ocarina or magic beans; the item pool,
   DeathLink and Archipelago's own options.

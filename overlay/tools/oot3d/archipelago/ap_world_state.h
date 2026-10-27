@@ -25,11 +25,19 @@ struct WorldState {
   bool OpenKakarikoGate = false;
   bool MidoMoved = false;       // closed_forest off
   bool OpenForestExit = false;  // closed_forest deku_only or off
+  // rainbow_bridge stones to tokens: the bridge is built once the save holds
+  // that many (OoT3D_Randomizer's bridge conditions, set as its flag).
+  enum class Bridge : std::uint8_t { Game, Stones, Medallions, Rewards, Dungeons, Tokens };
+  Bridge BridgeCondition = Bridge::Game;
+  int BridgeCount = 0;
+  // starting_hearts, set on a new file (16 health per heart); 0 leaves the
+  // game's three.
+  int StartingHearts = 0;
   // Trials already done when the file starts, by name ("Forest Trial", ...).
   std::vector<std::string> SkippedTrials;
   [[nodiscard]] bool Empty() const noexcept {
     return !OpenJabuJabu && !OpenZorasFountain && !OpenRainbowBridge && !OpenDoorOfTime && !OpenKakarikoGate &&
-           !MidoMoved && SkippedTrials.empty();
+           !MidoMoved && BridgeCondition == Bridge::Game && SkippedTrials.empty();
   }
 };
 
@@ -40,5 +48,12 @@ WorldState ParseWorldState(const std::string &slotDataJson);
 // Sets the flags the loaded save lacks; returns how many it set. Bits are only
 // added, so calling it every frame is safe.
 int ApplyWorldState(const WorldState &state, oot3d::recomp::a32::MemoryBus &memory);
+
+// How far the save is towards the bridge condition (stones, medallions,
+// both, dungeons beaten, tokens).
+int BridgeProgress(WorldState::Bridge condition, oot3d::recomp::a32::MemoryBus &memory);
+
+// A new file's health: StartingHearts hearts, full. True when it wrote them.
+bool ApplyStartingHearts(const WorldState &state, oot3d::recomp::a32::MemoryBus &memory);
 
 } // namespace Oot3dArchipelago

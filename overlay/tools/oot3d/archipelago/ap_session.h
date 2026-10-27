@@ -154,6 +154,7 @@ private:
   void WatchGoal(oot3d::recomp::a32::MemoryBus &memory);
   void WatchFairyFountain(oot3d::recomp::a32::MemoryBus &memory);
   void WatchTokens(oot3d::recomp::a32::MemoryBus &memory);
+  void WatchTriforce();
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
 
   mutable std::mutex mMutex;
@@ -203,6 +204,9 @@ private:
   std::optional<FairyUpgrades> mFairyBaseline;
   // slot_data shop_prices by location id.
   std::map<std::int64_t, int> mShopPrices;
+  // Triforce hunt (slot_data): pieces required, 0 when off; pieces counted.
+  int mTriforceRequired = 0;
+  int mTriforcePieces = 0;
   // Set when the placements are scouted; the save's gsFlags last seen.
   bool mTokensShuffled = false;
   std::size_t mTokenPlacementCount = 0;

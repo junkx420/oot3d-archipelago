@@ -327,13 +327,13 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   // The Great Fairies' spells and the Light Arrow cutscene are ordinary
   // locations of the seed: once its placements are known, the game's own item
   // becomes a recovery heart and the location's item comes from the server.
-  // Songs, Saria's gift and the dungeon rewards hold their own item with the
-  // supported options and stay as they are. A Gold Skulltula token's location
+  // Saria's gift (shuffle_ocarinas) the same. Songs and the dungeon rewards
+  // hold their own item with the supported options and stay as they are. A Gold Skulltula token's location
   // is replaced the same way when the seed shuffles it (it is reported from
   // the save's gsFlags, WatchTokens).
   const bool token = key.Type == OverrideType::Skull;
   if (!token && (key.Type != OverrideType::Delayed ||
-      (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedFairyZorasFountain &&
+      (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedSariasGift && key.Flag != kDelayedFairyZorasFountain &&
        key.Flag != kDelayedFairyHyruleCastle && key.Flag != kDelayedFairyColossus)))
     return std::nullopt;
   if (!mSidecar.has_value() || !mLocations.has_value())
@@ -524,6 +524,7 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       mWorldLoggedForSlot = mSidecar->Identity.SaveSlot;
     }
   }
+  WatchTriforce();
   WatchFairyFountain(memory);
   WatchTokens(memory);
   GiveReceivedItems(memory);
@@ -591,6 +592,8 @@ void Session::SyncProgress(oot3d::recomp::a32::MemoryBus &memory) {
     sidecar.GivenByServer.clear();
     sidecar.GoalReached = false;
     Log("New file: every received item is given again");
+    if (ApplyStartingHearts(mWorld, memory))
+      Log("New file: " + std::to_string(mWorld.StartingHearts) + " starting hearts");
     if (!mServerItems.empty())
       Notify(Notification::Kind::Info,
              "New file: receiving " + std::to_string(mServerItems.size()) + " items again");
@@ -662,6 +665,30 @@ void Session::ApplyDeathLink(oot3d::recomp::a32::MemoryBus &memory) {
     mKillPending = false;
     mLinkDeathFrames = kLinkDeathFrames;
   }
+}
+
+// Triforce hunt: the goal is the required number of Triforce Pieces received
+// (the server is the source; the pieces have no item in the game).
+void Session::WatchTriforce() {
+  if (mTriforceRequired <= 0 || !mSidecar.has_value() || mSidecar->GoalReached)
+    return;
+  int pieces = 0;
+  for (const ReceivedItem &item : mServerItems)
+    pieces += ItemName(item.Item) == "Triforce Piece" ? 1 : 0;
+  if (pieces == mTriforcePieces)
+    return;
+  mTriforcePieces = pieces;
+  if (pieces < mTriforceRequired) {
+    Notify(Notification::Kind::Info, "Triforce Pieces: " + std::to_string(pieces) + " of " +
+                                         std::to_string(mTriforceRequired));
+    return;
+  }
+  mSidecar->GoalReached = true;
+  Persist();
+  Log("Goal: " + std::to_string(pieces) + " Triforce Pieces");
+  Notify(Notification::Kind::Goal, "Goal complete: the Triforce is whole!");
+  if (mClient)
+    mClient->SendGoal();
 }
 
 void Session::WatchGoal(oot3d::recomp::a32::MemoryBus &memory) {
@@ -826,6 +853,10 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
     mDeathLink = slotData.is_object() && slotData.value("death_link", false);
     mWorld = ParseWorldState(slot->SlotDataJson);
+    mTriforceRequired = slotData.is_object() && slotData.value("triforce_hunt", 0) != 0
+                            ? slotData.value("triforce_hunt_pieces_required", 0)
+                            : 0;
+    mTriforcePieces = 0;
     mShopPrices.clear();
     if (slotData.is_object() && mLocations.has_value())
       if (const auto prices = slotData.find("shop_prices"); prices != slotData.end() && prices->is_object())

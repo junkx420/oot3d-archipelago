@@ -840,6 +840,42 @@ void TestShops() {
   memory.Read16(third + kActorParams, &params);
   Expect(params == kShopItemSoldOut, "a bought slot inits sold out");
 }
+// Bridge conditions and starting hearts from slot data.
+void TestBridgeAndHearts() {
+  const auto medallions = ParseWorldState(R"({"rainbow_bridge":3,"rainbow_bridge_medallions_required":2,"starting_hearts":5})");
+  Expect(medallions.BridgeCondition == WorldState::Bridge::Medallions && medallions.BridgeCount == 2 &&
+             medallions.StartingHearts == 5 && !medallions.Empty(),
+         "a medallion bridge and five hearts are read");
+  Expect(ParseWorldState(R"({"rainbow_bridge":7})").BridgeCondition == WorldState::Bridge::Game,
+         "Greg's bridge stays the game's");
+  Expect(ParseWorldState(R"({"starting_hearts":3})").StartingHearts == 0, "three hearts are the game's");
+
+  FakeMemory memory;
+  for (std::uint32_t i = 0; i < 14U; ++i)
+    memory.Write16(kSaveContext + kSaveEventChkInf + i * 2U, 0U);
+  memory.Write32(kSaveContext + kSaveQuestItems, 0x00040001U); // Kokiri's Emerald, Forest Medallion
+  memory.Write16(kSaveContext + kSaveGsTokens, 12U);
+  Expect(BridgeProgress(WorldState::Bridge::Stones, memory) == 1 &&
+             BridgeProgress(WorldState::Bridge::Medallions, memory) == 1 &&
+             BridgeProgress(WorldState::Bridge::Rewards, memory) == 2 &&
+             BridgeProgress(WorldState::Bridge::Tokens, memory) == 12,
+         "stones, medallions, rewards and tokens are counted");
+  memory.Write16(kSaveContext + kSaveEventChkInf, 0x0080U); // event 0x07, the Deku Tree
+  Expect(BridgeProgress(WorldState::Bridge::Dungeons, memory) == 1, "the Deku Tree counts as a dungeon");
+
+  Expect(ApplyWorldState(medallions, memory) == 0, "one medallion builds no bridge");
+  memory.Write32(kSaveContext + kSaveQuestItems, 0x00040003U);
+  Expect(ApplyWorldState(medallions, memory) == 1, "two medallions build it");
+  std::uint16_t row4 = 0;
+  memory.Read16(kSaveContext + kSaveEventChkInf + 4U * 2U, &row4);
+  Expect((row4 & 0x2000U) != 0U, "the bridge flag is set");
+
+  Expect(ApplyStartingHearts(medallions, memory), "five hearts are written");
+  std::uint16_t capacity = 0, health = 0;
+  memory.Read16(kSaveContext + kSaveHealthCapacity, &capacity);
+  memory.Read16(kSaveContext + kSaveHealth, &health);
+  Expect(capacity == 80U && health == 80U, "five full hearts");
+}
 void TestBlueWarpSkip() {
   constexpr std::uint32_t kPlay = 0x08000000U;
   FakeMemory memory;
@@ -1426,6 +1462,7 @@ int main(int argc, char **argv) {
     TestTokenIgnoresNearbyChestOffer();
     TestDungeonRewardKeys();
     TestBlueWarpSkip();
+    TestBridgeAndHearts();
     TestShops();
     TestCows();
     TestTokenShuffle();
