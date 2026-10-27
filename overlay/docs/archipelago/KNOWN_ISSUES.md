@@ -11,9 +11,10 @@ in the game:
 - Freestanding items (heart pieces, keys): collectable keys, host-tested.
 - Great Fairy rewards, the Master Sword and the Light Arrow cutscene
   (delayed locations without a client key yet).
-- Shops and cows are not shuffled yet: both need code changes in the game
-  (a bought flag and a shown item for shop slots; cows give only into an
-  empty bottle and share a key per scene).
+- Shuffled shop slots show the game's own model and text; the price and the
+  item bought are the seed's. A cow or shop slot loaded from a savestate
+  taken inside the scene keeps the game's behaviour until the scene loads
+  again (the client numbers them when they are created).
 - Tokens taken before a seed shuffled them still count in the game's own
   token count; the server's tokens add to it.
 

@@ -28,6 +28,9 @@ std::optional<LocationKey> KeyForOffer(const OfferSource &source) {
                        static_cast<std::uint8_t>(source.ActorParams & 0xFFU)};
   case kActorDekuBaba:
   case kActorWitheredDekuBaba:
+  // A shopkeeper offers what the shelf sells; shop slots report from their
+  // buy event (ap_shops.h), and a shop item's get-item may equal a slot key.
+  case kActorShopkeeper:
     return std::nullopt;
   default:
     // Zelda's Letter: a delayed location in the randomizer (play test

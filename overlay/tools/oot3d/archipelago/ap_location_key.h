@@ -45,6 +45,14 @@ inline constexpr std::uint16_t kActorDekuBaba = 0x0055U;
 inline constexpr std::uint16_t kActorWitheredDekuBaba = 0x00C7U;
 inline constexpr std::uint16_t kActorBusinessScrubSalesman = 0x011AU;
 inline constexpr std::uint16_t kActorSkullToken = 0x019CU;
+inline constexpr std::uint16_t kActorCow = 0x01C6U;
+inline constexpr std::uint16_t kActorShopkeeper = 0x003DU;
+// A cow's location: base item 0x14 (GI_MILK_BOTTLE) + its number, as
+// OoT3D_Randomizer's EnCow_ItemOverride gives it; the grottos tell their cow
+// apart by the scene they return to.
+inline constexpr std::uint8_t kGetItemMilkBottle = 0x14U;
+inline constexpr std::uint8_t kSceneDeathMountainTrail = 0x60U;
+inline constexpr std::uint8_t kSceneHyruleField = 0x51U;
 inline constexpr std::uint8_t kSceneTreasureBoxShop = 0x10U;
 inline constexpr std::uint8_t kSceneGrottos = 0x3EU;
 inline constexpr std::uint8_t kGetItemRupeePurpleLose = 0x75U;

@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 372,
+  "verified": 379,
   "unverified": 557
  },
  "entries": [
@@ -13580,6 +13580,112 @@
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "CowBottleCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F065C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F0660",
+   "ld_line": 708,
+   "section": "text",
+   "signature": "sha256:f1be82057a6099e2376195398f0336ebbb6761aaed2adb7dc27103a372d6fb73",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopBuyEventDefault",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00114C04",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:23d969c0c9d1175bd2c1991e212325f888f76bc9e655f549a038409e1685596f",
+   "verified_by": [
+    "oot3d_randomizer_shop_item_table",
+    "aot_function_entry",
+    "arm_prologue"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopCanBuyResultBlock0",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0016CD94",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:eaf326d83aee065ca3e53d7fd7c8211985dff7f0e50cdac68409e60e7b6037d0",
+   "verified_by": [
+    "oot3d_randomizer_engirla_canbuyfunc_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopCanBuyResultBlock1",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00190DC4",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:5b243d06bdd3b4be244dc4da323d25faff5ef581faef68e669fb68ee42a98350",
+   "verified_by": [
+    "oot3d_randomizer_engirla_canbuyfunc_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopCanBuyResultBlock2",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00190FA0",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:e332f4947e8a5f061d96144f75cc97f800963f401448a63cac3117462e3f9ff4",
+   "verified_by": [
+    "oot3d_randomizer_engirla_canbuyfunc_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopCanBuyResultBlock3",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00191358",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:2da9d44b72d811fde9a7250af9ad067bfbc24ea4d58ae7a0055b3e520a1e6a49",
+   "verified_by": [
+    "oot3d_randomizer_engirla_canbuyfunc_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ShopCanBuyResultBlock4",
+   "kind": "hook_block",
+   "usa_ref": "0x00524F50",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00191394",
+   "ld_line": 905,
+   "section": "text",
+   "signature": "sha256:32f5a48b7b0e069c1ce5ff7592352a794c8025915386acd9ac1a73c959ad2940",
+   "verified_by": [
+    "oot3d_randomizer_engirla_canbuyfunc_offset",
+    "block_after_call"
    ],
    "status": "signature_pinned"
   }

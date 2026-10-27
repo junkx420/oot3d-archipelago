@@ -27,7 +27,8 @@ class TestOptionsCreator(SohTestBase):
                                  "ganons_trials_count", "start_with_kokiri_sword", "start_with_deku_shield",
                                  "start_with_ocarina", "start_with_magic_beans",
                                  "closed_forest", "kakariko_gate", "door_of_time",
-                                 "shuffle_skull_tokens", "skulls_sun_song", "shuffle_scrubs"})
+                                 "shuffle_skull_tokens", "skulls_sun_song", "shuffle_scrubs",
+                                 "shuffle_shops", "shuffle_shops_item_amount", "shuffle_cows"})
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility

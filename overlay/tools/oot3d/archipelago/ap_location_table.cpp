@@ -98,4 +98,11 @@ const LocationEntry *LocationTable::ById(std::int64_t id) const {
   return found == mById.end() ? nullptr : &mEntries[found->second];
 }
 
+const LocationEntry *LocationTable::ByName(const std::string &name) const {
+  for (const LocationEntry &entry : mEntries)
+    if (!entry.MasterQuest && entry.Name == name)
+      return &entry;
+  return nullptr;
+}
+
 } // namespace Oot3dArchipelago

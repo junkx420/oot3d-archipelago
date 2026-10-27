@@ -76,7 +76,18 @@ CLIENT_HOOK_BLOCKS = {
     "KokiriGuardCheckBlock": ("KokiriCheckOpenForest", -8, "block_after_branch"),
     "KokiriGuardStaysBlock": ("KokiriCheckOpenForest", 8, "block_after_branch"),
     "KokiriGuardMovesBlock": ("KokiriCheckOpenForest", 0x2C, ("branch_target", 4)),
+    # A cow's empty-bottle test (OoT3D_Randomizer cow.c, EnCow_BottleCheck):
+    # the block after the Inventory_HasEmptyBottle call reads its result.
+    "CowBottleCheckBlock": ("CowBottleCheck", 4, "block_after_call"),
 }
+
+
+# EnGirlA_ShopItemEntries (ShopItemEntry, 0x30 bytes, SI_MAX entries) and
+# entries whose vanilla price and get-item id pin the table: Deku Nuts (5),
+# 30 arrows, the Deku Shield.
+SHOP_ITEM_ENTRY_SIZE = 0x30
+SHOP_ITEM_ENTRY_COUNT = 50
+KNOWN_SHOP_ENTRIES = {0: (15, 0x63), 1: (60, 0x4A), 13: (40, 0x29)}
 
 
 def is_branch(word: int) -> bool:
@@ -215,6 +226,54 @@ def main() -> int:
             "section": "text",
             "signature": "sha256:" + hashlib.sha256(window).hexdigest(),
             "verified_by": ["oot3d_randomizer_ld_eur_offset", evidence],
+            "status": "signature_pinned",
+        })
+        counts["verified"] += 1
+
+    # Shop hooks (OoT3D_Randomizer shops.h: EnGirlA, ShopItemEntry). The
+    # randomizer replaces the shop item actor; the client keeps it and needs
+    # the default buy event (the function most entries of
+    # EnGirlA_ShopItemEntries name) and the blocks after every call through
+    # EnGirlA.canBuyFunc (+0x1D0), where the result is read.
+    table = by_name["EnGirlA_ShopItemEntries"]
+    table_offset = int(table["exec_addr"], 16) - CODE_BASE
+    def shop_entry(index: int, field: int, fmt: str) -> int:
+        return struct.unpack_from(fmt, code, table_offset + index * SHOP_ITEM_ENTRY_SIZE + field)[0]
+    # The table is pinned by the vanilla prices and get-item ids it holds.
+    for index, (price, get_item) in KNOWN_SHOP_ENTRIES.items():
+        if shop_entry(index, 0x0A, "<h") != price or shop_entry(index, 0x14, "<i") != get_item:
+            print(f"error: EnGirlA_ShopItemEntries[{index}] is not price {price}, get-item {get_item}",
+                  file=sys.stderr)
+            return 1
+    buy_events = [shop_entry(index, 0x20, "<I") for index in range(SHOP_ITEM_ENTRY_COUNT)]
+    default_buy = max(set(buy_events), key=buy_events.count)
+    if default_buy not in aot_entries or not is_prologue(struct.unpack_from("<I", code, default_buy - CODE_BASE)[0]):
+        print(f"error: the default buy event 0x{default_buy:08X} is no function entry", file=sys.stderr)
+        return 1
+    derived = [("ShopBuyEventDefault", default_buy,
+                ["oot3d_randomizer_shop_item_table", "aot_function_entry", "arm_prologue"])]
+    calls = []
+    for offset in range(0, len(code) - 8, 4):
+        load, call = struct.unpack_from("<II", code, offset)
+        # ldr rX, [rY, #0x1d0] then blx rX
+        if (load & 0x0FF00FFF) == 0x059001D0 and (call & 0x0FFFFFF0) == 0x012FFF30 and \
+                (call & 0xF) == (load >> 12) & 0xF:
+            calls.append(CODE_BASE + offset + 8)
+    for number, start in enumerate(calls):
+        derived.append((f"ShopCanBuyResultBlock{number}", start,
+                        ["oot3d_randomizer_engirla_canbuyfunc_offset", "block_after_call"]))
+    for name, start, evidence in derived:
+        window = code[start - CODE_BASE:start - CODE_BASE + SIGNATURE_BYTES]
+        entries.append({
+            "name": name,
+            "kind": "hook_block",
+            "usa_ref": table["usa_ref"],
+            "eur_offset": table["eur_offset"],
+            "exec_addr": f"0x{start:08X}",
+            "ld_line": table["ld_line"],
+            "section": "text",
+            "signature": "sha256:" + hashlib.sha256(window).hexdigest(),
+            "verified_by": evidence,
             "status": "signature_pinned",
         })
         counts["verified"] += 1

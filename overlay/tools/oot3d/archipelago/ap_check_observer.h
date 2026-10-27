@@ -14,11 +14,13 @@
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
 #include "ap_quick_text.h"
+#include "ap_shops.h"
 #include "recomp/a32_runtime.h"
 
 #include <array>
 #include <cstdint>
 #include <functional>
+#include <map>
 #include <optional>
 #include <span>
 #include <string>
@@ -57,8 +59,22 @@ inline constexpr std::uint32_t kRutoBlueWarpDoneBlock = 0x001A1944U;
 inline constexpr std::uint32_t kKokiriGuardCheckBlock = 0x003ACCF4U;
 inline constexpr std::uint32_t kKokiriGuardStaysBlock = 0x003ACD04U;
 inline constexpr std::uint32_t kKokiriGuardMovesBlock = 0x003ACD28U;
+// Cows (OoT3D_Randomizer cow.c): their init and destroy, to number them as
+// the randomizer does, and the block that reads Inventory_HasEmptyBottle's
+// result (r0; r4 the cow, r5 the play state).
+inline constexpr std::uint32_t kEnCowInit = 0x00189FD4U;
+inline constexpr std::uint32_t kEnCowDestroy = 0x0018A3E4U;
+inline constexpr std::uint32_t kCowBottleCheckBlock = 0x003F0660U;
+// Shops (ap_shops.h): the shelf item's init (r0 the item, r1 the play state)
+// and draw (the same), and the blocks after the shopkeeper's calls through
+// EnGirlA.canBuyFunc (r0 the result, r6 the item). The default buy event
+// (r1 the item) is kShopBuyEventDefault.
+inline constexpr std::uint32_t kEnGirlAInit = 0x001D7F20U;
+inline constexpr std::uint32_t kEnGirlADraw = 0x00210188U;
+inline constexpr std::array<std::uint32_t, 5> kShopCanBuyResultBlocks{
+    0x0016CD94U, 0x00190DC4U, 0x00190FA0U, 0x00191358U, 0x00191394U};
 
-inline constexpr std::array<GuestFunction, 9> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 20> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -77,6 +93,23 @@ inline constexpr std::array<GuestFunction, 9> kGuestFunctions{{
      "61fb640fcd37e9e39de6f9fc329aa848f5459535bd238d5d69059ea477e21ce5"},
     {"KokiriGuardMovesBlock", kKokiriGuardMovesBlock,
      "9148a8d4f0d91bf185b43544dd27dbb51dbf3e5e8466d9001f6ace2fb744a655"},
+    {"EnCow_Init", kEnCowInit, "79ab92595c500cbe7c5a748bade68987e7bf6eafbb1e77131e319c2401024105"},
+    {"EnCow_Destroy", kEnCowDestroy, "ac7af3c9ce4f6b1167c80cf6b4f567ae840df21f1761fdb6a9f8be3cc6011db7"},
+    {"CowBottleCheckBlock", kCowBottleCheckBlock,
+     "f1be82057a6099e2376195398f0336ebbb6761aaed2adb7dc27103a372d6fb73"},
+    {"EnGirlA_Init", kEnGirlAInit, "5d5365b561ee77ce90a2ea9e7134a59eecfebd9809df87c0ea245935249851d1"},
+    {"EnGirlA_Draw", kEnGirlADraw, "065cc472cfb2eb551cd0f80e5843546cd26fc2b7c8fe7a55583e269b360bf1e7"},
+    {"ShopBuyEventDefault", kShopBuyEventDefault, "23d969c0c9d1175bd2c1991e212325f888f76bc9e655f549a038409e1685596f"},
+    {"ShopCanBuyResultBlock0", kShopCanBuyResultBlocks[0],
+     "eaf326d83aee065ca3e53d7fd7c8211985dff7f0e50cdac68409e60e7b6037d0"},
+    {"ShopCanBuyResultBlock1", kShopCanBuyResultBlocks[1],
+     "5b243d06bdd3b4be244dc4da323d25faff5ef581faef68e669fb68ee42a98350"},
+    {"ShopCanBuyResultBlock2", kShopCanBuyResultBlocks[2],
+     "e332f4947e8a5f061d96144f75cc97f800963f401448a63cac3117462e3f9ff4"},
+    {"ShopCanBuyResultBlock3", kShopCanBuyResultBlocks[3],
+     "2da9d44b72d811fde9a7250af9ad067bfbc24ea4d58ae7a0055b3e520a1e6a49"},
+    {"ShopCanBuyResultBlock4", kShopCanBuyResultBlocks[4],
+     "32f5a48b7b0e069c1ce5ff7592352a794c8025915386acd9ac1a73c959ad2940"},
 }};
 
 struct CheckEvent {
@@ -146,6 +179,19 @@ public:
   // it, and the save is restored in the block after (the observer's only
   // write of its own).
   void SetForestExitProbe(std::function<bool()> probe) { mForestExitOpen = std::move(probe); }
+  // Whether a cow's location (its key: scene, base item, 0x14 + the cow's
+  // number) still holds an item: the cow then gives without an empty bottle.
+  void SetCowProbe(std::function<bool(const LocationKey &key)> probe) { mCowGives = std::move(probe); }
+  // What a shop slot (its key, ap_shops.h) sells: the game's item, another
+  // item, or nothing (sold out); and the sink told when a changed slot is
+  // bought.
+  struct ShopSlotState {
+    enum class Kind : std::uint8_t { Game, Sell, SoldOut } Type = Kind::Game;
+    ShopSlotItem Item{};
+  };
+  using ShopSlotProbe = std::function<ShopSlotState(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory)>;
+  void SetShopProbe(ShopSlotProbe probe) { mShopSlot = std::move(probe); }
+  void SetShopBoughtSink(std::function<void(const LocationKey &key)> sink) { mShopBought = std::move(sink); }
   // Called for every hooked block entry of the window, not only the
   // observer's own pcs: the first call runs VerifyAddresses (guest code is
   // mapped by then) and throws std::runtime_error on a mismatch.
@@ -160,6 +206,8 @@ public:
     std::uint64_t GameOver = 0;
     std::uint64_t BlueWarp = 0;
     std::uint64_t ForestExit = 0;
+    std::uint64_t CowBottle = 0;
+    std::uint64_t ShopBuys = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -184,6 +232,18 @@ private:
   // The latest token's offer: chests nearby offer every frame and would
   // replace it in mLastOffer.
   std::optional<LocationKey> mLastTokenKey;
+  std::function<bool(const LocationKey &key)> mCowGives;
+  ShopSlotProbe mShopSlot;
+  std::function<void(const LocationKey &key)> mShopBought;
+  // Shelf items by actor: their key (numbered as ShopsanityItem_Init numbers
+  // them), and those whose fields the client changed.
+  std::map<std::uint32_t, LocationKey> mShopSlots;
+  std::uint32_t mShopCount = 0;
+  std::map<std::uint32_t, ShopSlotItem> mShopActive;
+  // The cows of the scene by actor, numbered 1 and 2 as EnCow_rInit does.
+  std::map<std::uint32_t, std::uint8_t> mCows;
+  std::uint32_t mCowCount = 0;
+  std::optional<std::uint8_t> CowNumber(std::uint32_t actor) const;
   // questItems as it was before the guard's test: address and value.
   std::optional<std::pair<std::uint32_t, std::uint32_t>> mGuardRestore;
   std::function<void()> mDeathSink;

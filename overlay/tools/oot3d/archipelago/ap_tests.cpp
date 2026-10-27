@@ -11,6 +11,7 @@
 #include "ap_save_sync.h"
 #include "ap_session.h"
 #include "ap_sha256.h"
+#include "ap_shops.h"
 #include "ap_sidecar.h"
 #include "ap_world_state.h"
 
@@ -464,10 +465,10 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 11U,
-         "checks, deaths, blue warps, the forest guard and quick text need eleven hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 12U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 11U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 22U,
+         "checks, deaths, blue warps, the forest guard, cows, shops and quick text need 22 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 23U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 22U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -687,6 +688,157 @@ void TestTokenShuffle() {
   Expect(events.size() == 1U && events[0].Key.has_value() &&
              *events[0].Key == LocationKey{0x00U, OverrideType::Skull, 0x04U},
          "the token reports its own location, not the chest");
+}
+// Cows: numbered as EnCow_rInit numbers them, keyed 0x14 + number, and given
+// a bottle while their location holds an item.
+void TestCows() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kCowOne = 0x08100000U;
+  constexpr std::uint32_t kTail = 0x08110000U;
+  constexpr std::uint32_t kCowTwo = 0x08120000U;
+  constexpr std::uint32_t kPlayer = 0x08200000U;
+  FakeMemory memory;
+  memory.Write16(kPlay + kPlaySceneNum, 0x36U); // Lon Lon Ranch stables
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  memory.Write8(kSaveRespawnReturnData, 0U);
+  for (const std::uint32_t cow : {kCowOne, kCowTwo})
+    memory.Write16(cow + kActorId, kActorCow);
+  CheckObserver observer{false};
+  std::vector<LocationKey> asked;
+  bool gives = true;
+  observer.SetCowProbe([&](const LocationKey &key) {
+    asked.push_back(key);
+    return gives;
+  });
+  std::vector<LocationKey> offered;
+  observer.SetOverride([&](const LocationKey &key, oot3d::recomp::a32::MemoryBus &) {
+    offered.push_back(key);
+    return std::optional<std::uint16_t>{};
+  });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[1] = kPlay;
+  for (const std::uint32_t actor : {kCowOne, kTail, kCowTwo}) {
+    state.r[0] = actor;
+    observer.ObserveBlockEntry(kEnCowInit, state, memory);
+  }
+  state.r[0] = kCowTwo;
+  state.r[1] = kPlay;
+  state.r[2] = 0x50U; // GI_MILK
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  Expect(offered.size() == 1U && offered[0] == LocationKey{0x36U, OverrideType::BaseItem, 0x16U},
+         "the second cow offers as base item 0x16");
+  Expect(state.r[2] == 0x50U, "the offered milk stays without an override");
+
+  state.r[0] = 0U; // no empty bottle
+  state.r[4] = kCowOne;
+  state.r[5] = kPlay;
+  observer.ObserveBlockEntry(kCowBottleCheckBlock, state, memory);
+  Expect(state.r[0] == 1U && asked.size() == 1U && asked[0] == LocationKey{0x36U, OverrideType::BaseItem, 0x15U},
+         "the first cow's open location stands in for a bottle");
+  gives = false;
+  state.r[0] = 0U;
+  observer.ObserveBlockEntry(kCowBottleCheckBlock, state, memory);
+  Expect(state.r[0] == 0U, "a done cow needs a bottle again");
+
+  state.r[0] = kCowOne;
+  observer.ObserveBlockEntry(kEnCowDestroy, state, memory);
+  memory.Write16(kPlay + kPlaySceneNum, kSceneGrottos);
+  memory.Write8(kSaveRespawnReturnData, kSceneHyruleField);
+  state.r[0] = kCowOne;
+  state.r[1] = kPlay;
+  observer.ObserveBlockEntry(kEnCowInit, state, memory);
+  gives = true;
+  state.r[0] = 0U;
+  state.r[4] = kCowOne;
+  observer.ObserveBlockEntry(kCowBottleCheckBlock, state, memory);
+  Expect(asked.back() == LocationKey{kSceneGrottos, OverrideType::BaseItem, 0x16U},
+         "the Hyrule Field grotto's cow is number 2");
+}
+// Shops: slot keys, shop ware get-items, and a shelf item sold, bought and
+// sold out.
+void TestShops() {
+  Expect(ShopSlotKey(0x2DU, 0U, 0) == LocationKey{0x2DU, OverrideType::BaseItem, 0x30U}, "KF Shop Item 1");
+  Expect(ShopSlotKey(kSceneBazaar, 7U, 0x052C) == LocationKey{kSceneBazaar, OverrideType::BaseItem, 0x37U},
+         "MK Bazaar Item 8");
+  Expect(ShopSlotKey(kSceneBazaar, 0U, kEntranceKakarikoBazaar) ==
+             LocationKey{kSceneBazaar, OverrideType::BaseItem, 0x38U},
+         "Kak Bazaar Item 1");
+
+  FakeMemory memory;
+  memory.Write32(kShopItemEntries + 13U * kShopItemEntrySize + kShopItemEntryGetItem, 0x29U);
+  Expect(ShopItemGetItem(13U, memory) == std::uint16_t{0x29U}, "Buy Deku Shield is GI_SHIELD_DEKU");
+  Expect(!ShopItemGetItem(60U, memory).has_value(), "no shop item past the table");
+
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kShelf = 0x08100000U;
+  memory.Write16(kPlay + kPlaySceneNum, 0x2DU);
+  memory.Write32(kSaveContext + kSaveEntranceIndex, 0x00C1U);
+  memory.Write16(kSaveContext + kSaveRupees, 50U);
+  for (std::uint32_t i = 0; i < 8U; ++i)
+    memory.Write16(kShelf + i * 0x200U + kActorParams, static_cast<std::uint16_t>(13U));
+  CheckObserver observer{false};
+  std::vector<LocationKey> bought;
+  bool sold = false;
+  observer.SetShopProbe([&](const LocationKey &key, oot3d::recomp::a32::MemoryBus &) {
+    CheckObserver::ShopSlotState state;
+    if (key.Flag == 0x32U) {
+      state.Type = sold ? CheckObserver::ShopSlotState::Kind::SoldOut : CheckObserver::ShopSlotState::Kind::Sell;
+      state.Item = ShopSlotItem{0x0BU, 40};
+    }
+    return state;
+  });
+  observer.SetShopBoughtSink([&](const LocationKey &key) { bought.push_back(key); });
+  oot3d::recomp::a32::GuestState state{};
+  state.r[1] = kPlay;
+  for (std::uint32_t i = 0; i < 8U; ++i) {
+    state.r[0] = kShelf + i * 0x200U;
+    observer.ObserveBlockEntry(kEnGirlAInit, state, memory);
+  }
+  const std::uint32_t third = kShelf + 2U * 0x200U;
+  state.r[0] = third;
+  observer.ObserveBlockEntry(kEnGirlADraw, state, memory);
+  std::uint32_t getItem = 0, buyEvent = 0;
+  std::uint16_t price = 0;
+  memory.Read32(third + kGirlGetItemId, &getItem);
+  memory.Read16(third + kGirlBasePrice, &price);
+  memory.Read32(third + kGirlBuyEventFunc, &buyEvent);
+  Expect(getItem == 0x0BU && price == 40U && buyEvent == kShopBuyEventDefault, "the third slot sells the seed's item");
+
+  state.r[0] = 2U; // CANBUY_RESULT_CANT_GET_NOW from the game's own test
+  state.r[6] = third;
+  observer.ObserveBlockEntry(kShopCanBuyResultBlocks[3], state, memory);
+  Expect(state.r[0] == kCanBuySuccessFanfare, "50 rupees buy a 40 rupee slot");
+  memory.Write16(kSaveContext + kSaveRupees, 20U);
+  state.r[0] = 0U;
+  observer.ObserveBlockEntry(kShopCanBuyResultBlocks[0], state, memory);
+  Expect(state.r[0] == kCanBuyNeedRupees, "20 rupees do not");
+  state.r[0] = 2U;
+  state.r[6] = kShelf; // a slot of the game's own
+  observer.ObserveBlockEntry(kShopCanBuyResultBlocks[0], state, memory);
+  Expect(state.r[0] == 2U, "the game's own slots keep their test");
+
+  state.r[0] = kPlay;
+  state.r[1] = third;
+  observer.ObserveBlockEntry(kShopBuyEventDefault, state, memory);
+  std::uint16_t params = 0;
+  memory.Read16(third + kActorParams, &params);
+  Expect(bought.size() == 1U && bought[0] == LocationKey{0x2DU, OverrideType::BaseItem, 0x32U} &&
+             params == kShopItemSoldOut && observer.Hits().ShopBuys == 1U,
+         "buying reports KF Shop Item 3 and sells it out");
+  observer.ObserveBlockEntry(kShopBuyEventDefault, state, memory);
+  Expect(bought.size() == 1U, "a sold-out slot reports nothing more");
+
+  // The shop again: the bought slot starts sold out.
+  sold = true;
+  for (std::uint32_t i = 0; i < 8U; ++i)
+    memory.Write16(kShelf + i * 0x200U + kActorParams, 13U);
+  state.r[1] = kPlay;
+  for (std::uint32_t i = 0; i < 8U; ++i) {
+    state.r[0] = kShelf + i * 0x200U;
+    observer.ObserveBlockEntry(kEnGirlAInit, state, memory);
+  }
+  memory.Read16(third + kActorParams, &params);
+  Expect(params == kShopItemSoldOut, "a bought slot inits sold out");
 }
 void TestBlueWarpSkip() {
   constexpr std::uint32_t kPlay = 0x08000000U;
@@ -1274,6 +1426,8 @@ int main(int argc, char **argv) {
     TestTokenIgnoresNearbyChestOffer();
     TestDungeonRewardKeys();
     TestBlueWarpSkip();
+    TestShops();
+    TestCows();
     TestTokenShuffle();
     TestForestExitGuard();
     TestFairyRewards();

@@ -669,3 +669,35 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   locations, all in the client's table. Headless against it (dev build and
   release exe in the TriAevum beta.1.2 copy): the dev save's two Deku Tree
   tokens were reported on connecting and the server's item came back.
+
+### Cow and shop shuffles (2026-10-27)
+
+- Cows (shuffle_cows): EnCow_Init (function entry) numbers the cows of a
+  scene as EnCow_rInit does (1, then 2, a cow's tail counts; the grottos by
+  the scene they return to, DMT 1, Hyrule Field 2), and a cow's offer is
+  keyed base item 0x14 + its number. While the location is open, the block
+  after Inventory_HasEmptyBottle (CowBottleCheckBlock 0x003F0660) reads 1
+  instead of the game's answer, so the cow gives without an empty bottle, as
+  the logic expects; afterwards it gives milk into a bottle again.
+- Shops (shuffle_shops, shuffle_shops_item_amount): OoT3D_Randomizer
+  replaces the shelf item actor; the client changes the game's EnGirlA
+  fields when it is drawn (get-item, the seed's price from slot_data
+  shop_prices, count 1, no direct give, the default buy event 0x00114C04
+  from EnGirlA_ShopItemEntries). The shopkeeper's five calls through
+  canBuyFunc are found by their instruction pattern; the block after each
+  reads "enough rupees" or "need rupees" for a changed slot. The buy event
+  reports the slot (base item 0x30 + position, 0x38 on in the Kakariko
+  Bazaar, entrance 0x00B7) and sells it out (SI_SOLD_OUT, reinitialized), and
+  a bought slot starts sold out on the next visit. Shop ware placed by the
+  seed ("Buy Deku Shield") resolves through the game's shop table. A
+  shopkeeper's own offer forms no key. The shelf still shows the game's
+  model and text.
+- recon/map_rando_addresses.py pins the shop table by three vanilla prices
+  and get-items and derives the buy event and the five result blocks from it
+  (evidence: shop item table, canBuyFunc offset, block after call).
+- Tests: host tests for the cow numbering, keys and bottle answer, and a
+  shelf sold, refused, bought and sold out; apworld 0.8.0 suite 492 passed,
+  33 skipped; a seed with shops and cows (313 locations, 32 shop slots all
+  priced, 9 cows) is fully in the client's table. Headless: dev build and the
+  release exe connect and scout it. Not seen in the game: a cow or a shop
+  purchase.

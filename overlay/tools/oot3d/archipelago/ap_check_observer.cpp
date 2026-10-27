@@ -12,11 +12,14 @@ namespace {
 using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
-constexpr std::array<std::uint32_t, 9> kCheckHooks{
-    kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,    kGameOverStartBlock,
-    kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
-    kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kChildBlueWarpBlock};
-static_assert(std::is_sorted(kCheckHooks.begin(), kCheckHooks.end()));
+// Every hooked pc but quick text's (HookPcs sorts them).
+constexpr std::array<std::uint32_t, 20> kCheckHooks{
+    kEnCowInit,          kEnCowDestroy,          kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,
+    kGameOverStartBlock, kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
+    kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kCowBottleCheckBlock,   kChildBlueWarpBlock,
+    kEnGirlAInit,        kEnGirlADraw,           kShopBuyEventDefault,   kShopCanBuyResultBlocks[0],
+    kShopCanBuyResultBlocks[1], kShopCanBuyResultBlocks[2], kShopCanBuyResultBlocks[3],
+    kShopCanBuyResultBlocks[4]};
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -50,6 +53,7 @@ CheckObserver::~CheckObserver() {
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
                 "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
+                "CowBottle=%llu ShopBuys=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
@@ -57,7 +61,9 @@ CheckObserver::~CheckObserver() {
                 static_cast<unsigned long long>(mHits.ItemGive),
                 static_cast<unsigned long long>(mHits.GameOver),
                 static_cast<unsigned long long>(mHits.BlueWarp),
-                static_cast<unsigned long long>(mHits.ForestExit), ToString(mQuickText.Mode()),
+                static_cast<unsigned long long>(mHits.ForestExit),
+                static_cast<unsigned long long>(mHits.CowBottle), static_cast<unsigned long long>(mHits.ShopBuys),
+                ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
                 static_cast<unsigned long long>(quick.TurboPresses),
@@ -140,7 +146,87 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       mBlueWarpSink(pc, static_cast<std::uint8_t>(Read16(memory, play + kPlaySceneNum)), memory);
     break;
   }
-  case kKokiriGuardCheckBlock:
+  case kEnCowInit: {
+    // EnCow_rInit numbers the cows of a scene before the game's init runs
+    // (a cow's tail is one too): 1, then 2; the grottos by the scene they
+    // return to.
+    const std::uint8_t scene = static_cast<std::uint8_t>(Read16(memory, state.r[1] + kPlaySceneNum));
+    const std::uint8_t returnScene = Read8(memory, kSaveRespawnReturnData);
+    std::uint8_t number = mCowCount == 0U ? 1U : 2U;
+    if (scene == kSceneGrottos && returnScene == kSceneDeathMountainTrail)
+      number = 1U;
+    else if (scene == kSceneGrottos && returnScene == kSceneHyruleField)
+      number = 2U;
+    ++mCowCount;
+    mCows[state.r[0]] = number;
+    break;
+  }
+  case kEnCowDestroy:
+    mCowCount = 0U;
+    mCows.erase(state.r[0]);
+    break;
+  case kCowBottleCheckBlock:
+    if (const auto number = CowNumber(state.r[4]); number.has_value() && mCowGives) {
+      const LocationKey key{static_cast<std::uint8_t>(Read16(memory, state.r[5] + kPlaySceneNum)),
+                            OverrideType::BaseItem, static_cast<std::uint8_t>(kGetItemMilkBottle + *number)};
+      if (state.r[0] == 0U && mCowGives(key)) {
+        state.r[0] = 1U; // "has an empty bottle"
+        ++mHits.CowBottle;
+      }
+    }
+    break;
+  case kEnGirlAInit: {
+    // ShopsanityItem_Init numbers the shelf in init order; a shelf starts
+    // again when an actor comes back or eight are done.
+    if (mShopSlots.count(state.r[0]) != 0U || mShopCount >= kShopSlotsPerShop) {
+      mShopSlots.clear();
+      mShopActive.clear();
+      mShopCount = 0U;
+    }
+    std::uint32_t entrance = 0;
+    (void)memory.Read32(kSaveContext + kSaveEntranceIndex, &entrance);
+    const LocationKey key = ShopSlotKey(static_cast<std::uint8_t>(Read16(memory, state.r[1] + kPlaySceneNum)),
+                                        mShopCount++, static_cast<std::int32_t>(entrance));
+    mShopSlots[state.r[0]] = key;
+    // A bought slot starts sold out.
+    if (mShopSlot && mShopSlot(key, memory).Type == ShopSlotState::Kind::SoldOut)
+      (void)memory.Write16(state.r[0] + kActorParams, kShopItemSoldOut);
+    break;
+  }
+  case kEnGirlADraw: {
+    const auto slot = mShopSlots.find(state.r[0]);
+    if (slot == mShopSlots.end() || !mShopSlot)
+      break;
+    const ShopSlotState sells = mShopSlot(slot->second, memory);
+    if (sells.Type == ShopSlotState::Kind::Sell && ApplyShopSlot(state.r[0], sells.Item, memory))
+      mShopActive[state.r[0]] = sells.Item;
+    else
+      mShopActive.erase(state.r[0]);
+    break;
+  }
+  case kShopBuyEventDefault: {
+    const auto active = mShopActive.find(state.r[1]);
+    const auto slot = mShopSlots.find(state.r[1]);
+    if (active == mShopActive.end() || slot == mShopSlots.end())
+      break;
+    ++mHits.ShopBuys;
+    if (mShopBought)
+      mShopBought(slot->second);
+    // Sold out from now on; the buy event goes on to take the price.
+    (void)SellOutShopSlot(state.r[1], memory);
+    mShopActive.erase(active);
+    break;
+  }
+  case kShopCanBuyResultBlocks[0]:
+  case kShopCanBuyResultBlocks[1]:
+  case kShopCanBuyResultBlocks[2]:
+  case kShopCanBuyResultBlocks[3]:
+  case kShopCanBuyResultBlocks[4]:
+    if (const auto active = mShopActive.find(state.r[6]); active != mShopActive.end()) {
+      const auto rupees = static_cast<std::int16_t>(Read16(memory, kSaveContext + kSaveRupees));
+      state.r[0] = rupees >= active->second.Price ? kCanBuySuccessFanfare : kCanBuyNeedRupees;
+    }
+    break;  case kKokiriGuardCheckBlock:
     if (mForestExitOpen && mForestExitOpen()) {
       const std::uint32_t questItems = state.r[8] + kSaveQuestItems;
       const std::uint32_t emerald = Read32(memory, state.r[6] + 0x48U);
@@ -179,6 +265,10 @@ void CheckObserver::OnOffer(GuestState &state, MemoryBus &memory) {
   offer.Source.ActorParams = Read16(memory, actor + kActorParams);
   offer.Source.Scene = static_cast<std::uint8_t>(Read16(memory, play + kPlaySceneNum));
   offer.Source.GetItemId = AbsoluteGetItemId(state.r[2]);
+  // A cow offers milk; its location is keyed by its number.
+  if (offer.Source.ActorId == kActorCow)
+    if (const auto number = CowNumber(actor))
+      offer.Source.GetItemId = static_cast<std::uint8_t>(kGetItemMilkBottle + *number);
   if (offer.Source.ActorId == kActorEnItem00)
     offer.Source.CollectibleFlag = Read16(memory, actor + kEnItem00CollectibleFlag);
   offer.Source.RespawnReturnScene = Read8(memory, kSaveRespawnReturnData);
@@ -265,6 +355,11 @@ void CheckObserver::OnItemGive(GuestState &state, MemoryBus &memory) {
   }
   if (mSink)
     mSink(event);
+}
+
+std::optional<std::uint8_t> CheckObserver::CowNumber(std::uint32_t actor) const {
+  const auto cow = mCows.find(actor);
+  return cow != mCows.end() ? std::optional<std::uint8_t>(cow->second) : std::nullopt;
 }
 
 std::string FormatEvent(const CheckEvent &event) {

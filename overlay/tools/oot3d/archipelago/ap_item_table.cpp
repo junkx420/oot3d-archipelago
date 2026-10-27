@@ -1,5 +1,7 @@
 #include "ap_item_table.h"
 
+#include "ap_shops.h"
+
 #include "ap_guest_layout.h"
 
 #include <nlohmann/json.hpp>
@@ -230,6 +232,14 @@ ItemPlan ItemTable::Plan(std::int64_t apItem, MemoryBus &memory) const {
   const auto item = mItems.find(apItem);
   if (item == mItems.end())
     return GiveUnsupported{"unknown item id " + std::to_string(apItem)};
+  // Shop ware ("Buy Deku Shield"): the table holds the shop item index; the
+  // game's shop table names its get-item, given as it is (as the randomizer
+  // gives its regular shop items).
+  if (item->second.Name.starts_with("Buy ")) {
+    if (const auto shopGi = ShopItemGetItem(item->second.GetItemId, memory))
+      return GiveGetItem{*shopGi};
+    return GiveUnsupported{item->second.Name + ": no shop item " + std::to_string(item->second.GetItemId)};
+  }
   std::uint16_t gi = item->second.GetItemId;
   // ItemTable_ResolveUpgrades: follow upgrades until one returns its input.
   for (int step = 0; step < 8; ++step) {

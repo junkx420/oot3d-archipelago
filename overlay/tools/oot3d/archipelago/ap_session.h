@@ -84,6 +84,11 @@ public:
   [[nodiscard]] bool Receiving() const;
   // The seed opens the forest exit and a save of the slot is open.
   [[nodiscard]] bool ForestExitOpen() const;
+  // A cow's location is part of the seed and not yet reported.
+  [[nodiscard]] bool CowGivesItem(const LocationKey &key) const;
+  // What a shop slot sells (ap_shops.h), and the slot was bought.
+  CheckObserver::ShopSlotState ShopSlot(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory);
+  void ShopBought(const LocationKey &key);
   void SetGuestRegionMapper(GuestRegionMapper mapper);
   // The check observer saw Link die without a fairy.
   void OnDeath();
@@ -196,6 +201,8 @@ private:
   int mWorldLoggedForSlot = -1;
   // The upgrade fountain's rewards in the save on the previous frame.
   std::optional<FairyUpgrades> mFairyBaseline;
+  // slot_data shop_prices by location id.
+  std::map<std::int64_t, int> mShopPrices;
   // Set when the placements are scouted; the save's gsFlags last seen.
   bool mTokensShuffled = false;
   std::size_t mTokenPlacementCount = 0;

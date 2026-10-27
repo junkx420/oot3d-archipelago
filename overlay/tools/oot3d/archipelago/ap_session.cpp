@@ -293,12 +293,14 @@ std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
   const auto id = mLocations->Find(key, nullptr);
   if (!id.has_value())
     return std::nullopt;
-  // A business scrub sells again after its location's item: the game's own
-  // item from then on (OoT3D_Randomizer makes scrubs one-time instead).
+  // A business scrub sells again after its location's item, and a cow gives
+  // milk again: the game's own item from then on (OoT3D_Randomizer makes
+  // them one-time instead).
   if (mSidecar->ReportedLocations.count(*id) != 0U) {
     const auto *entry = mLocations->ById(*id);
     if (key.Type == OverrideType::GrottoScrub ||
-        (entry != nullptr && entry->Name.find("Deku Scrub") != std::string::npos))
+        (entry != nullptr && (entry->Name.find("Deku Scrub") != std::string::npos ||
+                              entry->Name.ends_with(" Cow"))))
       return std::nullopt;
   }
   const auto placement = mSidecar->Placements.find(*id);
@@ -340,6 +342,14 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   if (!id.has_value() || mSidecar->Placements.count(*id) == 0U)
     return std::nullopt;
   return kItemRecoveryHeart;
+}
+
+bool Session::CowGivesItem(const LocationKey &key) const {
+  std::lock_guard lock(mMutex);
+  if (!mSidecar.has_value() || !mLocations.has_value())
+    return false;
+  const auto id = mLocations->Find(key, nullptr);
+  return id.has_value() && mSidecar->Placements.count(*id) != 0U && mSidecar->ReportedLocations.count(*id) == 0U;
 }
 
 bool Session::ForestExitOpen() const {
@@ -428,7 +438,53 @@ void Session::WatchTokens(oot3d::recomp::a32::MemoryBus &memory) {
   }
 }
 
-void Session::ReportLocation(std::int64_t id) {  if (!mSidecar.has_value()) {
+CheckObserver::ShopSlotState Session::ShopSlot(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory) {
+  std::lock_guard lock(mMutex);
+  CheckObserver::ShopSlotState state;
+  if (!mSidecar.has_value() || !mSlot.has_value() || !mLocations.has_value())
+    return state;
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value())
+    return state;
+  const auto price = mShopPrices.find(*id);
+  const auto placement = mSidecar->Placements.find(*id);
+  if (price == mShopPrices.end() || placement == mSidecar->Placements.end())
+    return state; // not a location of this seed: the game's shelf
+  if (mSidecar->ReportedLocations.count(*id) != 0U) {
+    state.Type = CheckObserver::ShopSlotState::Kind::SoldOut;
+    return state;
+  }
+  // Like OverrideGetItem: this world's item with its own get-item, another
+  // player's (or one the server gave already) as the placeholder.
+  std::uint16_t getItem = kPlaceholderGetItem;
+  mShownAtLocation.erase(*id);
+  if (placement->second.Player == mSlot->Slot && mSidecar->GivenByServer.count(*id) == 0U && mItems.has_value()) {
+    const ItemPlan plan = mItems->Plan(placement->second.Item, memory);
+    if (const auto *give = std::get_if<GiveGetItem>(&plan)) {
+      getItem = give->GetItemId;
+      mShownAtLocation.insert(*id);
+    }
+  }
+  state.Type = CheckObserver::ShopSlotState::Kind::Sell;
+  state.Item = ShopSlotItem{getItem, static_cast<std::int16_t>(price->second)};
+  return state;
+}
+
+void Session::ShopBought(const LocationKey &key) {
+  std::lock_guard lock(mMutex);
+  if (!mLocations.has_value())
+    return;
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value())
+    return;
+  ReportLocation(*id);
+  // The shop gave this world's item itself; the server's copy is skipped.
+  if (mSidecar.has_value() && mShownAtLocation.count(*id) != 0U && mSidecar->GivenAtLocation.insert(*id).second)
+    Persist();
+}
+
+void Session::ReportLocation(std::int64_t id) {
+  if (!mSidecar.has_value()) {
     mUnsentChecks.push_back(id);
     return;
   }
@@ -770,6 +826,12 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
     mDeathLink = slotData.is_object() && slotData.value("death_link", false);
     mWorld = ParseWorldState(slot->SlotDataJson);
+    mShopPrices.clear();
+    if (slotData.is_object() && mLocations.has_value())
+      if (const auto prices = slotData.find("shop_prices"); prices != slotData.end() && prices->is_object())
+        for (const auto &[name, price] : prices->items())
+          if (const auto *entry = mLocations->ByName(name); entry != nullptr && price.is_number_integer())
+            mShopPrices[entry->Id] = price.get<int>();
     mWorldLoggedForSlot = -1;
     if (mClient)
       mClient->SetDeathLink(mDeathLink);

@@ -38,6 +38,8 @@ public:
   [[nodiscard]] std::optional<std::int64_t>
   Find(const LocationKey &key, const std::function<bool(std::uint8_t scene)> &isMasterQuest) const;
   [[nodiscard]] const LocationEntry *ById(std::int64_t id) const;
+  // The vanilla entry of a location name (slot_data names locations).
+  [[nodiscard]] const LocationEntry *ByName(const std::string &name) const;
   [[nodiscard]] std::size_t Size() const noexcept { return mEntries.size(); }
 
 private:
