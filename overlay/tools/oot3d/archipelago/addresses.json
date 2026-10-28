@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 383,
+  "verified": 385,
   "unverified": 557
  },
  "entries": [
@@ -13640,6 +13640,36 @@
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MessageEntryOneBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002CD3A4",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002CD3A8",
+   "ld_line": 406,
+   "section": "text",
+   "signature": "sha256:08dfd8c5ff1d8b7c6c9938679bfec952e7b71d1a37320de78c8c24d160011c6b",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MessageEntryTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0044D564",
+   "eur_offset": "+0x20",
+   "exec_addr": "0x0044D588",
+   "ld_line": 760,
+   "section": "text",
+   "signature": "sha256:aebc1a9376203c2b04778a3c5863e1cc0f8f4b80613ba70b33c8e3bc6a39d750",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
    ],
    "status": "signature_pinned"
   },

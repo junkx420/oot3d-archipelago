@@ -85,12 +85,14 @@ public:
       mOwner.Emit(NetworkEvent::StateChanged{ConnectionState::SlotConnected, mSettings.Slot});
     });
     mClient->set_location_info_handler([this](const std::list<APClient::NetworkItem> &items) {
-      NetworkEvent::LocationsScouted event;
-      for (const auto &item : items)
-        event.Items.push_back({0, item.item, item.location, item.player, item.flags,
-                               Known(mClient->get_item_name(item.item, mClient->get_player_game(item.player))),
-                               Known(mClient->get_player_alias(item.player))});
-      mOwner.Emit(std::move(event));
+      mScouted = items;
+      EmitScouted();
+    });
+    // Scouts that arrived before the data package named nothing: name them
+    // again once it is there.
+    mClient->set_data_package_changed_handler([this](const nlohmann::json &) {
+      if (!mScouted.empty())
+        EmitScouted();
     });
     mClient->set_slot_refused_handler([this](const std::list<std::string> &errors) {
       mOwner.Emit(NetworkEvent::SlotRefused{{errors.begin(), errors.end()}});
@@ -132,9 +134,19 @@ private:
   // apclientpp names what its data package lacks "Unknown".
   static std::string Known(std::string name) { return name == "Unknown" ? std::string() : name; }
 
+  void EmitScouted() {
+    NetworkEvent::LocationsScouted event;
+    for (const auto &item : mScouted)
+      event.Items.push_back({0, item.item, item.location, item.player, item.flags,
+                             Known(mClient->get_item_name(item.item, mClient->get_player_game(item.player))),
+                             Known(mClient->get_player_alias(item.player))});
+    mOwner.Emit(std::move(event));
+  }
+
   NetworkClient &mOwner;
   ConnectionSettings mSettings;
   std::string mLastSocketError;
+  std::list<APClient::NetworkItem> mScouted;
   std::unique_ptr<APClient> mClient;
 };
 

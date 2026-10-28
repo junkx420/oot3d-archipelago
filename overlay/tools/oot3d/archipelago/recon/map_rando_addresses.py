@@ -88,6 +88,11 @@ CLIENT_HOOK_BLOCKS = {
     # timer the patch site sets; the block after it counts the timer down.
     "TimeBlockTimerBlock": ("SkipSongReplays_TimeBlocksFix", 0xC, "block_after_branch"),
     "WarpBlockTimerBlock": ("SkipSongReplays_WarpBlocksFix", 0xC, "block_after_branch"),
+    # Item text (OoT3D_Randomizer message.c, Message_GetCustomEntry): the two
+    # Message_GetEntry calls the randomizer redirects to its own entries; the
+    # block after each reads the entry found.
+    "MessageEntryOneBlock": ("GetCustomMessageEntryOne", 4, "block_after_call"),
+    "MessageEntryTwoBlock": ("GetCustomMessageEntryTwo", 4, "block_after_call"),
 }
 
 

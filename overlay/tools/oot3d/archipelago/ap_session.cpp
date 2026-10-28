@@ -90,8 +90,8 @@ Session::Session(Paths paths) : mPaths(std::move(paths)) {
   else
     Log("No item table (" + error + "); locations keep their own items and nothing is received.");
   // Before a file is loaded, so the save's first checks are not given as the
-  // game's own items. The password is not saved: a server that needs one
-  // refuses, and the panel connects with it.
+  // game's own items. The password is saved only with RememberPassword: a
+  // server that needs one refuses otherwise, and the panel connects with it.
   if (mOptions.AutoConnect && !mSettings.Slot.empty()) {
     mClient = std::make_unique<NetworkClient>(mUuid);
     Log("Connecting automatically to " + mSettings.Server + " as " + mSettings.Slot);
@@ -141,6 +141,9 @@ void Session::LoadSettings() {
   mSkips.Intro = document.value("skip_intro", false);
   mOptions.AutoConnect = document.value("auto_connect", mOptions.AutoConnect);
   mOptions.Notifications = document.value("notifications", mOptions.Notifications);
+  mOptions.RememberPassword = document.value("remember_password", false);
+  if (mOptions.RememberPassword)
+    mSettings.Password = document.value("password", "");
   mOptions.QuickText =
       ParseQuickTextMode(document.value("quick_text", std::string(ToString(mOptions.QuickText))))
           .value_or(mOptions.QuickText);
@@ -170,6 +173,11 @@ void Session::SaveSettings() const {
   document["skip_intro"] = mSkips.Intro;
   document["auto_connect"] = mOptions.AutoConnect;
   document["notifications"] = mOptions.Notifications;
+  document["remember_password"] = mOptions.RememberPassword;
+  if (mOptions.RememberPassword)
+    document["password"] = mSettings.Password;
+  else
+    document.erase("password");
   document["quick_text"] = ToString(mOptions.QuickText);
   document["fast_chests"] = mOptions.FastChests;
   document["song_replays"] = ToString(mOptions.SongReplays);
@@ -326,15 +334,54 @@ std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
   mShownAtLocation.erase(*id);
   // Another player's item, or ours that the server already gave: a
   // placeholder; the real item travels through the server.
-  if (placement->second.Player != mSlot->Slot || mSidecar->GivenByServer.count(*id) != 0U ||
-      !mItems.has_value())
+  const bool foreign = placement->second.Player != mSlot->Slot;
+  if (foreign || mSidecar->GivenByServer.count(*id) != 0U || !mItems.has_value()) {
+    PreparePlaceholderText(*id, placement->second, foreign);
     return kPlaceholderGetItem;
+  }
   const ItemPlan plan = mItems->Plan(placement->second.Item, memory);
   if (const auto *give = std::get_if<GiveGetItem>(&plan)) {
     mShownAtLocation.insert(*id);
     return give->GetItemId;
   }
+  PreparePlaceholderText(*id, placement->second, false);
   return kPlaceholderGetItem; // no get-item in the game: given by the server
+}
+
+void Session::PreparePlaceholderText(std::int64_t location, const Placement &placement, bool foreign) {
+  const auto names = mPlacementNames.find(location);
+  std::string item = names != mPlacementNames.end() ? names->second.first : std::string();
+  if (item.empty() && !foreign && mItems.has_value())
+    item = mItems->Name(placement.Item).value_or("");
+  std::string player;
+  if (foreign)
+    player = names != mPlacementNames.end() && !names->second.second.empty() ? names->second.second
+                                                                              : std::string("another player");
+  mPlaceholderText = FormatItemFoundText(item, player);
+  mPlaceholderTexts[location] = mPlaceholderText;
+  mPlaceholderTextFrames = kPlaceholderTextFrames;
+}
+
+std::optional<std::uint32_t> Session::MessageEntry(std::uint32_t textId, std::uint32_t entry, std::uint32_t textBase,
+                                                   const std::optional<LocationKey> &offer,
+                                                   oot3d::recomp::a32::MemoryBus &memory) {
+  std::lock_guard lock(mMutex);
+  if (textId != kTextRecoveryHeart)
+    return std::nullopt;
+  // The location Link takes from, if its actor offered; else the latest
+  // placeholder offer, for a little while.
+  const std::string *text = nullptr;
+  if (offer.has_value() && mLocations.has_value())
+    if (const auto id = mLocations->Find(*offer, nullptr))
+      if (const auto found = mPlaceholderTexts.find(*id); found != mPlaceholderTexts.end())
+        text = &found->second;
+  if (text == nullptr && mPlaceholderTextFrames > 0 && !mPlaceholderText.empty())
+    text = &mPlaceholderText;
+  if (text == nullptr || !mReceiver.EnsurePage(memory, nullptr) ||
+      !WriteMessageEntry(memory, entry, textBase, *text, kClientMessageEntry, kClientMessageText,
+                         kClientMessageTextCapacity))
+    return std::nullopt;
+  return kClientMessageEntry;
 }
 
 std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
@@ -518,6 +565,8 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
   std::lock_guard lock(mMutex);
   std::uint32_t gameMode = 0U;
   mFrontend = memory.Read32(kSaveContext + kSaveGameMode, &gameMode) && gameMode != 0U;
+  if (mPlaceholderTextFrames > 0)
+    --mPlaceholderTextFrames;
   if (mClient) {
     for (const auto &event : mClient->TakeEvents())
       HandleEvent(event);
@@ -875,6 +924,7 @@ void Session::HandleEvent(const NetworkEventVariant &variant) {
     mServerItems.clear();
     mPlacements.clear();
     mPlacementNames.clear();
+    mPlaceholderTexts.clear();
     mSidecar.reset();
     const auto slotData = nlohmann::json::parse(slot->SlotDataJson, nullptr, false);
     mDeathLink = slotData.is_object() && slotData.value("death_link", false);

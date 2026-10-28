@@ -25,6 +25,7 @@ public:
     const auto settings = mSession.Settings();
     CopyText(mServer, settings.Server);
     CopyText(mSlot, settings.Slot);
+    CopyText(mPassword, settings.Password); // empty unless it is remembered
   }
 
   const char *Label() const noexcept override { return "Archipelago"; }
@@ -47,6 +48,12 @@ public:
     }
     ImGui::SameLine();
     ImGui::Text("Status: %s", ToString(state));
+    ClientOptions connection = mSession.Options();
+    if (ImGui::Checkbox("Remember password", &connection.RememberPassword))
+      mSession.SetOptions(connection);
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("For connecting automatically. Saved as plain text in archipelago.json\n"
+                        "when you next connect.");
 
     const auto stats = mSession.Stats();
     ImGui::Text("Save slot: %s", stats.SaveSlot >= 0 ? std::to_string(stats.SaveSlot + 1).c_str()

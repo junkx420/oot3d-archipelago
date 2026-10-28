@@ -872,3 +872,31 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
 - Tests: host tests (each multiplier, the rounding, healing, the hook, the
   setting is kept); a probe to gameplay verifies the signatures. Not yet
   tried with a hit in the game.
+
+### Item text, names, password (2026-10-28)
+
+- Placeholder text: a location that gives another player's item (or one of
+  this world's without a get-item) shows a recovery heart; its text box now
+  says "You found <item> for <player>!". As OoT3D Randomizer's
+  Message_GetCustomEntry, without the patch: block hooks after its two
+  Message_GetEntry calls (GetCustomMessageEntryOne and Two + 4, 0x002CD3A8
+  and 0x0044D588, block_after_call) see the entry found (r0). For the
+  recovery heart's text (0x0055) the client writes an entry at
+  0x06F00C00 that keeps the original header and points all ten languages
+  at its text (0x06F00C60); Message_GetText adds offsets to the text
+  file's base ([object + 4]), so the offset is the address minus that base.
+  ap_messages.cpp wraps lines with the randomizer's font widths (287 px).
+  The text is the location's that Link's interactRangeActor offered, else
+  the latest placeholder offer for 300 frames. Seen in the game with a test
+  text in place of every text (colours, wrapping, box), and connected to a
+  local server with a real seed's names in place of another text box ("You
+  found Heart Container for Hunt3D!"); not yet opened on a real chest.
+- Names: scouts that arrived before the data package named nothing; they
+  are reported again when the data package changes.
+- Remember password: opt-in, plain text in archipelago.json, removed when
+  turned off.
+- wss://: connecting to wss://archipelago.gg:443 passed the TLS handshake
+  with the Windows certificate store and failed at the HTTP upgrade, as a
+  website port must; a hosted room was not tried.
+- Tests: host tests for the text, its wrapping, the entry, both hooks and
+  the interacting actor, and for the password setting.

@@ -13,14 +13,18 @@ using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
 // Every hooked pc but quick text's (HookPcs sorts them).
-constexpr std::array<std::uint32_t, 24> kCheckHooks{
+constexpr std::array<std::uint32_t, 26> kCheckHooks{
     kEnCowInit,          kEnCowDestroy,          kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,
     kGameOverStartBlock, kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
     kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kCowBottleCheckBlock,   kChildBlueWarpBlock,
     kEnGirlAInit,        kEnGirlADraw,           kShopBuyEventDefault,   kShopCanBuyResultBlocks[0],
     kShopCanBuyResultBlocks[1], kShopCanBuyResultBlocks[2], kShopCanBuyResultBlocks[3],
     kShopCanBuyResultBlocks[4], kFastChestsObtainabilityBlock, kTimeBlockTimerBlock, kWarpBlockTimerBlock,
-    kHealthChangeBy};
+    kHealthChangeBy,     kMessageEntryOneBlock,  kMessageEntryTwoBlock};
+
+// Actors whose offered locations are remembered for item text (a scene has
+// only a few offering at a time).
+constexpr std::size_t kOfferedKeysKept = 32U;
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -54,7 +58,7 @@ CheckObserver::~CheckObserver() {
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
                 "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
-                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu "
+                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu Messages=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
@@ -67,6 +71,7 @@ CheckObserver::~CheckObserver() {
                 static_cast<unsigned long long>(mHits.FastChests),
                 static_cast<unsigned long long>(mHits.SongBlocks),
                 static_cast<unsigned long long>(mHits.Damage),
+                static_cast<unsigned long long>(mHits.Messages),
                 ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
@@ -258,6 +263,22 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       }
     }
     break;
+  case kMessageEntryOneBlock:
+  case kMessageEntryTwoBlock:
+    // r0: the entry Message_GetEntry found (0: none).
+    if (mMessageOverride && state.r[0] != 0U) {
+      const std::uint32_t object = (pc == kMessageEntryOneBlock ? state.r[5] : state.r[4]) + kMessageObjectOffset;
+      const std::uint32_t player = Read32(memory, Read32(memory, kGlobalContextPointer) + kPlayPlayerActor);
+      const auto offered = mOfferedKeys.find(Read32(memory, player + kPlayerInteractRangeActor));
+      const std::optional<LocationKey> offer =
+          offered != mOfferedKeys.end() ? std::optional<LocationKey>(offered->second) : std::nullopt;
+      if (const auto entry = mMessageOverride(Read32(memory, state.r[0]), state.r[0],
+                                              Read32(memory, object + kMessageObjectTextBase), offer, memory)) {
+        state.r[0] = *entry;
+        ++mHits.Messages;
+      }
+    }
+    break;
   case kKokiriGuardCheckBlock:
     if (mForestExitOpen && mForestExitOpen()) {
       const std::uint32_t questItems = state.r[8] + kSaveQuestItems;
@@ -306,6 +327,9 @@ void CheckObserver::OnOffer(GuestState &state, MemoryBus &memory) {
   offer.Source.RespawnReturnScene = Read8(memory, kSaveRespawnReturnData);
   if (mOverride && offer.Source.GetItemId != 0U) {
     if (const auto key = KeyForOffer(offer.Source)) {
+      if (mOfferedKeys.size() >= kOfferedKeysKept && mOfferedKeys.count(actor) == 0U)
+        mOfferedKeys.clear();
+      mOfferedKeys.insert_or_assign(actor, *key);
       if (const auto replacement = mOverride(*key, memory); replacement.has_value() && *replacement != 0U) {
         const auto value = static_cast<std::int32_t>(*replacement & 0xFFU);
         const bool negative = static_cast<std::int32_t>(state.r[2]) < 0;

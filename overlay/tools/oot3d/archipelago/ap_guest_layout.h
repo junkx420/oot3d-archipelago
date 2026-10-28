@@ -111,6 +111,10 @@ inline constexpr std::uint32_t kClientRegionSize = 0x1000U;
 // memory.
 inline constexpr std::uint32_t kClientProgressRecord = kClientRegionBase + 0x800U;
 inline constexpr std::uint32_t kProgressRecordMagic = 0x31435041U; // "APC1"
+// Then the item text entry and its text (ap_messages.h).
+inline constexpr std::uint32_t kClientMessageEntry = kClientRegionBase + 0xC00U;
+inline constexpr std::uint32_t kClientMessageText = kClientRegionBase + 0xC60U;
+inline constexpr std::uint32_t kClientMessageTextCapacity = kClientRegionBase + kClientRegionSize - kClientMessageText;
 // Link's house: where a new file starts (OoT3D_Randomizer's new-file setup).
 inline constexpr std::uint16_t kSceneLinksHouse = 0x34U;
 

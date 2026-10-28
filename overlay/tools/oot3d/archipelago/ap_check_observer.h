@@ -14,6 +14,7 @@
 #include "ap_damage.h"
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
+#include "ap_messages.h"
 #include "ap_quick_text.h"
 #include "ap_shops.h"
 #include "recomp/a32_runtime.h"
@@ -92,7 +93,7 @@ inline constexpr std::uint32_t kSongBlockTimer = 0xC6U;
 inline constexpr std::uint16_t kSongBlockTimerReplay = 0x6EU;
 inline constexpr std::uint16_t kSongBlockTimerSkipped = 0x10U;
 
-inline constexpr std::array<GuestFunction, 24> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 26> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -136,6 +137,10 @@ inline constexpr std::array<GuestFunction, 24> kGuestFunctions{{
      "da73369795a18c27cc74d82f8aaa26c2a4708514acaf44d8f47f3a5937eb35ec"},
     {"Health_ChangeBy", kHealthChangeBy,
      "1bb26079cc1ae03f7cae51e48399a9fcddd619f93cdb64eea684d5a15311a951"},
+    {"MessageEntryOneBlock", kMessageEntryOneBlock,
+     "08dfd8c5ff1d8b7c6c9938679bfec952e7b71d1a37320de78c8c24d160011c6b"},
+    {"MessageEntryTwoBlock", kMessageEntryTwoBlock,
+     "aebc1a9376203c2b04778a3c5863e1cc0f8f4b80613ba70b33c8e3bc6a39d750"},
 }};
 
 struct CheckEvent {
@@ -226,6 +231,14 @@ public:
   void SetSongReplays(bool skip) noexcept { mSongReplays = skip; }
   // Damage multiplier: scales the damage Link takes (a client option).
   void SetDamageMultiplier(DamageMultiplier multiplier) noexcept { mDamageMultiplier = multiplier; }
+  // Called for each message entry the game looks up (ap_messages.h): its
+  // text id, the entry found, the text file's base and the location of the
+  // actor Link interacts with, if it offered an item; a value is the
+  // address of an entry to show instead.
+  using MessageOverride = std::function<std::optional<std::uint32_t>(
+      std::uint32_t textId, std::uint32_t entry, std::uint32_t textBase, const std::optional<LocationKey> &offer,
+      oot3d::recomp::a32::MemoryBus &memory)>;
+  void SetMessageOverride(MessageOverride override) { mMessageOverride = std::move(override); }
   // Called for every hooked block entry of the window, not only the
   // observer's own pcs: the first call runs VerifyAddresses (guest code is
   // mapped by then) and throws std::runtime_error on a mismatch.
@@ -245,6 +258,7 @@ public:
     std::uint64_t FastChests = 0;
     std::uint64_t SongBlocks = 0;
     std::uint64_t Damage = 0;
+    std::uint64_t Messages = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -264,6 +278,7 @@ private:
   std::function<void(const std::string &)> mReportSink;
   GetItemOverride mOverride;
   DirectGiveOverride mDirectOverride;
+  MessageOverride mMessageOverride;
   std::function<bool()> mReceiving;
   std::function<bool()> mForestExitOpen;
   // The latest token's offer: chests nearby offer every frame and would
@@ -286,6 +301,9 @@ private:
   std::function<void()> mDeathSink;
   BlueWarpSink mBlueWarpSink;
   std::optional<Offer> mLastOffer;
+  // The location of each actor that offered lately, for the text of the one
+  // Link takes from (his interactRangeActor) when several offer at once.
+  std::map<std::uint32_t, LocationKey> mOfferedKeys;
   std::optional<std::uint32_t> mProbePc;
   HookHits mHits{};
   std::uint64_t mSequence = 0;

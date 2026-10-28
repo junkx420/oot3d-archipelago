@@ -117,7 +117,10 @@ on this machine, so the product build and its equivalence suite have not run.
   give their own items, and an item found that way also arrives from the
   server later.
 - Another player's items and this world's custom items (dungeon keys, songs,
-  magic) show a recovery heart at their location until Phase 5.
+  magic) show a recovery heart's model at their location; its text box says
+  what the location held and for whom ("You found Hookshot for Alice!").
+  The text was seen in the game with a real seed's names (connected to a
+  local server), shown in another text box; not yet on a real chest.
 - The client page at `0x06200000` is assumed unused by the title; mapping it
   fails loudly ("Cannot give items in the game") if it is not.
 
@@ -147,22 +150,30 @@ show Reframed's layout. Verified headless at the file selection with
 Archipelago off and on. Still missing there: Link and the title logo on the
 right half; not investigated.
 
-## Client (alpha)
+## Client
 
-- Auto-connect does not save the password: a server that needs one refuses
-  the slot until it is entered and Connect is selected.
+- Auto-connect saves the password only with "Remember password" (off by
+  default; the settings file then holds it as plain text). Without it a
+  server that needs one refuses the slot until it is entered and Connect is
+  selected.
 - A server address without `ws://` or `wss://` first tries a secure
   connection; against a plain local server the log shows one "TLS handshake
   failed" before it connects.
+- `wss://`: the certificate check (Windows' certificate store) passed
+  against archipelago.gg; a whole session on a hosted room was not tried.
 - Loading a save reads its progress file on the game thread (about 6 ms).
-- Messages name another game's item only when the server's data package has
-  arrived before the scouts; otherwise they say "an item".- The game's save is noticed by the save file's write time, up to half a
+- The game's save is noticed by the save file's write time, up to half a
   second late; an item given in that moment would count as saved.
 - A new file is recognized by an empty inventory in Link's house; not yet
-  seen in a run.- Holding B with quick text on also presses B in choice boxes and while the
+  seen in a run.
+- Holding B with quick text on also presses B in choice boxes and while the
   ocarina is out (B leaves the ocarina), as on hardware when B is pressed.
 - Pots, crates, grass, rocks, bushes and trees are not locations: neither
   OoT3D_Randomizer nor this client has their data; their options are hidden.
+- Fast chests, the song replay skip and the damage multiplier are tested on
+  the host and their hooks are checked against the game's code, but they
+  were not yet tried on a chest, a song or a hit in the game.
+
 ## Savestates from builds before the page move
 
 Builds before 2026-10-26 (v0.1.0-alpha.2 and older) mapped the client's page

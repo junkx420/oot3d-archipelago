@@ -15,6 +15,7 @@
 #include "ap_item_receiver.h"
 #include "ap_item_table.h"
 #include "ap_location_table.h"
+#include "ap_messages.h"
 #include "ap_network_client.h"
 #include "ap_save_sync.h"
 #include "ap_sidecar.h"
@@ -50,6 +51,7 @@ bool SetEnabledInSettings(const std::filesystem::path &settingsFile, bool enable
 struct ClientOptions {
   bool AutoConnect = true;   // connect at startup with the saved server and slot
   bool Notifications = true; // in-game messages (items, DeathLink, goal)
+  bool RememberPassword = false; // the password is saved, in plain text
   QuickTextMode QuickText = QuickTextMode::Off;
   bool FastChests = false; // every chest opens with the short animation
   SongReplayMode SongReplays = SongReplayMode::Off;
@@ -66,6 +68,9 @@ struct Notification {
 };
 inline constexpr auto kNotificationLifetime = std::chrono::seconds(6);
 inline constexpr std::size_t kMaximumNotifications = 5;
+// How long a placeholder's text stays ready after its last offer: the
+// get-item's text box opens a little after the item is taken.
+inline constexpr int kPlaceholderTextFrames = 300;
 
 class Session final {
 public:
@@ -86,6 +91,12 @@ public:
   // What a direct give (no offer) of a location gives instead of the game's
   // own item; nothing to keep the game's.
   std::optional<std::uint8_t> ReplaceDirectGive(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory);
+  // The text entry to show instead of a looked-up one (CheckObserver::
+  // SetMessageOverride): the recovery heart's text after a location offered
+  // a placeholder says what the location held.
+  std::optional<std::uint32_t> MessageEntry(std::uint32_t textId, std::uint32_t entry, std::uint32_t textBase,
+                                            const std::optional<LocationKey> &offer,
+                                            oot3d::recomp::a32::MemoryBus &memory);
   // The client is giving a received item (its Item_Give is no location).
   [[nodiscard]] bool Receiving() const;
   // The seed opens the forest exit and a save of the slot is open.
@@ -162,6 +173,7 @@ private:
   void WatchTokens(oot3d::recomp::a32::MemoryBus &memory);
   void WatchTriforce();
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
+  void PreparePlaceholderText(std::int64_t location, const Placement &placement, bool foreign);
 
   mutable std::mutex mMutex;
   Paths mPaths;
@@ -185,6 +197,12 @@ private:
   bool mReceiverReported = false;
   // Locations whose offer showed this world's item itself in this session.
   std::set<std::int64_t> mShownAtLocation;
+  // The text for the placeholder the last offer showed, for as many more
+  // frames (the offer repeats every frame until it is taken).
+  std::string mPlaceholderText;
+  int mPlaceholderTextFrames = 0;
+  // Each placeholder location's text, for the one Link takes from.
+  std::map<std::int64_t, std::string> mPlaceholderTexts;
   // DeathLink (slot_data death_link): a received death waits until Link
   // can die; the game over it causes is not sent back for a while.
   bool mDeathLink = false;

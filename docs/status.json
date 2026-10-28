@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-28",
-  "now": "Played up to Hyrule Castle by a tester. Client options added: cheats, fast chests, song replay skip, damage multiplier. Next: more logic options, song and dungeon reward shuffles.",
+  "updated": "2026-10-29",
+  "now": "v0.1.0, the first release out of alpha. Played up to Hyrule Castle by a tester. Next: song and dungeon reward shuffles, more logic options.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -25,7 +25,7 @@
         {"text": "Progress sidecar per seed, slot and save file", "done": true},
         {"text": "End to end against a local Archipelago server", "done": true},
         {"text": "Connecting from inside the running game, auto-connect and reconnect", "done": true},
-        {"text": "wss:// against archipelago.gg", "done": false}
+        {"text": "wss:// against archipelago.gg (certificate check passes; a hosted room not yet tried)", "done": false}
       ]
     },
     {
@@ -63,7 +63,8 @@
     {
       "id": 5, "name": "Polish", "weight": 10, "percent": 50,
       "items": [
-        {"text": "Names and models for other games' items", "done": false},
+        {"text": "Names of other games' items in the text box (seen in the game with a real seed's names)", "done": true},
+        {"text": "Models for other games' items", "done": false},
         {"text": "Optional cutscene skips and intro skip (built, not yet tried in the game)", "done": true},
         {"text": "Blue warp cutscenes skipped for every dungeon (built, not yet seen in the game)", "done": true},
         {"text": "Archipelago badge with the connection state on the title and file selection", "done": true},
@@ -77,6 +78,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-29", "text": "v0.1.0, the first release out of alpha: another player's item now says in its text box what it is and for whom, names in messages no longer go missing, and the password can be remembered for auto-connect."},
     {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.11: client options in the F1 menu: infinite health, magic, ammo and rupees, fast chests, song replays skipped, and a damage multiplier up to one hit KO."},
     {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.10: glitched logic, with OoT3D_Randomizer's glitch categories, difficulties and single glitches, each compared with its own logic."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.9: 33 logical tricks, each compared with OoT3D_Randomizer's own logic, chosen by their 3D randomizer names."},

@@ -484,11 +484,11 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 26U,
-         "checks, deaths, blue warps, the forest guard, cows, shops, fast chests, song blocks, damage and quick "
-         "text need 26 hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 27U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 26U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 28U,
+         "checks, deaths, blue warps, the forest guard, cows, shops, fast chests, song blocks, damage, item "
+         "text and quick text need 28 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 29U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 28U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -1003,6 +1003,126 @@ void TestDamageMultiplier() {
   state.r[1] = 0x10U;
   observer.ObserveBlockEntry(kHealthChangeBy, state, memory);
   Expect(state.r[1] == 0x10U && observer.Hits().Damage == 1U, "a heart refill is left alone");
+}
+
+void TestItemText() {
+  const std::string white("\x7F\x1D\x00", 3);
+  const std::string end("\x7F\x00", 2);
+  Expect(FormatItemFoundText("Hookshot", "Alice") ==
+             "You found \x7F\x1D\x41Hookshot " + white + "for \x7F\x1D\x43" "Alice" + white + "!" + end,
+         "another player's item in red, the player in blue");
+  Expect(FormatItemFoundText("Small Key", "") == "You found \x7F\x1D\x41Small Key" + white + "!" + end,
+         "this world's item");
+  Expect(FormatItemFoundText("", "Bob").find("an item") != std::string::npos, "an unnamed item");
+  Expect(FontSafe("Pok\xC3\xA9mon \xE2\x98\x83", 64U) == "Pok\xC3\xA9mon ?", "the font shows é, not a snowman");
+  Expect(FontSafe("abcdef", 3U) == "abc", "cut to the byte limit");
+  Expect(TextPixelWidth("You") == 10U + 9U + 7U, "pixel widths");
+
+  // A long name wraps, every line fits the box, and there are at most four.
+  const std::string text = FormatItemFoundText(
+      "Progressive Super Long Item Name From Another Game That Goes On And On Forever",
+      "A Player With A Long Name");
+  std::size_t lines = 1;
+  std::size_t start = 0;
+  for (std::size_t newline = text.find("\x7F\x1C", start);; newline = text.find("\x7F\x1C", start)) {
+    std::string line = text.substr(start, newline == std::string::npos ? std::string::npos : newline - start);
+    // Drop control codes before measuring.
+    for (std::size_t code = line.find('\x7F'); code != std::string::npos; code = line.find('\x7F'))
+      line.erase(code, line[code + 1U] == '\x1D' ? 3U : 2U);
+    Expect(TextPixelWidth(line) <= kTextLineWidth, "each line fits the box");
+    if (newline == std::string::npos)
+      break;
+    ++lines;
+    start = newline + 2U;
+  }
+  Expect(lines >= 2U && lines <= kTextMaximumLines, "a long text wraps into at most four lines");
+  Expect(text.ends_with(end), "the text ends with the message end");
+
+  // The entry keeps the original header and points every language at the
+  // text, relative to the file's base.
+  FakeMemory memory;
+  constexpr std::uint32_t kOriginal = 0x08000000U;
+  constexpr std::uint32_t kBase = 0x08100000U;
+  for (std::uint32_t i = 0; i < 4U; ++i)
+    memory.Write32(kOriginal + i * 4U, 0x55U + i);
+  const std::string body = FormatItemFoundText("Bow", "Carol");
+  Expect(WriteMessageEntry(memory, kOriginal, kBase, body, kClientMessageEntry, kClientMessageText,
+                           kClientMessageTextCapacity),
+         "the entry is written");
+  std::uint32_t id = 0, type = 0, offset = 0, length = 0;
+  (void)memory.Read32(kClientMessageEntry, &id);
+  (void)memory.Read32(kClientMessageEntry + 8U, &type);
+  (void)memory.Read32(kClientMessageEntry + kMessageEntryHeader + 9U * 8U, &offset);
+  (void)memory.Read32(kClientMessageEntry + kMessageEntryHeader + 9U * 8U + 4U, &length);
+  Expect(id == 0x55U && type == 0x57U, "the header is the original's");
+  Expect(kBase + offset == kClientMessageText && length % 4U == 0U && length >= body.size(),
+         "Message_GetText finds the text");
+  std::uint8_t first = 0;
+  (void)memory.Read8(kClientMessageText, &first);
+  Expect(first == 'Y', "the text is in the page");
+  Expect(!WriteMessageEntry(memory, kOriginal, kBase, std::string(2000U, 'a'), kClientMessageEntry,
+                            kClientMessageText, kClientMessageTextCapacity),
+         "a text too long for the page is refused");
+
+  // The observer asks at both lookups with the entry's id and the base.
+  CheckObserver observer{false};
+  oot3d::recomp::a32::GuestState state{};
+  constexpr std::uint32_t kOwner = 0x08200000U;
+  memory.Write32(kOwner + kMessageObjectOffset + kMessageObjectTextBase, kBase);
+  std::uint32_t askedId = 0, askedBase = 0;
+  std::optional<LocationKey> askedOffer;
+  observer.SetMessageOverride([&](std::uint32_t textId, std::uint32_t, std::uint32_t textBase,
+                                  const std::optional<LocationKey> &offer,
+                                  oot3d::recomp::a32::MemoryBus &) -> std::optional<std::uint32_t> {
+    askedId = textId;
+    askedBase = textBase;
+    askedOffer = offer;
+    return textId == kTextRecoveryHeart ? std::optional<std::uint32_t>(kClientMessageEntry) : std::nullopt;
+  });
+  state.r[0] = kOriginal;
+  state.r[5] = kOwner;
+  observer.ObserveBlockEntry(kMessageEntryOneBlock, state, memory);
+  Expect(state.r[0] == kClientMessageEntry && askedId == kTextRecoveryHeart && askedBase == kBase,
+         "the heart's text is replaced");
+  state.r[0] = kOriginal + 4U; // id 0x56
+  state.r[4] = kOwner;
+  observer.ObserveBlockEntry(kMessageEntryTwoBlock, state, memory);
+  Expect(state.r[0] == kOriginal + 4U && askedId == 0x56U && observer.Hits().Messages == 1U,
+         "other texts are left alone");
+  state.r[0] = 0U;
+  askedId = 0U;
+  observer.ObserveBlockEntry(kMessageEntryOneBlock, state, memory);
+  Expect(state.r[0] == 0U && askedId == 0U, "a text not found is not asked about");
+  Expect(!askedOffer.has_value(), "no offer, no location");
+
+  // Two chests offer; the text is asked with the one Link interacts with.
+  constexpr std::uint32_t kPlay = 0x08300000U;
+  constexpr std::uint32_t kPlayer = 0x08400000U;
+  constexpr std::uint32_t kChestA = 0x08500000U;
+  constexpr std::uint32_t kChestB = 0x08600000U;
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write16(kPlay + kPlaySceneNum, 0x55U);
+  memory.Write32(kPlay + kPlayPlayerActor, kPlayer);
+  memory.Write8(kSaveRespawnReturnData, 0U);
+  memory.Write16(kChestA + kActorId, kActorChest);
+  memory.Write16(kChestA + kActorParams, 0x0760U); // flag 0
+  memory.Write16(kChestB + kActorId, kActorChest);
+  memory.Write16(kChestB + kActorParams, 0x0761U); // flag 1
+  observer.SetOverride([](const LocationKey &, oot3d::recomp::a32::MemoryBus &) -> std::optional<std::uint16_t> {
+    return kPlaceholderGetItem;
+  });
+  for (const std::uint32_t chest : {kChestA, kChestB}) {
+    state.r[0] = chest;
+    state.r[1] = kPlay;
+    state.r[2] = 0x3BU;
+    observer.ObserveBlockEntry(kActorOfferGetItem, state, memory);
+  }
+  memory.Write32(kPlayer + kPlayerInteractRangeActor, kChestA);
+  state.r[0] = kOriginal;
+  state.r[5] = kOwner;
+  observer.ObserveBlockEntry(kMessageEntryOneBlock, state, memory);
+  Expect(askedOffer.has_value() && *askedOffer == LocationKey{0x55U, OverrideType::Chest, 0x00U},
+         "the text is the opened chest's, not the last offer's");
 }
 
 void TestCheats() {
@@ -1641,6 +1761,28 @@ void TestEnabledSettingAndAutoConnect() {
     Expect(session.Options().SongReplays == SongReplayMode::SkipNoSound, "the song replay mode is kept");
     Expect(session.Options().Damage == DamageMultiplier::OneHitKo, "the damage multiplier is kept");
   }
+  const auto withPassword = [&](bool remember) {
+    auto document = nlohmann::json::parse(std::ifstream(settings));
+    document["remember_password"] = remember;
+    document["password"] = "secret";
+    std::ofstream(settings) << document.dump();
+  };
+  withPassword(false);
+  {
+    Session session({settings, directory / "sidecars", directory / "locations.json",
+                     TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
+    Expect(session.Settings().Password.empty(), "a password is not read unless it is remembered");
+    session.SetOptions(session.Options());
+  }
+  Expect(!nlohmann::json::parse(std::ifstream(settings)).contains("password"),
+         "a password not remembered is removed from the file");
+  withPassword(true);
+  {
+    Session session({settings, directory / "sidecars", directory / "locations.json",
+                     TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
+    Expect(session.Settings().Password == "secret" && session.Options().RememberPassword,
+           "a remembered password is read for connecting automatically");
+  }
   std::filesystem::remove_all(directory);
 }
 
@@ -1670,6 +1812,7 @@ int main(int argc, char **argv) {
     TestFastChests();
     TestSongReplays();
     TestDamageMultiplier();
+    TestItemText();
     TestShops();
     TestCows();
     TestTokenShuffle();

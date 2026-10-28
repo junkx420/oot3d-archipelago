@@ -4,14 +4,46 @@
 [TriAevum](https://github.com/coccofresco/TriAevum), the native
 recompilation of *The Legend of Zelda: Ocarina of Time 3D*.
 
-**Alpha.** The current state is on the
-[status page](https://junkx420.github.io/oot3d-archipelago/). Releases carry
-`oot3d.apworld` for the Archipelago launcher and, from v0.1.0-alpha.4, a `TriAevum.exe` with the Archipelago client for an installed v0.8.0-beta.1.2 that Forge has prepared from your own ROM (EUR). replacement holds TriAevum's runtime only; the game's code comes from's own release and your ROM, as before. Building from source works ([docs/BUILD.md](docs/BUILD.md)).
+The current state is on the
+[status page](https://junkx420.github.io/oot3d-archipelago/).
 
-What works in the alpha: the game's own item locations send checks and give
-multiworld items (your own with their real model), received items arrive in
-the game, the goal (Ganon), DeathLink, optional cutscene skips, auto-connect
-and reconnect, in-game messages, and Universal Tracker.
+## Download
+
+Each [release](https://github.com/junkx420/oot3d-archipelago/releases) has:
+
+- `oot3d.apworld`, the world "Ocarina of Time 3D" for the Archipelago
+  launcher (0.6.7 or newer);
+- `TriAevum-Archipelago-<version>-Windows-x64.zip`, a replacement
+  `TriAevum.exe` with the Archipelago client for an installed TriAevum
+  v0.8.0-beta.1.2 that Forge has prepared from your own ROM (EUR). It holds
+  TriAevum's runtime only: the game's code still comes from TriAevum's own
+  release and your ROM. Its `README-ARCHIPELAGO.txt` says how to install it.
+
+The setup guide is the apworld's `docs/setup_en.md`
+([here](overlay/tools/oot3d/archipelago/apworld/oot3d/docs/setup_en.md)).
+Building from source works too ([docs/BUILD.md](docs/BUILD.md)).
+
+## What works
+
+- The game's own item locations send checks and give multiworld items: your
+  own with their real model, another player's as a recovery heart whose text
+  says what it was and for whom. Received items arrive in the game.
+- Shuffles: Gold Skulltula tokens, Deku scrubs, cows, shop slots, ocarinas,
+  the Weird Egg, the Gerudo card; dungeon keys, maps and compasses in their
+  dungeon.
+- Logic checked against OoT3D Randomizer, with its tricks and glitched logic;
+  world options (open forest, Kakariko gate, Door of Time, Zora's Fountain,
+  Jabu-Jabu, rainbow bridge conditions, Ganon's trials, Triforce hunt,
+  starting items and hearts).
+- The goal (Ganon), DeathLink, auto-connect and reconnect, in-game messages,
+  the server's chat and commands, Universal Tracker.
+- Client options: cutscene and blue warp skips, quick text, fast chests,
+  song replay skip, a damage multiplier, and cheats (infinite health, magic,
+  ammo, rupees).
+
+What is not there yet: song and dungeon reward shuffles, Master Quest,
+entrance shuffle, models for other games' items. Known issues are in
+[KNOWN_ISSUES.md](overlay/docs/archipelago/KNOWN_ISSUES.md).
 
 ## What is here
 
@@ -30,7 +62,7 @@ This is a separate project, not a fork: it carries only its own work. No
 ROMs, game code, extracted assets or TriAevum sources are in it. You need
 your own copy of the game.
 
-## Use
+## Building from source
 
 ```powershell
 tools/setup.ps1 -TriAevum C:\path\to\TriAevum
