@@ -86,6 +86,43 @@ public:
     if (ImGui::IsItemHovered())
       ImGui::SetTooltip("Instant: text boxes fill at once and cannot be made slow or unskippable.\n"
                         "Hold B: holding B (sword) also advances and closes every text box.");
+    optionsChanged |= ImGui::Checkbox("Fast chests", &options.FastChests);
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("Every chest opens as a small one does: no slow opening, light or fanfare.");
+    constexpr std::array<const char *, 3> kSongReplayLabels{"Normal", "Skip", "Skip, no sound"};
+    int songReplays = static_cast<int>(options.SongReplays);
+    if (ImGui::Combo("Song replays", &songReplays, kSongReplayLabels.data(),
+                     static_cast<int>(kSongReplayLabels.size()))) {
+      options.SongReplays = static_cast<SongReplayMode>(songReplays);
+      optionsChanged = true;
+    }
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("After Link plays a song, the game does not play it back.\n"
+                        "No sound: the replay's music is skipped too (not for the Scarecrow's Song).");
+    constexpr std::array<const char *, 7> kDamageLabels{"x1/2", "x1", "x2", "x4", "x8", "x16", "One hit KO"};
+    int damage = static_cast<int>(options.Damage);
+    if (ImGui::Combo("Damage taken", &damage, kDamageLabels.data(), static_cast<int>(kDamageLabels.size()))) {
+      options.Damage = static_cast<DamageMultiplier>(damage);
+      optionsChanged = true;
+    }
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("Multiplies the damage Link takes. The seed's logic assumes x1.");
+    if (ImGui::TreeNode("Cheats")) {
+      optionsChanged |= ImGui::Checkbox("Infinite health", &options.Cheats.InfiniteHealth);
+      if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Hearts stay full. A hit bigger than all of them still kills Link, and so does DeathLink.");
+      optionsChanged |= ImGui::Checkbox("Infinite magic", &options.Cheats.InfiniteMagic);
+      if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Once Link has the magic meter.");
+      optionsChanged |= ImGui::Checkbox("Infinite ammo", &options.Cheats.InfiniteAmmo);
+      if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Sticks, nuts, bombs, arrows, seeds and bombchus Link has, up to his bag's capacity.");
+      optionsChanged |= ImGui::Checkbox("Infinite rupees", &options.Cheats.InfiniteRupees);
+      if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("The wallet stays full.");
+      ImGui::TextDisabled("Only in this game: the seed and the server see nothing of them.");
+      ImGui::TreePop();
+    }
     if (optionsChanged)
       mSession.SetOptions(options);
     if (ImGui::Checkbox("Archipelago enabled", &mEnabled))

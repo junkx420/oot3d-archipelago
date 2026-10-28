@@ -11,6 +11,7 @@
 // itself (its blue warp sink may set save flags) and never raises an
 // observable exit.
 
+#include "ap_damage.h"
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
 #include "ap_quick_text.h"
@@ -18,6 +19,7 @@
 #include "recomp/a32_runtime.h"
 
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <functional>
 #include <map>
@@ -73,8 +75,24 @@ inline constexpr std::uint32_t kEnGirlAInit = 0x001D7F20U;
 inline constexpr std::uint32_t kEnGirlADraw = 0x00210188U;
 inline constexpr std::array<std::uint32_t, 5> kShopCanBuyResultBlocks{
     0x0016CD94U, 0x00190DC4U, 0x00190FA0U, 0x00191358U, 0x00191394U};
+// Fast chests (OoT3D_Randomizer chest.c, Chest_OverrideAnimation): the block
+// after Link's chest opening calls Item_CheckObtainability (r0 its result).
+// ITEM_NONE (a new item) picks the long animation, anything else the short
+// one; the chest (its +0x38C, set by the same code) then also skips the
+// light and the fanfare.
+inline constexpr std::uint32_t kFastChestsObtainabilityBlock = 0x00354D24U;
+// Skip song replays (OoT3D_Randomizer hooks.s, SkipSongReplays_TimeBlocksFix
+// and _WarpBlocksFix): after the Song of Time, a Song of Time block and a warp
+// block set their timer (+0x1C6) to 0x6E frames, the replay's length; the
+// randomizer sets 0x10 when replays are skipped. These blocks count the timer
+// down, r0 the block + 0x100.
+inline constexpr std::uint32_t kTimeBlockTimerBlock = 0x00208010U;
+inline constexpr std::uint32_t kWarpBlockTimerBlock = 0x00208074U;
+inline constexpr std::uint32_t kSongBlockTimer = 0xC6U;
+inline constexpr std::uint16_t kSongBlockTimerReplay = 0x6EU;
+inline constexpr std::uint16_t kSongBlockTimerSkipped = 0x10U;
 
-inline constexpr std::array<GuestFunction, 20> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 24> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -110,6 +128,14 @@ inline constexpr std::array<GuestFunction, 20> kGuestFunctions{{
      "2da9d44b72d811fde9a7250af9ad067bfbc24ea4d58ae7a0055b3e520a1e6a49"},
     {"ShopCanBuyResultBlock4", kShopCanBuyResultBlocks[4],
      "32f5a48b7b0e069c1ce5ff7592352a794c8025915386acd9ac1a73c959ad2940"},
+    {"FastChestsObtainabilityBlock", kFastChestsObtainabilityBlock,
+     "8e397069a6866186efaa9178fd242e848823be9929144d6a5d19b7519323446e"},
+    {"TimeBlockTimerBlock", kTimeBlockTimerBlock,
+     "da73369795a18c27cc74d82f8aaa26c2a4708514acaf44d8f47f3a5937eb35ec"},
+    {"WarpBlockTimerBlock", kWarpBlockTimerBlock,
+     "da73369795a18c27cc74d82f8aaa26c2a4708514acaf44d8f47f3a5937eb35ec"},
+    {"Health_ChangeBy", kHealthChangeBy,
+     "1bb26079cc1ae03f7cae51e48399a9fcddd619f93cdb64eea684d5a15311a951"},
 }};
 
 struct CheckEvent {
@@ -192,6 +218,14 @@ public:
   using ShopSlotProbe = std::function<ShopSlotState(const LocationKey &key, oot3d::recomp::a32::MemoryBus &memory)>;
   void SetShopProbe(ShopSlotProbe probe) { mShopSlot = std::move(probe); }
   void SetShopBoughtSink(std::function<void(const LocationKey &key)> sink) { mShopBought = std::move(sink); }
+  // Fast chests: every chest opens with the short animation, as small ones
+  // do (a client option, off by default).
+  void SetFastChests(bool on) noexcept { mFastChests = on; }
+  // Skip song replays: the Song of Time and warp blocks do not wait for the
+  // skipped replay (the msgMode part runs in the session's frame update).
+  void SetSongReplays(bool skip) noexcept { mSongReplays = skip; }
+  // Damage multiplier: scales the damage Link takes (a client option).
+  void SetDamageMultiplier(DamageMultiplier multiplier) noexcept { mDamageMultiplier = multiplier; }
   // Called for every hooked block entry of the window, not only the
   // observer's own pcs: the first call runs VerifyAddresses (guest code is
   // mapped by then) and throws std::runtime_error on a mismatch.
@@ -208,6 +242,9 @@ public:
     std::uint64_t ForestExit = 0;
     std::uint64_t CowBottle = 0;
     std::uint64_t ShopBuys = 0;
+    std::uint64_t FastChests = 0;
+    std::uint64_t SongBlocks = 0;
+    std::uint64_t Damage = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -253,6 +290,11 @@ private:
   HookHits mHits{};
   std::uint64_t mSequence = 0;
   bool mVerified = false;
+  // Set from the options sink (the overlay's thread).
+  std::atomic<bool> mFastChests{false};
+  std::atomic<bool> mSongReplays{false};
+  std::atomic<DamageMultiplier> mDamageMultiplier{DamageMultiplier::Normal};
+  DamageScaler mDamage;
   QuickText mQuickText;
 };
 

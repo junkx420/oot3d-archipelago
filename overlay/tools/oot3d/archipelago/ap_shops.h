@@ -13,6 +13,7 @@
 // Structure offsets: OoT3D_Randomizer code/src/actors/shops.h (EnGirlA,
 // ShopItemEntry); the table and the hooked blocks: addresses.json.
 
+#include "ap_guest_layout.h"
 #include "ap_location_key.h"
 #include "recomp/a32_runtime.h"
 
@@ -43,7 +44,6 @@ inline constexpr std::uint32_t kCanBuySuccessFanfare = 0U;
 inline constexpr std::uint32_t kCanBuyNeedRupees = 4U;
 
 inline constexpr std::uint32_t kSaveEntranceIndex = 0x0000U; // s32
-inline constexpr std::uint32_t kSaveRupees = 0x0048U;        // s16
 inline constexpr std::uint8_t kSceneBazaar = 0x2CU;
 // The Kakariko Bazaar shares the Market Bazaar's scene; its entrance (0x00B7)
 // tells them apart, and its slots follow the market's (0x38 on).

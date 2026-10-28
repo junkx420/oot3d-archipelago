@@ -1,6 +1,7 @@
 // Host tests of the Archipelago check observer. They need no ROM: guest
 // memory is a small fake bus.
 
+#include "ap_cheats.h"
 #include "ap_check_observer.h"
 #include "ap_cutscene_skip.h"
 #include "ap_fairy_rewards.h"
@@ -184,6 +185,24 @@ void TestAddressTableMatchesJson(const char *path) {
     }
     Expect(found, "quick text site is listed in addresses.json");
   }
+  bool capacities = false;
+  for (const auto &entry : document.at("entries")) {
+    if (entry.at("name") != "gUpgradeCapacities")
+      continue;
+    capacities = true;
+    char address[16];
+    std::snprintf(address, sizeof(address), "0x%08X", kUpgradeCapacities);
+    Expect(entry.at("exec_addr") == address, "the capacity table matches addresses.json");
+    // Its first 32 bytes are the quiver, bomb bag, strength and scale rows.
+    std::array<std::uint8_t, 32> window{};
+    for (std::size_t i = 0; i < 16U; ++i) {
+      window[i * 2U] = static_cast<std::uint8_t>(kUpgradeCapacitiesExpected[i]);
+      window[i * 2U + 1U] = static_cast<std::uint8_t>(kUpgradeCapacitiesExpected[i] >> 8U);
+    }
+    Expect(entry.at("signature") == "sha256:" + Sha256Hex(window), "the capacity values match addresses.json");
+    Expect(entry.at("status") == "signature_pinned", "the capacity table is signature pinned");
+  }
+  Expect(capacities, "the capacity table is listed in addresses.json");
 }
 
 // Quick text on a fake text object: its command list (0xD4), count (0xD8),
@@ -465,10 +484,11 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 22U,
-         "checks, deaths, blue warps, the forest guard, cows, shops and quick text need 22 hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 23U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 22U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 26U,
+         "checks, deaths, blue warps, the forest guard, cows, shops, fast chests, song blocks, damage and quick "
+         "text need 26 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 27U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 26U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -875,6 +895,182 @@ void TestBridgeAndHearts() {
   memory.Read16(kSaveContext + kSaveHealthCapacity, &capacity);
   memory.Read16(kSaveContext + kSaveHealth, &health);
   Expect(capacity == 80U && health == 80U, "five full hearts");
+}
+
+void TestFastChests() {
+  FakeMemory memory;
+  CheckObserver observer{false};
+  oot3d::recomp::a32::GuestState state{};
+  state.r[0] = kItemNone; // a new item: the long animation
+  observer.ObserveBlockEntry(kFastChestsObtainabilityBlock, state, memory);
+  Expect(state.r[0] == kItemNone && observer.Hits().FastChests == 0U, "off by default");
+  observer.SetFastChests(true);
+  observer.ObserveBlockEntry(kFastChestsObtainabilityBlock, state, memory);
+  Expect(state.r[0] != kItemNone && observer.Hits().FastChests == 1U, "on, a new item opens fast");
+  state.r[0] = 0x05U; // already obtainable: short anyway
+  observer.ObserveBlockEntry(kFastChestsObtainabilityBlock, state, memory);
+  Expect(state.r[0] == 0x05U && observer.Hits().FastChests == 1U, "a short opening is left alone");
+}
+
+void TestSongReplays() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  FakeMemory memory;
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write16(kPlay + kPlaySceneNum, 0x55U);
+  memory.Write16(kPlay + kPlayLastPlayedSong, 9U);
+  const auto mode = [&] {
+    std::uint8_t value = 0;
+    (void)memory.Read8(kPlay + kPlayMsgMode, &value);
+    return value;
+  };
+  memory.Write8(kPlay + kPlayMsgMode, kMsgModeReplay);
+  Expect(!SkipSongReplay(SongReplayMode::Off, memory) && mode() == kMsgModeReplay, "off leaves the replay");
+  Expect(SkipSongReplay(SongReplayMode::Skip, memory) && mode() == kMsgModeReplayEnd, "the replay is skipped");
+  Expect(!SkipSongReplay(SongReplayMode::Skip, memory) && mode() == kMsgModeReplayEnd, "its end is left alone");
+  memory.Write8(kPlay + kPlayMsgMode, kMsgModeReplayMusic);
+  Expect(!SkipSongReplay(SongReplayMode::Skip, memory) && mode() == kMsgModeReplayMusic, "skip keeps the music");
+  Expect(SkipSongReplay(SongReplayMode::SkipNoSound, memory) && mode() == kMsgModeReplayEnd, "no sound skips it");
+  memory.Write8(kPlay + kPlayMsgMode, kMsgModeReplayMusic);
+  memory.Write16(kPlay + kPlayLastPlayedSong, kSongScarecrow);
+  Expect(!SkipSongReplay(SongReplayMode::SkipNoSound, memory), "the scarecrow's music spawns Pierre");
+  memory.Write16(kPlay + kPlaySceneNum, kSceneWaterTemple);
+  memory.Write16(kPlay + kPlayLastPlayedSong, kSongZeldasLullaby);
+  memory.Write8(kPlay + kPlayMsgMode, kMsgModeReplay);
+  int frames = 0;
+  while (SkipSongReplay(SongReplayMode::Skip, memory))
+    ++frames;
+  Expect(frames == 4 && mode() == kMsgModeReplayEnd, "the Water Temple's lullaby goes through modes 20 to 22");
+  memory.Write8(kPlay + kPlayMsgMode, 0U);
+  Expect(!SkipSongReplay(SongReplayMode::SkipNoSound, memory) && mode() == 0U, "no song, nothing changes");
+  Expect(ParseSongReplayMode("skip_no_sound") == SongReplayMode::SkipNoSound &&
+             !ParseSongReplayMode("fast").has_value(),
+         "song replay modes parse by name");
+
+  CheckObserver observer{false};
+  oot3d::recomp::a32::GuestState state{};
+  constexpr std::uint32_t kBlock = 0x08100000U;
+  state.r[0] = kBlock + 0x100U;
+  const auto timer = [&] {
+    std::uint16_t value = 0;
+    (void)memory.Read16(state.r[0] + kSongBlockTimer, &value);
+    return value;
+  };
+  memory.Write16(state.r[0] + kSongBlockTimer, kSongBlockTimerReplay);
+  observer.ObserveBlockEntry(kTimeBlockTimerBlock, state, memory);
+  Expect(timer() == kSongBlockTimerReplay, "the blocks wait for the replay by default");
+  observer.SetSongReplays(true);
+  observer.ObserveBlockEntry(kTimeBlockTimerBlock, state, memory);
+  Expect(timer() == kSongBlockTimerSkipped, "a Song of Time block waits less");
+  memory.Write16(state.r[0] + kSongBlockTimer, kSongBlockTimerReplay);
+  observer.ObserveBlockEntry(kWarpBlockTimerBlock, state, memory);
+  Expect(timer() == kSongBlockTimerSkipped && observer.Hits().SongBlocks == 2U, "a warp block too");
+  memory.Write16(state.r[0] + kSongBlockTimer, 0x50U);
+  observer.ObserveBlockEntry(kWarpBlockTimerBlock, state, memory);
+  Expect(timer() == 0x50U && observer.Hits().SongBlocks == 2U, "a running timer is left alone");
+}
+
+void TestDamageMultiplier() {
+  {
+    DamageScaler scaler;
+    Expect(scaler.Apply(DamageMultiplier::Normal, -4, false) == -4, "x1 leaves damage alone");
+    Expect(scaler.Apply(DamageMultiplier::Double, -4, false) == -8, "x2 doubles a heart");
+    Expect(scaler.Apply(DamageMultiplier::Sexdecuple, -16, false) == -256, "x16");
+    Expect(scaler.Apply(DamageMultiplier::Half, -4, false) == -2, "x1/2 halves");
+    Expect(scaler.Apply(DamageMultiplier::OneHitKo, -1, false) == kOneHitKoChange, "one hit KO");
+    Expect(scaler.Apply(DamageMultiplier::OneHitKo, 16, false) == 16, "healing is left alone");
+    Expect(scaler.Apply(DamageMultiplier::Double, 0, false) == 0, "no change stays none");
+    const std::int32_t twice = scaler.Apply(DamageMultiplier::Half, -1, false) + scaler.Apply(DamageMultiplier::Half, -1, false);
+    Expect(twice == -1, "half a quarter heart alternates");
+  }
+  {
+    DamageScaler scaler;
+    const std::int32_t first = scaler.Apply(DamageMultiplier::Half, -2, true);
+    const std::int32_t second = scaler.Apply(DamageMultiplier::Half, -2, true);
+    Expect(first + second == -2 && (first == -2 || second == -2), "double defense alternates -2 and 0");
+  }
+  Expect(ParseDamageMultiplier("ohko") == DamageMultiplier::OneHitKo && !ParseDamageMultiplier("x3").has_value(),
+         "damage multipliers parse by name");
+
+  FakeMemory memory;
+  CheckObserver observer{false};
+  oot3d::recomp::a32::GuestState state{};
+  state.r[1] = static_cast<std::uint32_t>(-4);
+  observer.ObserveBlockEntry(kHealthChangeBy, state, memory);
+  Expect(state.r[1] == static_cast<std::uint32_t>(-4) && observer.Hits().Damage == 0U, "x1 by default");
+  observer.SetDamageMultiplier(DamageMultiplier::Quadruple);
+  observer.ObserveBlockEntry(kHealthChangeBy, state, memory);
+  Expect(state.r[1] == static_cast<std::uint32_t>(-16) && observer.Hits().Damage == 1U, "x4 at Health_ChangeBy");
+  state.r[1] = 0x10U;
+  observer.ObserveBlockEntry(kHealthChangeBy, state, memory);
+  Expect(state.r[1] == 0x10U && observer.Hits().Damage == 1U, "a heart refill is left alone");
+}
+
+void TestCheats() {
+  FakeMemory memory;
+  for (std::size_t i = 0; i < kUpgradeCapacitiesExpected.size(); ++i)
+    memory.Write16(kUpgradeCapacities + static_cast<std::uint32_t>(i) * 2U, kUpgradeCapacitiesExpected[i]);
+  memory.Write16(kSaveContext + kSaveHealthCapacity, 0x60U);
+  memory.Write16(kSaveContext + kSaveHealth, 0x10U);
+  memory.Write8(kSaveContext + kSaveMagicAcquired, 0U);
+  memory.Write8(kSaveContext + kSaveMagicLevel, 0U);
+  memory.Write8(kSaveContext + kSaveMagic, 0U);
+  memory.Write16(kSaveContext + kSaveRupees, 5U);
+  for (std::uint32_t slot = 0; slot < 24U; ++slot)
+    memory.Write8(kSaveContext + kSaveItems + slot, kItemNone);
+  for (std::uint32_t slot = 0; slot < 15U; ++slot)
+    memory.Write8(kSaveContext + kSaveAmmo + slot, 0U);
+  memory.Write8(kSaveContext + kSaveItems + 0x00U, 0x00U); // Deku Sticks, no upgrade yet
+  memory.Write8(kSaveContext + kSaveItems + 0x02U, 0x02U); // Bombs
+  memory.Write8(kSaveContext + kSaveItems + kSlotBombchu, 0x09U);
+  // Bomb bag 2 (30), wallet 1 (200).
+  memory.Write32(kSaveContext + kSaveUpgrades, (2U << 3U) | (1U << 12U));
+
+  const auto read8 = [&](std::uint32_t offset) {
+    std::uint8_t value = 0;
+    memory.Read8(kSaveContext + offset, &value);
+    return value;
+  };
+  const auto read16 = [&](std::uint32_t offset) {
+    std::uint16_t value = 0;
+    memory.Read16(kSaveContext + offset, &value);
+    return value;
+  };
+
+  CheatApplier cheats;
+  Expect(cheats.Apply({}, memory) == 0 && read16(kSaveHealth) == 0x10U, "no cheat writes nothing");
+  CheatOptions all{true, true, true, true};
+  cheats.Apply(all, memory);
+  Expect(read16(kSaveHealth) == 0x60U, "health is filled to the capacity");
+  Expect(read8(kSaveMagic) == 0U, "no magic without the meter");
+  Expect(read8(kSaveAmmo + 0x00U) == 10U, "sticks without an upgrade hold 10");
+  Expect(read8(kSaveAmmo + 0x02U) == 30U, "the second bomb bag holds 30");
+  Expect(read8(kSaveAmmo + 0x03U) == 0U, "no arrows without the bow");
+  Expect(read8(kSaveAmmo + kSlotBombchu) == 50U, "bombchus hold 50");
+  Expect(read16(kSaveRupees) == 200U, "the adult wallet holds 200");
+  Expect(cheats.Apply(all, memory) == 0, "full values are not written again");
+
+  memory.Write8(kSaveContext + kSaveMagicAcquired, 1U);
+  memory.Write8(kSaveContext + kSaveMagicLevel, 2U);
+  memory.Write16(kSaveContext + kSaveHealth, 0U);
+  cheats.Apply(all, memory);
+  Expect(read8(kSaveMagic) == 0x60U, "double magic is filled");
+  Expect(read16(kSaveHealth) == 0U, "a dead Link stays dead");
+
+  // A different image: ammo and rupees stay off, health still works.
+  FakeMemory other;
+  for (std::size_t i = 0; i < kUpgradeCapacitiesExpected.size(); ++i)
+    other.Write16(kUpgradeCapacities + static_cast<std::uint32_t>(i) * 2U, 1U);
+  other.Write16(kSaveContext + kSaveHealthCapacity, 0x30U);
+  other.Write16(kSaveContext + kSaveHealth, 0x08U);
+  other.Write16(kSaveContext + kSaveRupees, 5U);
+  other.Write32(kSaveContext + kSaveUpgrades, 0U);
+  CheatApplier wrong;
+  wrong.Apply(all, other);
+  std::uint16_t rupees = 0, health = 0;
+  other.Read16(kSaveContext + kSaveRupees, &rupees);
+  other.Read16(kSaveContext + kSaveHealth, &health);
+  Expect(!wrong.Disabled().empty() && rupees == 5U && health == 0x30U,
+         "another capacity table turns ammo and rupees off");
 }
 void TestBlueWarpSkip() {
   constexpr std::uint32_t kPlay = 0x08000000U;
@@ -1429,7 +1625,11 @@ void TestEnabledSettingAndAutoConnect() {
                      TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
     Expect(session.State() != ConnectionState::Disconnected, "a saved slot is connected at start");
     Expect(session.Notifications().empty(), "no messages before anything happened");
-    session.SetOptions({false, false});
+    ClientOptions options{false, false};
+    options.FastChests = true;
+    options.SongReplays = SongReplayMode::SkipNoSound;
+    options.Damage = DamageMultiplier::OneHitKo;
+    session.SetOptions(options);
   }
   Expect(EnabledInSettings(settings), "saving the session keeps the switch");
   {
@@ -1437,6 +1637,9 @@ void TestEnabledSettingAndAutoConnect() {
                      TRIAEVUM_ARCHIPELAGO_ITEMS_JSON});
     Expect(session.State() == ConnectionState::Disconnected, "auto-connect can be turned off");
     Expect(!session.Options().Notifications, "the message option is kept");
+    Expect(session.Options().FastChests, "fast chests are kept");
+    Expect(session.Options().SongReplays == SongReplayMode::SkipNoSound, "the song replay mode is kept");
+    Expect(session.Options().Damage == DamageMultiplier::OneHitKo, "the damage multiplier is kept");
   }
   std::filesystem::remove_all(directory);
 }
@@ -1463,6 +1666,10 @@ int main(int argc, char **argv) {
     TestDungeonRewardKeys();
     TestBlueWarpSkip();
     TestBridgeAndHearts();
+    TestCheats();
+    TestFastChests();
+    TestSongReplays();
+    TestDamageMultiplier();
     TestShops();
     TestCows();
     TestTokenShuffle();

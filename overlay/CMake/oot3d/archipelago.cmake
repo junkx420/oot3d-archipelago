@@ -38,8 +38,10 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
     find_package(ZLIB REQUIRED)
 
     add_library(triaevum_archipelago STATIC
+        tools/oot3d/archipelago/ap_cheats.cpp
         tools/oot3d/archipelago/ap_check_observer.cpp
         tools/oot3d/archipelago/ap_cutscene_skip.cpp
+        tools/oot3d/archipelago/ap_damage.cpp
         tools/oot3d/archipelago/ap_fairy_rewards.cpp
         tools/oot3d/archipelago/ap_item_receiver.cpp
         tools/oot3d/archipelago/ap_item_table.cpp
@@ -52,6 +54,7 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
         tools/oot3d/archipelago/ap_sha256.cpp
         tools/oot3d/archipelago/ap_shops.cpp
         tools/oot3d/archipelago/ap_sidecar.cpp
+        tools/oot3d/archipelago/ap_song_replays.cpp
         tools/oot3d/archipelago/ap_world_state.cpp)
     target_include_directories(triaevum_archipelago PUBLIC tools/oot3d/archipelago)
     target_include_directories(triaevum_archipelago SYSTEM PRIVATE

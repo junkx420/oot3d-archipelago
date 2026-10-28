@@ -20,6 +20,7 @@ inline constexpr std::uint32_t kSaveHealthCapacity = 0x0042U;   // s16
 inline constexpr std::uint32_t kSaveHealth = 0x0044U;           // s16
 inline constexpr std::uint32_t kSaveMagicLevel = 0x0046U;       // s8
 inline constexpr std::uint32_t kSaveMagic = 0x0047U;            // s8
+inline constexpr std::uint32_t kSaveRupees = 0x0048U;           // s16
 inline constexpr std::uint32_t kSaveMagicAcquired = 0x004EU;    // u8
 inline constexpr std::uint32_t kSaveDoubleMagic = 0x0050U;      // u8
 inline constexpr std::uint32_t kSaveDoubleDefense = 0x0051U;    // u8
@@ -65,6 +66,9 @@ inline constexpr std::uint32_t kGlobalContextPointer = 0x005043E0U;
 inline constexpr std::uint32_t kPlaySceneNum = 0x0104U;
 inline constexpr std::uint32_t kPlayActorCtx = 0x208CU;
 inline constexpr std::uint32_t kPlaySceneLoadFlag = 0x5C2DU;
+// The message mode (u8, also the ocarina's) and the song Link played last.
+inline constexpr std::uint32_t kPlayMsgMode = 0x2A90U;
+inline constexpr std::uint32_t kPlayLastPlayedSong = 0x2B7CU;
 // actorCtx + actorList (0x0C) + ACTORTYPE_PLAYER (2) * 8 + first (4)
 inline constexpr std::uint32_t kPlayPlayerActor = kPlayActorCtx + 0x0CU + 2U * 8U + 4U;
 // actorCtx.flags (0x19C): the current scene's chest and collectible flags.

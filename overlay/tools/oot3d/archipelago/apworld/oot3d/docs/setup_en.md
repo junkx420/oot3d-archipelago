@@ -57,6 +57,26 @@ conversations. Connected to a save, it also skips every dungeon's blue warp
 cutscene: the warp takes Link straight to the dungeon's entrance or warp pad,
 and the reward comes from the server (Jabu-Jabu's sapphire from the game).
 
+**Fast chests** (same tab, off by default): every chest opens as a small one
+does, without the slow opening, the light and the fanfare, as OoT3D
+Randomizer's "always fast" chest animations.
+
+**Song replays** (same tab, off by default): *Skip* does not play a song
+back after Link plays it, as OoT3D Randomizer's "Skip Song Replays"; *Skip,
+no sound* skips the replay's music too (not for the Scarecrow's Song, whose
+music brings Pierre). The Song of Time and warp blocks do not wait for the
+skipped replay. The song's light effects still play out.
+
+**Damage taken** (same tab, x1 by default): x1/2 to x16 or one hit KO, as
+OoT3D Randomizer's damage multiplier. Healing is not changed, and Master
+Quest's double damage stays. The seed's logic assumes x1.
+
+**Cheats** (same tab, off by default): infinite health, magic, ammo and
+rupees, as in Ship of Harkinian. They keep what Link already has full, up to
+his capacity: no magic before the meter, no arrows before the bow. A hit
+bigger than all hearts and a DeathLink death still kill Link. They change
+nothing the seed or the server sees.
+
 `TRIAEVUM_ARCHIPELAGO=1` (or `0`) still overrides the switch.
 
 ## Universal Tracker

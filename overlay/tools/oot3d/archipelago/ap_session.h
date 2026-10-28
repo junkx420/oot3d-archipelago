@@ -8,6 +8,7 @@
 // gives received items. All of these run on the guest thread. The F1 panel may draw on another
 // thread, so every public function locks, and the panel gets copies.
 
+#include "ap_cheats.h"
 #include "ap_check_observer.h"
 #include "ap_cutscene_skip.h"
 #include "ap_fairy_rewards.h"
@@ -17,6 +18,7 @@
 #include "ap_network_client.h"
 #include "ap_save_sync.h"
 #include "ap_sidecar.h"
+#include "ap_song_replays.h"
 #include "ap_world_state.h"
 
 #include <array>
@@ -49,6 +51,10 @@ struct ClientOptions {
   bool AutoConnect = true;   // connect at startup with the saved server and slot
   bool Notifications = true; // in-game messages (items, DeathLink, goal)
   QuickTextMode QuickText = QuickTextMode::Off;
+  bool FastChests = false; // every chest opens with the short animation
+  SongReplayMode SongReplays = SongReplayMode::Off;
+  DamageMultiplier Damage = DamageMultiplier::Normal;
+  CheatOptions Cheats;
 };
 
 // One in-game message for the overlay.
@@ -169,6 +175,8 @@ private:
   // Names of what this slot's locations hold, from the scouts (owner's game).
   std::map<std::int64_t, std::pair<std::string, std::string>> mPlacementNames;
   int mSkipsLoggedForSlot = -1;
+  CheatApplier mCheats;
+  bool mCheatsDisabledLogged = false;
   std::string mUuid;
   std::unique_ptr<NetworkClient> mClient;
   std::optional<LocationTable> mLocations;

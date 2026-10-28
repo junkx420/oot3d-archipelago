@@ -144,6 +144,16 @@ void Session::LoadSettings() {
   mOptions.QuickText =
       ParseQuickTextMode(document.value("quick_text", std::string(ToString(mOptions.QuickText))))
           .value_or(mOptions.QuickText);
+  mOptions.FastChests = document.value("fast_chests", false);
+  mOptions.SongReplays =
+      ParseSongReplayMode(document.value("song_replays", std::string(ToString(mOptions.SongReplays))))
+          .value_or(mOptions.SongReplays);
+  mOptions.Damage = ParseDamageMultiplier(document.value("damage_multiplier", std::string(ToString(mOptions.Damage))))
+                        .value_or(mOptions.Damage);
+  mOptions.Cheats.InfiniteHealth = document.value("cheat_infinite_health", false);
+  mOptions.Cheats.InfiniteMagic = document.value("cheat_infinite_magic", false);
+  mOptions.Cheats.InfiniteAmmo = document.value("cheat_infinite_ammo", false);
+  mOptions.Cheats.InfiniteRupees = document.value("cheat_infinite_rupees", false);
   if (mUuid.empty()) {
     mUuid = NewUuid();
     SaveSettings();
@@ -161,6 +171,13 @@ void Session::SaveSettings() const {
   document["auto_connect"] = mOptions.AutoConnect;
   document["notifications"] = mOptions.Notifications;
   document["quick_text"] = ToString(mOptions.QuickText);
+  document["fast_chests"] = mOptions.FastChests;
+  document["song_replays"] = ToString(mOptions.SongReplays);
+  document["damage_multiplier"] = ToString(mOptions.Damage);
+  document["cheat_infinite_health"] = mOptions.Cheats.InfiniteHealth;
+  document["cheat_infinite_magic"] = mOptions.Cheats.InfiniteMagic;
+  document["cheat_infinite_ammo"] = mOptions.Cheats.InfiniteAmmo;
+  document["cheat_infinite_rupees"] = mOptions.Cheats.InfiniteRupees;
   WriteSettings(mPaths.SettingsFile, document);
 }
 
@@ -524,6 +541,15 @@ void Session::Update(oot3d::recomp::a32::MemoryBus &memory) {
       mWorldLoggedForSlot = mSidecar->Identity.SaveSlot;
     }
   }
+  if (mOptions.Cheats.Any() && !mFrontend && LoadedSaveSlot(memory).has_value()) {
+    (void)mCheats.Apply(mOptions.Cheats, memory);
+    if (!mCheats.Disabled().empty() && !mCheatsDisabledLogged) {
+      Log("Infinite ammo and rupees are off: " + mCheats.Disabled());
+      mCheatsDisabledLogged = true;
+    }
+  }
+  if (mOptions.SongReplays != SongReplayMode::Off && !mFrontend && LoadedSaveSlot(memory).has_value())
+    (void)SkipSongReplay(mOptions.SongReplays, memory);
   WatchTriforce();
   WatchFairyFountain(memory);
   WatchTokens(memory);

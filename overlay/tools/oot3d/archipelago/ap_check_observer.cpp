@@ -13,13 +13,14 @@ using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
 // Every hooked pc but quick text's (HookPcs sorts them).
-constexpr std::array<std::uint32_t, 20> kCheckHooks{
+constexpr std::array<std::uint32_t, 24> kCheckHooks{
     kEnCowInit,          kEnCowDestroy,          kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,
     kGameOverStartBlock, kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
     kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kCowBottleCheckBlock,   kChildBlueWarpBlock,
     kEnGirlAInit,        kEnGirlADraw,           kShopBuyEventDefault,   kShopCanBuyResultBlocks[0],
     kShopCanBuyResultBlocks[1], kShopCanBuyResultBlocks[2], kShopCanBuyResultBlocks[3],
-    kShopCanBuyResultBlocks[4]};
+    kShopCanBuyResultBlocks[4], kFastChestsObtainabilityBlock, kTimeBlockTimerBlock, kWarpBlockTimerBlock,
+    kHealthChangeBy};
 
 // Unreadable guest memory reads as zero: the observer must never fault the
 // game, and a zero actor or scene simply forms no key.
@@ -48,12 +49,12 @@ std::uint8_t AbsoluteGetItemId(std::uint32_t value) {
 CheckObserver::~CheckObserver() {
   if (!mReportSink)
     return;
-  char text[384];
+  char text[448];
   const auto &quick = mQuickText.Counts();
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
                 "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
-                "CowBottle=%llu ShopBuys=%llu "
+                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
@@ -63,6 +64,9 @@ CheckObserver::~CheckObserver() {
                 static_cast<unsigned long long>(mHits.BlueWarp),
                 static_cast<unsigned long long>(mHits.ForestExit),
                 static_cast<unsigned long long>(mHits.CowBottle), static_cast<unsigned long long>(mHits.ShopBuys),
+                static_cast<unsigned long long>(mHits.FastChests),
+                static_cast<unsigned long long>(mHits.SongBlocks),
+                static_cast<unsigned long long>(mHits.Damage),
                 ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
@@ -226,7 +230,35 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       const auto rupees = static_cast<std::int16_t>(Read16(memory, kSaveContext + kSaveRupees));
       state.r[0] = rupees >= active->second.Price ? kCanBuySuccessFanfare : kCanBuyNeedRupees;
     }
-    break;  case kKokiriGuardCheckBlock:
+    break;
+  case kFastChestsObtainabilityBlock:
+    // Not ITEM_NONE: the game's own short animation.
+    if (mFastChests && state.r[0] == kItemNone) {
+      state.r[0] = 0U;
+      ++mHits.FastChests;
+    }
+    break;
+  case kTimeBlockTimerBlock:
+  case kWarpBlockTimerBlock:
+    // r0 is the block + 0x100. The timer the game set for the replay: start
+    // it where the skipped replay leaves it.
+    if (mSongReplays && Read16(memory, state.r[0] + kSongBlockTimer) == kSongBlockTimerReplay &&
+        memory.Write16(state.r[0] + kSongBlockTimer, kSongBlockTimerSkipped))
+      ++mHits.SongBlocks;
+    break;
+  case kHealthChangeBy:
+    // r1: the health change (s16).
+    if (const auto multiplier = mDamageMultiplier.load(); multiplier != DamageMultiplier::Normal) {
+      const auto change = static_cast<std::int16_t>(state.r[1] & 0xFFFFU);
+      const std::int32_t scaled =
+          mDamage.Apply(multiplier, change, Read8(memory, kSaveContext + kSaveDoubleDefense) != 0U);
+      if (scaled != change) {
+        state.r[1] = static_cast<std::uint32_t>(scaled);
+        ++mHits.Damage;
+      }
+    }
+    break;
+  case kKokiriGuardCheckBlock:
     if (mForestExitOpen && mForestExitOpen()) {
       const std::uint32_t questItems = state.r[8] + kSaveQuestItems;
       const std::uint32_t emerald = Read32(memory, state.r[6] + 0x48U);

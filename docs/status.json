@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-28",
-  "now": "Played up to Hyrule Castle by a tester. Next: client options (skips, quality of life, cheats), more tricks, song and dungeon reward shuffles.",
+  "now": "Played up to Hyrule Castle by a tester. Client options added: cheats, fast chests, song replay skip, damage multiplier. Next: more logic options, song and dungeon reward shuffles.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -70,11 +70,14 @@
         {"text": "Enable switch in the F1 menu instead of an environment variable", "done": true},
         {"text": "In-game messages: items sent and received, DeathLink, goal, connection", "done": true},
         {"text": "Progress file written off the game thread", "done": true},
-        {"text": "Player-facing setup guide", "done": true}
+        {"text": "Player-facing setup guide", "done": true},
+        {"text": "Cheats: infinite health, magic, ammo and rupees (seen in the game)", "done": true},
+        {"text": "Fast chests, song replay skip and damage multiplier (built and host-tested, not yet tried in the game)", "done": true}
       ]
     }
   ],
   "log": [
+    {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.11: client options in the F1 menu: infinite health, magic, ammo and rupees, fast chests, song replays skipped, and a damage multiplier up to one hit KO."},
     {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.10: glitched logic, with OoT3D_Randomizer's glitch categories, difficulties and single glitches, each compared with its own logic."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.9: 33 logical tricks, each compared with OoT3D_Randomizer's own logic, chosen by their 3D randomizer names."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.8: more of Ship of Harkinian's options: rainbow bridge conditions, Triforce hunt, starting hearts, and ocarina, Weird Egg and Gerudo card shuffles."},

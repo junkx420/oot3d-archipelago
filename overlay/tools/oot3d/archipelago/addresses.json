@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 379,
+  "verified": 383,
   "unverified": 557
  },
  "entries": [
@@ -13599,6 +13599,51 @@
    "status": "signature_pinned"
   },
   {
+   "name": "FastChestsObtainabilityBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00354CD4",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00354D24",
+   "ld_line": 501,
+   "section": "text",
+   "signature": "sha256:8e397069a6866186efaa9178fd242e848823be9929144d6a5d19b7519323446e",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "TimeBlockTimerBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00208004",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00208010",
+   "ld_line": 250,
+   "section": "text",
+   "signature": "sha256:da73369795a18c27cc74d82f8aaa26c2a4708514acaf44d8f47f3a5937eb35ec",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "WarpBlockTimerBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00208068",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00208074",
+   "ld_line": 251,
+   "section": "text",
+   "signature": "sha256:da73369795a18c27cc74d82f8aaa26c2a4708514acaf44d8f47f3a5937eb35ec",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
    "name": "ShopBuyEventDefault",
    "kind": "hook_block",
    "usa_ref": "0x00524F50",
@@ -13686,6 +13731,21 @@
    "verified_by": [
     "oot3d_randomizer_engirla_canbuyfunc_offset",
     "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "gUpgradeCapacities",
+   "kind": "data",
+   "usa_ref": "0x0053CC08",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0053CBE4",
+   "ld_line": 920,
+   "section": "data",
+   "signature": "sha256:9519e9e7cc56b99252f0952781a43c76bf2bc6dc6b9316651621438bb19910a6",
+   "verified_by": [
+    "oot3d_randomizer_tycoon_wallet_patch_offset",
+    "data_values"
    ],
    "status": "signature_pinned"
   }

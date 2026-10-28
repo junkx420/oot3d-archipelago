@@ -79,6 +79,15 @@ CLIENT_HOOK_BLOCKS = {
     # A cow's empty-bottle test (OoT3D_Randomizer cow.c, EnCow_BottleCheck):
     # the block after the Inventory_HasEmptyBottle call reads its result.
     "CowBottleCheckBlock": ("CowBottleCheck", 4, "block_after_call"),
+    # Fast chests (OoT3D_Randomizer chest.c, Chest_OverrideAnimation): Link's
+    # chest opening, the block after the Item_CheckObtainability call that
+    # picks the long animation for a new item (its result ITEM_NONE).
+    "FastChestsObtainabilityBlock": ("FastChests", 0x50, "block_after_call"),
+    # Skip song replays (OoT3D_Randomizer hooks.s, SkipSongReplays_*BlocksFix):
+    # the Song of Time blocks and the warp blocks wait out the replay with a
+    # timer the patch site sets; the block after it counts the timer down.
+    "TimeBlockTimerBlock": ("SkipSongReplays_TimeBlocksFix", 0xC, "block_after_branch"),
+    "WarpBlockTimerBlock": ("SkipSongReplays_WarpBlocksFix", 0xC, "block_after_branch"),
 }
 
 
@@ -88,6 +97,13 @@ CLIENT_HOOK_BLOCKS = {
 SHOP_ITEM_ENTRY_SIZE = 0x30
 SHOP_ITEM_ENTRY_COUNT = 50
 KNOWN_SHOP_ENTRIES = {0: (15, 0x63), 1: (60, 0x4A), 13: (40, 0x29)}
+
+# Ocarina of Time's upgrade capacities: quiver, bomb bag, strength, scale,
+# wallet, bullet bag, sticks, nuts (ap_cheats.h kUpgradeCapacitiesExpected).
+UPGRADE_CAPACITIES = [
+    0, 30, 40, 50, 0, 20, 30, 40, 0, 0, 0, 0, 0, 0, 0, 0,
+    99, 200, 500, 500, 0, 30, 40, 50, 0, 10, 20, 30, 0, 20, 30, 40,
+]
 
 
 def is_branch(word: int) -> bool:
@@ -277,6 +293,30 @@ def main() -> int:
             "status": "signature_pinned",
         })
         counts["verified"] += 1
+
+    # gUpgradeCapacities (u16[8][4], as in Ocarina of Time) for the cheats:
+    # the randomizer's TycoonWalletSize patch writes the wallet's third and
+    # fourth capacity, row 4 index 2. Pinned by the capacities it holds.
+    site = by_name["TycoonWalletSize"]
+    start = int(site["exec_addr"], 16) - (4 * 4 + 2) * 2
+    capacities = list(struct.unpack_from("<32H", code, start - CODE_BASE))
+    if capacities != UPGRADE_CAPACITIES:
+        print(f"error: 0x{start:08X} is not gUpgradeCapacities", file=sys.stderr)
+        return 1
+    window = code[start - CODE_BASE:start - CODE_BASE + SIGNATURE_BYTES]
+    entries.append({
+        "name": "gUpgradeCapacities",
+        "kind": "data",
+        "usa_ref": site["usa_ref"],
+        "eur_offset": site["eur_offset"],
+        "exec_addr": f"0x{start:08X}",
+        "ld_line": site["ld_line"],
+        "section": "data",
+        "signature": "sha256:" + hashlib.sha256(window).hexdigest(),
+        "verified_by": ["oot3d_randomizer_tycoon_wallet_patch_offset", "data_values"],
+        "status": "signature_pinned",
+    })
+    counts["verified"] += 1
 
     document = {
         "format": "triaevum_archipelago_addresses_v1",

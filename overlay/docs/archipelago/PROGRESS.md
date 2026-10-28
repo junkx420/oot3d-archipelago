@@ -794,3 +794,81 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
 - Tests: apworld 0.11.0 suite 512 passed, 33 skipped (every condition
   parses; glitchless seeds take none; a ledge cancel gets child Link past
   King Zora only when chosen).
+
+### Cheats (2026-10-28)
+
+- ap_cheats.cpp: infinite health, magic, ammo and rupees, after Ship of
+  Harkinian's cheats, as client settings in the F1 Archipelago tab (off by
+  default; they apply with or without a connection, like the skips). Once
+  per frame in gameplay with a save loaded, each tops up a save value and
+  never goes past what the save allows: health to the heart capacity while
+  Link is alive (so a DeathLink death still happens), magic to 0x30 per
+  magic level once the meter is acquired, ammo of items Link has to the
+  capacity of his upgrades, rupees to the wallet's.
+- The capacities come from the game's gUpgradeCapacities (u16[8][4] as in
+  Ocarina of Time) at 0x0053CBE4: OoT3D_Randomizer's TycoonWalletSize patch
+  site (0x0053CC08) is the wallet row's third capacity. map_rando_addresses.py
+  derives the address and pins it by the 32 capacities the EUR image holds;
+  the client checks the same values at runtime and keeps ammo and rupees
+  off when they differ. SaveContext.rupees (0x48) comes from the clang probe.
+- The 3D randomizer has no cheats; its other gameplay options (fast chests,
+  song replays, the damage multiplier) follow below.
+- Tests: host tests for every cheat, the capacity limits, a dead Link and a
+  different image.
+
+### Fast chests (2026-10-28)
+
+- A client option in the F1 Archipelago tab (off by default), as OoT3D
+  Randomizer's "always fast" chest animations. The randomizer replaces two
+  instructions (FastChests 0x00354CD4, FastChestsTwo 0x003F1048) with calls
+  to Chest_OverrideAnimation. The client patches no code: in Link's chest
+  opening the block after the Item_CheckObtainability call (0x00354D24,
+  FastChests + 0x50, block_after_call) reads ITEM_NONE for a new item, which
+  picks the long animation; the client turns it into another value there, so
+  the game takes its own short path. That path stores -1 in the chest
+  (+0x38C), which the chest reads at FastChestsTwo (r7 = chest + 0x300,
+  ldrsh [r7, #0x8C]) and then skips the light and the fanfare: one hook is
+  enough.
+- Tests: host tests (off by default, a new item opens fast, a short opening
+  is left alone, the option is kept in the settings file); not yet tried on
+  a chest in the game.
+
+### Skip song replays (2026-10-28)
+
+- A client option in the F1 Archipelago tab (off, skip, skip without the
+  replay's music), as OoT3D Randomizer's Settings_SkipSongReplays. Once per
+  frame in gameplay ap_song_replays.cpp moves GlobalContext.msgMode (0x2A90,
+  u8) on as the randomizer does: 19 (and 18 without sound, except the
+  Scarecrow's Song) to 23; Zelda's Lullaby in the Water Temple (scene 5)
+  through 20 to 22. msgMode and lastPlayedSong (0x2B7C) come from the clang
+  probe; 0x2B7C is also what the Song of Time block code reads (0x207FD8).
+- SkipSongReplays_TimeBlocksFix and _WarpBlocksFix (0x00208004, 0x00208068)
+  set the blocks' timer (+0x1C6) to 0x6E, the replay's length; the
+  randomizer sets 0x10. The client patches no code: the block after each
+  site (+0xC, block_after_branch) counts the timer down, and the check
+  observer turns a fresh 0x6E into 0x10 there.
+- Not ported: the randomizer also kills the song effect actors at once
+  (songs_visual_effects.c); here they play out.
+- Tests: host tests (the modes, the scarecrow, the Water Temple lullaby,
+  both block timers, the setting is kept); a probe to gameplay verifies the
+  new hook signatures. Not yet tried with a song in the game.
+
+### Damage multiplier (2026-10-28)
+
+- A client option in the F1 Archipelago tab (x1/2, x1, x2, x4, x8, x16, one
+  hit KO; x1 by default), as OoT3D Randomizer's Settings_ApplyDamageMultiplier.
+  The randomizer replaces Health_ChangeBy's first instruction (0x00352DC0,
+  mov r4, r1); the client hooks the function's entry (0x00352DBC, already
+  signature-pinned as an AOT function entry) and changes r1, the s16 health
+  change. Master Quest's doubling and double defense (save +0x0E, +0x51,
+  read right after in the function) still follow in the game's code.
+- ap_damage.cpp ports the rounding: half of a quarter heart alternates -1
+  and 0, and -1 with double defense alternates -2 and 0 (the game's
+  arithmetic shift leaves -1 whole). Unlike the randomizer, Master Quest
+  keeps its double damage, so x1 leaves the game unchanged. One hit KO is
+  -1000; healing is left alone.
+- The seed's logic assumes x1 (the apworld has no damage option); the
+  option changes nothing the seed or the server sees.
+- Tests: host tests (each multiplier, the rounding, healing, the hook, the
+  setting is kept); a probe to gameplay verifies the signatures. Not yet
+  tried with a hit in the game.
