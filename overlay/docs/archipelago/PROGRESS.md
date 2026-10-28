@@ -755,3 +755,42 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   verified tricks are offered and checked; trick seeds generate with the
   packed apworld on Archipelago 0.6.8, and an unverified SoH trick is
   refused there.
+
+### Glitched logic (2026-10-28)
+
+- recon/extract_glitched.py reads OoT3D_Randomizer's area graph (447 areas,
+  2188 events, locations and exits) and keeps the 274 entries with a
+  /*Glitched*/ condition (573 glitch uses) in data/glitched_logic.json, as
+  C++ expressions, plus the 13 glitchless conditions whose key count rises
+  with glitched logic (SmallKeys(dungeon, glitchless, glitched)).
+- oot3d_glitched.py parses those expressions and builds them into rule
+  builder rules with the apworld's helpers, with CanDoGlitch translated from
+  logic.cpp. With glitched logic an entry is open when its glitchless or its
+  glitched condition holds (Entrance::GetConditionsMet), so the condition is
+  ORed into the SoH entrance between the same regions (or a new entrance
+  where SoH has none), into the location's rule (with the 3D area's
+  reachability when SoH places it elsewhere), and into the SoH event of the
+  same region. The raised key counts are ANDed into the matching SoH rules.
+  3D area names match SoH region names for 313 of 446 areas; a few aliases
+  cover more.
+- Left out, so never expected: 38 of 274 conditions with every glitch on
+  (areas SoH splits differently: Gerudo Fortress, parts of Jabu-Jabu, the
+  Bottom of the Well and Dodongo's Cavern; the enemy randomizer's
+  CanPassEnemy family; Master Quest; gossip stones and bean planting).
+- oot3d_glitch_options.py: Logic Rules (glitchless, glitched), the 21 glitch
+  categories with the difficulty levels the 3D randomizer offers for each,
+  and the 14 miscellaneous glitches, in a "Glitches" option group. They go
+  into slot data for Universal Tracker; the client plays the same.
+- recon/verify_glitches.py compares with the logic oracle (Logic=Glitched,
+  same settings): every glitch at its highest level, then each category and
+  each single glitch alone. 36 of 36 runs are never more permissive than the
+  3D logic. explain_difference.py found the two fixes it took: the Bottle
+  with Big Poe no longer counts as a bottle (OoT3D_Randomizer's NumBottles
+  leaves it out), and Sheik in the Ice Cavern needs adult Link.
+- The apworld stays stricter in places (34 locations with every glitch on;
+  Ledge Clip and the Forest Temple BK skip alone about 44 each), where a
+  route crosses areas SoH splits differently or a key count is ANDed into a
+  whole rule.
+- Tests: apworld 0.11.0 suite 512 passed, 33 skipped (every condition
+  parses; glitchless seeds take none; a ledge cancel gets child Link past
+  King Zora only when chosen).

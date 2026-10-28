@@ -24,8 +24,10 @@ to start with.
   Fountain, Jabu-Jabu, the rainbow bridge, Ganon's trials, the forest, the
   Kakariko gate and the Door of Time; Gold Skulltula tokens, Deku scrubs, cows, shops, ocarinas, the Weird Egg and
   the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts;
-  logical tricks by their OoT3D Randomizer names, each checked against its logic
-  shuffled; starting with
+  logical tricks by their OoT3D Randomizer names, each checked against its logic;
+  glitched logic (Logic Rules, in the Glitches group) with the OoT3D
+  Randomizer's glitch categories, their difficulties and its single glitches,
+  checked the same way; starting with
   the Kokiri Sword, a Deku Shield, an ocarina or magic beans; the item pool,
   DeathLink and Archipelago's own options.
 
@@ -61,8 +63,9 @@ and the reward comes from the server (Jabu-Jabu's sapphire from the game).
 
 The world supports [Universal Tracker](https://github.com/FarisTheAncient/Archipelago/releases),
 which shows the locations that are in logic. It needs no player yaml: it
-rebuilds the world from the seed's slot data. It shows no "glitched"
-locations: Ship of Harkinian's N64 tricks are not checked for 3D.
+rebuilds the world from the seed's slot data, including the seed's tricks
+and glitches. It shows no "glitched" locations beyond those: Ship of
+Harkinian's N64 tricks are not checked for 3D.
 
 1. Put this world's `.apworld` and Universal Tracker's `tracker.apworld` into
    the Archipelago launcher's `custom_worlds` folder.

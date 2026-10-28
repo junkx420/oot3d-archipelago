@@ -7,8 +7,8 @@ each of them, and its minimal item sets are reused here.
 
 from Options import OptionError
 
-from ..Enums import Items, Locations
-from .. import oot3d_options
+from ..Enums import Items, Locations, Regions
+from .. import oot3d_glitch_options, oot3d_glitched, oot3d_options
 from .bases import SohTestBase
 
 
@@ -34,7 +34,7 @@ class TestOptionsCreator(SohTestBase):
                                  "rainbow_bridge_skull_tokens_required", "triforce_hunt", "triforce_hunt_pieces_total",
                                  "triforce_hunt_pieces_required_percentage", "starting_hearts", "shuffle_ocarinas",
                                  "shuffle_weird_egg", "shuffle_gerudo_membership_card",
-                                 "tricks_in_logic", "enable_all_tricks"})
+                                 "tricks_in_logic", "enable_all_tricks"} | oot3d_glitch_options.OPTION_NAMES)
 
     def test_core_options_stay_visible_for_other_games(self) -> None:
         from Options import DeathLink, Visibility
@@ -133,6 +133,52 @@ class TestWorldSettings(SohTestBase):
                 oot3d_options.validate(self.world.options, "Tester")
         finally:
             option.value = original
+
+
+class TestGlitchedConditions(SohTestBase):
+    """OoT3D_Randomizer's glitched conditions parse and build."""
+
+    def test_every_condition_parses(self) -> None:
+        unreadable = []
+        for entry in oot3d_glitched.RULES:
+            try:
+                oot3d_glitched.parse(entry["rule"])
+            except oot3d_glitched.Unsupported as reason:
+                unreadable.append((entry["target"], str(reason)))
+        self.assertEqual(unreadable, [])
+
+    def test_glitchless_seeds_take_none(self) -> None:
+        self.assertIsNone(self.world.glitched_logic)
+
+    def test_options_match_the_3d_settings(self) -> None:
+        self.assertEqual(set(oot3d_glitch_options.FIELDS),
+                         set(oot3d_glitch_options.CATEGORIES) | set(oot3d_glitch_options.MISC))
+        self.assertEqual(set(oot3d_glitched.GLITCH_SETTINGS.values()), set(oot3d_glitch_options.CATEGORIES))
+
+
+class TestGlitchedLogic(SohTestBase):
+    """With glitched logic, a chosen glitch opens its route: a ledge cancel
+    gets child Link past King Zora without Ruto's letter."""
+    options = {"logic_rules": "glitched", "glitch_ledge_cancel": "novice", "closed_forest": "off"}
+
+    def test_most_conditions_are_used(self) -> None:
+        logic = self.world.glitched_logic
+        self.assertIsNotNone(logic)
+        # Left out: areas SoH splits differently, enemy randomizer helpers,
+        # Master Quest; recon/verify_glitches.py checks what is used.
+        self.assertLess(len(logic.skipped), len(oot3d_glitched.RULES) // 5)
+
+    def test_ledge_cancel_passes_king_zora(self) -> None:
+        self.collect_by_name([Items.PROGRESSIVE_BOMB_BAG])
+        self.assertTrue(self.multiworld.state.can_reach_region(str(Regions.ZD_BEHIND_KING_ZORA), self.player))
+
+
+class TestGlitchedLogicNeedsTheGlitch(SohTestBase):
+    options = {"logic_rules": "glitched", "closed_forest": "off"}
+
+    def test_no_ledge_cancel_no_route(self) -> None:
+        self.collect_by_name([Items.PROGRESSIVE_BOMB_BAG])
+        self.assertFalse(self.multiworld.state.can_reach_region(str(Regions.ZD_BEHIND_KING_ZORA), self.player))
 
 
 class TestTricks(SohTestBase):

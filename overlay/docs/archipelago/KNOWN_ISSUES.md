@@ -170,3 +170,12 @@ at 0x06200000, TriAevum's object bank extension; leaving Kokiri Forest
 crashed with "guest memory regions overlap". The page is now at 0x06F00000.
 Savestates taken with an old build still hold the page at the old address
 and can crash the same way; use the in-game save instead.
+
+## Glitched logic
+
+Glitched logic follows OoT3D_Randomizer's, checked with its logic, but takes
+fewer routes: 38 of its 274 glitched conditions are left out (areas the Ship
+of Harkinian graph splits differently, such as Gerudo Fortress and parts of
+Jabu-Jabu; enemy randomizer helpers; Master Quest). A seed may therefore
+expect less than the 3D randomizer would, never more. Nothing is checked in
+game: the glitches are the player's to perform.

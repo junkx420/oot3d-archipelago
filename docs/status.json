@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-27",
-  "now": "Played up to Hyrule Castle by a tester. Next: glitched logic (OoT3D_Randomizer's area graph first), more tricks, client options (skips, quality of life).",
+  "updated": "2026-10-28",
+  "now": "Played up to Hyrule Castle by a tester. Next: client options (skips, quality of life, cheats), more tricks, song and dungeon reward shuffles.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "id": 3, "name": "apworld", "weight": 12, "percent": 85,
+      "id": 3, "name": "apworld", "weight": 12, "percent": 90,
       "items": [
         {"text": "Location and item tables generated from OoT3D_Randomizer", "done": true},
         {"text": "Logic ported from the Ship of Harkinian apworld", "done": true},
@@ -39,7 +39,7 @@
         {"text": "World options: Jabu-Jabu, Zora's Fountain, rainbow bridge, trials, forest, Kakariko gate, Door of Time; starting items", "done": true},
         {"text": "Shuffles beyond the vanilla game (tokens, scrubs, cows, shops done; songs, rewards not yet)", "done": false},
         {"text": "3D tricks in logic, each checked against the 3D randomizer (33)", "done": true},
-        {"text": "Glitched logic", "done": false}
+        {"text": "Glitched logic: 21 categories with difficulties and 14 single glitches, each checked against the 3D randomizer", "done": true}
       ]
     },
     {
@@ -75,6 +75,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.10: glitched logic, with OoT3D_Randomizer's glitch categories, difficulties and single glitches, each compared with its own logic."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.9: 33 logical tricks, each compared with OoT3D_Randomizer's own logic, chosen by their 3D randomizer names."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.8: more of Ship of Harkinian's options: rainbow bridge conditions, Triforce hunt, starting hearts, and ocarina, Weird Egg and Gerudo card shuffles."},
     {"date": "2026-10-27", "text": "Alpha v0.1.0-alpha.7: cows and shop slots can be shuffled. Cows give their item without an empty bottle; shop slots sell their item at the seed's price, once."},

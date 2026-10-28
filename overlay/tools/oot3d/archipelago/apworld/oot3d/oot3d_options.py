@@ -20,6 +20,8 @@ from typing import Any
 
 from Options import Choice, OptionError, PerGameCommonOptions, Toggle, Visibility
 
+from .oot3d_glitch_options import OPTION_NAMES as GLITCH_OPTIONS
+
 # option name -> (default, allowed values). Choice and Toggle values are the
 # option's internal names; Range values are numbers.
 SUPPORTED: dict[str, tuple[Any, frozenset]] = {
@@ -166,7 +168,7 @@ def apply_defaults(options_dataclass: type) -> None:
 # Shown besides Archipelago's common options and the SUPPORTED options with
 # more than one value. They change what the seed holds, not what the client
 # must do in the game.
-SHOWN = frozenset({"death_link", "item_pool", "start_inventory_from_pool", "tricks_in_logic"})
+SHOWN = frozenset({"death_link", "item_pool", "start_inventory_from_pool", "tricks_in_logic"}) | GLITCH_OPTIONS
 
 
 def apply_visibility(options_dataclass: type) -> None:

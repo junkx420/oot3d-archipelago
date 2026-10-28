@@ -142,8 +142,10 @@ def set_region_rules(world: "SohWorld") -> None:
     add_locations(Regions.ICE_CAVERN_FINAL_ROOM, world, [
         (Locations.ICE_CAVERN_IRON_BOOTS_CHEST,
          lambda bundle: can_kill_enemy(bundle, Enemies.WOLFOS)),
+        # TriAevum: OoT3D_Randomizer's Sheik appears for adult Link only (a
+        # glitch can bring child Link here).
         (Locations.SHEIK_IN_ICE_CAVERN, lambda bundle: can_kill_enemy(
-            bundle, Enemies.WOLFOS))  # Rando enables this for child
+            bundle, Enemies.WOLFOS) & is_adult(bundle))
     ])
     # Connections
     connect_regions(Regions.ICE_CAVERN_FINAL_ROOM, world, [

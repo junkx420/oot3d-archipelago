@@ -72,6 +72,8 @@ def add_locations(parent_region: Regions, world: "SohWorld", locations: list[tup
                 locationRule = loc[1]((parent_region, world)) if callable(loc[1]) else loc[1]
             else:
                 locationRule = True_()
+            if world.glitched_logic is not None:  # TriAevum: oot3d_glitched.py
+                locationRule = world.glitched_logic.extend_location(str(parent_region), locationName, locationRule)
             mLocations.append((locationName, locationAddress, locationRule))
 
     if len(mLocations) > 0:
@@ -95,6 +97,8 @@ def connect_regions(parent_region: Regions, world: "SohWorld", child_regions: li
             regionRule = region[1]((parent_region, world)) if callable(region[1]) else region[1]  # type: ignore # noqa
         else:
             regionRule = True_()
+        if world.glitched_logic is not None:  # TriAevum: oot3d_glitched.py
+            regionRule = world.glitched_logic.extend_entrance(str(parent_region), str(region[0]), regionRule)
         world.create_entrance(parentRegion, childRegion, regionRule)
 
 
@@ -105,6 +109,8 @@ def add_events(parent_region: Regions, world: "SohWorld", events: list[tuple[Str
         eventName = str(event[0])
         eventItemName = str(event[1])
         eventRule = event[2]((parent_region, world)) if callable(event[2]) else event[2]
+        if world.glitched_logic is not None:  # TriAevum: oot3d_glitched.py
+            eventRule = world.glitched_logic.extend_event(str(parent_region), eventItemName, eventRule)
         # test_for_age_check(eventRule, parent_region, world)
         parentRegion.add_event(eventName, eventItemName, eventRule, SohLocation, SohItem)
 
@@ -328,10 +334,10 @@ class HasBottleCount(WrapperRule, game=GAME):
 
 
 def has_bottle_count(target_count: int) -> Rule:
+    # TriAevum: OoT3D_Randomizer never counts the Bottle with Big Poe as a
+    # bottle (its NumBottles leaves it out), so selling the poe does not count.
     return HasBottleCount( \
-        (HasAll(Events.DELIVER_LETTER, Events.CAN_EMPTY_BIG_POES) & HasFromList(*no_rules_bottles, Items.BOTTLE_WITH_BIG_POE, Items.BOTTLE_WITH_RUTOS_LETTER, count=target_count)) \
-            | (Has(Events.DELIVER_LETTER) & HasFromList(*no_rules_bottles, Items.BOTTLE_WITH_RUTOS_LETTER, count=target_count)) \
-            | (Has(Events.CAN_EMPTY_BIG_POES) & HasFromList(*no_rules_bottles, Items.BOTTLE_WITH_BIG_POE, count=target_count)) \
+        (Has(Events.DELIVER_LETTER) & HasFromList(*no_rules_bottles, Items.BOTTLE_WITH_RUTOS_LETTER, count=target_count)) \
             | HasFromList(*no_rules_bottles, count=target_count) \
         , count = target_count)
 

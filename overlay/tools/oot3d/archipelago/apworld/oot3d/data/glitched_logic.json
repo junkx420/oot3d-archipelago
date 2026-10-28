@@ -1,0 +1,1742 @@
+{
+"source": "OoT3D_Randomizer source/location_access and source/gold_skulltulas: the /*Glitched*/ conditions, written by recon/extract_glitched.py",
+"rules": [
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "MINUET_OF_FOREST_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && MinuetOfForest;"
+},
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "BOLERO_OF_FIRE_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && BoleroOfFire && CanLeaveForest;"
+},
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "SERENADE_OF_WATER_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && SerenadeOfWater && CanLeaveForest;"
+},
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "NOCTURNE_OF_SHADOW_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && NocturneOfShadow && CanLeaveForest;"
+},
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "REQUIEM_OF_SPIRIT_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && RequiemOfSpirit && CanLeaveForest;"
+},
+{
+"area": "ROOT_EXITS",
+"kind": "Entrance",
+"target": "PRELUDE_OF_LIGHT_WARP",
+"rule": "return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (CanJumpslash || CanUseProjectile || CanUse(MEGATON_HAMMER) || HasBombchus) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && PreludeOfLight && CanLeaveForest;"
+},
+{
+"area": "BOTTOM_OF_THE_WELL_ENTRYWAY",
+"kind": "Entrance",
+"target": "BOTTOM_OF_THE_WELL_MAIN_AREA",
+"rule": "return Dungeon::BottomOfTheWell.IsVanilla() && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) && CanUse(LONGSHOT) && CanHookEnemy(8, 0, 0, 1);"
+},
+{
+"area": "BOTTOM_OF_THE_WELL_ENTRYWAY",
+"kind": "Entrance",
+"target": "BOTTOM_OF_THE_WELL_MQ_PERIMETER",
+"rule": "return Dungeon::BottomOfTheWell.IsMQ() && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) && CanUse(LONGSHOT) && CanHookEnemy(8, 0, 0, 4);"
+},
+{
+"area": "TEMPLE_OF_TIME",
+"kind": "Entrance",
+"target": "TOT_BEYOND_DOOR_OF_TIME",
+"rule": "return SongOfTime && OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED) && (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE)));"
+},
+{
+"area": "HYRULE_CASTLE_GROUNDS",
+"kind": "Entrance",
+"target": "HC_GREAT_FAIRY_FOUNTAIN",
+"rule": "return Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "HYRULE_CASTLE_GROUNDS",
+"kind": "Entrance",
+"target": "HC_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "HC_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "HC_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "GANONS_CASTLE_GROUNDS",
+"kind": "Entrance",
+"target": "GANONS_CASTLE_LEDGE",
+"rule": "return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::ADVANCED) || (HoverBoots && CanShield && Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "OGC_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "OGC_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "GANONS_CASTLE_LEDGE",
+"kind": "Entrance",
+"target": "GANONS_CASTLE_GROUNDS",
+"rule": "return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::ADVANCED) || (HoverBoots && CanShield && Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "MARKET_TREASURE_CHEST_GAME",
+"kind": "LocationAccess",
+"target": "MARKET_TREASURE_CHEST_GAME_REWARD",
+"rule": "return !ShuffleChestMinigame && (CanUse(FARORES_WIND) && (HasBottle || WeirdEgg) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "DEATH_MOUNTAIN_TRAIL",
+"kind": "LocationAccess",
+"target": "DMT_CHEST",
+"rule": "return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "DEATH_MOUNTAIN_TRAIL",
+"kind": "Entrance",
+"target": "DEATH_MOUNTAIN_SUMMIT",
+"rule": "return IsAdult && Here(DEATH_MOUNTAIN_TRAIL, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "DEATH_MOUNTAIN_TRAIL",
+"kind": "Entrance",
+"target": "DMT_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "DEATH_MOUNTAIN_SUMMIT",
+"kind": "Entrance",
+"target": "DMT_COW_GROTTO",
+"rule": "return Here(DEATH_MOUNTAIN_SUMMIT, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "DEATH_MOUNTAIN_SUMMIT",
+"kind": "Entrance",
+"target": "DMT_GREAT_FAIRY_FOUNTAIN",
+"rule": "return (CanJumpslash && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED)) || (IsChild && CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::EXPERT));"
+},
+{
+"area": "DMT_COW_GROTTO",
+"kind": "LocationAccess",
+"target": "DMT_COW_GROTTO_COW",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && EponasSong;"
+},
+{
+"area": "DMT_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "DMT_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "GORON_CITY",
+"kind": "EventAccess",
+"target": "GoronCityChildFire",
+"rule": "return IsChild && CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "GORON_CITY",
+"kind": "EventAccess",
+"target": "GCWoodsWarpOpen",
+"rule": "return (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "GORON_CITY",
+"kind": "EventAccess",
+"target": "GCDaruniasDoorOpenChild",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && ZeldasLullaby;"
+},
+{
+"area": "GORON_CITY",
+"kind": "LocationAccess",
+"target": "GC_MAZE_LEFT_CHEST",
+"rule": "return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GORON_CITY",
+"kind": "Entrance",
+"target": "GC_SHOP",
+"rule": "return IsChild && Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "GORON_CITY",
+"kind": "Entrance",
+"target": "GC_GROTTO_PLATFORM",
+"rule": "return (HasBombchus && ((IsChild && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) || (IsChild && CanUse(LONGSHOT));"
+},
+{
+"area": "GC_DARUNIAS_CHAMBER",
+"kind": "LocationAccess",
+"target": "GC_DARUNIAS_JOY",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || GCDaruniasDoorOpenChild) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SariasSong;"
+},
+{
+"area": "GC_DARUNIAS_CHAMBER",
+"kind": "Entrance",
+"target": "DMC_LOWER_LOCAL",
+"rule": "return IsChild && GCDaruniasDoorOpenChild && (KokiriSword || Sticks) && GlitchOccamsStatue;"
+},
+{
+"area": "DMC_UPPER_NEARBY",
+"kind": "Entrance",
+"target": "DMC_UPPER_GROTTO",
+"rule": "return Here(DMC_UPPER_NEARBY, [] { return CanUse(STICKS) && CanSurviveHeatFor(48) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "DMC_UPPER_LOCAL",
+"kind": "Entrance",
+"target": "DMC_CENTRAL_NEARBY",
+"rule": "return CanSurviveHeatFor(24) && CanTakeDamage && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DMC_UPPER_LOCAL",
+"kind": "Entrance",
+"target": "DMC_LOWER_NEARBY",
+"rule": "return CanSurviveHeatFor(24) && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DMC_LOWER_NEARBY",
+"kind": "Entrance",
+"target": "DMC_GREAT_FAIRY_FOUNTAIN",
+"rule": "return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) || (CanSurviveHeatFor(48) && CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))) || (Bombs && CanShield && CanSurviveHeatFor(48) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::EXPERT)) || Here(DMC_UPPER_LOCAL, [] { return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "DMC_LOWER_NEARBY",
+"kind": "Entrance",
+"target": "DMC_HAMMER_GROTTO",
+"rule": "return IsAdult && CanSurviveHeatFor(48) && CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DMC_LOWER_LOCAL",
+"kind": "Entrance",
+"target": "DMC_CENTRAL_NEARBY",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) && CanSurviveHeatFor(8, 24);"
+},
+{
+"area": "DMC_CENTRAL_NEARBY",
+"kind": "LocationAccess",
+"target": "DMC_VOLCANO_FREESTANDING_POH",
+"rule": "return Here(DMC_LOWER_LOCAL, [] { return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) && CanSurviveHeatFor(24); });"
+},
+{
+"area": "DMC_CENTRAL_LOCAL",
+"kind": "Entrance",
+"target": "DMC_LOWER_NEARBY",
+"rule": "return IsChild && CanSurviveHeatFor(-1, 24) && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DMC_CENTRAL_LOCAL",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) && CanSurviveHeatFor(48);"
+},
+{
+"area": "DMC_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "DMC_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanTakeDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "DEKU_TREE_LOBBY",
+"kind": "Entrance",
+"target": "DEKU_TREE_OUTSIDE_BOSS_ROOM",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DEKU_TREE_LOBBY",
+"kind": "Entrance",
+"target": "DEKU_TREE_BOSS_ENTRYWAY",
+"rule": "return IsChild && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD)) && Nuts && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::EXPERT);"
+},
+{
+"area": "DEKU_TREE_SLINGSHOT_ROOM",
+"kind": "Entrance",
+"target": "DEKU_TREE_2F_MIDDLE_ROOM",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "DEKU_TREE_COMPASS_ROOM",
+"kind": "Entrance",
+"target": "DEKU_TREE_BOSS_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "DEKU_TREE_BASEMENT_LOWER",
+"kind": "Entrance",
+"target": "DEKU_TREE_BASEMENT_UPPER",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DEKU_TREE_BASEMENT_LOWER",
+"kind": "Entrance",
+"target": "DEKU_TREE_OUTSIDE_BOSS_ROOM",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DEKU_TREE_BASEMENT_BACK_LOBBY",
+"kind": "Entrance",
+"target": "DEKU_TREE_BASEMENT_BACK_ROOM",
+"rule": "return CanPassEnemy(0, 0, 7, 4) && Here(DEKU_TREE_BASEMENT_BACK_LOBBY, [] { return HasFireSourceWithTorch || CanUse(Bow); }) && Here(DEKU_TREE_BASEMENT_BACK_LOBBY, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::EXPERT)); });"
+},
+{
+"area": "DEKU_TREE_BOSS_ROOM",
+"kind": "EventAccess",
+"target": "DekuTreeClear",
+"rule": "return SoulGohma && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DODONGOS_CAVERN_BEGINNING",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_LOBBY",
+"rule": "return Here(DODONGOS_CAVERN_BEGINNING, [] { return GlitchBlueFireWall && BlueFire; });"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "EventAccess",
+"target": "GossipStoneFairy",
+"rule": "return CanSummonGossipFairy && Here(DODONGOS_CAVERN_LOBBY, [] { return GlitchBlueFireWall && BlueFire; });"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "LocationAccess",
+"target": "DODONGOS_CAVERN_MAP_CHEST",
+"rule": "return Here(DODONGOS_CAVERN_LOBBY, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); }) || CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "LocationAccess",
+"target": "DODONGOS_CAVERN_GOSSIP_STONE",
+"rule": "return Here(DODONGOS_CAVERN_LOBBY, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); });"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_LOBBY_SWITCH",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || (HasExplosives && (CanUse(SLINGSHOT) || CanUse(HOOKSHOT) || CanUse(BOW)) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)) || (CanShield && GoronBracelet && GlitchModernHalfie) || (CanJumpslash && (Bombs || GoronBracelet) && Fairy && GlitchClassicHalfie);"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_SE_CORRIDOR",
+"rule": "return Here(DODONGOS_CAVERN_LOBBY, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); }) && CanPassAnyEnemy(1, 0, 1, { 2, 3, 4 });"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_FAR_BRIDGE",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "DODONGOS_CAVERN_LOBBY",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_BOSS_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "DODONGOS_CAVERN_SE_CORRIDOR",
+"kind": "LocationAccess",
+"target": "DODONGOS_CAVERN_GS_SCARECROW",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanUse(LONGSHOT) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "DODONGOS_CAVERN_SE_CORRIDOR",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_SE_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_SE_CORRIDOR, [] { return (GlitchBlueFireWall && BlueFire); });"
+},
+{
+"area": "DODONGOS_CAVERN_DODONGO_ROOM",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_NEAR_DODONGO_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_DODONGO_ROOM, [] { return GlitchBlueFireWall && BlueFire; });"
+},
+{
+"area": "DODONGOS_CAVERN_STAIRS_LOWER",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_COMPASS_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_STAIRS_LOWER, [] { return GlitchBlueFireWall && BlueFire; });"
+},
+{
+"area": "DODONGOS_CAVERN_STAIRS_UPPER",
+"kind": "LocationAccess",
+"target": "DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) && HookshotOrBoomerang);"
+},
+{
+"area": "DODONGOS_CAVERN_BOMB_ROOM_LOWER",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_2F_SIDE_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); });"
+},
+{
+"area": "DODONGOS_CAVERN_BOMB_ROOM_LOWER",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_BOMB_ROOM_LOWER, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); });"
+},
+{
+"area": "DODONGOS_CAVERN_BOMB_ROOM_LOWER",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_BOMB_ROOM_UPPER",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || (IsAdult && (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT)) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DODONGOS_CAVERN_FIRST_SLINGSHOT_ROOM",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_UPPER_LIZALFOS",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (IsAdult && CanUse(HOOKSHOT) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DODONGOS_CAVERN_SECOND_SLINGSHOT_ROOM",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_BOMB_ROOM_UPPER",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (IsAdult && CanUse(HOOKSHOT) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DODONGOS_CAVERN_FAR_BRIDGE",
+"kind": "LocationAccess",
+"target": "DODONGOS_CAVERN_END_OF_BRIDGE_CHEST",
+"rule": "return Here(DODONGOS_CAVERN_FAR_BRIDGE, [] { return (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); }) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "DODONGOS_CAVERN_BOSS_AREA",
+"kind": "Entrance",
+"target": "DODONGOS_CAVERN_BACK_ROOM",
+"rule": "return Here(DODONGOS_CAVERN_BOSS_AREA, [] { return (GlitchBlueFireWall && BlueFire) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)); });"
+},
+{
+"area": "DODONGOS_CAVERN_BOSS_ROOM",
+"kind": "EventAccess",
+"target": "DodongosCavernClear",
+"rule": "return Here(DODONGOS_CAVERN_BOSS_ROOM, [] { return HasExplosives || (CanUse(MEGATON_HAMMER) && CanShield) || (GlitchBlueFireWall && BlueFire); }) && SoulDodongo && (((HasExplosives || GoronBracelet) && CanJumpslash) || BonkDamage.Value<u8>() >= BONKDAMAGE_ONE);"
+},
+{
+"area": "FIRE_TEMPLE_FIRST_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_LOOP_ENEMIES",
+"rule": "return ((IsAdult && CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::EXPERT)) || (GlitchFireGrunzClip && Bombs && IsAdult && CanUse(HOVER_BOOTS) && CanSurviveDamage)) && (SmallKeys(FIRE_TEMPLE, 8) || !IsKeysanity);"
+},
+{
+"area": "FIRE_TEMPLE_NEAR_BOSS_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOSS_ENTRYWAY",
+"rule": "return BossKeyFireTemple && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "FIRE_TEMPLE_LOOP_FLARE_DANCER",
+"kind": "LocationAccess",
+"target": "FIRE_TEMPLE_FLARE_DANCER_CHEST",
+"rule": "return CanDefeatEnemy(4, 0, 3, 0) && ((CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || (CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "FIRE_TEMPLE_LOOP_HAMMER_SWITCH",
+"kind": "EventAccess",
+"target": "FireLoopSwitch",
+"rule": "return CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && Bombs && CanTakeDamage && CanUse(STICKS);"
+},
+{
+"area": "FIRE_TEMPLE_LOOP_HAMMER_SWITCH",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_LOOP_GORON_ROOM",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_LOOP_EXIT",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_LOOP_GORON_ROOM",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_BIG_LAVA_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES",
+"rule": "return CanSurviveHeatFor(48) && ((CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || (IsAdult && (SongOfTime && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && (Bugs || Fish) && CanShield)))));"
+},
+{
+"area": "FIRE_TEMPLE_BIG_LAVA_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BIG_LAVA_ROOM_SOUTH_GORON",
+"rule": "return CanSurviveHeatFor(48) && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_SHORTCUT_ROOM",
+"kind": "LocationAccess",
+"target": "FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_SHORTCUT_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_SHORTCUT_CLIMB",
+"rule": "return (GoronBracelet || LogicFireStrength) && Bombs && CanSurviveDamage && CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_SHORTCUT_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOULDER_MAZE_LOWER",
+"rule": "return (GoronBracelet || (IsAdult && LogicFireStrength)) && (IsAdult || LogicFireStrength) && (CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE) || (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanUse(STICKS)));"
+},
+{
+"area": "FIRE_TEMPLE_BOULDER_MAZE_LOWER",
+"kind": "LocationAccess",
+"target": "FIRE_TEMPLE_GS_BOULDER_MAZE",
+"rule": "return (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE) && Bombs) || Here(FIRE_TEMPLE_BOULDER_MAZE_UPPER, [] { return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE); });"
+},
+{
+"area": "FIRE_TEMPLE_BOULDER_MAZE_LOWER",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOULDER_MAZE_UPPER",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE) && Bombs;"
+},
+{
+"area": "FIRE_TEMPLE_FIRE_WALL_CHASE",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOULDER_MAZE_UPPER",
+"rule": "return CanSurviveHeatFor(32) && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_FIRE_WALL_CHASE",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_CORRIDOR",
+"rule": "return CanSurviveHeatFor(32) && SmallKeys(FIRE_TEMPLE, 7) && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && Bombs && HasBombchus && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_FIRE_MAZE_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_FIRE_MAZE_UPPER",
+"rule": "return Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_FIRE_MAZE_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_LATE_FIRE_MAZE",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED) && Bombs && CanShield);"
+},
+{
+"area": "FIRE_TEMPLE_FIRE_MAZE_UPPER",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_WEST_CENTRAL_UPPER",
+"rule": "return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FIRE_TEMPLE_WEST_CENTRAL_LOWER",
+"kind": "LocationAccess",
+"target": "FIRE_TEMPLE_HIGHEST_GORON_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) || Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, [] { return (IsAdult || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE))) && (((SongOfTime && (((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::NOVICE))) || CanPlay(SongOfTime)) && ((CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE)) || CanUse(MEGATON_HAMMER))); });"
+},
+{
+"area": "FIRE_TEMPLE_WEST_CENTRAL_LOWER",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_WEST_CENTRAL_UPPER",
+"rule": "return (IsAdult && SongOfTime && (((Bugs || Fish) && CanShield && (CanSurviveDamage || (CanTakeDamage && NumBottles >= 2)) && Bombs && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::NOVICE)))) || (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "FIRE_TEMPLE_WEST_CENTRAL_UPPER",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOSS_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FIRE_TEMPLE_LATE_FIRE_MAZE",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_FIRE_MAZE_ROOM",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "FIRE_TEMPLE_WEST_CLIMB",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_WEST_PEAK",
+"rule": "return CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FIRE_TEMPLE_BOSS_ROOM",
+"kind": "EventAccess",
+"target": "FireTempleClear",
+"rule": "return SoulVolvagia && CanSurviveHeatFor(48) && ((CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || CanUse(MEGATON_HAMMER)) && Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FOREST_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_NW_OUTDOORS_LOWER",
+"rule": "return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::NOVICE) || (SongOfTime && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "FOREST_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_EAST_CORRIDOR",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FOREST_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_BOSS_ENTRYWAY",
+"rule": "return IsAdult && GlitchForestBKSkip && (CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(SLINGSHOT));"
+},
+{
+"area": "FOREST_TEMPLE_NW_OUTDOORS_LOWER",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_LOBBY",
+"rule": "return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::NOVICE) || (SongOfTime && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "FOREST_TEMPLE_NW_OUTDOORS_LOWER",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_NW_OUTDOORS_UPPER",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || (IsAdult && CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "FOREST_TEMPLE_NW_OUTDOORS_LOWER",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_BOSS_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FOREST_TEMPLE_NE_OUTDOORS_LOWER",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_FALLING_ROOM",
+"rule": "return Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "FOREST_TEMPLE_NE_OUTDOORS_UPPER",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_FALLING_ROOM",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::EXPERT);"
+},
+{
+"area": "FOREST_TEMPLE_BLOCK_PUSH_ROOM",
+"kind": "LocationAccess",
+"target": "FOREST_TEMPLE_EYE_SWITCH_CHEST",
+"rule": "return IsAdult && (CanUse(BOW) || CanUse(SLINGSHOT)) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "FOREST_TEMPLE_BLOCK_PUSH_ROOM",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_NW_OUTDOORS_UPPER",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "FOREST_TEMPLE_BLOCK_PUSH_ROOM",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_NW_CORRIDOR_TWISTED",
+"rule": "return ((IsAdult && (Bow || Hookshot || CanUse(SLINGSHOT)) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)) || (Bombs && GoronBracelet && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE))) && SmallKeys(FOREST_TEMPLE, 2);"
+},
+{
+"area": "FOREST_TEMPLE_BLOCK_PUSH_ROOM",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_NW_CORRIDOR_STRAIGHTENED",
+"rule": "return ((IsAdult && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)) || (IsChild && Bombs && GoronBracelet && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE))) && (CanUse(BOW) || CanUse(SLINGSHOT)) && SmallKeys(FOREST_TEMPLE, 2);"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "LocationAccess",
+"target": "GERUDO_TRAINING_GROUNDS_HIDDEN_CEILING_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) && (LogicLensGtg || CanUse(LENS_OF_TRUTH));"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "LocationAccess",
+"target": "GERUDO_TRAINING_GROUNDS_MAZE_PATH_FIRST_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "LocationAccess",
+"target": "GERUDO_TRAINING_GROUNDS_MAZE_PATH_SECOND_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "LocationAccess",
+"target": "GERUDO_TRAINING_GROUNDS_MAZE_PATH_THIRD_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "LocationAccess",
+"target": "GERUDO_TRAINING_GROUNDS_MAZE_PATH_FINAL_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE",
+"kind": "Entrance",
+"target": "GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_VALLEY",
+"kind": "Entrance",
+"target": "GV_FORTRESS_SIDE",
+"rule": "return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || (IsChild && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::HERO)) || (IsAdult && (CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) || (CanUse(HOVER_BOOTS) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanSurviveDamage && (Bombs || HasBombchus) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED))))));"
+},
+{
+"area": "GV_UPPER_STREAM",
+"kind": "LocationAccess",
+"target": "GV_COW",
+"rule": "return IsChild && EponasSong && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "GV_FORTRESS_SIDE",
+"kind": "LocationAccess",
+"target": "GV_CHEST",
+"rule": "return IsAdult && (CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "GV_FORTRESS_SIDE",
+"kind": "Entrance",
+"target": "GERUDO_VALLEY",
+"rule": "return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) || (CanUse(HOVER_BOOTS) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanSurviveDamage && (Bombs || HasBombchus) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "GV_FORTRESS_SIDE",
+"kind": "Entrance",
+"target": "GV_CARPENTER_TENT",
+"rule": "return GlitchGVTentAsChild.Value<bool>();"
+},
+{
+"area": "GV_FORTRESS_SIDE",
+"kind": "Entrance",
+"target": "GV_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "LocationAccess",
+"target": "GF_CHEST",
+"rule": "return (((IsAdult || LogicGerudoChildClimb) && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE))) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "LocationAccess",
+"target": "GF_NORTH_F1_CARPENTER",
+"rule": "return !Settings::Enemizer && SoulGerudo && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "LocationAccess",
+"target": "GF_NORTH_F2_CARPENTER",
+"rule": "return !Settings::Enemizer && SoulGerudo && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "LocationAccess",
+"target": "GF_SOUTH_F1_CARPENTER",
+"rule": "return !Settings::Enemizer && SoulGerudo && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "LocationAccess",
+"target": "GF_SOUTH_F2_CARPENTER",
+"rule": "return !Settings::Enemizer && SoulGerudo && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "Entrance",
+"target": "GF_ARCHERY_RANGE",
+"rule": "return GlitchGFGuardSneak && (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(BOOMERANG));"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "Entrance",
+"target": "GF_OUTSIDE_GATE",
+"rule": "return (IsChild && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED)) || ((IsChild || ((CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(BOOMERANG)) && GlitchGFGuardSneak)) && ((CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)) && (CanUse(STICKS) || CanUse(BIGGORON_SWORD) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "Entrance",
+"target": "GERUDO_TRAINING_GROUNDS_ENTRYWAY",
+"rule": "return (CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE) && (HoverBoots || CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::ADVANCED))) || ((IsChild || ((CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(BOOMERANG)) && GlitchGFGuardSneak)) && ((CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)) && (CanUse(STICKS) || CanUse(BIGGORON_SWORD) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "GERUDO_FORTRESS",
+"kind": "Entrance",
+"target": "GF_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "WASTELAND_NEAR_FORTRESS",
+"kind": "Entrance",
+"target": "HAUNTED_WASTELAND",
+"rule": "return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;"
+},
+{
+"area": "HAUNTED_WASTELAND",
+"kind": "LocationAccess",
+"target": "WASTELAND_CHEST",
+"rule": "return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "HAUNTED_WASTELAND",
+"kind": "LocationAccess",
+"target": "WASTELAND_BOMBCHU_SALESMAN",
+"rule": "return AdultsWallet && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "HAUNTED_WASTELAND",
+"kind": "Entrance",
+"target": "WASTELAND_NEAR_FORTRESS",
+"rule": "return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;"
+},
+{
+"area": "DESERT_COLOSSUS",
+"kind": "EventAccess",
+"target": "FairyPond",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms;"
+},
+{
+"area": "DESERT_COLOSSUS",
+"kind": "Entrance",
+"target": "COLOSSUS_MEGALITH",
+"rule": "return HoverBoots && CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "COLOSSUS_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "COLOSSUS_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_SOUTHEAST_GROTTO",
+"rule": "return Here(HYRULE_FIELD, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_INSIDE_FENCE_GROTTO",
+"rule": "return Sticks && IsChild && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_COW_GROTTO",
+"rule": "return (CanUse(STICKS) && (ShardOfAgony || LogicGrottosWithoutAgony) && (IsChild || (CanOpenBombGrotto && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)))) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_NEAR_MARKET_GROTTO",
+"rule": "return Here(HYRULE_FIELD, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_FAIRY_GROTTO",
+"rule": "return Here(HYRULE_FIELD, [] { return CanUse(STICKS) && ((IsChild && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::EXPERT)) || (IsAdult && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))); });"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_NEAR_KAK_GROTTO",
+"rule": "return Sticks && IsChild && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "HYRULE_FIELD",
+"kind": "Entrance",
+"target": "HF_TEKTITE_GROTTO",
+"rule": "return Sticks && IsChild && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "HF_COW_GROTTO",
+"kind": "LocationAccess",
+"target": "HF_COW_GROTTO_COW",
+"rule": "return ((CanUse(STICKS) && Bombs && CanSurviveDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || HasFireSource) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (NumBottles >= 2 && Fairy)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)) || Ocarina) && EponasSong;"
+},
+{
+"area": "HF_COW_GROTTO",
+"kind": "LocationAccess",
+"target": "HF_COW_GROTTO_GOSSIP_STONE",
+"rule": "return CanUse(STICKS) && Bombs && CanSurviveDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "EventAccess",
+"target": "ChildScarecrow",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE))) && IsChild;"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "EventAccess",
+"target": "AdultScarecrow",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE))) && IsAdult;"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "LocationAccess",
+"target": "LH_FREESTANDING_POH",
+"rule": "return (IsAdult && CanUse(HOOKSHOT) && ScarecrowSong && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "Entrance",
+"target": "ZORAS_DOMAIN",
+"rule": "return IsChild && (CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::NaviDive_Stick, GlitchDifficulty::INTERMEDIATE) || (Bugs && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)))) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "Entrance",
+"target": "LH_FISHING_ISLAND",
+"rule": "return (CanUse(HOOKSHOT) && ScarecrowSong && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "LH_LAB",
+"kind": "LocationAccess",
+"target": "LH_LAB_DIVE",
+"rule": "return CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)))) && CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "LON_LON_RANCH",
+"kind": "LocationAccess",
+"target": "SONG_FROM_MALON",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && WeirdEgg && ChildCanAccess(HYRULE_CASTLE_GROUNDS) && AtDay;"
+},
+{
+"area": "LLR_STABLES",
+"kind": "LocationAccess",
+"target": "LLR_STABLES_LEFT_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE))) && EponasSong;"
+},
+{
+"area": "LLR_STABLES",
+"kind": "LocationAccess",
+"target": "LLR_STABLES_RIGHT_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE))) && EponasSong;"
+},
+{
+"area": "LLR_TOWER",
+"kind": "LocationAccess",
+"target": "LLR_TOWER_LEFT_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE))) && EponasSong;"
+},
+{
+"area": "LLR_TOWER",
+"kind": "LocationAccess",
+"target": "LLR_TOWER_RIGHT_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE))) && EponasSong;"
+},
+{
+"area": "JABU_JABUS_BELLY_BEGINNING",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_LIFT_MIDDLE",
+"rule": "return (CanPassEnemies(2, 0, 0, { 3, 4 }) && CanUse(STICKS) && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::EXPERT)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "JABU_JABUS_BELLY_LIFT_MIDDLE",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_NEAR_BOSS_ROOM",
+"rule": "return CanPassEnemy(2, 0, 1, 1) && (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) && GlitchJabuSwitch && (Fish || Bugs || CanUse(FARORES_WIND) || (IsAdult && ClaimCheck));"
+},
+{
+"area": "JABU_JABUS_BELLY_MAIN_LOWER",
+"kind": "LocationAccess",
+"target": "JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER",
+"rule": "return Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "JABU_JABUS_BELLY_MAIN_LOWER",
+"kind": "LocationAccess",
+"target": "JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER",
+"rule": "return Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "JABU_JABUS_BELLY_SHABOMB_CORRIDOR",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_LIFT_LOWER",
+"rule": "return CanPassEnemies(2, 0, 14, { 12, 13, 16 }) && CanUse(STICKS) && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::EXPERT);"
+},
+{
+"area": "JABU_JABUS_BELLY_LOWER_SIDE_ROOM",
+"kind": "EventAccess",
+"target": "FairyPot",
+"rule": "return (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "JABU_JABUS_BELLY_ABOVE_BIGOCTO",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_LIFT_UPPER",
+"rule": "return CanPassEnemies(2, 0, 6) && HasBombchus && CanShield && IsAdult && (CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(SLINGSHOT)) && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "JABU_JABUS_BELLY_NEAR_BOSS_ROOM",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_BOSS_ENTRYWAY",
+"rule": "return (CanUse(HOVER_BOOTS) && (CanUse(BOW) || CanUse(SLINGSHOT))) || CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "KAK_BAZAAR",
+"rule": "return CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "BOTTOM_OF_THE_WELL_ENTRYWAY",
+"rule": "return (IsChild && (CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE) || (AtNight && (CanDoGlitch(GlitchType::NaviDive_Stick, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || WeirdEgg))) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED)))))))) || (IsAdult && CanUse(LONGSHOT) && AtDay && CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "KAK_IMPAS_LEDGE",
+"rule": "return IsAdult && ((HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "KAK_ROOFTOP",
+"rule": "return LogicManOnRoof && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "KAK_IMPAS_ROOFTOP",
+"rule": "return (HoverBoots && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "Entrance",
+"target": "KAK_BEHIND_GATE",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KAK_BACKYARD",
+"kind": "Entrance",
+"target": "KAK_POTION_SHOP_BACK",
+"rule": "return CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "KAK_IMPAS_HOUSE_NEAR_COW",
+"kind": "LocationAccess",
+"target": "KAK_IMPAS_HOUSE_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))) && EponasSong;"
+},
+{
+"area": "KAK_WINDMILL",
+"kind": "EventAccess",
+"target": "DrainWell",
+"rule": "return IsChild && SongOfStorms && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::ADVANCED) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Fish || Bugs) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "KAK_WINDMILL",
+"kind": "LocationAccess",
+"target": "KAK_WINDMILL_FREESTANDING_POH",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KAK_WINDMILL",
+"kind": "LocationAccess",
+"target": "SONG_FROM_WINDMILL",
+"rule": "return IsAdult && (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::EXPERT) || ((Fish || Bugs) && CanShield && ((Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) || (DampesWindmillAccess || (IsAdult && CanJumpslash && CanUse(HOOKSHOT) && LogicWindmillPoHHookshot) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE))) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Fish || Bugs) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "THE_GRAVEYARD",
+"kind": "LocationAccess",
+"target": "GRAVEYARD_FREESTANDING_POH",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "THE_GRAVEYARD",
+"kind": "Entrance",
+"target": "GRAVEYARD_COMPOSERS_GRAVE",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && (IsChild || AdultCanAccess(GRAVEYARD_WARP_PAD_REGION) || (IsAdult && (CanPlantBean(THE_GRAVEYARD) || CanUse(LONGSHOT))) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2)))) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "THE_GRAVEYARD",
+"kind": "Entrance",
+"target": "GRAVEYARD_WARP_PAD_REGION",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "GRAVEYARD_HEART_PIECE_GRAVE",
+"kind": "LocationAccess",
+"target": "GRAVEYARD_HEART_PIECE_GRAVE_CHEST",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) || ((Bugs || Fish) && CanShield && (Bombs && (CanSurviveDamage || (Fairy && NumBottles >= 2))) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SunsSong && CanPassEnemy(63, 0, 0, 1, SpaceAroundEnemy::NARROW);"
+},
+{
+"area": "GRAVEYARD_COMPOSERS_GRAVE",
+"kind": "LocationAccess",
+"target": "GRAVEYARD_COMPOSERS_GRAVE_CHEST",
+"rule": "return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "GRAVEYARD_DAMPES_GRAVE",
+"kind": "EventAccess",
+"target": "DampesWindmillAccess",
+"rule": "return (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfTime;"
+},
+{
+"area": "GRAVEYARD_DAMPES_GRAVE",
+"kind": "Entrance",
+"target": "KAK_WINDMILL",
+"rule": "return (CanDoGlitch(GlitchType::WindmillBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfTime;"
+},
+{
+"area": "GRAVEYARD_WARP_PAD_REGION",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_ENTRYWAY",
+"rule": "return (CanUse(STICKS) && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE) || CanUse(FIRE_ARROWS))) || (CanTakeDamage && (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE)));"
+},
+{
+"area": "KOKIRI_FOREST",
+"kind": "Entrance",
+"target": "KF_OUTSIDE_DEKU_TREE",
+"rule": "return CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KOKIRI_FOREST",
+"kind": "Entrance",
+"target": "LW_BRIDGE_FROM_FOREST",
+"rule": "return CanLeaveForest && (CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || GlitchWWTEscape);"
+},
+{
+"area": "KOKIRI_FOREST",
+"kind": "Entrance",
+"target": "KF_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "KF_OUTSIDE_DEKU_TREE",
+"kind": "Entrance",
+"target": "DEKU_TREE_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KF_OUTSIDE_DEKU_TREE",
+"kind": "Entrance",
+"target": "KOKIRI_FOREST",
+"rule": "return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KF_LINKS_HOUSE",
+"kind": "LocationAccess",
+"target": "KF_LINKS_HOUSE_COW",
+"rule": "return (CanDoGlitch(GlitchType::IndoorBombOI, GlitchDifficulty::EXPERT) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (NumBottles >= 2 && Fairy)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::EXPERT))) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && Bombs && IsAdult && EponasSong && LinksCow;"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "EventAccess",
+"target": "BugShrub",
+"rule": "return IsChild && Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "LocationAccess",
+"target": "LW_SKULL_KID",
+"rule": "return IsChild && (Fish || Bugs) && SariasSong && CanShield && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "LocationAccess",
+"target": "LW_OCARINA_MEMORY_GAME",
+"rule": "return IsChild && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Fish || Bugs) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "Entrance",
+"target": "LW_BRIDGE",
+"rule": "return CanLeaveForest && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && HasBombchus) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "Entrance",
+"target": "ZORAS_RIVER",
+"rule": "return CanLeaveForest && (CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::NaviDive_Stick, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)))) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "Entrance",
+"target": "LW_BEYOND_MIDO",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || (CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::ADVANCED) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || HoverBoots)) || ((CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SariasSong);"
+},
+{
+"area": "THE_LOST_WOODS",
+"kind": "Entrance",
+"target": "LW_NEAR_SHORTCUTS_GROTTO",
+"rule": "return Here(THE_LOST_WOODS, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "LW_BEYOND_MIDO",
+"kind": "Entrance",
+"target": "THE_LOST_WOODS",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || ((CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && (CanSurviveDamage || (NumBottles >= 2 && Fairy)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SariasSong);"
+},
+{
+"area": "LW_BEYOND_MIDO",
+"kind": "Entrance",
+"target": "LW_SCRUBS_GROTTO",
+"rule": "return Here(LW_BEYOND_MIDO, [] { return IsChild && CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "SACRED_FOREST_MEADOW",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SACRED_FOREST_MEADOW",
+"kind": "Entrance",
+"target": "SFM_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "LW_BRIDGE",
+"kind": "Entrance",
+"target": "THE_LOST_WOODS",
+"rule": "return (CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "SHADOW_TEMPLE_ENTRYWAY",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_BEGINNING",
+"rule": "return Dungeon::ShadowTemple.IsVanilla() && (LogicLensShadow || CanUse(LENS_OF_TRUTH)) && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SHADOW_TEMPLE_ENTRYWAY",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_MQ_BEGINNING",
+"rule": "return Dungeon::ShadowTemple.IsMQ() && (LogicLensShadowMQ || CanUse(LENS_OF_TRUTH)) && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SHADOW_TEMPLE_BEGINNING",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_FIRST_BEAMOS",
+"rule": "return CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "SHADOW_TEMPLE_FIRST_BEAMOS",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_GS_NEAR_SHIP",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) && Longshot;"
+},
+{
+"area": "SHADOW_TEMPLE_FIRST_BEAMOS",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_BEYOND_BOAT",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE) && Longshot && CanPlay(ZeldasLullaby);"
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "SPIRIT_TEMPLE_OUTDOOR_HANDS",
+"kind": "Entrance",
+"target": "COLOSSUS_MEGALITH",
+"rule": "return ((IsChild && SmallKeys(SPIRIT_TEMPLE, 5)) || (CanUse(SILVER_GAUNTLETS) && ((SmallKeys(SPIRIT_TEMPLE, 3) && HasExplosives) || SmallKeys(SPIRIT_TEMPLE, 5)))) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "SPIRIT_TEMPLE_MQ_SHARED",
+"kind": "Entrance",
+"target": "COLOSSUS_MEGALITH",
+"rule": "return ((SmallKeys(SPIRIT_TEMPLE, 7) && (CanPlay(SongOfTime) || IsAdult)) || (SmallKeys(SPIRIT_TEMPLE, 4) && CanPlay(SongOfTime) && CanJumpslash && (LogicLensSpiritMQ || CanUse(LENS_OF_TRUTH)) && IsAdult)) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_EAST_LOWER",
+"rule": "return ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_SOUTH_LOWER",
+"rule": "return CanUse(IRON_BOOTS) && (WaterTempleMiddle || WaterTempleHigh) && (LogicFewerTunicRequirements || CanUse(ZORA_TUNIC)) && AdultCanAccess(WATER_TEMPLE_WEST_LOWER) && CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_WEST_MIDDLE",
+"rule": "return WaterTempleLow && (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_HIGH_WATER",
+"rule": "return CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_BLOCK_CORRIDOR",
+"rule": "return (WaterTempleLow || WaterTempleMiddle) && IsAdult && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_FALLING_PLATFORM_ROOM",
+"rule": "return SmallKeys(WATER_TEMPLE, 4) && (CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "WATER_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_PRE_BOSS_ROOM",
+"rule": "return CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "WATER_TEMPLE_EAST_LOWER",
+"kind": "EventAccess",
+"target": "WaterTempleLow",
+"rule": "return ZeldasLullaby && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && ((Bombs && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "WATER_TEMPLE_EAST_LOWER",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_LOBBY",
+"rule": "return ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "WATER_TEMPLE_EAST_LOWER",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_CRACKED_WALL",
+"rule": "return WaterTempleHigh && WaterTempleLow && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "WATER_TEMPLE_CRACKED_WALL",
+"kind": "LocationAccess",
+"target": "WATER_TEMPLE_CRACKED_WALL_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "WATER_TEMPLE_NORTH_LOWER",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_BOULDERS_LOWER",
+"rule": "return ((Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE)) && SmallKeys(WATER_TEMPLE, 4);"
+},
+{
+"area": "WATER_TEMPLE_BLOCK_ROOM",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_JETS_ROOM",
+"rule": "return CanUse(HOOKSHOT) && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "WATER_TEMPLE_SOUTH_LOWER",
+"kind": "LocationAccess",
+"target": "WATER_TEMPLE_GS_BEHIND_GATE",
+"rule": "return (CanUse(BOOMERANG) && CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "WATER_TEMPLE_WEST_LOWER",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_LOBBY",
+"rule": "return CanUse(IRON_BOOTS) && (LogicFewerTunicRequirements || CanUse(ZORA_TUNIC)) && CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "WATER_TEMPLE_DRAGON_ROOM",
+"kind": "LocationAccess",
+"target": "WATER_TEMPLE_DRAGON_CHEST",
+"rule": "return CanPassEnemies(5, 0, 8) && Bombs && ((IsAdult && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::ADVANCED)) || (CanUse(IRON_BOOTS) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "WATER_TEMPLE_CENTRAL_PILLAR_LOWER",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_CENTRAL_PILLAR_BASEMENT",
+"rule": "return CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::NOVICE) && CanUse(IRON_BOOTS) && CanSurviveUnderwaterFor(40);"
+},
+{
+"area": "WATER_TEMPLE_CENTRAL_PILLAR_UPPER",
+"kind": "EventAccess",
+"target": "WaterTempleMiddle",
+"rule": "return ZeldasLullaby && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "WATER_TEMPLE_HIGH_WATER",
+"kind": "EventAccess",
+"target": "WaterTempleHigh",
+"rule": "return ZeldasLullaby && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "WATER_TEMPLE_BLOCK_CORRIDOR",
+"kind": "LocationAccess",
+"target": "WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST",
+"rule": "return CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::INTERMEDIATE) && (WaterTempleLow || WaterTempleMiddle);"
+},
+{
+"area": "WATER_TEMPLE_LONGSHOT_ROOM",
+"kind": "Entrance",
+"target": "WATER_TEMPLE_RIVER",
+"rule": "return SongOfTime && (CanDoGlitch(GlitchType::DungeonBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)))));"
+},
+{
+"area": "ZR_FRONT",
+"kind": "Entrance",
+"target": "ZORAS_RIVER",
+"rule": "return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED);"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_OCARINA_GAME",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && ZeldasLullaby && SariasSong && SunsSong && EponasSong && SongOfTime && SongOfStorms;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_IN_THE_RAIN",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SongOfStorms;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_ZELDAS_LULLABY",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && ZeldasLullaby;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_EPONAS_SONG",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && EponasSong;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_SARIAS_SONG",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SariasSong;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_SUNS_SONG",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SunsSong;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "LocationAccess",
+"target": "ZR_FROGS_SONG_OF_TIME",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsChild && SongOfTime;"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "Entrance",
+"target": "ZR_FAIRY_GROTTO",
+"rule": "return Here(ZORAS_RIVER, [] { return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED); });"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "Entrance",
+"target": "THE_LOST_WOODS",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::INTERMEDIATE) || (CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)))) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "Entrance",
+"target": "ZR_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "ZORAS_RIVER",
+"kind": "Entrance",
+"target": "ZR_BEHIND_WATERFALL",
+"rule": "return CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) || ((CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby);"
+},
+{
+"area": "ZORAS_DOMAIN",
+"kind": "Entrance",
+"target": "LAKE_HYLIA",
+"rule": "return (IsAdult && CanJumpslash && GlitchZDOoBJumpSlash) || (IsChild && CanUse(FARORES_WIND) && (FaroresWindAnywhere || (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && (HasBottle || WeirdEgg))) && ((CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || (CanUseMagicArrow && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::ADVANCED))));"
+},
+{
+"area": "ZORAS_DOMAIN",
+"kind": "Entrance",
+"target": "ZD_BEHIND_KING_ZORA",
+"rule": "return ((IsChild || CanUse(IRON_BOOTS)) && CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "ZORAS_DOMAIN",
+"kind": "Entrance",
+"target": "ZD_SHOP",
+"rule": "return CanJumpslash && GlitchZDOoBJumpSlash;"
+},
+{
+"area": "ZORAS_DOMAIN",
+"kind": "Entrance",
+"target": "ZD_STORMS_GROTTO",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);"
+},
+{
+"area": "ZD_BEHIND_KING_ZORA",
+"kind": "Entrance",
+"target": "ZORAS_DOMAIN",
+"rule": "return CanDoGlitch(GlitchType::ASlide, GlitchDifficulty::NOVICE) || (CanUse(LONGSHOT) && CanDoGlitch(GlitchType::HookshotClip, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "ZORAS_FOUNTAIN",
+"kind": "Entrance",
+"target": "JABU_JABUS_BELLY_ENTRYWAY",
+"rule": "return (IsChild && CanUse(STICKS) && GlitchJabuStickRecoil) || (IsAdult && GlitchJabuAdult);"
+},
+{
+"area": "ZORAS_FOUNTAIN",
+"kind": "Entrance",
+"target": "ICE_CAVERN_ENTRYWAY",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "ZORAS_FOUNTAIN",
+"kind": "Entrance",
+"target": "ZF_GREAT_FAIRY_FOUNTAIN",
+"rule": "return IsChild && CanJumpslash && CanShield && (CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED) || (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "ZF_GREAT_FAIRY_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "ZF_GREAT_FAIRY_REWARD",
+"rule": "return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && (CanSurviveDamage || (Fairy && NumBottles >= 2)) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;"
+},
+{
+"area": "HC_STORMS_GROTTO",
+"kind": "LocationAccess",
+"target": "HC_GS_STORMS_GROTTO",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "DEATH_MOUNTAIN_TRAIL",
+"kind": "LocationAccess",
+"target": "DMT_GS_NEAR_KAK",
+"rule": "return (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DEATH_MOUNTAIN_TRAIL",
+"kind": "LocationAccess",
+"target": "DMT_GS_ABOVE_DODONGOS_CAVERN",
+"rule": "return IsAdult && CanGetNightTimeGS && CanUse(STICKS) && ((CanTakeDamageTwice && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED));"
+},
+{
+"area": "DEKU_TREE_BASEMENT_BACK_ROOM",
+"kind": "LocationAccess",
+"target": "DEKU_TREE_GS_BASEMENT_BACK_ROOM",
+"rule": "return Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "DEKU_TREE_BASEMENT_LOWER",
+"kind": "LocationAccess",
+"target": "DEKU_TREE_GS_BASEMENT_VINES",
+"rule": "return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FOREST_TEMPLE_FIRST_ROOM",
+"kind": "LocationAccess",
+"target": "FOREST_TEMPLE_GS_FIRST_ROOM",
+"rule": "return (Bombs && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FOREST_TEMPLE_LOBBY",
+"kind": "LocationAccess",
+"target": "FOREST_TEMPLE_GS_LOBBY",
+"rule": "return HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE);"
+},
+{
+"area": "FOREST_TEMPLE_BOSS_REGION",
+"kind": "LocationAccess",
+"target": "FOREST_TEMPLE_GS_BASEMENT",
+"rule": "return Bombs && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "GERUDO_VALLEY",
+"kind": "LocationAccess",
+"target": "GV_GS_SMALL_BRIDGE",
+"rule": "return IsChild && CanGetNightTimeGS && (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "GV_FORTRESS_SIDE",
+"kind": "LocationAccess",
+"target": "GV_GS_BEHIND_TENT",
+"rule": "return IsAdult && CanGetNightTimeGS && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "HAUNTED_WASTELAND",
+"kind": "LocationAccess",
+"target": "WASTELAND_GS",
+"rule": "return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "DESERT_COLOSSUS",
+"kind": "LocationAccess",
+"target": "COLOSSUS_GS_HILL",
+"rule": "return IsAdult && CanGetNightTimeGS && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::EXPERT) && CanShield && CanAdultAttack;"
+},
+{
+"area": "HF_COW_GROTTO",
+"kind": "LocationAccess",
+"target": "HF_GS_COW_GROTTO",
+"rule": "return (CanUse(STICKS) && Bombs && CanSurviveDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE)) && HookshotOrBoomerang;"
+},
+{
+"area": "LON_LON_RANCH",
+"kind": "LocationAccess",
+"target": "LLR_GS_BACK_WALL",
+"rule": "return IsChild && CanGetNightTimeGS && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "LH_LAB",
+"kind": "LocationAccess",
+"target": "LH_GS_LAB_CRATE",
+"rule": "return (CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE) && HasBombchus && (HasBottle || (IsAdult && (HasBoots || ClaimCheck)) || (IsChild && WeirdEgg)) && (CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::ADVANCED) || ((Bugs || Fish) && CanUse(HOVER_BOOTS) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::INTERMEDIATE)) || (CanUse(FARORES_WIND) && CanUse(NAYRUS_LOVE) && CanDoGlitch(GlitchType::CutsceneDive, GlitchDifficulty::NOVICE)) || ProgressiveScale >= 2 || CanUse(IRON_BOOTS))) || (CanUse(IRON_BOOTS) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "LAKE_HYLIA",
+"kind": "LocationAccess",
+"target": "LH_GS_TREE",
+"rule": "return IsAdult && CanGetNightTimeGS && (CanDoGlitch(GlitchType::HookshotJump_Bonk, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "KAKARIKO_VILLAGE",
+"kind": "LocationAccess",
+"target": "KAK_GS_WATCHTOWER",
+"rule": "return IsChild && CanGetNightTimeGS && (CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::SuperStab, GlitchDifficulty::NOVICE) || (Sticks && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE)));"
+},
+{
+"area": "THE_GRAVEYARD",
+"kind": "LocationAccess",
+"target": "GRAVEYARD_GS_WALL",
+"rule": "return IsChild && CanGetNightTimeGS && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "KOKIRI_FOREST",
+"kind": "LocationAccess",
+"target": "KF_GS_HOUSE_OF_TWINS",
+"rule": "return IsAdult && CanGetNightTimeGS && (CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::INTERMEDIATE) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE));"
+},
+{
+"area": "LW_BEYOND_MIDO",
+"kind": "LocationAccess",
+"target": "LW_GS_ABOVE_THEATER",
+"rule": "return IsAdult && CanGetNightTimeGS && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);"
+},
+{
+"area": "ZORAS_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "ZF_GS_ABOVE_THE_LOG",
+"rule": "return IsChild && CanGetNightTimeGS && (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE));"
+},
+{
+"area": "ZORAS_FOUNTAIN",
+"kind": "LocationAccess",
+"target": "ZF_GS_HIDDEN_CAVE",
+"rule": "return IsAdult && CanGetNightTimeGS && CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::INTERMEDIATE) && HookshotOrBoomerang;"
+}
+],
+"keys": [
+{
+"area": "FIRE_TEMPLE_BOULDER_MAZE_LOWER",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_EAST_CENTRAL_ROOM",
+"dungeon": "FIRE_TEMPLE",
+"count": 7
+},
+{
+"area": "FIRE_TEMPLE_EAST_CENTRAL_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_BOULDER_MAZE_LOWER",
+"dungeon": "FIRE_TEMPLE",
+"count": 8
+},
+{
+"area": "FIRE_TEMPLE_EAST_CENTRAL_ROOM",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_FIRE_WALL_CHASE",
+"dungeon": "FIRE_TEMPLE",
+"count": 8
+},
+{
+"area": "FIRE_TEMPLE_FIRE_WALL_CHASE",
+"kind": "Entrance",
+"target": "FIRE_TEMPLE_EAST_CENTRAL_ROOM",
+"dungeon": "FIRE_TEMPLE",
+"count": 8
+},
+{
+"area": "FOREST_TEMPLE_LOBBY",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_WEST_CORRIDOR",
+"dungeon": "FOREST_TEMPLE",
+"count": 5
+},
+{
+"area": "FOREST_TEMPLE_WEST_CORRIDOR",
+"kind": "Entrance",
+"target": "FOREST_TEMPLE_LOBBY",
+"dungeon": "FOREST_TEMPLE",
+"count": 5
+},
+{
+"area": "SHADOW_TEMPLE_FIRST_BEAMOS",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_HUGE_PIT",
+"dungeon": "SHADOW_TEMPLE",
+"count": 2
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST",
+"dungeon": "SHADOW_TEMPLE",
+"count": 3
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_FREESTANDING_KEY",
+"dungeon": "SHADOW_TEMPLE",
+"count": 3
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_GS_SINGLE_GIANT_POT",
+"dungeon": "SHADOW_TEMPLE",
+"count": 3
+},
+{
+"area": "SHADOW_TEMPLE_HUGE_PIT",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_WIND_TUNNEL",
+"dungeon": "SHADOW_TEMPLE",
+"count": 4
+},
+{
+"area": "SHADOW_TEMPLE_WIND_TUNNEL",
+"kind": "LocationAccess",
+"target": "SHADOW_TEMPLE_GS_NEAR_SHIP",
+"dungeon": "SHADOW_TEMPLE",
+"count": 5
+},
+{
+"area": "SHADOW_TEMPLE_WIND_TUNNEL",
+"kind": "Entrance",
+"target": "SHADOW_TEMPLE_BEYOND_BOAT",
+"dungeon": "SHADOW_TEMPLE",
+"count": 5
+}
+]
+}

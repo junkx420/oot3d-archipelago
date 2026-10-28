@@ -151,6 +151,10 @@ def setup_options_from_slot_data(world: "SohWorld") -> None:
                 "item_pool", 0)
             world.options.medallion_locked_trials.value = world.passthrough.get("medallion_locked_trials", MedallionLockedTrials.default)
             world.options.starting_hearts.value = world.passthrough.get("starting_hearts", StartingHearts.default)
+            # TriAevum: glitched logic (oot3d_glitch_options.py); seeds without it are glitchless.
+            from .oot3d_glitch_options import OPTION_NAMES
+            for name in OPTION_NAMES:
+                getattr(world.options, name).value = world.passthrough.get(name, 0)
             # when adding new options to this, use .get, and set the default to whatever was before the option was made
             # this will make it back-compatible with seeds generated on earlier versions
             # the below do not need to be handled in UT at all, since they do not affect logic

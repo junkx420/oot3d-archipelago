@@ -27,7 +27,7 @@ from Options import OptionError
 from rule_builder.rules import Has, CanReachLocation, Rule, True_
 from .Hints import CreateNonlocalHints, StaticHint
 from .oot3d_data import GAME
-from . import oot3d_options, oot3d_tricks
+from . import oot3d_glitch_options, oot3d_glitched, oot3d_options, oot3d_tricks
 
 import logging
 logger = logging.getLogger("SOH_OOT")
@@ -143,6 +143,8 @@ class SohWorld(CachedRuleBuilderWorld):
         self.ganons_trials = list[GanonsTrials]()
         self.pre_fill_pool = list[Items]()
         self.reserved_pre_fill_locations = list[Locations]()
+        # OoT3D_Randomizer's glitched conditions, with logic_rules glitched.
+        self.glitched_logic: oot3d_glitched.GlitchedLogic | None = None
 
         apworld_manifest = orjson.loads(pkgutil.get_data(
             __name__, "archipelago.json").decode("utf-8"))
@@ -217,7 +219,11 @@ class SohWorld(CachedRuleBuilderWorld):
 
 
     def create_regions(self) -> None:
+        if oot3d_glitched.enabled(self):
+            self.glitched_logic = oot3d_glitched.GlitchedLogic(self)
         create_regions_and_locations(self)
+        if self.glitched_logic is not None:
+            self.glitched_logic.finish()
         place_locked_items(self)
         self.reserve_prefill_locations()
         for location in self.get_locations():
@@ -432,6 +438,8 @@ class SohWorld(CachedRuleBuilderWorld):
             static_hints.update(hint.serialize())
 
         return {
+            # Glitch options, for Universal Tracker (the client ignores them).
+            **{name: getattr(self.options, name).value for name in sorted(oot3d_glitch_options.OPTION_NAMES)},
             "closed_forest": self.options.closed_forest.value,
             "kakariko_gate": self.options.kakariko_gate.value,
             "door_of_time": self.options.door_of_time.value,

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from Options import Choice, Toggle, DefaultOnToggle, Range, PerGameCommonOptions, StartInventoryPool, Visibility, OptionGroup, OptionSet, Accessibility, DeathLink
 from .Enums import Tricks, Items, TokenCounts
+from .oot3d_glitch_options import GlitchOptions, glitch_option_group
 
 wallet_capacities: dict[Items, int] = {
     Items.CHILD_WALLET: 99,
@@ -1556,7 +1557,7 @@ class MerchantAffordablePrices(Toggle):
 
 
 @dataclass
-class SohOptions(PerGameCommonOptions):
+class SohOptions(PerGameCommonOptions, GlitchOptions):  # TriAevum: OoT3D_Randomizer's glitch options
     closed_forest: ClosedForest
     kakariko_gate: KakarikoGate
     door_of_time: DoorOfTime
@@ -1906,6 +1907,7 @@ soh_option_groups = [
         EnableAllTricks,
         TricksInLogic
     ]),
+    glitch_option_group,
     OptionGroup("World Settings", [
         StartingAge,
         StartingHearts,
