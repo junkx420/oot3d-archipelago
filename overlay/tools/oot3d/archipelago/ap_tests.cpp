@@ -484,11 +484,11 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 28U,
-         "checks, deaths, blue warps, the forest guard, cows, shops, fast chests, song blocks, damage, item "
-         "text and quick text need 28 hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 29U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 28U, "a probe on a check hook is merged");
+  Expect(CheckObserver::HookPcs().size() == 71U,
+         "checks, deaths, blue warps, the forest guard, Sheik in the Ice Cavern, the save tests, cows, shops, fast "
+         "chests, song blocks, damage, item text and quick text need 71 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 72U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 71U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -655,6 +655,193 @@ void TestForestExitGuard() {
   observer.ObserveBlockEntry(kKokiriGuardStaysBlock, state, memory);
   memory.Read32(kSaveContext + kSaveQuestItems, &quest);
   Expect(quest == 0x1U && observer.Hits().ForestExit == 1U, "an unexpected register changes nothing");
+}
+// Rewards the game picks by Link's capacity are keyed by the randomizer's
+// fixed get-item, whatever the capacity.
+void TestUpgradeRewardKeys() {
+  const auto key = [](std::uint8_t scene, std::uint16_t actor, std::uint8_t item, std::uint16_t params = 0U) {
+    OfferSource source;
+    source.Scene = scene;
+    source.ActorId = actor;
+    source.ActorParams = params;
+    source.GetItemId = item;
+    return KeyForOffer(source);
+  };
+  const auto base = [](std::uint8_t scene, std::uint8_t item) { return LocationKey{scene, OverrideType::BaseItem, item}; };
+  constexpr std::uint16_t kNpc = 0x0100U;
+  Expect(key(0x42U, kNpc, 0x7BU) == base(0x42U, 0x60U), "child gallery: 50 seeds counts as 40");
+  Expect(key(0x42U, kNpc, 0x31U) == base(0x42U, 0x30U), "adult gallery: 50 arrows counts as 40");
+  Expect(key(0x42U, kNpc, 0x55U) == base(0x42U, 0x55U), "a repeat's purple rupee is no location");
+  Expect(key(0x5BU, kNpc, 0x7BU) == base(0x5BU, 0x60U), "Lost Woods target");
+  Expect(key(0x5DU, kNpc, 0x31U) == base(0x5DU, 0x30U), "horseback archery");
+  Expect(key(0x4BU, kNpc, 0x34U) == base(0x4BU, 0x33U), "bombchu bowling's bomb bag");
+  Expect(key(0x62U, kNpc, 0x33U) == base(0x62U, 0x34U), "the rolling Goron's bomb bag");
+  Expect(key(0x3EU, kNpc, 0x78U) == base(0x3EU, 0x77U) && key(0x3EU, kNpc, 0x79U) == base(0x3EU, 0x7AU),
+         "the Deku Theater's sticks and nuts");
+  Expect(key(0x5BU, kActorBusinessScrubSalesman, 0x78U) == base(0x5BU, 0x77U), "a scrub's stick upgrade");
+  OfferSource grotto;
+  grotto.Scene = kSceneGrottos;
+  grotto.ActorId = kActorBusinessScrubSalesman;
+  grotto.GetItemId = 0x7AU;
+  grotto.RespawnReturnScene = 0xF5U;
+  Expect(KeyForOffer(grotto) == LocationKey{0xF5U, OverrideType::GrottoScrub, 0x79U}, "a grotto scrub's nut upgrade");
+  Expect(key(0x50U, kNpc, 0x46U, 1U) == base(0x50U, 0x45U), "10 tokens: the adult wallet whatever Link has");
+  Expect(key(0x50U, kNpc, 0x45U, 3U) == base(0x50U, 0x46U), "30 tokens: the giant wallet");
+  Expect(key(0x50U, kNpc, 0x56U, 3U) == base(0x50U, 0x46U), "30 tokens with a full wallet");
+  Expect(key(0x50U, kNpc, 0x39U, 2U) == base(0x50U, 0x39U), "20 tokens: the Stone of Agony as it is");
+  Expect(key(0x2DU, kNpc, 0x31U) == base(0x2DU, 0x31U), "other scenes are left alone");
+}
+
+// Save tests: the field shows what the location says for the test's block.
+void TestSaveTests() {
+  const SaveTest &darunia = kSaveTests[0];
+  Expect(SaveTestValue(darunia, 0x00000048U, false) == 0x00000008U, "not taken: no strength, other bits kept");
+  Expect(SaveTestValue(darunia, 0x00000008U, true) == 0x00000048U, "taken: the bracelet");
+  Expect(SaveTestValue(darunia, 0x00000088U, true) == 0x00000088U, "taken: silver gauntlets stay");
+  const SaveTest &sun = kSaveTests[1];
+  Expect(SaveTestValue(sun, 0x04U, false) == 0xFFU && SaveTestValue(sun, 0xFFU, true) == 0x04U,
+         "the sun's Fire Arrows");
+  const SaveTest &bag = kSaveTests[6];
+  Expect(SaveTestValue(bag, 0U, false) == 0x08U, "not taken: the rolling Goron sees a bomb bag");
+  Expect(SaveTestValue(bag, 0x10U, false) == 0x10U && SaveTestValue(bag, 0U, true) == 0U,
+         "a bag of his own, or once taken, the save as it is");
+
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kActor = 0x08100000U;
+  FakeMemory memory;
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write32(kSaveContext + kSaveUpgrades, 0x00000048U); // bracelet, bomb bag
+  memory.Write32(kSaveContext + kSaveQuestItems, 0x00000003U); // Forest, Fire Medallion
+  CheckObserver observer{false};
+  bool seed = false;
+  std::optional<bool> taken;
+  std::optional<LocationKey> asked;
+  observer.SetSeedProbe([&] { return seed; });
+  observer.SetLocationTakenProbe([&](const LocationKey &key) {
+    asked = key;
+    return taken;
+  });
+  oot3d::recomp::a32::GuestState state{};
+  const auto upgrades = [&] { return [&] { std::uint32_t v = 0; (void)memory.Read32(kSaveContext + kSaveUpgrades, &v); return v; }(); };
+  observer.ObserveBlockEntry(darunia.CheckBlock, state, memory);
+  Expect(upgrades() == 0x48U && !asked.has_value(), "without a seed nothing is asked or changed");
+  seed = true;
+  observer.ObserveBlockEntry(darunia.CheckBlock, state, memory);
+  Expect(upgrades() == 0x48U && asked == darunia.Location, "a location outside the seed changes nothing");
+  taken = false;
+  observer.ObserveBlockEntry(darunia.CheckBlock, state, memory);
+  Expect(upgrades() == 0x08U, "Darunia sees no strength while his location waits");
+  observer.ObserveBlockEntry(darunia.RestoreBlocks[1], state, memory);
+  Expect(upgrades() == 0x48U && observer.Hits().SaveTests == 1U, "the block after restores the save");
+  taken = true;
+  memory.Write32(kSaveContext + kSaveUpgrades, 0x08U);
+  observer.ObserveBlockEntry(darunia.CheckBlock, state, memory);
+  Expect(upgrades() == 0x48U, "once taken he sees the bracelet");
+  observer.ObserveBlockEntry(kActorOfferGetItem, state, memory); // any hooked block restores
+  Expect(upgrades() == 0x08U, "any next hooked block restores the save");
+
+  // Link the Goron never sees the Fire Medallion; other Gorons do.
+  const auto quest = [&] { std::uint32_t v = 0; (void)memory.Read32(kSaveContext + kSaveQuestItems, &v); return v; };
+  memory.Write16(kActor + kActorParams, 0x0000U);
+  state.r[4] = kActor;
+  observer.ObserveBlockEntry(kGoronTextDispatchBlock, state, memory);
+  Expect(quest() == 0x3U, "another Goron sees the medallion");
+  memory.Write16(kActor + kActorParams, 0x0021U); // params & 0x1F == 1
+  observer.ObserveBlockEntry(kGoronTextDispatchBlock, state, memory);
+  Expect(quest() == 0x1U, "Link the Goron does not");
+  observer.ObserveBlockEntry(kGoronLinkMedallionBlock, state, memory);
+  Expect(quest() == 0x3U, "and the medallion comes back");
+
+  // The quiver rewards the game leaves unset are preset to 40 arrows.
+  memory.Write32(kActor + kAdultGalleryReward, 0U);
+  state.r[4] = kActor;
+  observer.ObserveBlockEntry(kAdultGalleryQuiverBlock, state, memory);
+  std::uint32_t reward = 0;
+  (void)memory.Read32(kActor + kAdultGalleryReward, &reward);
+  Expect(reward == kGetItemQuiver40, "the adult gallery's reward is preset");
+  state.r[4] = 0x1234U;
+  observer.ObserveBlockEntry(kArcheryQuiverBlock, state, memory);
+  state.r[5] = 0x1234U;
+  observer.ObserveBlockEntry(kArcheryQuiverTwoBlock, state, memory);
+  Expect(state.r[4] == kGetItemQuiver40 && state.r[5] == kGetItemQuiver40, "horseback archery's reward is preset");
+  seed = false;
+  state.r[4] = 0x1234U;
+  observer.ObserveBlockEntry(kArcheryQuiverBlock, state, memory);
+  Expect(state.r[4] == 0x1234U, "without a seed the game's own");
+  Expect(SaveTestHookPcs().size() == 40U, "the save tests hook 40 blocks");
+
+  // Song teachers see their location, not the song in the save.
+  seed = true;
+  const SaveTest &impa = kSaveTests[7];
+  Expect(impa.Location == LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongLullaby} &&
+             TeacherSong(impa.Location) == std::string_view("Zelda's Lullaby"),
+         "Impa's test belongs to the Song from Impa");
+  memory.Write32(kSaveContext + kSaveQuestItems, kQuestSongLullaby | kQuestSongSaria);
+  taken = false;
+  observer.ObserveBlockEntry(impa.CheckBlock, state, memory);
+  Expect(quest() == kQuestSongSaria, "Impa teaches although Link knows the lullaby from elsewhere");
+  observer.ObserveBlockEntry(impa.RestoreBlocks[0], state, memory);
+  Expect(quest() == (kQuestSongLullaby | kQuestSongSaria), "and Link keeps it");
+  taken = true;
+  memory.Write32(kSaveContext + kSaveQuestItems, 0U);
+  observer.ObserveBlockEntry(kSaveTests[10].CheckBlock, state, memory);
+  Expect(quest() == kQuestSongSaria, "once her location is taken Saria teaches no more");
+  Expect(TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongMinuet}) ==
+                 std::string_view("Minuet of Forest") &&
+             TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongMinuet + 11U}) ==
+                 std::string_view("Song of Storms") &&
+             !TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongMinuet + 12U}) &&
+             !TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSariasGift}),
+         "the teachers' songs, in the order of their item ids");
+}
+
+// Sheik in the Ice Cavern: in a seed she appears for the Iron Boots chest,
+// not for the Iron Boots, and the save is restored after the test.
+void TestIceCavernSheik() {
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint16_t kKokiriTunicAndSword = 0x0101U;
+  FakeMemory memory;
+  memory.Write32(kGlobalContextPointer, kPlay);
+  memory.Write16(kPlay + kPlaySceneNum, kSceneIceCavern);
+  memory.Write32(kPlay + kPlayChestFlags, 0U);
+  memory.Write16(kSaveContext + kSaveEquipment, kKokiriTunicAndSword);
+  CheckObserver observer{false};
+  bool seed = false;
+  observer.SetSeedProbe([&] { return seed; });
+  oot3d::recomp::a32::GuestState state{};
+  const auto equipment = [&] {
+    std::uint16_t value = 0;
+    (void)memory.Read16(kSaveContext + kSaveEquipment, &value);
+    return value;
+  };
+  memory.Write32(kPlay + kPlayChestFlags, kIceCavernBootsChestFlag);
+  observer.ObserveBlockEntry(kSheikIceCavernCheckBlock, state, memory);
+  Expect(equipment() == kKokiriTunicAndSword && observer.Hits().IceCavernSheik == 0U,
+         "without a seed the game's own test runs");
+  seed = true;
+  observer.ObserveBlockEntry(kSheikIceCavernCheckBlock, state, memory);
+  Expect(equipment() == (kKokiriTunicAndSword | kEquipmentIronBoots), "the opened chest counts as the boots");
+  observer.ObserveBlockEntry(kSheikIceCavernShownBlock, state, memory);
+  Expect(equipment() == kKokiriTunicAndSword && observer.Hits().IceCavernSheik == 1U,
+         "the save is restored right after");
+  // Boots from elsewhere, chest still closed: Sheik waits for the chest.
+  memory.Write32(kPlay + kPlayChestFlags, 0U);
+  memory.Write16(kSaveContext + kSaveEquipment, kKokiriTunicAndSword | kEquipmentIronBoots);
+  observer.ObserveBlockEntry(kSheikIceCavernCheckBlock, state, memory);
+  Expect(equipment() == kKokiriTunicAndSword, "boots without the chest do not count");
+  observer.ObserveBlockEntry(kSheikIceCavernHiddenBlock, state, memory);
+  Expect(equipment() == (kKokiriTunicAndSword | kEquipmentIronBoots), "and the boots come back");
+  // Boots and chest: nothing to change.
+  memory.Write32(kPlay + kPlayChestFlags, kIceCavernBootsChestFlag);
+  observer.ObserveBlockEntry(kSheikIceCavernCheckBlock, state, memory);
+  observer.ObserveBlockEntry(kSheikIceCavernShownBlock, state, memory);
+  Expect(equipment() == (kKokiriTunicAndSword | kEquipmentIronBoots) && observer.Hits().IceCavernSheik == 2U,
+         "an agreeing save is not written");
+  // Another scene: left alone.
+  memory.Write16(kPlay + kPlaySceneNum, 0x55U);
+  memory.Write16(kSaveContext + kSaveEquipment, kKokiriTunicAndSword);
+  observer.ObserveBlockEntry(kSheikIceCavernCheckBlock, state, memory);
+  Expect(equipment() == kKokiriTunicAndSword, "only in the Ice Cavern");
 }
 // Tokens: the save's gsFlags name every collected token, and a token's own
 // Item_Give takes its key from the token's offer even with a chest offering
@@ -1813,6 +2000,9 @@ int main(int argc, char **argv) {
     TestSongReplays();
     TestDamageMultiplier();
     TestItemText();
+    TestIceCavernSheik();
+    TestUpgradeRewardKeys();
+    TestSaveTests();
     TestShops();
     TestCows();
     TestTokenShuffle();

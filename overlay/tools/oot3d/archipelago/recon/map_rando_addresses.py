@@ -93,6 +93,69 @@ CLIENT_HOOK_BLOCKS = {
     # block after each reads the entry found.
     "MessageEntryOneBlock": ("GetCustomMessageEntryOne", 4, "block_after_call"),
     "MessageEntryTwoBlock": ("GetCustomMessageEntryTwo", 4, "block_after_call"),
+    # Sheik in the Ice Cavern (OoT3D_Randomizer cutscenes.c,
+    # Cutscene_SerenadeCheckChestFlag): the block that tests the Iron Boots in
+    # the save, and the two blocks after its branch (Sheik shown, hidden).
+    "SheikIceCavernCheckBlock": ("SerenadeCheckChestFlag", -0x2C, "block_after_branch"),
+    "SheikIceCavernShownBlock": ("SerenadeCheckChestFlag", 8, "block_after_branch"),
+    "SheikIceCavernHiddenBlock": ("SerenadeCheckChestFlag", 0x6C, ("branch_target", 4)),
+    # Save tests the unmodified game makes where OoT3D_Randomizer asks whether
+    # a location was taken (ap_save_tests.h): the block with the test and the
+    # blocks after its branch.
+    # Darunia's Joy: Darunia gives his location only to Link without strength.
+    "DaruniaStrengthCheckBlock": ("DaruniaCheckStrength", -0x24, ("branch_target", -0x50)),
+    "DaruniaStrengthOwnedBlock": ("DaruniaCheckStrength", 0x14, "block_after_branch"),
+    "DaruniaStrengthTextBlock": ("DaruniaCheckStrength", 0x20, ("branch_target", 0x10)),
+    # LH Sun: the sun gives its location only to Link without Fire Arrows.
+    "SunFireArrowsCheckBlock": ("FireArrowCheckChestFlagOne", -0x2C, "block_after_call"),
+    "SunFireArrowsMissingBlock": ("FireArrowCheckChestFlagOne", 8, "block_after_branch"),
+    "SunFireArrowsOwnedBlock": ("FireArrowCheckChestFlagOne", 0x28, ("branch_target", 4)),
+    "SunFireArrowsCheckTwoBlock": ("FireArrowCheckChestFlagTwo", -8, ("branch_target", -0x28)),
+    "SunFireArrowsMissingTwoBlock": ("FireArrowCheckChestFlagTwo", 8, "block_after_branch"),
+    "SunFireArrowsOwnedTwoBlock": ("FireArrowCheckChestFlagTwo", 0x84, ("branch_target", 4)),
+    # Link the Goron (GC Rolling Goron as Adult): the text dispatch before his
+    # Fire Medallion test, then his Goron Tunic test.
+    "GoronLinkDispatchBlock": ("AdultRollingGoronIgnoreMedallion", -0xD0, "block_after_branch"),
+    "GoronLinkMedallionBlock": ("AdultRollingGoronIgnoreMedallion", 4, "block_after_branch"),
+    "GoronLinkTunicCheckBlock": ("AdultRollingGoronIgnoreMedallion", 0x1C, ("branch_target", 0)),
+    "GoronLinkHasTunicBlock": ("AdultRollingGoronOne", 4, "block_after_branch"),
+    "GoronLinkNoTunicBlock": ("AdultRollingGoronOne", 0x1C, ("branch_target", 0)),
+    # ZD King Zora Thawed: the Zora Tunic test that picks his text.
+    "KingZoraTunicCheckBlock": ("KingZoraGiveTunic", -0x10, ("branch_target", -0x6C)),
+    "KingZoraTunicTextBlock": ("KingZoraGiveTunic", -0x220, ("branch_target", 0xC)),
+    # DMT Trade Claim Check: Biggoron's sword flag.
+    "BiggoronSwordCheckBlock": ("BiggoronCheckBGSFlag", -0x10, "block_after_branch"),
+    "BiggoronSwordGivesBlock": ("BiggoronCheckBGSFlag", 0x10, "block_after_branch"),
+    "BiggoronSwordOtherBlock": ("BiggoronCheckBGSFlag", 0x570, ("branch_target", 0xC)),
+    # GC Rolling Goron as Child: he talks only to Link with a bomb bag.
+    "RollingGoronBagCheckBlock": ("ChildRollingGoronDontCheckBombBag", -0x30, ("branch_target", -0x3C)),
+    "RollingGoronBagOwnedBlock": ("ChildRollingGoronDontCheckBombBag", 4, "block_after_branch"),
+    "RollingGoronBagMissingBlock": ("ChildRollingGoronDontCheckBombBag", 0x20, ("branch_target", 0)),
+    # Song teachers who teach only a Link who does not know the song yet
+    # (questItems): Impa (LullabyCheckFlag), Malon (EponasSongCheckFlag and
+    # Two), Saria (SariasSongCheckFlag), the Royal Family's Tomb
+    # (SunsSongLocation).
+    "ImpaLullabyCheckBlock": ("LullabyCheckFlag", -8, "block_after_branch"),
+    "ImpaLullabyTeachBlock": ("LullabyCheckFlag", 8, "block_after_branch"),
+    "ImpaLullabyKnownBlock": ("LullabyCheckFlag", 0x40, ("branch_target", 4)),
+    "MalonEponaCheckBlock": ("EponasSongCheckFlag", -0xC, "block_after_branch"),
+    "MalonEponaKnownBlock": ("EponasSongCheckFlag", 8, "block_after_branch"),
+    "MalonEponaTeachBlock": ("EponasSongCheckFlag", 0x28, ("branch_target", 4)),
+    "MalonEponaCheckTwoBlock": ("EponasSongCheckFlagTwo", -0x10, "block_after_branch"),
+    "MalonEponaKnownTwoBlock": ("EponasSongCheckFlagTwo", 8, "block_after_branch"),
+    "MalonEponaTeachTwoBlock": ("EponasSongCheckFlagTwo", 0x10, ("branch_target", 4)),
+    "SariaSongCheckBlock": ("SariasSongCheckFlag", -8, "block_after_branch"),
+    "SariaSongTeachBlock": ("SariasSongCheckFlag", 0xC, "block_after_branch"),
+    "SariaSongTextBlock": ("SariasSongCheckFlag", 0x50, ("branch_target", 8)),
+    "TombSunsSongCheckBlock": ("SunsSongLocation", -0x14, "block_after_call"),
+    "TombSunsSongTeachBlock": ("SunsSongLocation", 4, "block_after_branch"),
+    "TombSunsSongKnownBlock": ("SunsSongLocation", 0x28, ("branch_target", 0)),
+    # Rewards the game picks by the quiver: the adult shooting gallery and
+    # horseback archery; their quiver branch, where the client presets the
+    # randomizer's get-item (40 arrows) for the quivers the game skips.
+    "AdultGalleryQuiverBlock": ("AdultShootingGallery", -0x18, "block_after_branch"),
+    "ArcheryQuiverBlock": ("GerudoArcheryOne", -0x24, "block_after_branch"),
+    "ArcheryQuiverTwoBlock": ("GerudoArcheryTwo", -0x24, "block_after_branch"),
 }
 
 

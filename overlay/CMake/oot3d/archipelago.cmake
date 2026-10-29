@@ -51,6 +51,7 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
         tools/oot3d/archipelago/ap_network_client.cpp
         tools/oot3d/archipelago/ap_quick_text.cpp
         tools/oot3d/archipelago/ap_save_sync.cpp
+        tools/oot3d/archipelago/ap_save_tests.cpp
         tools/oot3d/archipelago/ap_session.cpp
         tools/oot3d/archipelago/ap_sha256.cpp
         tools/oot3d/archipelago/ap_shops.cpp

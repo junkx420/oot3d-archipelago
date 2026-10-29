@@ -220,10 +220,10 @@ index b6cfceec..fc68bbb7 100644
    std::optional<Oot3dNativeGame::Menu::MenuFontTextureProvider> menuFontProviderStorage;
    std::optional<oot3d::ui::N64UiFast3dRenderer> n64UiRendererStorage;
 diff --git a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-index 81150d82..569ab2f5 100644
+index 81150d82..d6837e80 100644
 --- a/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
 +++ b/tools/oot3d/native_game_runtime/oot3d_native_a32_window_setup.cpp
-@@ -228,6 +228,85 @@ void NativeA32WindowSession::Setup() {
+@@ -228,6 +228,89 @@ void NativeA32WindowSession::Setup() {
                           objectBankHooks.end());
    const auto rainHooks = Oot3dNativeGame::TopScreenRainAdapter::HookPcs();
    blockEntryHooks.insert(blockEntryHooks.end(), rainHooks.begin(), rainHooks.end());
@@ -267,6 +267,10 @@ index 81150d82..569ab2f5 100644
 +        });
 +    archipelago.SetReceivingProbe([session = archipelagoSession.get()] { return session->Receiving(); });
 +    archipelago.SetForestExitProbe([session = archipelagoSession.get()] { return session->ForestExitOpen(); });
++    archipelago.SetSeedProbe([session = archipelagoSession.get()] { return session->SeedActive(); });
++    archipelago.SetLocationTakenProbe([session = archipelagoSession.get()](const Oot3dArchipelago::LocationKey &key) {
++      return session->LocationTaken(key);
++    });
 +    archipelago.SetCowProbe([session = archipelagoSession.get()](const Oot3dArchipelago::LocationKey &key) {
 +      return session->CowGivesItem(key);
 +    });
@@ -309,7 +313,7 @@ index 81150d82..569ab2f5 100644
    widescreenProjection.ActorVisibility.Diagnostics =
        std::getenv("OOT3D_ACTOR_VISIBILITY_DIAGNOSTICS") != nullptr;
    picaCompositionHooks =
-@@ -532,6 +611,13 @@ void NativeA32WindowSession::Setup() {
+@@ -532,6 +615,13 @@ void NativeA32WindowSession::Setup() {
          wholeAotObservableExitBlocks.end(),
          topScreenObservableExitBlocks.begin(),
          topScreenObservableExitBlocks.end());
@@ -323,7 +327,7 @@ index 81150d82..569ab2f5 100644
  #else
      // The product runs the same TopScreen source port as developer builds:
      // every block is an observable exit of the whole-AOT graph, because the
-@@ -643,6 +729,28 @@ void NativeA32WindowSession::Setup() {
+@@ -643,6 +733,28 @@ void NativeA32WindowSession::Setup() {
        Oot3dNativeGame::Oot3dNativeA32Registry(), hostServices);
    widescreenProjection.TraceMemory = &process.Memory();
    widescreenProjection.ActorVisibility.HostMemory = &process.Memory();
@@ -352,7 +356,7 @@ index 81150d82..569ab2f5 100644
    process.Memory().EnableWriteTraceFingerprint(
        widescreenProjection.TraceA32Blocks);
    auto &uiLifecycleBridge = uiLifecycleBridgeStorage.emplace(
-@@ -856,6 +964,13 @@ void NativeA32WindowSession::Setup() {
+@@ -856,6 +968,13 @@ void NativeA32WindowSession::Setup() {
    }
    applicationSettingsTabs.push_back(
        Oot3dNativeGame::CreateSavestatePanel(savestateLibrary));

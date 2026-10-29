@@ -81,8 +81,11 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "maps_and_compasses": ("own_dungeon", frozenset({"vanilla", "own_dungeon"})),
     "gerudo_fortress_key_shuffle": ("vanilla", frozenset({"vanilla"})),
     "key_rings": ("off", frozenset({"off"})),
+    # Songs: a teacher whose location holds another item teaches nothing and
+    # the item comes from the server; teachers who test the song in the save
+    # see their location instead (ap_save_tests.h).
+    "shuffle_songs": ("off", frozenset({"off", "song_locations", "dungeon_rewards", "anywhere"})),
     # Everything else stays as in the game.
-    "shuffle_songs": ("off", frozenset({"off"})),
     "shuffle_skull_tokens": ("off", frozenset({"off", "dungeon", "overworld", "all"})),
     "skulls_sun_song": (False, frozenset({False, True})),
     "shuffle_master_sword": (False, frozenset({False})),

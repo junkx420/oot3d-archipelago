@@ -16,6 +16,7 @@
 #include "ap_location_key.h"
 #include "ap_messages.h"
 #include "ap_quick_text.h"
+#include "ap_save_tests.h"
 #include "ap_shops.h"
 #include "recomp/a32_runtime.h"
 
@@ -62,6 +63,17 @@ inline constexpr std::uint32_t kRutoBlueWarpDoneBlock = 0x001A1944U;
 inline constexpr std::uint32_t kKokiriGuardCheckBlock = 0x003ACCF4U;
 inline constexpr std::uint32_t kKokiriGuardStaysBlock = 0x003ACD04U;
 inline constexpr std::uint32_t kKokiriGuardMovesBlock = 0x003ACD28U;
+// Sheik in the Ice Cavern (EnXc, params 8): the unmodified game shows her
+// once Link has the Iron Boots (save equipment, tested in the check block);
+// OoT3D_Randomizer once the Ice Cavern's Iron Boots chest (chest flag 2) is
+// open, which is what the logic expects when that chest holds another item.
+// The check block, and the two blocks after its branch (shown, hidden).
+inline constexpr std::uint32_t kSheikIceCavernCheckBlock = 0x002B2518U;
+inline constexpr std::uint32_t kSheikIceCavernShownBlock = 0x002B254CU;
+inline constexpr std::uint32_t kSheikIceCavernHiddenBlock = 0x002B25B0U;
+inline constexpr std::uint16_t kEquipmentIronBoots = 0x2000U; // gEquipMasks[3][1] << gEquipShifts[3]
+inline constexpr std::uint32_t kIceCavernBootsChestFlag = 1U << 2U;
+inline constexpr std::uint16_t kSceneIceCavern = 0x09U;
 // Cows (OoT3D_Randomizer cow.c): their init and destroy, to number them as
 // the randomizer does, and the block that reads Inventory_HasEmptyBottle's
 // result (r0; r4 the cow, r5 the play state).
@@ -93,7 +105,7 @@ inline constexpr std::uint32_t kSongBlockTimer = 0xC6U;
 inline constexpr std::uint16_t kSongBlockTimerReplay = 0x6EU;
 inline constexpr std::uint16_t kSongBlockTimerSkipped = 0x10U;
 
-inline constexpr std::array<GuestFunction, 26> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 69> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -141,6 +153,93 @@ inline constexpr std::array<GuestFunction, 26> kGuestFunctions{{
      "08dfd8c5ff1d8b7c6c9938679bfec952e7b71d1a37320de78c8c24d160011c6b"},
     {"MessageEntryTwoBlock", kMessageEntryTwoBlock,
      "aebc1a9376203c2b04778a3c5863e1cc0f8f4b80613ba70b33c8e3bc6a39d750"},
+    {"SheikIceCavernCheckBlock", kSheikIceCavernCheckBlock,
+     "049f34b9ae5602f7da50e7770a8cc28ab9f7bd47ddd7dc7d4225381dcb2bf811"},
+    {"SheikIceCavernShownBlock", kSheikIceCavernShownBlock,
+     "f76b72626f056d46abeb1adc051e6bc61fa3652f7477482241b9acd86937a0af"},
+    {"SheikIceCavernHiddenBlock", kSheikIceCavernHiddenBlock,
+     "5fd1d490a2b4222f5330aa52425c9e467ad51adb0ad8a2eb04244575b4ca83a5"},
+    // Save tests (ap_save_tests.h).
+    {"DaruniaStrengthCheckBlock", 0x001E4878U,
+     "6e4f66dbc247b42883c39a8aa138c01fb4fddcccf6e8f8ddce664b1f5a932266"},
+    {"DaruniaStrengthOwnedBlock", 0x001E48B0U,
+     "e955b1ec6b59e474acb45f0971eb86cc0c2d0305d33abd3b7f751c1fa066848a"},
+    {"DaruniaStrengthTextBlock", 0x001E48BCU,
+     "c1a6d90e8ddefe4bab57cf3bc614bc96e7fe1d510a43c75145ceeb77c50709e4"},
+    {"SunFireArrowsCheckBlock", 0x003F23D0U,
+     "e5096886bc3a23f5cd60ee136b2fa3c4d58fc83fb7880fd788883770e3eef380"},
+    {"SunFireArrowsMissingBlock", 0x003F2404U,
+     "132f3addb66c5c924d4c84f6c421ed0fef6aba17ab87ecb7a106d7ba55fd320f"},
+    {"SunFireArrowsOwnedBlock", 0x003F2424U,
+     "c5dc4ad286c36fffe2a66d6bcf6cba7815e29c79428eb14545329dd491431c9f"},
+    {"SunFireArrowsCheckTwoBlock", 0x003F2440U,
+     "28b02b4e4d82d9afdf84022d046df8ef06363a11fde2e1863e554455de1e665a"},
+    {"SunFireArrowsMissingTwoBlock", 0x003F2450U,
+     "7ff58c1989d42528b4f5863f960a246fd0720ef5d0637c4db7661d7aadc23af5"},
+    {"SunFireArrowsOwnedTwoBlock", 0x003F24CCU,
+     "3ff4b2f67c6d324994b9377300ecd5aecf8c755ef0fefabb8f0a77ea94fe5fcf"},
+    {"GoronLinkDispatchBlock", 0x00195380U,
+     "f0fb79504a6886a8335bff6c7a10d264626f95d36734aeddc7e15000739e0765"},
+    {"GoronLinkMedallionBlock", 0x00195454U,
+     "904b8b5425da5b7e8c3d881b5cb8738b0582e0d147e6fbeff6fa2fa7ffd4a781"},
+    {"GoronLinkTunicCheckBlock", 0x0019546CU,
+     "7220de8c6063f8854c90db912d51f308e8712e2faa6cc3a6cc9147f75515a59d"},
+    {"GoronLinkHasTunicBlock", 0x00195484U,
+     "f21521b4abcfc8b4ae6993f832cd5f52fd7b13f7de54b32c894f1890c8690277"},
+    {"GoronLinkNoTunicBlock", 0x0019549CU,
+     "f5773445ea9316ddfefbe4f114ca566e7e562a7866bbf8545186d72f5f5fecbc"},
+    {"KingZoraTunicCheckBlock", 0x001B6A54U,
+     "75347ad119fc64fab512e0e79a6711e8ad875f8b592a8b6c44501d27e157205b"},
+    {"KingZoraTunicTextBlock", 0x001B6844U,
+     "6f4106094f7b7e8209d4aff211c0ee014a3da6ec4fe1b2131116a095384a2d38"},
+    {"BiggoronSwordCheckBlock", 0x00194D90U,
+     "fe67d1b4abc56d9d2dafe5ff0e1628f03c04cff511bb4ab0a45913edbdf20ee0"},
+    {"BiggoronSwordGivesBlock", 0x00194DB0U,
+     "fb67a12ed06f97996286e2eaa0864b8f01abb0b18097374dc2cfc4c49e336c10"},
+    {"BiggoronSwordOtherBlock", 0x00195310U,
+     "ec9885aef51f2cc5100ea9a4ffb97179a7aa1687f4ce0fe9dd6242003fb65113"},
+    {"RollingGoronBagCheckBlock", 0x001953E4U,
+     "86419a05f6bfed781029f1ee76f26c93264b5e54ec1a8e87b41bdc3a367b8d63"},
+    {"RollingGoronBagOwnedBlock", 0x00195418U,
+     "b0e205399e9537f1c9fa92f38bcf554164b3efb240fa9d56d141b8ae005a0c5b"},
+    {"RollingGoronBagMissingBlock", 0x00195434U,
+     "29428ca0621d7db0cad1b834128d5b1ea782ad32d3c362ea3d9f8939a43e6ae7"},
+    {"AdultGalleryQuiverBlock", 0x0038AB88U,
+     "dd594ec921f2efb8c363ec8580ad9f9f6106c5fb3d11c9578ae296168d2019a0"},
+    {"ArcheryQuiverBlock", 0x003AFA10U,
+     "116cc8bf326f737c1489e6a6a21a7bff6cec9184242b80cf13662bd913139c0c"},
+    {"ArcheryQuiverTwoBlock", 0x003C2D5CU,
+     "116cc8bf326f737c1489e6a6a21a7bff6cec9184242b80cf13662bd913139c0c"},
+    {"ImpaLullabyCheckBlock", 0x0044FD6CU,
+     "d3933f06731e0496dfc55010efd452737bdb73a065a69bd7fa1ca49f1b2d2e2e"},
+    {"ImpaLullabyTeachBlock", 0x0044FD7CU,
+     "c2500d03eca73951169d4897d33e3cabae4df1c7c4281674ab7ba6cbd4a94b9a"},
+    {"ImpaLullabyKnownBlock", 0x0044FDB4U,
+     "c4bf45053bfc7b400680396220ee8df00eba82cf753d8a1445baa08b9fdcec08"},
+    {"MalonEponaCheckBlock", 0x0018C560U,
+     "91cc95a3268694d1356e847ba1069ab26c3f396d03784d8d1f12f7370946b123"},
+    {"MalonEponaKnownBlock", 0x0018C574U,
+     "da75067bace262479beea7c70c96e81ccf941551da48f8a3b00de23ffbfeee22"},
+    {"MalonEponaTeachBlock", 0x0018C594U,
+     "334a7093629618b46a3362f9c86aec592d287425ee86333121da2d0270c1cd26"},
+    {"MalonEponaCheckTwoBlock", 0x00195CECU,
+     "68a5bc78b73d678819c4ba072c72dbe75d2d810fb52187ef39c3da6f8643bb7c"},
+    {"MalonEponaKnownTwoBlock", 0x00195D04U,
+     "c78bf56116138c12e7cb0e88ff31bf9e3ee87c428de17f45937b80344d0cf5a7"},
+    {"MalonEponaTeachTwoBlock", 0x00195D0CU,
+     "8cf52fbd18dbe6287c3da085c7545be3375747ea6e6995a916b457e4d2d32697"},
+    {"SariaSongCheckBlock", 0x00168698U,
+     "74cde2027f0e98d3440f762fe788f14867eb2deae3c4eb9f8bcfa03b5ec5ff92"},
+    {"SariaSongTeachBlock", 0x001686ACU,
+     "f8db442808409edcf5ae2d4e4c4cc732a55cc22e7682bcbf00ce3e54047d2acb"},
+    {"SariaSongTextBlock", 0x001686F0U,
+     "7db74467903138bcc3c74aa1f3833badd59e08daefdf9cd2f4afda4a26246a94"},
+    {"TombSunsSongCheckBlock", 0x002888B4U,
+     "387249a039e390ecf33a364979cffc46627e050855dc25098b808dcd95582d10"},
+    {"TombSunsSongTeachBlock", 0x002888CCU,
+     "85045741ca25ba48f798eceb72895f18cf2bde5838b54a86aa0ed35de9946118"},
+    {"TombSunsSongKnownBlock", 0x002888F0U,
+     "87a1d9626bed18592d0b4198d6f5433c961a9e88bc2e23719b697104f704098b"},
 }};
 
 struct CheckEvent {
@@ -210,6 +309,14 @@ public:
   // it, and the save is restored in the block after (the observer's only
   // write of its own).
   void SetForestExitProbe(std::function<bool()> probe) { mForestExitOpen = std::move(probe); }
+  // Whether a save of a connected seed is open: Sheik in the Ice Cavern then
+  // appears for the Iron Boots chest instead of the Iron Boots, the save's
+  // boots bit set as the chest flag for the one block that tests it.
+  void SetSeedProbe(std::function<bool()> probe) { mSeedActive = std::move(probe); }
+  // Whether a location of the connected seed was taken (nothing: no seed,
+  // or not one of its locations), for the save tests (ap_save_tests.h).
+  using LocationTakenProbe = std::function<std::optional<bool>(const LocationKey &key)>;
+  void SetLocationTakenProbe(LocationTakenProbe probe) { mLocationTaken = std::move(probe); }
   // Whether a cow's location (its key: scene, base item, 0x14 + the cow's
   // number) still holds an item: the cow then gives without an empty bottle.
   void SetCowProbe(std::function<bool(const LocationKey &key)> probe) { mCowGives = std::move(probe); }
@@ -259,6 +366,8 @@ public:
     std::uint64_t SongBlocks = 0;
     std::uint64_t Damage = 0;
     std::uint64_t Messages = 0;
+    std::uint64_t IceCavernSheik = 0;
+    std::uint64_t SaveTests = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -298,6 +407,21 @@ private:
   std::optional<std::uint8_t> CowNumber(std::uint32_t actor) const;
   // questItems as it was before the guard's test: address and value.
   std::optional<std::pair<std::uint32_t, std::uint32_t>> mGuardRestore;
+  std::function<bool()> mSeedActive;
+  // The save's equipment as it was before Sheik's check block.
+  std::optional<std::uint16_t> mSheikRestore;
+  LocationTakenProbe mLocationTaken;
+  // A save test's field as it was: restored at the next hooked block.
+  struct SaveRestore {
+    std::uint32_t Address = 0;
+    std::uint8_t Size = 0;
+    std::uint32_t Value = 0;
+  };
+  std::optional<SaveRestore> mSaveRestore;
+  void ShowInSave(std::uint32_t address, std::uint8_t size, std::uint32_t value,
+                  oot3d::recomp::a32::MemoryBus &memory);
+  void ObserveSaveTests(std::uint32_t pc, oot3d::recomp::a32::GuestState &state,
+                        oot3d::recomp::a32::MemoryBus &memory);
   std::function<void()> mDeathSink;
   BlueWarpSink mBlueWarpSink;
   std::optional<Offer> mLastOffer;

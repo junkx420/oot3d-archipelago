@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 385,
+  "verified": 428,
   "unverified": 557
  },
  "entries": [
@@ -13670,6 +13670,651 @@
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SheikIceCavernCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002B2544",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002B2518",
+   "ld_line": 394,
+   "section": "text",
+   "signature": "sha256:049f34b9ae5602f7da50e7770a8cc28ab9f7bd47ddd7dc7d4225381dcb2bf811",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SheikIceCavernShownBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002B2544",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002B254C",
+   "ld_line": 394,
+   "section": "text",
+   "signature": "sha256:f76b72626f056d46abeb1adc051e6bc61fa3652f7477482241b9acd86937a0af",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SheikIceCavernHiddenBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002B2544",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002B25B0",
+   "ld_line": 394,
+   "section": "text",
+   "signature": "sha256:5fd1d490a2b4222f5330aa52425c9e467ad51adb0ad8a2eb04244575b4ca83a5",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "DaruniaStrengthCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001E489C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001E4878",
+   "ld_line": 226,
+   "section": "text",
+   "signature": "sha256:6e4f66dbc247b42883c39a8aa138c01fb4fddcccf6e8f8ddce664b1f5a932266",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "DaruniaStrengthOwnedBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001E489C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001E48B0",
+   "ld_line": 226,
+   "section": "text",
+   "signature": "sha256:e955b1ec6b59e474acb45f0971eb86cc0c2d0305d33abd3b7f751c1fa066848a",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "DaruniaStrengthTextBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001E489C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001E48BC",
+   "ld_line": 226,
+   "section": "text",
+   "signature": "sha256:c1a6d90e8ddefe4bab57cf3bc614bc96e7fe1d510a43c75145ceeb77c50709e4",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F23FC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F23D0",
+   "ld_line": 717,
+   "section": "text",
+   "signature": "sha256:e5096886bc3a23f5cd60ee136b2fa3c4d58fc83fb7880fd788883770e3eef380",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsMissingBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F23FC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F2404",
+   "ld_line": 717,
+   "section": "text",
+   "signature": "sha256:132f3addb66c5c924d4c84f6c421ed0fef6aba17ab87ecb7a106d7ba55fd320f",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsOwnedBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F23FC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F2424",
+   "ld_line": 717,
+   "section": "text",
+   "signature": "sha256:c5dc4ad286c36fffe2a66d6bcf6cba7815e29c79428eb14545329dd491431c9f",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsCheckTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F2448",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F2440",
+   "ld_line": 718,
+   "section": "text",
+   "signature": "sha256:28b02b4e4d82d9afdf84022d046df8ef06363a11fde2e1863e554455de1e665a",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsMissingTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F2448",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F2450",
+   "ld_line": 718,
+   "section": "text",
+   "signature": "sha256:7ff58c1989d42528b4f5863f960a246fd0720ef5d0637c4db7661d7aadc23af5",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SunFireArrowsOwnedTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003F2448",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003F24CC",
+   "ld_line": 718,
+   "section": "text",
+   "signature": "sha256:3ff4b2f67c6d324994b9377300ecd5aecf8c755ef0fefabb8f0a77ea94fe5fcf",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "GoronLinkDispatchBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195450",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195380",
+   "ld_line": 150,
+   "section": "text",
+   "signature": "sha256:f0fb79504a6886a8335bff6c7a10d264626f95d36734aeddc7e15000739e0765",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "GoronLinkMedallionBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195450",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195454",
+   "ld_line": 150,
+   "section": "text",
+   "signature": "sha256:904b8b5425da5b7e8c3d881b5cb8738b0582e0d147e6fbeff6fa2fa7ffd4a781",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "GoronLinkTunicCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195450",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0019546C",
+   "ld_line": 150,
+   "section": "text",
+   "signature": "sha256:7220de8c6063f8854c90db912d51f308e8712e2faa6cc3a6cc9147f75515a59d",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "GoronLinkHasTunicBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195480",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195484",
+   "ld_line": 151,
+   "section": "text",
+   "signature": "sha256:f21521b4abcfc8b4ae6993f832cd5f52fd7b13f7de54b32c894f1890c8690277",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "GoronLinkNoTunicBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195480",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0019549C",
+   "ld_line": 151,
+   "section": "text",
+   "signature": "sha256:f5773445ea9316ddfefbe4f114ca566e7e562a7866bbf8545186d72f5f5fecbc",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "KingZoraTunicCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001B6A64",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001B6A54",
+   "ld_line": 181,
+   "section": "text",
+   "signature": "sha256:75347ad119fc64fab512e0e79a6711e8ad875f8b592a8b6c44501d27e157205b",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "KingZoraTunicTextBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001B6A64",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001B6844",
+   "ld_line": 181,
+   "section": "text",
+   "signature": "sha256:6f4106094f7b7e8209d4aff211c0ee014a3da6ec4fe1b2131116a095384a2d38",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "BiggoronSwordCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00194DA0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00194D90",
+   "ld_line": 148,
+   "section": "text",
+   "signature": "sha256:fe67d1b4abc56d9d2dafe5ff0e1628f03c04cff511bb4ab0a45913edbdf20ee0",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "BiggoronSwordGivesBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00194DA0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00194DB0",
+   "ld_line": 148,
+   "section": "text",
+   "signature": "sha256:fb67a12ed06f97996286e2eaa0864b8f01abb0b18097374dc2cfc4c49e336c10",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "BiggoronSwordOtherBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00194DA0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195310",
+   "ld_line": 148,
+   "section": "text",
+   "signature": "sha256:ec9885aef51f2cc5100ea9a4ffb97179a7aa1687f4ce0fe9dd6242003fb65113",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "RollingGoronBagCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195414",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001953E4",
+   "ld_line": 149,
+   "section": "text",
+   "signature": "sha256:86419a05f6bfed781029f1ee76f26c93264b5e54ec1a8e87b41bdc3a367b8d63",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "RollingGoronBagOwnedBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195414",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195418",
+   "ld_line": 149,
+   "section": "text",
+   "signature": "sha256:b0e205399e9537f1c9fa92f38bcf554164b3efb240fa9d56d141b8ae005a0c5b",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "RollingGoronBagMissingBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195414",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195434",
+   "ld_line": 149,
+   "section": "text",
+   "signature": "sha256:29428ca0621d7db0cad1b834128d5b1ea782ad32d3c362ea3d9f8939a43e6ae7",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ImpaLullabyCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0044FD54",
+   "eur_offset": "+0x20",
+   "exec_addr": "0x0044FD6C",
+   "ld_line": 775,
+   "section": "text",
+   "signature": "sha256:d3933f06731e0496dfc55010efd452737bdb73a065a69bd7fa1ca49f1b2d2e2e",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ImpaLullabyTeachBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0044FD54",
+   "eur_offset": "+0x20",
+   "exec_addr": "0x0044FD7C",
+   "ld_line": 775,
+   "section": "text",
+   "signature": "sha256:c2500d03eca73951169d4897d33e3cabae4df1c7c4281674ab7ba6cbd4a94b9a",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ImpaLullabyKnownBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0044FD54",
+   "eur_offset": "+0x20",
+   "exec_addr": "0x0044FDB4",
+   "ld_line": 775,
+   "section": "text",
+   "signature": "sha256:c4bf45053bfc7b400680396220ee8df00eba82cf753d8a1445baa08b9fdcec08",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0018C56C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0018C560",
+   "ld_line": 131,
+   "section": "text",
+   "signature": "sha256:91cc95a3268694d1356e847ba1069ab26c3f396d03784d8d1f12f7370946b123",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaKnownBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0018C56C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0018C574",
+   "ld_line": 131,
+   "section": "text",
+   "signature": "sha256:da75067bace262479beea7c70c96e81ccf941551da48f8a3b00de23ffbfeee22",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaTeachBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0018C56C",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0018C594",
+   "ld_line": 131,
+   "section": "text",
+   "signature": "sha256:334a7093629618b46a3362f9c86aec592d287425ee86333121da2d0270c1cd26",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaCheckTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195CFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195CEC",
+   "ld_line": 154,
+   "section": "text",
+   "signature": "sha256:68a5bc78b73d678819c4ba072c72dbe75d2d810fb52187ef39c3da6f8643bb7c",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaKnownTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195CFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195D04",
+   "ld_line": 154,
+   "section": "text",
+   "signature": "sha256:c78bf56116138c12e7cb0e88ff31bf9e3ee87c428de17f45937b80344d0cf5a7",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "MalonEponaTeachTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x00195CFC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00195D0C",
+   "ld_line": 154,
+   "section": "text",
+   "signature": "sha256:8cf52fbd18dbe6287c3da085c7545be3375747ea6e6995a916b457e4d2d32697",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SariaSongCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001686A0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00168698",
+   "ld_line": 95,
+   "section": "text",
+   "signature": "sha256:74cde2027f0e98d3440f762fe788f14867eb2deae3c4eb9f8bcfa03b5ec5ff92",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SariaSongTeachBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001686A0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001686AC",
+   "ld_line": 95,
+   "section": "text",
+   "signature": "sha256:f8db442808409edcf5ae2d4e4c4cc732a55cc22e7682bcbf00ce3e54047d2acb",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "SariaSongTextBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001686A0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x001686F0",
+   "ld_line": 95,
+   "section": "text",
+   "signature": "sha256:7db74467903138bcc3c74aa1f3833badd59e08daefdf9cd2f4afda4a26246a94",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "TombSunsSongCheckBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002888C8",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002888B4",
+   "ld_line": 378,
+   "section": "text",
+   "signature": "sha256:387249a039e390ecf33a364979cffc46627e050855dc25098b808dcd95582d10",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "TombSunsSongTeachBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002888C8",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002888CC",
+   "ld_line": 378,
+   "section": "text",
+   "signature": "sha256:85045741ca25ba48f798eceb72895f18cf2bde5838b54a86aa0ed35de9946118",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "TombSunsSongKnownBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x002888C8",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x002888F0",
+   "ld_line": 378,
+   "section": "text",
+   "signature": "sha256:87a1d9626bed18592d0b4198d6f5433c961a9e88bc2e23719b697104f704098b",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "branch_target"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "AdultGalleryQuiverBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x0038ABA0",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x0038AB88",
+   "ld_line": 623,
+   "section": "text",
+   "signature": "sha256:dd594ec921f2efb8c363ec8580ad9f9f6106c5fb3d11c9578ae296168d2019a0",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ArcheryQuiverBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003AFA34",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003AFA10",
+   "ld_line": 643,
+   "section": "text",
+   "signature": "sha256:116cc8bf326f737c1489e6a6a21a7bff6cec9184242b80cf13662bd913139c0c",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "ArcheryQuiverTwoBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x003C2D80",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x003C2D5C",
+   "ld_line": 663,
+   "section": "text",
+   "signature": "sha256:116cc8bf326f737c1489e6a6a21a7bff6cec9184242b80cf13662bd913139c0c",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_branch"
    ],
    "status": "signature_pinned"
   },

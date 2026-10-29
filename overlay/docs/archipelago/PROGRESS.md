@@ -900,3 +900,65 @@ the decisions. Not seen in a run: a new file (name entry is not scripted).
   website port must; a hosted room was not tried.
 - Tests: host tests for the text, its wrapping, the entry, both hooks and
   the interacting actor, and for the password setting.
+
+### Locations the unmodified game withholds (2026-10-29)
+
+An audit of OoT3D Randomizer's patches against the logic (which follows the
+randomizer): where the unmodified game tests the save instead of a location
+flag, a location could never be taken once Link owns the item from
+elsewhere. Every site below was read in the EUR image.
+
+- Save tests (ap_save_tests.h): Darunia's Joy (strength, DaruniaCheckStrength),
+  LH Sun (Fire Arrows, FireArrowCheckChestFlagOne/Two), Link the Goron (Goron
+  Tunic, AdultRollingGoronOne; he also never sees the Fire Medallion,
+  AdultRollingGoronIgnoreMedallion), King Zora (Zora Tunic,
+  KingZoraGiveTunic), Biggoron (bgsFlag, BiggoronCheckBGSFlag) and the child
+  rolling Goron (bomb bag, ChildRollingGoronDontCheckBombBag; the logic lets
+  bombchus or the bracelet trick stop him). For the one block that tests it
+  the save shows what the location says (taken: owned), and the next hooked
+  block restores it. Only with a seed's save open, and only for locations of
+  the seed.
+- Sheik in the Ice Cavern appears once the Iron Boots chest (chest flag 2) is
+  open, not once Link owns the Iron Boots (SerenadeCheckChestFlag; equipment
+  0x2000 = gEquipMasks[3][1] << gEquipShifts[3], read from the image).
+- Rewards the game picks by Link's capacity are keyed by the randomizer's
+  fixed get-item (KeyForOffer): the shooting galleries, the Lost Woods target,
+  horseback archery, bombchu bowling's bomb bag, the child rolling Goron, the
+  Deku Theater and the scrubs' stick and nut upgrades; the Gold Skulltula
+  family's 10 and 30 token rewards by the member's params (the game picks the
+  wallet by Link's, which reported the other reward). The adult gallery and
+  horseback archery set no reward for the quivers they do not expect; the
+  client presets 40 arrows in their quiver branch.
+- Checked and left alone: Impa and the castle courtyard test event flags,
+  not the letter; the Gerudo card tests follow the logic's own card; Mido,
+  the Deku sprout, the Kakariko gate and the Door of Time are world state;
+  the fishing pond, the diving game and the lab use their own flags.
+- 25 hooked blocks, each pinned by its evidence (block after a call or branch,
+  or a branch's target) and signature. Tests: host tests for every rule; a
+  probe to gameplay verifies all signatures. Not yet tried at these NPCs in
+  the game.
+
+### Shuffle songs (2026-10-29)
+
+- shuffle_songs: off, song_locations, dungeon_rewards and anywhere (SoH's
+  options and logic, unchanged). apworld world version 0.12.0.
+- A teacher's location is its song's direct Item_Give (KeyForDirectGive, the
+  randomizer's delayed song keys). Where the seed placed this world's own
+  song of that teacher, the game gives it as before; otherwise the give
+  becomes a recovery heart and the item travels through the server
+  (TeacherSong names each teacher's song).
+- The unmodified game teaches only a Link who does not know the song at
+  five tests, which OoT3D Randomizer replaces with its location flags:
+  LullabyCheckFlag (Impa, 0x0044FD74), EponasSongCheckFlag and Two (Malon,
+  0x0018C56C, 0x00195CFC), SariasSongCheckFlag (0x001686A0) and
+  SunsSongLocation (the Royal Family's Tomb, 0x002888C8); each tests its
+  questItems bit (gBitFlags[12..15], read from the image). They are save
+  tests (ap_save_tests.h) by the teacher's location. With songs not
+  shuffled, knowing a song and having taken its location are the same.
+- Sheik, Guru-Guru and Zelda's Song of Time follow event flags; Sheik's
+  hookshot test only picks a text; another Sun's Song test only picks a text.
+- Not done: the teacher's scene and its "You learned" text show the
+  game's song. Ocarina playback without an ocarina (shuffle_ocarinas) is
+  not tried.
+- Tests: host tests for the teachers' songs and their tests; seeds of all
+  three modes generate; a run verifies all signatures. Not played.

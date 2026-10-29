@@ -101,6 +101,12 @@ public:
   [[nodiscard]] bool Receiving() const;
   // The seed opens the forest exit and a save of the slot is open.
   [[nodiscard]] bool ForestExitOpen() const;
+  // A save of the connected seed is open.
+  [[nodiscard]] bool SeedActive() const;
+  // Whether a location of the seed was taken (reported from this save, or
+  // checked on the server); nothing without a seed or for a key that is not
+  // one of its locations.
+  [[nodiscard]] std::optional<bool> LocationTaken(const LocationKey &key) const;
   // A cow's location is part of the seed and not yet reported.
   [[nodiscard]] bool CowGivesItem(const LocationKey &key) const;
   // What a shop slot sells (ap_shops.h), and the slot was bought.

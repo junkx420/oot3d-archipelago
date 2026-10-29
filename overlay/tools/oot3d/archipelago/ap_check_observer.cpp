@@ -13,14 +13,15 @@ using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
 // Every hooked pc but quick text's (HookPcs sorts them).
-constexpr std::array<std::uint32_t, 26> kCheckHooks{
+constexpr std::array<std::uint32_t, 29> kCheckHooks{
     kEnCowInit,          kEnCowDestroy,          kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,
     kGameOverStartBlock, kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
     kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kCowBottleCheckBlock,   kChildBlueWarpBlock,
     kEnGirlAInit,        kEnGirlADraw,           kShopBuyEventDefault,   kShopCanBuyResultBlocks[0],
     kShopCanBuyResultBlocks[1], kShopCanBuyResultBlocks[2], kShopCanBuyResultBlocks[3],
     kShopCanBuyResultBlocks[4], kFastChestsObtainabilityBlock, kTimeBlockTimerBlock, kWarpBlockTimerBlock,
-    kHealthChangeBy,     kMessageEntryOneBlock,  kMessageEntryTwoBlock};
+    kHealthChangeBy,     kMessageEntryOneBlock,  kMessageEntryTwoBlock,
+    kSheikIceCavernCheckBlock, kSheikIceCavernShownBlock, kSheikIceCavernHiddenBlock};
 
 // Actors whose offered locations are remembered for item text (a scene has
 // only a few offering at a time).
@@ -53,12 +54,12 @@ std::uint8_t AbsoluteGetItemId(std::uint32_t value) {
 CheckObserver::~CheckObserver() {
   if (!mReportSink)
     return;
-  char text[448];
+  char text[512];
   const auto &quick = mQuickText.Counts();
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
                 "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
-                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu Messages=%llu "
+                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu Messages=%llu IceCavernSheik=%llu SaveTests=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
@@ -72,6 +73,8 @@ CheckObserver::~CheckObserver() {
                 static_cast<unsigned long long>(mHits.SongBlocks),
                 static_cast<unsigned long long>(mHits.Damage),
                 static_cast<unsigned long long>(mHits.Messages),
+                static_cast<unsigned long long>(mHits.IceCavernSheik),
+                static_cast<unsigned long long>(mHits.SaveTests),
                 ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
@@ -84,6 +87,8 @@ std::vector<std::uint32_t> CheckObserver::HookPcs(std::optional<std::uint32_t> p
   std::vector<std::uint32_t> pcs(kCheckHooks.begin(), kCheckHooks.end());
   const auto text = QuickText::HookPcs();
   pcs.insert(pcs.end(), text.begin(), text.end());
+  const auto saveTests = SaveTestHookPcs();
+  pcs.insert(pcs.end(), saveTests.begin(), saveTests.end());
   if (probePc.has_value())
     pcs.push_back(*probePc);
   std::sort(pcs.begin(), pcs.end());
@@ -129,6 +134,7 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
   }
   if (mProbePc.has_value() && pc == *mProbePc)
     ++mHits.Probe;
+  ObserveSaveTests(pc, state, memory);
   switch (pc) {
   case kActorOfferGetItem:
     ++mHits.ActorOfferGetItem;
@@ -298,9 +304,110 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
       mGuardRestore.reset();
     }
     break;
+  case kSheikIceCavernCheckBlock:
+    if (mSeedActive && mSeedActive()) {
+      const std::uint32_t play = Read32(memory, kGlobalContextPointer);
+      std::uint16_t equipment = 0;
+      if (play != 0U && Read16(memory, play + kPlaySceneNum) == kSceneIceCavern &&
+          memory.Read16(kSaveContext + kSaveEquipment, &equipment)) {
+        const bool opened = (Read32(memory, play + kPlayChestFlags) & kIceCavernBootsChestFlag) != 0U;
+        const auto shown = static_cast<std::uint16_t>(opened ? equipment | kEquipmentIronBoots
+                                                             : equipment & ~kEquipmentIronBoots);
+        if (shown != equipment && memory.Write16(kSaveContext + kSaveEquipment, shown)) {
+          mSheikRestore = equipment;
+          ++mHits.IceCavernSheik;
+        }
+      }
+    }
+    break;
+  case kSheikIceCavernShownBlock:
+  case kSheikIceCavernHiddenBlock:
+    if (mSheikRestore.has_value()) {
+      (void)memory.Write16(kSaveContext + kSaveEquipment, *mSheikRestore);
+      mSheikRestore.reset();
+    }
+    break;
   default:
     mQuickText.ObserveBlockEntry(pc, state, memory);
     break;
+  }
+}
+
+void CheckObserver::ShowInSave(std::uint32_t address, std::uint8_t size, std::uint32_t value, MemoryBus &memory) {
+  std::uint32_t old = 0;
+  bool read = false;
+  if (size == 1U) {
+    std::uint8_t byte = 0;
+    read = memory.Read8(address, &byte);
+    old = byte;
+  } else if (size == 2U) {
+    std::uint16_t half = 0;
+    read = memory.Read16(address, &half);
+    old = half;
+  } else {
+    read = memory.Read32(address, &old);
+  }
+  if (!read || old == value)
+    return;
+  const bool written = size == 1U   ? memory.Write8(address, static_cast<std::uint8_t>(value))
+                       : size == 2U ? memory.Write16(address, static_cast<std::uint16_t>(value))
+                                    : memory.Write32(address, value);
+  if (written) {
+    mSaveRestore = SaveRestore{address, size, old};
+    ++mHits.SaveTests;
+  }
+}
+
+// Save tests (ap_save_tests.h). A change lasts for the one block that makes
+// the test: whatever hooked block runs next restores it, normally one after
+// the test's branch.
+void CheckObserver::ObserveSaveTests(std::uint32_t pc, GuestState &state, MemoryBus &memory) {
+  if (mSaveRestore.has_value()) {
+    const SaveRestore restore = *mSaveRestore;
+    mSaveRestore.reset();
+    if (restore.Size == 1U)
+      (void)memory.Write8(restore.Address, static_cast<std::uint8_t>(restore.Value));
+    else if (restore.Size == 2U)
+      (void)memory.Write16(restore.Address, static_cast<std::uint16_t>(restore.Value));
+    else
+      (void)memory.Write32(restore.Address, restore.Value);
+  }
+  if (!mSeedActive || !mSeedActive())
+    return;
+  switch (pc) {
+  case kGoronTextDispatchBlock:
+    // Link the Goron's texts never see the Fire Medallion.
+    if ((Read16(memory, state.r[4] + kActorParams) & 0x1FU) == kGoronLinkParams) {
+      const std::uint32_t quest = Read32(memory, kSaveContext + kSaveQuestItems);
+      ShowInSave(kSaveContext + kSaveQuestItems, 4U, quest & ~kQuestFireMedallion, memory);
+    }
+    return;
+  case kAdultGalleryQuiverBlock:
+    (void)memory.Write32(state.r[4] + kAdultGalleryReward, kGetItemQuiver40);
+    return;
+  case kArcheryQuiverBlock:
+    state.r[4] = kGetItemQuiver40;
+    return;
+  case kArcheryQuiverTwoBlock:
+    state.r[5] = kGetItemQuiver40;
+    return;
+  default:
+    break;
+  }
+  if (!mLocationTaken)
+    return;
+  for (const SaveTest &test : kSaveTests) {
+    if (test.CheckBlock != pc)
+      continue;
+    const auto taken = mLocationTaken(test.Location);
+    if (!taken.has_value())
+      return;
+    const std::uint32_t address = kSaveContext + test.Offset;
+    const std::uint32_t value = test.Size == 1U   ? Read8(memory, address)
+                                : test.Size == 2U ? Read16(memory, address)
+                                                  : Read32(memory, address);
+    ShowInSave(address, test.Size, SaveTestValue(test, value, *taken), memory);
+    return;
   }
 }
 

@@ -26,8 +26,8 @@ to start with.
   Options Creator then lists "Ocarina of Time 3D" with the options the client
   supports: dungeon keys, maps, compasses and the Kokiri Sword; Zora's
   Fountain, Jabu-Jabu, the rainbow bridge, Ganon's trials, the forest, the
-  Kakariko gate and the Door of Time; Gold Skulltula tokens, Deku scrubs, cows, shops, ocarinas, the Weird Egg and
-  the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts;
+  Kakariko gate and the Door of Time; songs, Gold Skulltula tokens, Deku
+  scrubs, cows, shops, ocarinas, the Weird Egg and the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts;
   logical tricks by their OoT3D Randomizer names, each checked against its logic;
   glitched logic (Logic Rules, in the Glitches group) with the OoT3D
   Randomizer's glitch categories, their difficulties and its single glitches,
@@ -57,6 +57,13 @@ and its text field sends chat and commands such as `!hint`.
 A location that holds another player's item shows a recovery heart; its text
 box says what it was and for whom ("You found Hookshot for Alice!"). The
 item itself reaches its owner through the server.
+
+With **Shuffle Songs** a teacher whose location holds something else still
+plays the game's own song scene and its "You learned ..." text, but Link
+learns nothing there: the location's item comes from the server (and an
+in-game message names it). Teachers who in the game teach only a Link who
+does not know their song (Impa, Malon, Saria, the Royal Family's Tomb) teach
+until their location is taken, whatever Link knows.
 
 **Text boxes** (same tab): *Instant* fills every text box at once;
 *Instant, hold B to skip* also advances and closes text boxes while B (the

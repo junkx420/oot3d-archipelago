@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-29",
-  "now": "v0.1.0, the first release out of alpha. Played up to Hyrule Castle by a tester. Next: song and dungeon reward shuffles, more logic options.",
+  "now": "v0.2.0: song shuffle, and locations the game could withhold are fixed. Played up to Hyrule Castle by a tester. Next: dungeon reward shuffle.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -37,7 +37,8 @@
         {"text": "Seeds generate; Archipelago and world tests pass", "done": true},
         {"text": "Universal Tracker: world rebuilt from slot data, only real 3D logic shown (tried live with 0.3.6)", "done": true},
         {"text": "World options: Jabu-Jabu, Zora's Fountain, rainbow bridge, trials, forest, Kakariko gate, Door of Time; starting items", "done": true},
-        {"text": "Shuffles beyond the vanilla game (tokens, scrubs, cows, shops done; songs, rewards not yet)", "done": false},
+        {"text": "Shuffles beyond the vanilla game (tokens, scrubs, cows, shops, songs done; dungeon rewards not yet)", "done": false},
+        {"text": "Game tests of what Link owns answered by the location, as OoT3D_Randomizer patches them (built and host-tested)", "done": true},
         {"text": "3D tricks in logic, each checked against the 3D randomizer (33)", "done": true},
         {"text": "Glitched logic: 21 categories with difficulties and 14 single glitches, each checked against the 3D randomizer", "done": true}
       ]
@@ -78,6 +79,7 @@
     }
   ],
   "log": [
+    {"date": "2026-10-29", "text": "v0.2.0: songs can be shuffled, and NPCs and minigames that withheld their location from a Link who already owned the item, or a bigger capacity, now give it (Darunia, the Lake Hylia sun, Link the Goron, King Zora, Biggoron, Sheik in the Ice Cavern, the shooting galleries and more)."},
     {"date": "2026-10-29", "text": "v0.1.0, the first release out of alpha: another player's item now says in its text box what it is and for whom, names in messages no longer go missing, and the password can be remembered for auto-connect."},
     {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.11: client options in the F1 menu: infinite health, magic, ammo and rupees, fast chests, song replays skipped, and a damage multiplier up to one hit KO."},
     {"date": "2026-10-28", "text": "Alpha v0.1.0-alpha.10: glitched logic, with OoT3D_Randomizer's glitch categories, difficulties and single glitches, each compared with its own logic."},

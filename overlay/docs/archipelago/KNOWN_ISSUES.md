@@ -17,6 +17,18 @@ in the game:
   again (the client numbers them when they are created).
 - Tokens taken before a seed shuffled them still count in the game's own
   token count; the server's tokens add to it.
+- The NPCs whose save tests the client answers by their location (Darunia,
+  the Lake Hylia sun, Link the Goron, King Zora, Biggoron, the child rolling
+  Goron, Sheik in the Ice Cavern) and the rewards keyed by the randomizer's
+  get-item (shooting galleries, Lost Woods target, horseback archery,
+  bombchu bowling, Deku Theater, scrub upgrades, the Gold Skulltula
+  family) are host-tested and their hooks checked against the game's code,
+  not yet played. Before 2026-10-29 these locations could be lost when Link
+  owned the item, or a bigger capacity, from elsewhere.
+- Shuffled songs: a teacher whose location holds something else still plays
+  the game's song scene and "You learned ..." text, though Link learns
+  nothing there (the item comes from the server). Not yet played; learning
+  a song by playing it back without an ocarina (shuffle_ocarinas) not tried.
 
 ## Developer whole-AOT build faults when Link becomes controllable
 

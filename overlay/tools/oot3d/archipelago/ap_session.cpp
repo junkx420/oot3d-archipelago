@@ -391,10 +391,25 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   // The Great Fairies' spells and the Light Arrow cutscene are ordinary
   // locations of the seed: once its placements are known, the game's own item
   // becomes a recovery heart and the location's item comes from the server.
-  // Saria's gift (shuffle_ocarinas) the same. Songs and the dungeon rewards
-  // hold their own item with the supported options and stay as they are. A Gold Skulltula token's location
-  // is replaced the same way when the seed shuffles it (it is reported from
-  // the save's gsFlags, WatchTokens).
+  // Saria's gift (shuffle_ocarinas) the same. The dungeon rewards hold their
+  // own item with the supported options and stay as they are. A Gold
+  // Skulltula token's location is replaced the same way when the seed
+  // shuffles it (it is reported from the save's gsFlags, WatchTokens).
+  // A song teacher gives his own song. Where the seed placed another item
+  // (shuffled songs), Link learns nothing there (a recovery heart) and the
+  // location's item comes from the server.
+  if (const auto song = TeacherSong(key)) {
+    if (!mSidecar.has_value() || !mLocations.has_value() || !mSlot.has_value())
+      return std::nullopt;
+    const auto id = mLocations->Find(key, nullptr);
+    const auto placement = id.has_value() ? mSidecar->Placements.find(*id) : mSidecar->Placements.end();
+    if (placement == mSidecar->Placements.end())
+      return std::nullopt;
+    if (placement->second.Player == mSlot->Slot && mItems.has_value() &&
+        mItems->Name(placement->second.Item) == *song)
+      return std::nullopt;
+    return kItemRecoveryHeart;
+  }
   const bool token = key.Type == OverrideType::Skull;
   if (!token && (key.Type != OverrideType::Delayed ||
       (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedSariasGift && key.Flag != kDelayedFairyZorasFountain &&
@@ -419,6 +434,21 @@ bool Session::CowGivesItem(const LocationKey &key) const {
 bool Session::ForestExitOpen() const {
   std::lock_guard lock(mMutex);
   return mSidecar.has_value() && mWorld.OpenForestExit;
+}
+
+bool Session::SeedActive() const {
+  std::lock_guard lock(mMutex);
+  return mSidecar.has_value();
+}
+
+std::optional<bool> Session::LocationTaken(const LocationKey &key) const {
+  std::lock_guard lock(mMutex);
+  if (!mSidecar.has_value() || !mLocations.has_value())
+    return std::nullopt;
+  const auto id = mLocations->Find(key, nullptr);
+  if (!id.has_value() || mSidecar->Placements.count(*id) == 0U)
+    return std::nullopt;
+  return mSidecar->ReportedLocations.count(*id) != 0U || mServerChecked.count(*id) != 0U;
 }
 
 bool Session::Receiving() const {

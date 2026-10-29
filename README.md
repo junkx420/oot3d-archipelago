@@ -28,7 +28,7 @@ Building from source works too ([docs/BUILD.md](docs/BUILD.md)).
 - The game's own item locations send checks and give multiworld items: your
   own with their real model, another player's as a recovery heart whose text
   says what it was and for whom. Received items arrive in the game.
-- Shuffles: Gold Skulltula tokens, Deku scrubs, cows, shop slots, ocarinas,
+- Shuffles: songs, Gold Skulltula tokens, Deku scrubs, cows, shop slots, ocarinas,
   the Weird Egg, the Gerudo card; dungeon keys, maps and compasses in their
   dungeon.
 - Logic checked against OoT3D Randomizer, with its tricks and glitched logic;
@@ -41,7 +41,7 @@ Building from source works too ([docs/BUILD.md](docs/BUILD.md)).
   song replay skip, a damage multiplier, and cheats (infinite health, magic,
   ammo, rupees).
 
-What is not there yet: song and dungeon reward shuffles, Master Quest,
+What is not there yet: dungeon reward shuffle, Master Quest,
 entrance shuffle, models for other games' items. Known issues are in
 [KNOWN_ISSUES.md](overlay/docs/archipelago/KNOWN_ISSUES.md).
 
