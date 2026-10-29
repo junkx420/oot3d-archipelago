@@ -96,6 +96,16 @@ public:
     optionsChanged |= ImGui::Checkbox("Fast chests", &options.FastChests);
     if (ImGui::IsItemHovered())
       ImGui::SetTooltip("Every chest opens as a small one does: no slow opening, light or fanfare.");
+    constexpr std::array<const char *, 2> kChestLabels{"Normal", "Match contents"};
+    int chests = static_cast<int>(options.Chests);
+    if (ImGui::Combo("Chests", &chests, kChestLabels.data(), static_cast<int>(kChestLabels.size()))) {
+      options.Chests = static_cast<ChestAppearance>(chests);
+      optionsChanged = true;
+    }
+    if (ImGui::IsItemHovered())
+      ImGui::SetTooltip("Connected to a seed: a chest with a progression item or a boss key is big,\n"
+                        "any other small; a chest with a key is the fancy one.\n"
+                        "Takes effect for chests that appear after the change.");
     constexpr std::array<const char *, 3> kSongReplayLabels{"Normal", "Skip", "Skip, no sound"};
     int songReplays = static_cast<int>(options.SongReplays);
     if (ImGui::Combo("Song replays", &songReplays, kSongReplayLabels.data(),

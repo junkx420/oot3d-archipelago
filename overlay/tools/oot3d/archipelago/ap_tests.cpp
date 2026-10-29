@@ -22,6 +22,7 @@
 #include <nlohmann/json.hpp>
 
 #include <array>
+#include <bit>
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
@@ -484,11 +485,11 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 104U,
+  Expect(CheckObserver::HookPcs().size() == 107U,
          "checks, deaths, blue warps, the forest guard, Sheik in the Ice Cavern, the save tests, cows, shops, fast "
-         "chests, song blocks, damage, item text and quick text need 104 hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 105U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 104U, "a probe on a check hook is merged");
+         "chests, chest appearance, song blocks, damage, item text and quick text need 107 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 108U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 107U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -838,6 +839,23 @@ void TestSaveTests() {
              !TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongMinuet + 12U}) &&
              !TeacherSong(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSariasGift}),
          "the teachers' songs, in the order of their item ids");
+  // The get-item texts of item_table.c for each song and reward name the
+  // location whose scene shows them.
+  const std::array<std::pair<std::uint16_t, std::string_view>, 21> texts{{
+      {0x0073U, "Minuet of Forest"}, {0x0074U, "Bolero of Fire"},   {0x0075U, "Serenade of Water"},
+      {0x0076U, "Requiem of Spirit"}, {0x0077U, "Nocturne of Shadow"}, {0x0078U, "Prelude of Light"},
+      {0x00D4U, "Zelda's Lullaby"},  {0x00D2U, "Epona's Song"},    {0x00D1U, "Saria's Song"},
+      {0x00D3U, "Sun's Song"},       {0x00D5U, "Song of Time"},    {0x00D6U, "Song of Storms"},
+      {0x0080U, "Kokiri's Emerald"}, {0x0081U, "Goron's Ruby"},    {0x0082U, "Zora's Sapphire"},
+      {0x003EU, "Forest Medallion"}, {0x003CU, "Fire Medallion"},  {0x003DU, "Water Medallion"},
+      {0x003FU, "Spirit Medallion"}, {0x0041U, "Shadow Medallion"}, {0x0040U, "Light Medallion"}}};
+  for (const auto &[text, name] : texts) {
+    const auto key = KeyForGiveText(text);
+    Expect(key.has_value() && (TeacherSong(*key) == name || DungeonReward(*key) == name),
+           "a song's or reward's text names its own location");
+  }
+  Expect(!KeyForGiveText(kTextRecoveryHeart).has_value() && !KeyForGiveText(0x0072U).has_value(),
+         "other texts name no location");
 }
 
 // Sheik in the Ice Cavern: in a seed she appears for the Iron Boots chest,
@@ -1142,6 +1160,117 @@ void TestFastChests() {
   state.r[0] = 0x05U; // already obtainable: short anyway
   observer.ObserveBlockEntry(kFastChestsObtainabilityBlock, state, memory);
   Expect(state.r[0] == 0x05U && observer.Hits().FastChests == 1U, "a short opening is left alone");
+}
+
+void TestChestAppearance() {
+  Expect(ClassifyChestContents("Forest Temple Big Key", 1U) == ChestContents::BossKey, "a boss key");
+  Expect(ClassifyChestContents("Water Temple Small Key", 1U) == ChestContents::SmallKey, "a small key");
+  Expect(ClassifyChestContents("Fire Temple Key Ring", 1U) == ChestContents::SmallKey, "a key ring");
+  Expect(ClassifyChestContents("Piece of Heart", 1U) == ChestContents::Minor, "hearts stay small");
+  Expect(ClassifyChestContents("Gold Skulltula Token", 1U) == ChestContents::Minor, "tokens stay small");
+  Expect(ClassifyChestContents("Hookshot", 1U) == ChestContents::Major, "progression is major");
+  Expect(ClassifyChestContents("Deku Nuts (5)", 0U) == ChestContents::Minor, "filler is minor");
+  Expect(ClassifyChestContents("", kItemFlagTrap) == ChestContents::Major, "a trap looks major");
+  Expect(ClassifyChestContents("", 2U) == ChestContents::Minor, "another game's useful item is minor");
+  Expect(ParseChestAppearance("classic") == ChestAppearance::Classic && !ParseChestAppearance("big").has_value(),
+         "chest appearance parses");
+
+  constexpr std::uint32_t kPlay = 0x08000000U;
+  constexpr std::uint32_t kChest = 0x08100000U;
+  constexpr std::uint32_t kModel = 0x08200000U;
+  constexpr std::uint32_t kMeshes = 0x08300000U;
+  constexpr std::uint32_t kList = 0x08400000U;
+  constexpr std::uint32_t kLight = 0x08500000U;
+  const auto bits = [](float value) { return std::bit_cast<std::uint32_t>(value); };
+  FakeMemory memory;
+  const auto spawn = [&](std::uint8_t scene, std::uint16_t params, std::int8_t room) {
+    memory.Write16(kPlay + kPlaySceneNum, scene);
+    memory.Write16(kChest + kActorParams, params);
+    memory.Write8(kChest + kActorRoom, static_cast<std::uint8_t>(room));
+    memory.Write32(kChest + kEnBoxModel, kModel);
+    memory.Write32(kModel + 0x14U, kMeshes);
+    memory.Write32(kMeshes + 0x68U, 4U);
+    memory.Write32(kMeshes + 0x6CU, kList);
+    memory.Write32(kList, 0x01000100U); // as EnBox_Init leaves it: wooden chest and lid
+    for (std::uint32_t axis = 0; axis < 3U; ++axis) {
+      memory.Write32(kChest + kActorScale + axis * 4U, bits(0.01f));
+      memory.Write32(kChest + kActorWorldPos + axis * 4U, 0U);
+    }
+  };
+  const auto read = [&](std::uint32_t address) {
+    std::uint32_t value = 0;
+    memory.Read32(address, &value);
+    return value;
+  };
+  CheckObserver observer{false};
+  oot3d::recomp::a32::GuestState state{};
+  state.r[4] = kChest;
+  state.r[5] = kPlay;
+  std::optional<ChestContents> contents = ChestContents::Minor;
+  std::optional<LocationKey> asked;
+  observer.SetChestContentsProbe([&](const LocationKey &key) {
+    asked = key;
+    return contents;
+  });
+
+  spawn(0x55U, 0x04E0U, 0); // KF Kokiri Sword Chest: big, flag 0
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.01f) && observer.Hits().Chests == 0U && !asked.has_value(),
+         "vanilla by default");
+
+  observer.SetChestAppearance(ChestAppearance::Classic);
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(asked.has_value() && *asked == LocationKey{0x55U, OverrideType::Chest, 0x00U}, "the chest's key is asked");
+  Expect(read(kChest + kActorScale + 8U) == bits(0.005f) && read(kList) == 0x01000100U &&
+             observer.Hits().Chests == 1U,
+         "a minor item makes a small wooden chest");
+
+  state.r[0] = kChest;
+  memory.Write32(kChest + kActorChild, kLight);
+  observer.ObserveBlockEntry(kEnBoxUpdate, state, memory);
+  Expect(read(kLight + kActorScale + 4U) == bits(0.005f), "the chest's light gets its scale");
+
+  contents = ChestContents::SmallKey;
+  spawn(0x55U, 0x04E0U, 0);
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.005f) && read(kList) == 0x00010001U, "a small key: small and fancy");
+
+  contents = ChestContents::BossKey;
+  spawn(0x55U, 0x54E0U, 0);
+  observer.ObserveBlockEntry(kEnBoxInitSmallReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.01f) && read(kList) == 0x00010001U, "a boss key: big and fancy");
+
+  contents = ChestContents::Major;
+  spawn(0x55U, 0x54E0U, 0);
+  observer.ObserveBlockEntry(kEnBoxInitSmallReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.01f) && read(kList) == 0x01000100U, "a major item: big and wooden");
+
+  contents = std::nullopt;
+  const auto hits = observer.Hits().Chests;
+  spawn(0x55U, 0x04E0U, 0);
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.01f) && observer.Hits().Chests == hits,
+         "no placement: the chest is left as it is");
+  memory.Write32(kLight + kActorScale, bits(0.02f));
+  observer.ObserveBlockEntry(kEnBoxUpdate, state, memory);
+  Expect(read(kLight + kActorScale) == bits(0.02f), "an unchanged chest's light is left alone");
+
+  contents = ChestContents::Minor;
+  spawn(kSceneTreasureBoxShop, 0x5AA1U, 1);
+  observer.ObserveBlockEntry(kEnBoxInitSmallReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.01f), "the treasure chest game keeps its rooms' chests");
+  spawn(kSceneTreasureBoxShop, 0x5AA1U, 6);
+  observer.ObserveBlockEntry(kEnBoxInitSmallReturnBlock, state, memory);
+  Expect(read(kChest + kActorScale) == bits(0.005f), "but its last room's chest changes");
+
+  spawn(0x0DU, 0x36C5U, 12); // Ganon's Castle's Gold Gauntlets chest
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(read(kChest + kActorWorldPos) == bits(1777.0f) && read(kChest + kActorWorldPos + 8U) == bits(-3626.0f),
+         "a small Gold Gauntlets chest moves in reach");
+  contents = ChestContents::Major;
+  spawn(0x0DU, 0x8000U | 0x0AA0U, 9); // Ganon's Castle's Zelda's Lullaby chest
+  observer.ObserveBlockEntry(kEnBoxInitBigReturnBlock, state, memory);
+  Expect(read(kChest + kActorWorldPos + 8U) == bits(-962.0f), "a big Zelda's Lullaby chest moves back");
 }
 
 void TestSongReplays() {
@@ -1979,6 +2108,7 @@ void TestEnabledSettingAndAutoConnect() {
     Expect(session.Notifications().empty(), "no messages before anything happened");
     ClientOptions options{false, false};
     options.FastChests = true;
+    options.Chests = ChestAppearance::Classic;
     options.SongReplays = SongReplayMode::SkipNoSound;
     options.Damage = DamageMultiplier::OneHitKo;
     session.SetOptions(options);
@@ -1990,6 +2120,7 @@ void TestEnabledSettingAndAutoConnect() {
     Expect(session.State() == ConnectionState::Disconnected, "auto-connect can be turned off");
     Expect(!session.Options().Notifications, "the message option is kept");
     Expect(session.Options().FastChests, "fast chests are kept");
+    Expect(session.Options().Chests == ChestAppearance::Classic, "the chest appearance is kept");
     Expect(session.Options().SongReplays == SongReplayMode::SkipNoSound, "the song replay mode is kept");
     Expect(session.Options().Damage == DamageMultiplier::OneHitKo, "the damage multiplier is kept");
   }
@@ -2042,6 +2173,7 @@ int main(int argc, char **argv) {
     TestBridgeAndHearts();
     TestCheats();
     TestFastChests();
+    TestChestAppearance();
     TestSongReplays();
     TestDamageMultiplier();
     TestItemText();

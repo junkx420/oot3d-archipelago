@@ -83,6 +83,12 @@ CLIENT_HOOK_BLOCKS = {
     # chest opening, the block after the Item_CheckObtainability call that
     # picks the long animation for a new item (its result ITEM_NONE).
     "FastChestsObtainabilityBlock": ("FastChests", 0x50, "block_after_call"),
+    # Chest appearance (OoT3D_Randomizer chest.c, EnBox_rInit and
+    # Chest_ChangeAppearance after EnBox_Init): EnBox_Init's two returns,
+    # small and big chests, each the block after its last call
+    # (Actor_SetFocus), r4 the chest and r5 the play state.
+    "EnBoxInitSmallReturnBlock": ("EnBox_Init", 0x57C, "block_after_call"),
+    "EnBoxInitBigReturnBlock": ("EnBox_Init", 0x5A0, "block_after_call"),
     # Skip song replays (OoT3D_Randomizer hooks.s, SkipSongReplays_*BlocksFix):
     # the Song of Time blocks and the warp blocks wait out the replay with a
     # timer the patch site sets; the block after it counts the timer down.

@@ -148,6 +148,9 @@ void Session::LoadSettings() {
       ParseQuickTextMode(document.value("quick_text", std::string(ToString(mOptions.QuickText))))
           .value_or(mOptions.QuickText);
   mOptions.FastChests = document.value("fast_chests", false);
+  mOptions.Chests =
+      ParseChestAppearance(document.value("chest_appearance", std::string(ToString(mOptions.Chests))))
+          .value_or(mOptions.Chests);
   mOptions.SongReplays =
       ParseSongReplayMode(document.value("song_replays", std::string(ToString(mOptions.SongReplays))))
           .value_or(mOptions.SongReplays);
@@ -180,6 +183,7 @@ void Session::SaveSettings() const {
     document.erase("password");
   document["quick_text"] = ToString(mOptions.QuickText);
   document["fast_chests"] = mOptions.FastChests;
+  document["chest_appearance"] = ToString(mOptions.Chests);
   document["song_replays"] = ToString(mOptions.SongReplays);
   document["damage_multiplier"] = ToString(mOptions.Damage);
   document["cheat_infinite_health"] = mOptions.Cheats.InfiniteHealth;
@@ -348,7 +352,7 @@ std::optional<std::uint16_t> Session::OverrideGetItem(const LocationKey &key,
   return kPlaceholderGetItem; // no get-item in the game: given by the server
 }
 
-void Session::PreparePlaceholderText(std::int64_t location, const Placement &placement, bool foreign) {
+std::string Session::PlacementText(std::int64_t location, const Placement &placement, bool foreign) const {
   const auto names = mPlacementNames.find(location);
   std::string item = names != mPlacementNames.end() ? names->second.first : std::string();
   if (item.empty() && !foreign && mItems.has_value())
@@ -357,21 +361,59 @@ void Session::PreparePlaceholderText(std::int64_t location, const Placement &pla
   if (foreign)
     player = names != mPlacementNames.end() && !names->second.second.empty() ? names->second.second
                                                                               : std::string("another player");
-  mPlaceholderText = FormatItemFoundText(item, player);
+  return FormatItemFoundText(item, player);
+}
+
+void Session::PreparePlaceholderText(std::int64_t location, const Placement &placement, bool foreign) {
+  mPlaceholderText = PlacementText(location, placement, foreign);
   mPlaceholderTexts[location] = mPlaceholderText;
   mPlaceholderTextFrames = kPlaceholderTextFrames;
+}
+
+std::optional<std::int64_t> Session::ReplacedOwnGive(const LocationKey &key) const {
+  const auto own = TeacherSong(key).has_value() ? TeacherSong(key) : DungeonReward(key);
+  if (!own.has_value() || !mSidecar.has_value() || !mLocations.has_value() || !mSlot.has_value())
+    return std::nullopt;
+  const auto id = mLocations->Find(key, nullptr);
+  const auto placement = id.has_value() ? mSidecar->Placements.find(*id) : mSidecar->Placements.end();
+  if (placement == mSidecar->Placements.end())
+    return std::nullopt;
+  if (placement->second.Player == mSlot->Slot && mItems.has_value() && mItems->Name(placement->second.Item) == *own)
+    return std::nullopt;
+  return *id;
 }
 
 std::optional<std::uint32_t> Session::MessageEntry(std::uint32_t textId, std::uint32_t entry, std::uint32_t textBase,
                                                    const std::optional<LocationKey> &offer,
                                                    oot3d::recomp::a32::MemoryBus &memory) {
   std::lock_guard lock(mMutex);
-  if (textId != kTextRecoveryHeart)
-    return std::nullopt;
+  const std::string *text = nullptr;
+  std::string given;
+  if (textId != kTextRecoveryHeart) {
+    // A teacher's "You learned ..." or a reward scene's "You got ...": where
+    // the location holds another item (Link got a recovery heart there,
+    // ReplaceDirectGive), the text names that item. The same text of a song
+    // or reward Link gets from a get-item (the server's, a chest's) stays.
+    const auto key = textId <= 0xFFFFU ? KeyForGiveText(static_cast<std::uint16_t>(textId)) : std::nullopt;
+    if (!key.has_value())
+      return std::nullopt;
+    std::uint32_t play = 0;
+    std::uint32_t player = 0;
+    std::uint32_t state = 0;
+    if (!memory.Read32(kGlobalContextPointer, &play) || play == 0U ||
+        !memory.Read32(play + kPlayPlayerActor, &player) || player == 0U ||
+        !memory.Read32(player + kPlayerStateFlags1, &state) || (state & kPlayerState1GetItem) != 0U)
+      return std::nullopt;
+    const auto id = ReplacedOwnGive(*key);
+    if (!id.has_value())
+      return std::nullopt;
+    const Placement &placement = mSidecar->Placements.at(*id);
+    given = PlacementText(*id, placement, placement.Player != mSlot->Slot);
+    text = &given;
+  }
   // The location Link takes from, if its actor offered; else the latest
   // placeholder offer, for a little while.
-  const std::string *text = nullptr;
-  if (offer.has_value() && mLocations.has_value())
+  if (text == nullptr && offer.has_value() && mLocations.has_value())
     if (const auto id = mLocations->Find(*offer, nullptr))
       if (const auto found = mPlaceholderTexts.find(*id); found != mPlaceholderTexts.end())
         text = &found->second;
@@ -399,19 +441,8 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   // location's item comes from the server.
   // A dungeon reward's location (a blue warp, a sage, Rauru) gives its own
   // reward the same way: shuffled, it becomes a recovery heart.
-  const auto own = TeacherSong(key).has_value() ? TeacherSong(key) : DungeonReward(key);
-  if (own.has_value()) {
-    if (!mSidecar.has_value() || !mLocations.has_value() || !mSlot.has_value())
-      return std::nullopt;
-    const auto id = mLocations->Find(key, nullptr);
-    const auto placement = id.has_value() ? mSidecar->Placements.find(*id) : mSidecar->Placements.end();
-    if (placement == mSidecar->Placements.end())
-      return std::nullopt;
-    if (placement->second.Player == mSlot->Slot && mItems.has_value() &&
-        mItems->Name(placement->second.Item) == *own)
-      return std::nullopt;
-    return kItemRecoveryHeart;
-  }
+  if (TeacherSong(key).has_value() || DungeonReward(key).has_value())
+    return ReplacedOwnGive(key).has_value() ? std::optional<std::uint8_t>(kItemRecoveryHeart) : std::nullopt;
   const bool token = key.Type == OverrideType::Skull;
   if (!token && (key.Type != OverrideType::Delayed ||
       (key.Flag != kDelayedLightArrowCutscene && key.Flag != kDelayedSariasGift && key.Flag != kDelayedFairyZorasFountain &&
@@ -456,6 +487,20 @@ std::optional<bool> Session::LocationTaken(const LocationKey &key) const {
 bool Session::RewardsShuffled() const {
   std::lock_guard lock(mMutex);
   return mSidecar.has_value() && mWorld.DungeonRewardsShuffled;
+}
+
+std::optional<ChestContents> Session::ChestContentsAt(const LocationKey &key) const {
+  std::lock_guard lock(mMutex);
+  if (!mSidecar.has_value() || !mSlot.has_value() || !mLocations.has_value())
+    return std::nullopt;
+  const auto id = mLocations->Find(key, nullptr);
+  const auto placement = id.has_value() ? mSidecar->Placements.find(*id) : mSidecar->Placements.end();
+  if (placement == mSidecar->Placements.end())
+    return std::nullopt;
+  std::string name;
+  if (placement->second.Player == mSlot->Slot && mItems.has_value())
+    name = mItems->Name(placement->second.Item).value_or("");
+  return ClassifyChestContents(name, placement->second.Flags);
 }
 
 bool Session::Receiving() const {

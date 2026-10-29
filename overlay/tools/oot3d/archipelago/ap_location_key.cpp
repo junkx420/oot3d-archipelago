@@ -208,6 +208,24 @@ std::optional<std::string_view> DungeonReward(const LocationKey &key) {
   return kRewards[key.Flag];
 }
 
+std::optional<LocationKey> KeyForGiveText(std::uint16_t textId) {
+  // In the order of TeacherSong's songs and DungeonReward's dungeons.
+  static constexpr std::array<std::uint16_t, 12> kSongTexts{0x0073U, 0x0074U, 0x0075U, 0x0076U, 0x0077U, 0x0078U,
+                                                            0x00D4U, 0x00D2U, 0x00D1U, 0x00D3U, 0x00D5U, 0x00D6U};
+  static constexpr std::array<std::uint16_t, 8> kRewardTexts{0x0080U, 0x0081U, 0x0082U, 0x003EU,
+                                                             0x003CU, 0x003DU, 0x003FU, 0x0041U};
+  constexpr std::uint16_t kLightMedallionText = 0x0040U;
+  for (std::size_t i = 0; i < kSongTexts.size(); ++i)
+    if (kSongTexts[i] == textId)
+      return LocationKey{kDelayedScene, OverrideType::Delayed, static_cast<std::uint8_t>(kDelayedSongMinuet + i)};
+  for (std::size_t i = 0; i < kRewardTexts.size(); ++i)
+    if (kRewardTexts[i] == textId)
+      return LocationKey{kTempleScene, OverrideType::Temple, static_cast<std::uint8_t>(i)};
+  if (textId == kLightMedallionText)
+    return LocationKey{kTempleScene, OverrideType::Temple, kLinksPocketFlag};
+  return std::nullopt;
+}
+
 std::string Describe(const LocationKey &key) {
   static constexpr const char *kTypes[] = {
       "base", "chest", "collectable", "skull", "grotto_scrub", "delayed", "temple"};

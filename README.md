@@ -38,8 +38,8 @@ Building from source works too ([docs/BUILD.md](docs/BUILD.md)).
 - The goal (Ganon), DeathLink, auto-connect and reconnect, in-game messages,
   the server's chat and commands, Universal Tracker.
 - Client options: cutscene and blue warp skips, quick text, fast chests,
-  song replay skip, a damage multiplier, and cheats (infinite health, magic,
-  ammo, rupees).
+  chests that match their contents, song replay skip, a damage multiplier,
+  and cheats (infinite health, magic, ammo, rupees).
 
 What is not there yet: Master Quest,
 entrance shuffle, models for other games' items. Known issues are in

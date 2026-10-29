@@ -3,6 +3,7 @@
 // Run by guest_layout.ps1; its output must match ap_guest_layout.h.
 #include <stddef.h>
 #include "z3D/z3D.h"
+#include "z3D/actors/z_en_box.h"
 
 #define O(name, type, field) const unsigned name = offsetof(type, field);
 O(player_getItemId, Player, getItemId)
@@ -15,6 +16,11 @@ O(actor_params, Actor, params)
 O(actor_update, Actor, update)
 O(actor_draw, Actor, draw)
 O(actor_parent, Actor, parent)
+O(actor_child, Actor, child)
+O(actor_room, Actor, room)
+O(actor_world_pos, Actor, world.pos)
+O(actor_scale, Actor, scale)
+O(enbox_saModel, EnBox, skelAnime.saModel)
 O(actor_bgCheckFlags, Actor, bgCheckFlags)
 O(actor_depthInWater, Actor, depthInWater)
 O(actor_velocity_y, Actor, velocity.y)

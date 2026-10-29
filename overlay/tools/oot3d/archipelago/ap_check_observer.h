@@ -11,6 +11,7 @@
 // itself (its blue warp sink may set save flags) and never raises an
 // observable exit.
 
+#include "ap_chest_appearance.h"
 #include "ap_damage.h"
 #include "ap_guest_layout.h"
 #include "ap_location_key.h"
@@ -26,6 +27,7 @@
 #include <functional>
 #include <map>
 #include <optional>
+#include <set>
 #include <span>
 #include <string>
 #include <vector>
@@ -105,7 +107,7 @@ inline constexpr std::uint32_t kSongBlockTimer = 0xC6U;
 inline constexpr std::uint16_t kSongBlockTimerReplay = 0x6EU;
 inline constexpr std::uint16_t kSongBlockTimerSkipped = 0x10U;
 
-inline constexpr std::array<GuestFunction, 102> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 105> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -159,6 +161,12 @@ inline constexpr std::array<GuestFunction, 102> kGuestFunctions{{
      "f76b72626f056d46abeb1adc051e6bc61fa3652f7477482241b9acd86937a0af"},
     {"SheikIceCavernHiddenBlock", kSheikIceCavernHiddenBlock,
      "5fd1d490a2b4222f5330aa52425c9e467ad51adb0ad8a2eb04244575b4ca83a5"},
+    // Chest appearance (ap_chest_appearance.h).
+    {"EnBoxInitSmallReturnBlock", kEnBoxInitSmallReturnBlock,
+     "8ba0599157c7cf93a22de950c8039b0811f7ae3da935db097e6add0e37e46b6e"},
+    {"EnBoxInitBigReturnBlock", kEnBoxInitBigReturnBlock,
+     "f79c553d0278e742e9318f2e7d2c0e1526709a466fbba58d03891c1115c4346b"},
+    {"EnBox_Update", kEnBoxUpdate, "81c223263fc4435dd8869c280ad58dd90b4f2dc4b104110981e767204e6545e3"},
     // Save tests (ap_save_tests.h).
     {"DaruniaStrengthCheckBlock", 0x001E4878U,
      "6e4f66dbc247b42883c39a8aa138c01fb4fddcccf6e8f8ddce664b1f5a932266"},
@@ -402,6 +410,11 @@ public:
   // Fast chests: every chest opens with the short animation, as small ones
   // do (a client option, off by default).
   void SetFastChests(bool on) noexcept { mFastChests = on; }
+  // Chest appearance (a client option, vanilla by default) and what a
+  // chest's location holds (nothing: the chest is left as it is).
+  void SetChestAppearance(ChestAppearance appearance) noexcept { mChestAppearance = appearance; }
+  using ChestContentsProbe = std::function<std::optional<ChestContents>(const LocationKey &key)>;
+  void SetChestContentsProbe(ChestContentsProbe probe) { mChestContents = std::move(probe); }
   // Skip song replays: the Song of Time and warp blocks do not wait for the
   // skipped replay (the msgMode part runs in the session's frame update).
   void SetSongReplays(bool skip) noexcept { mSongReplays = skip; }
@@ -437,6 +450,7 @@ public:
     std::uint64_t Messages = 0;
     std::uint64_t IceCavernSheik = 0;
     std::uint64_t SaveTests = 0;
+    std::uint64_t Chests = 0;
   };
   [[nodiscard]] const HookHits &Hits() const noexcept { return mHits; }
 
@@ -504,6 +518,10 @@ private:
   bool mVerified = false;
   // Set from the options sink (the overlay's thread).
   std::atomic<bool> mFastChests{false};
+  std::atomic<ChestAppearance> mChestAppearance{ChestAppearance::Vanilla};
+  ChestContentsProbe mChestContents;
+  // Chests the client changed, by actor: their light gets their scale.
+  std::set<std::uint32_t> mChangedChests;
   std::atomic<bool> mSongReplays{false};
   std::atomic<DamageMultiplier> mDamageMultiplier{DamageMultiplier::Normal};
   DamageScaler mDamage;

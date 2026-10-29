@@ -26,13 +26,15 @@ in the game:
   not yet played. Before 2026-10-29 these locations could be lost when Link
   owned the item, or a bigger capacity, from elsewhere.
 - Shuffled dungeon rewards: a blue warp, sage or Rauru whose location holds
-  something else still shows the game's reward, though Link gets nothing
-  there. The reward tests answered by the dungeon beaten are host-tested,
-  not yet played.
+  something else still shows the game's reward in its scene, though Link
+  gets nothing there; its "You got ..." text names the location's item
+  instead (host-tested, not yet seen). The reward tests answered by the
+  dungeon beaten are host-tested, not yet played.
 - Shuffled songs: a teacher whose location holds something else still plays
-  the game's song scene and "You learned ..." text, though Link learns
-  nothing there (the item comes from the server). Not yet played; learning
-  a song by playing it back without an ocarina (shuffle_ocarinas) not tried.
+  the game's song scene, though Link learns nothing there (the item comes
+  from the server); its "You learned ..." text names the location's item
+  instead (host-tested, not yet seen). Learning a song by playing it back
+  without an ocarina (shuffle_ocarinas) not tried.
 
 ## Developer whole-AOT build faults when Link becomes controllable
 
@@ -206,3 +208,14 @@ of Harkinian graph splits differently, such as Gerudo Fortress and parts of
 Jabu-Jabu; enemy randomizer helpers; Master Quest). A seed may therefore
 expect less than the 3D randomizer would, never more. Nothing is checked in
 game: the glitches are the player's to perform.
+
+## Chest appearance
+
+- "Match contents" was seen in Mido's house only; the chests in dungeons,
+  the moved chests and a chest's light at the new size were not seen.
+- It changes a chest when it appears: a change of the option takes effect
+  in the next room or scene. Before the seed's locations are scouted (just
+  after connecting) chests keep their own look.
+- Another game's item is big only when Archipelago marks it progression or
+  a trap; the randomizer's chest textures (gold, key, heart, skull) are not
+  available.

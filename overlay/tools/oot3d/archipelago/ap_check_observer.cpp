@@ -13,7 +13,7 @@ using oot3d::recomp::a32::GuestState;
 using oot3d::recomp::a32::MemoryBus;
 
 // Every hooked pc but quick text's (HookPcs sorts them).
-constexpr std::array<std::uint32_t, 29> kCheckHooks{
+constexpr std::array<std::uint32_t, 32> kCheckHooks{
     kEnCowInit,          kEnCowDestroy,          kRutoBlueWarpDoneBlock, kAdultBlueWarpBlock,
     kGameOverStartBlock, kActorOfferGetItem,     kItemGive,              kKokiriGuardCheckBlock,
     kKokiriGuardStaysBlock, kKokiriGuardMovesBlock, kCowBottleCheckBlock,   kChildBlueWarpBlock,
@@ -21,7 +21,12 @@ constexpr std::array<std::uint32_t, 29> kCheckHooks{
     kShopCanBuyResultBlocks[1], kShopCanBuyResultBlocks[2], kShopCanBuyResultBlocks[3],
     kShopCanBuyResultBlocks[4], kFastChestsObtainabilityBlock, kTimeBlockTimerBlock, kWarpBlockTimerBlock,
     kHealthChangeBy,     kMessageEntryOneBlock,  kMessageEntryTwoBlock,
-    kSheikIceCavernCheckBlock, kSheikIceCavernShownBlock, kSheikIceCavernHiddenBlock};
+    kSheikIceCavernCheckBlock, kSheikIceCavernShownBlock, kSheikIceCavernHiddenBlock,
+    kEnBoxInitSmallReturnBlock, kEnBoxInitBigReturnBlock, kEnBoxUpdate};
+
+// Chests remembered for their light; a scene has few, and actors are freed
+// without a hook.
+constexpr std::size_t kChangedChestsKept = 64U;
 
 // Actors whose offered locations are remembered for item text (a scene has
 // only a few offering at a time).
@@ -59,7 +64,7 @@ CheckObserver::~CheckObserver() {
   std::snprintf(text, sizeof(text),
                 "[archipelago] hook hits: verified=%d probe(0x%08X)=%llu "
                 "Actor_OfferGetItem=%llu Item_Give=%llu GameOver=%llu BlueWarp=%llu ForestExit=%llu "
-                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu Messages=%llu IceCavernSheik=%llu SaveTests=%llu "
+                "CowBottle=%llu ShopBuys=%llu FastChests=%llu SongBlocks=%llu Damage=%llu Messages=%llu IceCavernSheik=%llu SaveTests=%llu Chests=%llu "
                 "quick_text(%s): instant=%llu control_codes=%llu turbo=%llu%s%s",
                 mVerified ? 1 : 0, mProbePc.value_or(0U),
                 static_cast<unsigned long long>(mHits.Probe),
@@ -75,6 +80,7 @@ CheckObserver::~CheckObserver() {
                 static_cast<unsigned long long>(mHits.Messages),
                 static_cast<unsigned long long>(mHits.IceCavernSheik),
                 static_cast<unsigned long long>(mHits.SaveTests),
+                static_cast<unsigned long long>(mHits.Chests),
                 ToString(mQuickText.Mode()),
                 static_cast<unsigned long long>(quick.Instant),
                 static_cast<unsigned long long>(quick.ControlCodes),
@@ -247,6 +253,33 @@ void CheckObserver::ObserveBlockEntry(std::uint32_t pc, GuestState &state, Memor
     if (mFastChests && state.r[0] == kItemNone) {
       state.r[0] = 0U;
       ++mHits.FastChests;
+    }
+    break;
+  case kEnBoxInitSmallReturnBlock:
+  case kEnBoxInitBigReturnBlock: {
+    // r4: the chest, r5: the play state.
+    const std::uint32_t chest = state.r[4];
+    mChangedChests.erase(chest);
+    if (mChestAppearance.load() == ChestAppearance::Vanilla || !mChestContents)
+      break;
+    const auto scene = static_cast<std::uint8_t>(Read16(memory, state.r[5] + kPlaySceneNum));
+    const auto key = ChestKey(Read16(memory, chest + kActorParams), scene);
+    const auto contents = key.has_value() ? mChestContents(*key) : std::nullopt;
+    if (contents.has_value() && ApplyChestAppearance(chest, scene, *contents, memory)) {
+      if (mChangedChests.size() >= kChangedChestsKept)
+        mChangedChests.clear();
+      mChangedChests.insert(chest);
+      ++mHits.Chests;
+    }
+    break;
+  }
+  case kEnBoxUpdate:
+    // r0: the chest. Its light (spawned as its child when it opens) gets the
+    // chest's scale, as EnBox_rUpdate does after each update.
+    if (mChangedChests.count(state.r[0]) != 0U) {
+      const std::uint32_t light = Read32(memory, state.r[0] + kActorChild);
+      for (std::uint32_t axis = 0; light != 0U && axis < 3U; ++axis)
+        (void)memory.Write32(light + kActorScale + axis * 4U, Read32(memory, state.r[0] + kActorScale + axis * 4U));
     }
     break;
   case kTimeBlockTimerBlock:

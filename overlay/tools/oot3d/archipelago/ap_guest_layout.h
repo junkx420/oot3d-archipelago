@@ -83,7 +83,13 @@ inline constexpr std::uint32_t kPlayTitleAlpha = kPlayActorCtx + 0x1C0U + 0x12U;
 inline constexpr std::uint32_t kActorSize = 0x1A4U;
 inline constexpr std::uint32_t kActorId = 0x000U;
 inline constexpr std::uint32_t kActorParams = 0x01CU;
+inline constexpr std::uint32_t kActorRoom = 0x003U;
+inline constexpr std::uint32_t kActorWorldPos = 0x028U; // Vec3f
+inline constexpr std::uint32_t kActorScale = 0x054U;    // Vec3f
 inline constexpr std::uint32_t kActorParent = 0x124U;
+inline constexpr std::uint32_t kActorChild = 0x128U;
+// EnBox (z_en_box.h): skelAnime (0x1BC) + saModel (0x28).
+inline constexpr std::uint32_t kEnBoxModel = 0x1E4U;
 inline constexpr std::uint32_t kActorUpdate = 0x13CU;
 inline constexpr std::uint32_t kActorDraw = 0x140U;
 inline constexpr std::uint32_t kActorBgCheckFlags = 0x090U;
@@ -94,6 +100,9 @@ inline constexpr std::uint32_t kPlayerStateFlags1 = 0x1710U;
 inline constexpr std::uint32_t kPlayerStateFlags2 = 0x1714U;
 inline constexpr std::uint16_t kBgCheckGround = 0x0001U;
 inline constexpr std::uint32_t kPlayerState1Submerged = 0x08000000U;
+// Link holds up an item he gets (OoT3D_Randomizer item_override.c tests it
+// with getItemId).
+inline constexpr std::uint32_t kPlayerState1GetItem = 0x00000400U;
 // OoT3D_Randomizer ItemOverride_CheckPlayerReadiness: states in which Link
 // cannot take an item (talking, cutscenes, climbing, holding, ...).
 inline constexpr std::uint32_t kPlayerState1Busy = 0xF4AC2485U;

@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-29",
-  "now": "v0.3.0: dungeon reward shuffle. Played up to Hyrule Castle by a tester. Next: Master Quest, entrance shuffle, models for other games' items.",
+  "now": "v0.4.0: chests match their contents; song and reward scenes name their location's item. Next: Master Quest, entrance shuffle, models for other games' items.",
   "phases": [
     {
       "id": 0, "name": "Reconnaissance", "weight": 1, "percent": 100,
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "id": 5, "name": "Polish", "weight": 10, "percent": 50,
+      "id": 5, "name": "Polish", "weight": 10, "percent": 55,
       "items": [
         {"text": "Names of other games' items in the text box (seen in the game with a real seed's names)", "done": true},
         {"text": "Models for other games' items", "done": false},
@@ -74,11 +74,14 @@
         {"text": "Progress file written off the game thread", "done": true},
         {"text": "Player-facing setup guide", "done": true},
         {"text": "Cheats: infinite health, magic, ammo and rupees (seen in the game)", "done": true},
-        {"text": "Fast chests, song replay skip and damage multiplier (built and host-tested, not yet tried in the game)", "done": true}
+        {"text": "Fast chests, song replay skip and damage multiplier (built and host-tested, not yet tried in the game)", "done": true},
+        {"text": "Chest size and model match the contents (seen in the game in Mido's house)", "done": true},
+        {"text": "Song teachers and reward scenes name the item their location holds (host-tested, not yet seen in the game)", "done": true}
       ]
     }
   ],
   "log": [
+    {"date": "2026-10-29", "text": "v0.4.0: chests can match their contents (big for progression items and boss keys, the fancy model for keys), and a song teacher or reward scene whose location holds another item now names that item."},
     {"date": "2026-10-29", "text": "v0.3.0: dungeon rewards can be shuffled; where the game reacts to a reward, it reacts to the dungeon beaten instead, as in OoT3D Randomizer."},
     {"date": "2026-10-29", "text": "v0.2.0: songs can be shuffled, and NPCs and minigames that withheld their location from a Link who already owned the item, or a bigger capacity, now give it (Darunia, the Lake Hylia sun, Link the Goron, King Zora, Biggoron, Sheik in the Ice Cavern, the shooting galleries and more)."},
     {"date": "2026-10-29", "text": "v0.1.0, the first release out of alpha: another player's item now says in its text box what it is and for whom, names in messages no longer go missing, and the password can be remembered for auto-connect."},

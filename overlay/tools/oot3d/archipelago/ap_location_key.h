@@ -127,6 +127,11 @@ std::vector<LocationKey> TokenKeys(std::span<const std::uint8_t> gsFlags);
 std::optional<std::string_view> TeacherSong(const LocationKey &key);
 // The reward a dungeon reward's location (a temple key) gives in the game.
 std::optional<std::string_view> DungeonReward(const LocationKey &key);
+// The location whose scene shows this text when it gives its own song or
+// reward ("You learned ...", "You got the Kokiri's Emerald"): the get-item
+// texts of OoT3D_Randomizer's item table (item_table.c), which the game's
+// teachers and reward scenes show. Nothing for other texts.
+std::optional<LocationKey> KeyForGiveText(std::uint16_t textId);
 
 std::string Describe(const LocationKey &key);
 

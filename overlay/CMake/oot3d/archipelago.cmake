@@ -40,6 +40,7 @@ if(TRIAEVUM_ENABLE_ARCHIPELAGO)
     add_library(triaevum_archipelago STATIC
         tools/oot3d/archipelago/ap_cheats.cpp
         tools/oot3d/archipelago/ap_check_observer.cpp
+        tools/oot3d/archipelago/ap_chest_appearance.cpp
         tools/oot3d/archipelago/ap_cutscene_skip.cpp
         tools/oot3d/archipelago/ap_damage.cpp
         tools/oot3d/archipelago/ap_fairy_rewards.cpp

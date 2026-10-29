@@ -5,7 +5,7 @@
  "source_commit": "",
  "signature_bytes": 32,
  "counts": {
-  "verified": 461,
+  "verified": 463,
   "unverified": 557
  },
  "entries": [
@@ -13607,6 +13607,36 @@
    "ld_line": 501,
    "section": "text",
    "signature": "sha256:8e397069a6866186efaa9178fd242e848823be9929144d6a5d19b7519323446e",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "EnBoxInitSmallReturnBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001899EC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00189F68",
+   "ld_line": 120,
+   "section": "text",
+   "signature": "sha256:8ba0599157c7cf93a22de950c8039b0811f7ae3da935db097e6add0e37e46b6e",
+   "verified_by": [
+    "oot3d_randomizer_ld_eur_offset",
+    "block_after_call"
+   ],
+   "status": "signature_pinned"
+  },
+  {
+   "name": "EnBoxInitBigReturnBlock",
+   "kind": "hook_block",
+   "usa_ref": "0x001899EC",
+   "eur_offset": "+0x0",
+   "exec_addr": "0x00189F8C",
+   "ld_line": 120,
+   "section": "text",
+   "signature": "sha256:f79c553d0278e742e9318f2e7d2c0e1526709a466fbba58d03891c1115c4346b",
    "verified_by": [
     "oot3d_randomizer_ld_eur_offset",
     "block_after_call"

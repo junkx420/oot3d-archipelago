@@ -54,6 +54,7 @@ struct ClientOptions {
   bool RememberPassword = false; // the password is saved, in plain text
   QuickTextMode QuickText = QuickTextMode::Off;
   bool FastChests = false; // every chest opens with the short animation
+  ChestAppearance Chests = ChestAppearance::Vanilla; // size and model match the contents
   SongReplayMode SongReplays = SongReplayMode::Off;
   DamageMultiplier Damage = DamageMultiplier::Normal;
   CheatOptions Cheats;
@@ -109,6 +110,9 @@ public:
   [[nodiscard]] std::optional<bool> LocationTaken(const LocationKey &key) const;
   // A save of a seed with shuffled dungeon rewards is open.
   [[nodiscard]] bool RewardsShuffled() const;
+  // What a chest's location holds, for its appearance (ap_chest_appearance.h);
+  // nothing without a seed or before its placements are scouted.
+  [[nodiscard]] std::optional<ChestContents> ChestContentsAt(const LocationKey &key) const;
   // A cow's location is part of the seed and not yet reported.
   [[nodiscard]] bool CowGivesItem(const LocationKey &key) const;
   // What a shop slot sells (ap_shops.h), and the slot was bought.
@@ -182,6 +186,11 @@ private:
   void WatchTriforce();
   [[nodiscard]] std::string ItemName(std::int64_t item) const;
   void PreparePlaceholderText(std::int64_t location, const Placement &placement, bool foreign);
+  // "You found <item> (for <player>)!" for a location's placement.
+  [[nodiscard]] std::string PlacementText(std::int64_t location, const Placement &placement, bool foreign) const;
+  // A teacher's or dungeon reward's location whose placement is not its own
+  // song or reward (Link gets a recovery heart there); its id. Lock held.
+  [[nodiscard]] std::optional<std::int64_t> ReplacedOwnGive(const LocationKey &key) const;
 
   mutable std::mutex mMutex;
   Paths mPaths;

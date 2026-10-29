@@ -990,3 +990,42 @@ elsewhere. Every site below was read in the EUR image.
 - Tests: host tests for the reward tests and each location's own reward;
   seeds of all four modes generate; a run verifies all signatures. Not
   played.
+
+### Chests match their contents (2026-10-29)
+
+- Client option "Chests" (chest_appearance: vanilla, the default, or
+  classic), as OoT3D Randomizer's Classic chest appearance (chest.c,
+  Chest_ChangeAppearance): progression items, traps and boss keys get a big
+  chest, anything else a small one; keys get the fancy model. The
+  randomizer's texture appearances need its own chest textures and are not
+  offered.
+- Major is Archipelago's classification (progression or trap); this world's
+  keys, hearts and tokens are classified by name as the randomizer's item
+  table does (hearts and tokens stay small).
+- Sites, EUR: EnBox_Init's two returns (0x00189F68 small, 0x00189F8C big,
+  each after Actor_SetFocus, block_after_call; r4 the chest, r5 the play
+  state) and EnBox_Update (0x001D5B70, the chest's light gets its scale).
+  Model_Enable/DisableMeshGroupByIndex (0x0037266C, 0x0036932C) only set a
+  byte of the model's mesh group list (+0x14, count +0x68, list +0x6C),
+  which the client writes itself. Actor room, world.pos, scale, child and
+  EnBox's saModel (0x1E4) checked with guest_layout.ps1. The randomizer's
+  moves of Ganon's Castle's and the Spirit Temple's chests are kept.
+- Tests: host tests for the classification, every size and model, the
+  treasure chest game's rooms, the moved chests and the light. In the game
+  (developer build, local server, a seed): Mido's house, four chests changed
+  (hook report Chests=4); the Progressive Magic Meter's chest is big, the
+  three with minor items stay small. Not yet opened with the option on.
+
+### Song and reward texts name the location's item (2026-10-29)
+
+- A teacher's "You learned ..." and a reward scene's "You got ..." are the
+  get-item texts of OoT3D Randomizer's item table (item_table.c: songs
+  0x73-0x78, 0xD1-0xD6; rewards 0x80-0x82, 0x3C-0x41), which the game's own
+  scenes show. KeyForGiveText maps each to the location that gives that
+  song or reward in the game.
+- At the message hooks (kMessageEntryOne/TwoBlock), such a text of a
+  location whose placement is not its own song or reward (where
+  ReplaceDirectGive gives a recovery heart) becomes "You found <item> (for
+  <player>)!". Not while Link holds up a get-item (state1 0x400): a song or
+  reward from the server or a chest keeps its text.
+- Tests: host tests for every text's location. Not seen in the game.
