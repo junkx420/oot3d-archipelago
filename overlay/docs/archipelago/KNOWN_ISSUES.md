@@ -25,6 +25,10 @@ in the game:
   family) are host-tested and their hooks checked against the game's code,
   not yet played. Before 2026-10-29 these locations could be lost when Link
   owned the item, or a bigger capacity, from elsewhere.
+- Shuffled dungeon rewards: a blue warp, sage or Rauru whose location holds
+  something else still shows the game's reward, though Link gets nothing
+  there. The reward tests answered by the dungeon beaten are host-tested,
+  not yet played.
 - Shuffled songs: a teacher whose location holds something else still plays
   the game's song scene and "You learned ..." text, though Link learns
   nothing there (the item comes from the server). Not yet played; learning

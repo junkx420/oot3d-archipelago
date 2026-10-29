@@ -35,6 +35,9 @@ struct WorldState {
   int StartingHearts = 0;
   // Trials already done when the file starts, by name ("Forest Trial", ...).
   std::vector<std::string> SkippedTrials;
+  // shuffle_dungeon_rewards not off: no flag to set, but the game's tests of
+  // the rewards answer by the dungeons beaten (ap_save_tests.h).
+  bool DungeonRewardsShuffled = false;
   [[nodiscard]] bool Empty() const noexcept {
     return !OpenJabuJabu && !OpenZorasFountain && !OpenRainbowBridge && !OpenDoorOfTime && !OpenKakarikoGate &&
            !MidoMoved && BridgeCondition == Bridge::Game && SkippedTrials.empty();

@@ -26,7 +26,7 @@ to start with.
   Options Creator then lists "Ocarina of Time 3D" with the options the client
   supports: dungeon keys, maps, compasses and the Kokiri Sword; Zora's
   Fountain, Jabu-Jabu, the rainbow bridge, Ganon's trials, the forest, the
-  Kakariko gate and the Door of Time; songs, Gold Skulltula tokens, Deku
+  Kakariko gate and the Door of Time; songs, dungeon rewards, Gold Skulltula tokens, Deku
   scrubs, cows, shops, ocarinas, the Weird Egg and the Gerudo card; rainbow bridge conditions, Triforce hunt, starting hearts;
   logical tricks by their OoT3D Randomizer names, each checked against its logic;
   glitched logic (Logic Rules, in the Glitches group) with the OoT3D
@@ -64,6 +64,13 @@ learns nothing there: the location's item comes from the server (and an
 in-game message names it). Teachers who in the game teach only a Link who
 does not know their song (Impa, Malon, Saria, the Royal Family's Tomb) teach
 until their location is taken, whatever Link knows.
+
+With **Shuffle Dungeon Rewards** a blue warp, sage or Rauru whose location
+holds something else still shows the game's reward, but Link gets nothing
+there: the location's item comes from the server. Where the game reacts to a
+reward (Mido to the Kokiri Emerald, the Kokiri and the Deku Tree Sprout to
+the Forest Medallion, the Lake Hylia sun to the Water Medallion), it reacts
+to the dungeon beaten instead, as in OoT3D Randomizer.
 
 **Text boxes** (same tab): *Instant* fills every text box at once;
 *Instant, hold B to skip* also advances and closes text boxes while B (the

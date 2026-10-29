@@ -107,6 +107,8 @@ public:
   // checked on the server); nothing without a seed or for a key that is not
   // one of its locations.
   [[nodiscard]] std::optional<bool> LocationTaken(const LocationKey &key) const;
+  // A save of a seed with shuffled dungeon rewards is open.
+  [[nodiscard]] bool RewardsShuffled() const;
   // A cow's location is part of the seed and not yet reported.
   [[nodiscard]] bool CowGivesItem(const LocationKey &key) const;
   // What a shop slot sells (ap_shops.h), and the slot was bought.

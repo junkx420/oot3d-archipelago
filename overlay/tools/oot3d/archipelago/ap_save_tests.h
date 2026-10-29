@@ -29,6 +29,15 @@
 
 namespace Oot3dArchipelago {
 
+// What a test's "owned" answers to.
+enum class SaveTestBy : std::uint8_t {
+  Location, // the location was taken
+  // Only with dungeon rewards shuffled: the event flag of the dungeon beaten
+  // (OoT3D_Randomizer's EventCheck), or never (it ignores the reward).
+  DungeonBeaten,
+  NeverWithShuffledRewards,
+};
+
 struct SaveTest {
   const char *Name;
   std::uint32_t CheckBlock;
@@ -44,7 +53,24 @@ struct SaveTest {
   // Only "not taken" is shown (the bomb bag: Link may keep his own state
   // once the location is taken). Shown as owned, not as missing.
   bool OwnedUntilTaken = false;
+  SaveTestBy By = SaveTestBy::Location;
+  // DungeonBeaten: the event flag in the save (eventChkInf, u16).
+  std::uint32_t EventOffset = 0;
+  std::uint16_t EventMask = 0;
 };
+
+// eventChkInf (kSaveEventChkInf 0xEEC, u16[14]) flags of dungeons beaten,
+// as OoT3D_Randomizer's EventCheck numbers them.
+inline constexpr std::uint32_t kEventDekuTreeOffset = 0xEECU; // 0x09
+inline constexpr std::uint16_t kEventDekuTreeMask = 0x0200U;
+inline constexpr std::uint32_t kEventTemplesOffset = 0xEF4U;  // 0x48, 0x4A
+inline constexpr std::uint16_t kEventForestTempleMask = 0x0100U;
+inline constexpr std::uint16_t kEventWaterTempleMask = 0x0400U;
+// questItems bits of the rewards the tests read (gBitFlags).
+inline constexpr std::uint32_t kQuestForestMedallion = 1U << 0U;
+inline constexpr std::uint32_t kQuestWaterMedallion = 1U << 2U;
+inline constexpr std::uint32_t kQuestKokiriEmerald = 1U << 18U;
+inline constexpr std::uint32_t kQuestZorasSapphire = 1U << 20U;
 
 // The tests' scenes (Death Mountain Trail: ap_location_key.h).
 inline constexpr std::uint8_t kSceneGoronCity = 0x62U;
@@ -62,7 +88,7 @@ inline constexpr std::uint32_t kQuestSongEpona = 1U << 13U;
 inline constexpr std::uint32_t kQuestSongSaria = 1U << 14U;
 inline constexpr std::uint32_t kQuestSongSun = 1U << 15U;
 
-inline constexpr std::array<SaveTest, 12> kSaveTests{{
+inline constexpr std::array<SaveTest, 23> kSaveTests{{
     // DaruniaCheckStrength: upgrades strength (mask 0x1C0, shift 6) below 1.
     {"Darunia's strength", 0x001E4878U, {0x001E48B0U, 0x001E48BCU},
      {kSceneGoronCity, OverrideType::BaseItem, 0x54U}, 0xB8U, 4U, 0x1C0U, 0U, 0x40U},
@@ -98,6 +124,42 @@ inline constexpr std::array<SaveTest, 12> kSaveTests{{
      {kDelayedScene, OverrideType::Delayed, kDelayedSongSaria}, 0xBCU, 4U, kQuestSongSaria, 0U, kQuestSongSaria},
     {"the tomb's Sun's Song", 0x002888B4U, {0x002888CCU, 0x002888F0U},
      {kDelayedScene, OverrideType::Delayed, kDelayedSongSun}, 0xBCU, 4U, kQuestSongSun, 0U, kQuestSongSun},
+    // With shuffled dungeon rewards Link may hold a reward without its
+    // dungeon beaten, or the other way round. MidoCheckDekuTreeClearOne to
+    // Four: Mido's Kokiri Emerald (the Deku Tree, event 0x09).
+    {"Mido's Kokiri Emerald", 0x00166238U, {0x0016624CU, 0x001662A0U}, {}, 0xBCU, 4U, kQuestKokiriEmerald, 0U,
+     kQuestKokiriEmerald, false, SaveTestBy::DungeonBeaten, kEventDekuTreeOffset, kEventDekuTreeMask},
+    {"Mido's Kokiri Emerald", 0x00105CC8U, {0x00105CE4U, 0x00105D04U}, {}, 0xBCU, 4U, kQuestKokiriEmerald, 0U,
+     kQuestKokiriEmerald, false, SaveTestBy::DungeonBeaten, kEventDekuTreeOffset, kEventDekuTreeMask},
+    {"Mido's Kokiri Emerald", 0x001B7410U, {0x001B7424U, 0x001B743CU}, {}, 0xBCU, 4U, kQuestKokiriEmerald, 0U,
+     kQuestKokiriEmerald, false, SaveTestBy::DungeonBeaten, kEventDekuTreeOffset, kEventDekuTreeMask},
+    {"Mido's Kokiri Emerald", 0x003D2C10U, {0x003D2C28U, 0x003D2C6CU}, {}, 0xBCU, 4U, kQuestKokiriEmerald, 0U,
+     kQuestKokiriEmerald, false, SaveTestBy::DungeonBeaten, kEventDekuTreeOffset, kEventDekuTreeMask},
+    // EnKoInitCheckForest_*: the Kokiri's Forest Medallion (the Forest
+    // Temple, event 0x48).
+    {"the Kokiri's Forest Medallion", 0x00165834U, {0x0016584CU, 0x00165808U}, {}, 0xBCU, 4U,
+     kQuestForestMedallion, 0U, kQuestForestMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset,
+     kEventForestTempleMask},
+    {"the Kokiri's Forest Medallion", 0x00165878U, {0x00165888U, 0x001658A0U}, {}, 0xBCU, 4U,
+     kQuestForestMedallion, 0U, kQuestForestMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset,
+     kEventForestTempleMask},
+    {"the Kokiri's Forest Medallion", 0x001658C0U, {0x001658D0U, 0x00165800U}, {}, 0xBCU, 4U,
+     kQuestForestMedallion, 0U, kQuestForestMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset,
+     kEventForestTempleMask},
+    {"the Kokiri's Forest Medallion", 0x001658F0U, {0x00165900U, 0x00165918U}, {}, 0xBCU, 4U,
+     kQuestForestMedallion, 0U, kQuestForestMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset,
+     kEventForestTempleMask},
+    // DekuSproutCheckForest: the Deku Tree Sprout's Forest Medallion.
+    {"the Sprout's Forest Medallion", 0x0021539CU, {0x002153B4U, 0x002153CCU}, {}, 0xBCU, 4U,
+     kQuestForestMedallion, 0U, kQuestForestMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset,
+     kEventForestTempleMask},
+    // FireArrowRequirement: the sun's Water Medallion (the Water Temple,
+    // event 0x4A).
+    {"the sun's Water Medallion", 0x003F23A8U, {0x003F23BCU, 0x003F251CU}, {}, 0xBCU, 4U, kQuestWaterMedallion, 0U,
+     kQuestWaterMedallion, false, SaveTestBy::DungeonBeaten, kEventTemplesOffset, kEventWaterTempleMask},
+    // KingZoraIgnoreSapphire: King Zora never sees Zora's Sapphire.
+    {"King Zora's Zora's Sapphire", 0x001736A8U, {0x001736C0U, 0x001736A0U}, {}, 0xBCU, 4U, kQuestZorasSapphire, 0U,
+     kQuestZorasSapphire, false, SaveTestBy::NeverWithShuffledRewards},
 }};
 
 // AdultRollingGoronIgnoreMedallion: the dispatch block of the Gorons' texts

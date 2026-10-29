@@ -484,11 +484,11 @@ void TestHookPcsAreSorted() {
     for (std::size_t i = 1; i < pcs.size(); ++i)
       Expect(pcs[i - 1] < pcs[i], "hook pcs are sorted and unique");
   }
-  Expect(CheckObserver::HookPcs().size() == 71U,
+  Expect(CheckObserver::HookPcs().size() == 104U,
          "checks, deaths, blue warps, the forest guard, Sheik in the Ice Cavern, the save tests, cows, shops, fast "
-         "chests, song blocks, damage, item text and quick text need 71 hooks");
-  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 72U, "a probe adds one hook");
-  Expect(CheckObserver::HookPcs(kItemGive).size() == 71U, "a probe on a check hook is merged");
+         "chests, song blocks, damage, item text and quick text need 104 hooks");
+  Expect(CheckObserver::HookPcs(0x003727F0U).size() == 105U, "a probe adds one hook");
+  Expect(CheckObserver::HookPcs(kItemGive).size() == 104U, "a probe on a check hook is merged");
 }
 
 void TestObserverReportsDeath() {
@@ -768,7 +768,52 @@ void TestSaveTests() {
   state.r[4] = 0x1234U;
   observer.ObserveBlockEntry(kArcheryQuiverBlock, state, memory);
   Expect(state.r[4] == 0x1234U, "without a seed the game's own");
-  Expect(SaveTestHookPcs().size() == 40U, "the save tests hook 40 blocks");
+  Expect(SaveTestHookPcs().size() == 73U, "the save tests hook 73 blocks");
+
+  // Reward tests: only with shuffled rewards, by the dungeon beaten.
+  bool rewards = false;
+  observer.SetRewardsShuffledProbe([&] { return rewards; });
+  const SaveTest &mido = kSaveTests[12];
+  const SaveTest &kingZora = kSaveTests[22];
+  Expect(mido.By == SaveTestBy::DungeonBeaten && mido.CheckBlock == 0x00166238U &&
+             kingZora.By == SaveTestBy::NeverWithShuffledRewards,
+         "the reward tests");
+  memory.Write32(kSaveContext + kSaveQuestItems, kQuestKokiriEmerald | kQuestZorasSapphire);
+  memory.Write16(kSaveContext + kEventDekuTreeOffset, 0U);
+  seed = true;
+  observer.ObserveBlockEntry(mido.CheckBlock, state, memory);
+  Expect(quest() == (kQuestKokiriEmerald | kQuestZorasSapphire), "rewards not shuffled: the game's own test");
+  seed = false;
+  rewards = true;
+  observer.ObserveBlockEntry(mido.CheckBlock, state, memory);
+  Expect(quest() == (kQuestKokiriEmerald | kQuestZorasSapphire), "without a seed's save nothing changes");
+  seed = true;
+  observer.ObserveBlockEntry(mido.CheckBlock, state, memory);
+  Expect(quest() == kQuestZorasSapphire, "an emerald from elsewhere does not clear the Deku Tree for Mido");
+  observer.ObserveBlockEntry(mido.RestoreBlocks[0], state, memory);
+  Expect(quest() == (kQuestKokiriEmerald | kQuestZorasSapphire), "and Link keeps it");
+  memory.Write32(kSaveContext + kSaveQuestItems, 0U);
+  memory.Write16(kSaveContext + kEventDekuTreeOffset, kEventDekuTreeMask);
+  observer.ObserveBlockEntry(mido.CheckBlock, state, memory);
+  Expect(quest() == kQuestKokiriEmerald, "the Deku Tree beaten counts without its emerald");
+  observer.ObserveBlockEntry(mido.RestoreBlocks[1], state, memory);
+  Expect(quest() == 0U, "the save is restored after the test");
+  memory.Write32(kSaveContext + kSaveQuestItems, kQuestZorasSapphire);
+  observer.ObserveBlockEntry(kingZora.CheckBlock, state, memory);
+  Expect(quest() == 0U, "King Zora never sees the sapphire");
+  observer.ObserveBlockEntry(kingZora.RestoreBlocks[1], state, memory);
+  Expect(quest() == kQuestZorasSapphire, "and it comes back");
+  Expect(DungeonReward(LocationKey{kTempleScene, OverrideType::Temple, 0U}) == std::string_view("Kokiri's Emerald") &&
+             DungeonReward(LocationKey{kTempleScene, OverrideType::Temple, 7U}) ==
+                 std::string_view("Shadow Medallion") &&
+             DungeonReward(LocationKey{kTempleScene, OverrideType::Temple, kLinksPocketFlag}) ==
+                 std::string_view("Light Medallion") &&
+             !DungeonReward(LocationKey{kTempleScene, OverrideType::Temple, 8U}).has_value() &&
+             !DungeonReward(LocationKey{kDelayedScene, OverrideType::Delayed, kDelayedSongMinuet}).has_value(),
+         "each reward location's own reward");
+  Expect(ParseWorldState(R"({"shuffle_dungeon_rewards": 4})").DungeonRewardsShuffled &&
+             !ParseWorldState(R"({"shuffle_dungeon_rewards": 0})").DungeonRewardsShuffled,
+         "the seed says whether rewards are shuffled");
 
   // Song teachers see their location, not the song in the save.
   seed = true;

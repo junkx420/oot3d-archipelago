@@ -82,6 +82,7 @@ WorldState ParseWorldState(const std::string &slotDataJson) {
     state.BridgeCondition = static_cast<WorldState::Bridge>(bridge - kRainbowBridgeStones + 1);
     state.BridgeCount = IntField(data, kCounts[static_cast<std::size_t>(bridge - kRainbowBridgeStones)], 0);
   }
+  state.DungeonRewardsShuffled = IntField(data, "shuffle_dungeon_rewards", 0) != 0;
   if (const int hearts = IntField(data, "starting_hearts", 3); hearts != 3 && hearts >= 1 && hearts <= 20)
     state.StartingHearts = hearts;
   const int trials = IntField(data, "ganons_trials", -1);

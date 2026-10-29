@@ -4,7 +4,7 @@ namespace Oot3dArchipelago {
 namespace {
 
 constexpr auto MakeHookPcs() {
-  std::array<std::uint32_t, kSaveTests.size() * 3U + 5U> pcs{};
+  std::array<std::uint32_t, (kSaveTests.size() * 3U) + 5U> pcs{};
   std::size_t count = 0;
   const auto add = [&](std::uint32_t pc) {
     if (pc == 0U)

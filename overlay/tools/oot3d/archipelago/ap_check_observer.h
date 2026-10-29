@@ -105,7 +105,7 @@ inline constexpr std::uint32_t kSongBlockTimer = 0xC6U;
 inline constexpr std::uint16_t kSongBlockTimerReplay = 0x6EU;
 inline constexpr std::uint16_t kSongBlockTimerSkipped = 0x10U;
 
-inline constexpr std::array<GuestFunction, 69> kGuestFunctions{{
+inline constexpr std::array<GuestFunction, 102> kGuestFunctions{{
     {"Actor_OfferGetItem", kActorOfferGetItem,
      "6c88ffb201ce9bba5920ffb4a4fca8247ae3859eab9e30dc8be729388888ecc4"},
     {"Item_Give", kItemGive,
@@ -240,6 +240,72 @@ inline constexpr std::array<GuestFunction, 69> kGuestFunctions{{
      "85045741ca25ba48f798eceb72895f18cf2bde5838b54a86aa0ed35de9946118"},
     {"TombSunsSongKnownBlock", 0x002888F0U,
      "87a1d9626bed18592d0b4198d6f5433c961a9e88bc2e23719b697104f704098b"},
+    {"MidoEmeraldCheckOneBlock", 0x00166238U,
+     "c41ac3f7c1b21ad192d2fb0a4d6632b96726d78c74752f08a3107122dc4cc8d8"},
+    {"MidoEmeraldOwnedOneBlock", 0x0016624CU,
+     "6601aa41acf1f556c356ff489d37b432a96418f376ad2fe52d34afac3ccd53ab"},
+    {"MidoEmeraldMissingOneBlock", 0x001662A0U,
+     "83f3021877198b688714f40871996cec336993df6341d490e1e83709aa9bb164"},
+    {"MidoEmeraldCheckTwoBlock", 0x00105CC8U,
+     "b787181d510c6fbd058a8c7533e076a4f42968dae6b1c9a859c5c360f960692f"},
+    {"MidoEmeraldOwnedTwoBlock", 0x00105CE4U,
+     "86c3c8e1cca7ee5aed1ad4600104440a8c8a1e8644d7214c965b6fdac1f0361c"},
+    {"MidoEmeraldMissingTwoBlock", 0x00105D04U,
+     "5fcda081a65da3cd3245398c502af0919a1e10f6635da6c58f795893b36fdf37"},
+    {"MidoEmeraldCheckThreeBlock", 0x001B7410U,
+     "cb614f884d8daa9072b415af27561c5230705aa34b1eadca0a6d55ef375c81c2"},
+    {"MidoEmeraldOwnedThreeBlock", 0x001B7424U,
+     "58eed2f64bd241f42379b00a652bd7348af8bfced2a6a3e4dd1a0f4e51718650"},
+    {"MidoEmeraldMissingThreeBlock", 0x001B743CU,
+     "79b7ff5d2fc741439b3314287c69351174c05ca4aa83b2a35082acdf0477e99b"},
+    {"MidoEmeraldCheckFourBlock", 0x003D2C10U,
+     "1e8f49d25b9c56709cbba4720045642268cf7e2c54f6e5facc085c449a27e0a0"},
+    {"MidoEmeraldOwnedFourBlock", 0x003D2C28U,
+     "7299995e4d791e3d2aa3d92705ae60c1c65f124f55aedf68fad83dd1e63ac5f0"},
+    {"MidoEmeraldMissingFourBlock", 0x003D2C6CU,
+     "a9da89a6a52d0941be0b0e6dfadde1f22e2980048c2757b22fc2d6630e5a9270"},
+    {"KokiriForestCheckOneBlock", 0x00165834U,
+     "68f1ecee3ca8bb77d62e17bdff4e9f6a2a84bce61a74ae3e79a7de70c726c894"},
+    {"KokiriForestMissingOneBlock", 0x0016584CU,
+     "8f1ef27b695f0a486b72c6a717a5626e42270ac6797f4890b86d5ef4cff6da02"},
+    {"KokiriForestOwnedOneBlock", 0x00165808U,
+     "9c95c6b94897be2802b08c2be12f83879f53cfe26166d54330fd70ce3bfefc3f"},
+    {"KokiriForestCheckTwoBlock", 0x00165878U,
+     "4ef199ba82827602308aefd8676a378b837b968307c16fb50880f63d6e3f3361"},
+    {"KokiriForestMissingTwoBlock", 0x00165888U,
+     "2026035b3094f4a66c8118fa731c5ec9a2d62325564a60bba49310295d793108"},
+    {"KokiriForestOwnedTwoBlock", 0x001658A0U,
+     "c734859de02ebc5dd4fb045ae2e9a203fefed483545b4e00b6e233b5ed9406b2"},
+    {"KokiriForestCheckThreeBlock", 0x001658C0U,
+     "e79628861f74a704a6f4855c017b07f94755b65cf5beb1d9ce7c053c37ff30ba"},
+    {"KokiriForestMissingThreeBlock", 0x001658D0U,
+     "1014fb5ed03025b3c247e1d018a832d87dc04218183985d3c491890ef58eb500"},
+    {"KokiriForestOwnedThreeBlock", 0x00165800U,
+     "958f472a1f2394c2550484687ec27c61dce56db01b48e1d725ae0fb1a8eaf242"},
+    {"KokiriForestCheckFourBlock", 0x001658F0U,
+     "55e82426268dbc4ca180a43ab70fd0240f48cbedbc2be00c5f2f672f243c110e"},
+    {"KokiriForestMissingFourBlock", 0x00165900U,
+     "956fb22e4075588957fb2812ada06d6e0fd1ed42a2eb174b0f32b40d1ee9b04e"},
+    {"KokiriForestOwnedFourBlock", 0x00165918U,
+     "1c652b7ca9838cb4f5a667be8f8bbaf5d2a04a0d21fa40bf8c156e3d9e9f284b"},
+    {"SproutForestCheckBlock", 0x0021539CU,
+     "a8bf30cb0702e38d612fce1a8998c0d2483f549cbb7cb9aa849eca8aec6b0764"},
+    {"SproutForestMissingBlock", 0x002153B4U,
+     "34ba61de660c471ca5532fa8db75c2e5b54e4bc7e0bb9e8da12a36b9477d662e"},
+    {"SproutForestOwnedBlock", 0x002153CCU,
+     "713798f6139316e6c0c71bb400daae087c0432d4e5d4e1fe648aa44411acc2f6"},
+    {"SunWaterMedallionCheckBlock", 0x003F23A8U,
+     "b8734f6f9000d9755c5ef8822ff551a3dc4e374692ee4b3bae8a27e6ab452c1b"},
+    {"SunWaterMedallionOwnedBlock", 0x003F23BCU,
+     "234c6c47196e563f5c5c65b6df02325c82262e614bb0bec39a151ca3c5a2a26d"},
+    {"SunWaterMedallionMissingBlock", 0x003F251CU,
+     "a19008035c0fbff0e6ad840ceb6d7103362a9a2c7b3cc2eb85f2102df78de4dc"},
+    {"KingZoraSapphireCheckBlock", 0x001736A8U,
+     "d8c6bd22421de10fd09f39e3215484489292c6243251e4beb2c5cb2da8c14348"},
+    {"KingZoraSapphireMissingBlock", 0x001736C0U,
+     "993072e09a19d8c1ac3b95877afab9706be30ac72f16c4659578d46073fe728e"},
+    {"KingZoraSapphireOwnedBlock", 0x001736A0U,
+     "76c3ea4ba4653bb538aefcaeb1f6ae9e31b645094c29365cf58ce9b1a1ba5360"},
 }};
 
 struct CheckEvent {
@@ -317,6 +383,9 @@ public:
   // or not one of its locations), for the save tests (ap_save_tests.h).
   using LocationTakenProbe = std::function<std::optional<bool>(const LocationKey &key)>;
   void SetLocationTakenProbe(LocationTakenProbe probe) { mLocationTaken = std::move(probe); }
+  // Whether the connected seed shuffles the dungeon rewards: the reward
+  // tests then answer by the dungeon beaten (ap_save_tests.h).
+  void SetRewardsShuffledProbe(std::function<bool()> probe) { mRewardsShuffled = std::move(probe); }
   // Whether a cow's location (its key: scene, base item, 0x14 + the cow's
   // number) still holds an item: the cow then gives without an empty bottle.
   void SetCowProbe(std::function<bool(const LocationKey &key)> probe) { mCowGives = std::move(probe); }
@@ -411,6 +480,7 @@ private:
   // The save's equipment as it was before Sheik's check block.
   std::optional<std::uint16_t> mSheikRestore;
   LocationTakenProbe mLocationTaken;
+  std::function<bool()> mRewardsShuffled;
   // A save test's field as it was: restored at the next hooked block.
   struct SaveRestore {
     std::uint32_t Address = 0;

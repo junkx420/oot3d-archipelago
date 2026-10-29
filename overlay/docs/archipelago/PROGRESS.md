@@ -962,3 +962,31 @@ elsewhere. Every site below was read in the EUR image.
   not tried.
 - Tests: host tests for the teachers' songs and their tests; seeds of all
   three modes generate; a run verifies all signatures. Not played.
+
+### Shuffle dungeon rewards (2026-10-29)
+
+- shuffle_dungeon_rewards: off, end_of_dungeons, any_dungeon, overworld and
+  anywhere (SoH's options and logic). apworld world version 0.13.0.
+- A reward's location is its direct Item_Give (the stones' blue warps, the
+  sages, Rauru for Link's Pocket; KeyForDirectGive's temple keys) or the
+  skipped blue warp. Where the seed placed this world's own reward of that
+  dungeon, the game gives it as before; otherwise the give becomes a
+  recovery heart and the item travels through the server (DungeonReward
+  names each location's own reward).
+- With rewards shuffled, Link may hold a reward without its dungeon beaten,
+  or the other way round. OoT3D Randomizer replaces the game's reward tests
+  with the dungeon's event flag; the client answers them the same way (save
+  tests by DungeonBeaten): Mido's Kokiri Emerald (MidoCheckDekuTreeClearOne
+  to Four, event 0x09), the Kokiri's and the Deku Tree Sprout's Forest
+  Medallion (EnKoInitCheckForest_*, DekuSproutCheckForest, 0x48), the Lake
+  Hylia sun's Water Medallion (FireArrowRequirement, 0x4A); King Zora never
+  sees Zora's Sapphire (KingZoraIgnoreSapphire). Each tests questItems with
+  gBitFlags; all read in the EUR image. With rewards not shuffled these
+  tests stay the game's own.
+- The tests the logic models by the reward itself stay as they are: the
+  Door of Time's stones, Sheik's Forest Medallion and three medallions,
+  the Light Arrow cutscene's Shadow and Spirit Medallions.
+- Not done: a sage's or blue warp's scene shows the game's reward.
+- Tests: host tests for the reward tests and each location's own reward;
+  seeds of all four modes generate; a run verifies all signatures. Not
+  played.

@@ -194,6 +194,20 @@ std::optional<std::string_view> TeacherSong(const LocationKey &key) {
   return kSongs[key.Flag - kDelayedSongMinuet];
 }
 
+std::optional<std::string_view> DungeonReward(const LocationKey &key) {
+  // By dungeon (OoT3D_Randomizer's DUNGEON_* order); Link's Pocket apart.
+  static constexpr std::array<std::string_view, 8> kRewards{
+      "Kokiri's Emerald", "Goron's Ruby",    "Zora's Sapphire",  "Forest Medallion",
+      "Fire Medallion",   "Water Medallion", "Spirit Medallion", "Shadow Medallion"};
+  if (key.Scene != kTempleScene || key.Type != OverrideType::Temple)
+    return std::nullopt;
+  if (key.Flag == kLinksPocketFlag)
+    return std::string_view("Light Medallion");
+  if (key.Flag >= kRewards.size())
+    return std::nullopt;
+  return kRewards[key.Flag];
+}
+
 std::string Describe(const LocationKey &key) {
   static constexpr const char *kTypes[] = {
       "base", "chest", "collectable", "skull", "grotto_scrub", "delayed", "temple"};

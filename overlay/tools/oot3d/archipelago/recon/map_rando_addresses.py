@@ -150,6 +150,45 @@ CLIENT_HOOK_BLOCKS = {
     "TombSunsSongCheckBlock": ("SunsSongLocation", -0x14, "block_after_call"),
     "TombSunsSongTeachBlock": ("SunsSongLocation", 4, "block_after_branch"),
     "TombSunsSongKnownBlock": ("SunsSongLocation", 0x28, ("branch_target", 0)),
+    # Tests of a dungeon reward in the save that OoT3D_Randomizer replaces
+    # with the dungeon beaten (for shuffled rewards): Mido's Kokiri Emerald
+    # (MidoCheckDekuTreeClearOne to Four), the Kokiri's and the Deku Tree
+    # Sprout's Forest Medallion (EnKoInitCheckForest_*, DekuSproutCheckForest),
+    # the Lake Hylia sun's Water Medallion (FireArrowRequirement) and King
+    # Zora's Zora's Sapphire (KingZoraIgnoreSapphire).
+    "MidoEmeraldCheckOneBlock": ("MidoCheckDekuTreeClearOne", -4, "block_after_branch"),
+    "MidoEmeraldOwnedOneBlock": ("MidoCheckDekuTreeClearOne", 0x10, "block_after_branch"),
+    "MidoEmeraldMissingOneBlock": ("MidoCheckDekuTreeClearOne", 0x64, ("branch_target", 0xC)),
+    "MidoEmeraldCheckTwoBlock": ("MidoCheckDekuTreeClearTwo", -0xC, "block_after_branch"),
+    "MidoEmeraldOwnedTwoBlock": ("MidoCheckDekuTreeClearTwo", 0x10, "block_after_branch"),
+    "MidoEmeraldMissingTwoBlock": ("MidoCheckDekuTreeClearTwo", 0x30, ("branch_target", 0xC)),
+    "MidoEmeraldCheckThreeBlock": ("MidoCheckDekuTreeClearThree", -4, "block_after_branch"),
+    "MidoEmeraldOwnedThreeBlock": ("MidoCheckDekuTreeClearThree", 0x10, "block_after_branch"),
+    "MidoEmeraldMissingThreeBlock": ("MidoCheckDekuTreeClearThree", 0x28, ("branch_target", 0xC)),
+    "MidoEmeraldCheckFourBlock": ("MidoCheckDekuTreeClearFour", -8, ("branch_target", -0x30)),
+    "MidoEmeraldOwnedFourBlock": ("MidoCheckDekuTreeClearFour", 0x10, "block_after_branch"),
+    "MidoEmeraldMissingFourBlock": ("MidoCheckDekuTreeClearFour", 0x54, ("branch_target", 0xC)),
+    "KokiriForestCheckOneBlock": ("EnKoInitCheckForest_165834", 0, ("branch_target", -0xC)),
+    "KokiriForestMissingOneBlock": ("EnKoInitCheckForest_165834", 0x18, "block_after_branch"),
+    "KokiriForestOwnedOneBlock": ("EnKoInitCheckForest_165834", -0x2C, ("branch_target", 0x14)),
+    "KokiriForestCheckTwoBlock": ("EnKoInitCheckForest_165878", 0, "block_after_branch"),
+    "KokiriForestMissingTwoBlock": ("EnKoInitCheckForest_165878", 0x10, "block_after_branch"),
+    "KokiriForestOwnedTwoBlock": ("EnKoInitCheckForest_165878", 0x28, ("branch_target", 0xC)),
+    "KokiriForestCheckThreeBlock": ("EnKoInitCheckForest_1658C0", 0, "block_after_branch"),
+    "KokiriForestMissingThreeBlock": ("EnKoInitCheckForest_1658C0", 0x10, "block_after_branch"),
+    "KokiriForestOwnedThreeBlock": ("EnKoInitCheckForest_1658C0", -0xC0, ("branch_target", 0xC)),
+    "KokiriForestCheckFourBlock": ("EnKoInitCheckForest_1658F0", 0, "block_after_branch"),
+    "KokiriForestMissingFourBlock": ("EnKoInitCheckForest_1658F0", 0x10, "block_after_branch"),
+    "KokiriForestOwnedFourBlock": ("EnKoInitCheckForest_1658F0", 0x28, ("branch_target", 0xC)),
+    "SproutForestCheckBlock": ("DekuSproutCheckForest", -8, ("branch_target", -0x18)),
+    "SproutForestMissingBlock": ("DekuSproutCheckForest", 0x10, "block_after_branch"),
+    "SproutForestOwnedBlock": ("DekuSproutCheckForest", 0x28, ("branch_target", 0xC)),
+    "SunWaterMedallionCheckBlock": ("FireArrowRequirement", -4, "block_after_branch"),
+    "SunWaterMedallionOwnedBlock": ("FireArrowRequirement", 0x10, "block_after_branch"),
+    "SunWaterMedallionMissingBlock": ("FireArrowRequirement", 0x170, ("branch_target", 0xC)),
+    "KingZoraSapphireCheckBlock": ("KingZoraIgnoreSapphire", -0x10, ("branch_target", -0xB0)),
+    "KingZoraSapphireMissingBlock": ("KingZoraIgnoreSapphire", 8, "block_after_branch"),
+    "KingZoraSapphireOwnedBlock": ("KingZoraIgnoreSapphire", -0x18, ("branch_target", 4)),
     # Rewards the game picks by the quiver: the adult shooting gallery and
     # horseback archery; their quiver branch, where the client presets the
     # randomizer's get-item (40 arrows) for the quivers the game skips.

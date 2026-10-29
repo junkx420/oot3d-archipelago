@@ -118,7 +118,10 @@ SUPPORTED: dict[str, tuple[Any, frozenset]] = {
     "shuffle_bean_fairies": (False, frozenset({False})),
     "shuffle_song_fairies": (False, frozenset({False})),
     "shuffle_grass": ("off", frozenset({"off"})),
-    "shuffle_dungeon_rewards": ("off", frozenset({"off"})),
+    # A reward location whose reward is elsewhere gives a recovery heart and
+    # the server the item; the game's tests of the rewards answer by the
+    # dungeons beaten (ap_save_tests.h).
+    "shuffle_dungeon_rewards": ("off", frozenset({"off", "end_of_dungeons", "any_dungeon", "overworld", "anywhere"})),
     "shuffle_100_gs_reward": (False, frozenset({False})),
     "start_with_kokiri_sword": (False, frozenset({False, True})),
     "start_with_master_sword": (False, frozenset({False})),

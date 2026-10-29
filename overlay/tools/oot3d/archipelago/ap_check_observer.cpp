@@ -394,19 +394,26 @@ void CheckObserver::ObserveSaveTests(std::uint32_t pc, GuestState &state, Memory
   default:
     break;
   }
-  if (!mLocationTaken)
-    return;
   for (const SaveTest &test : kSaveTests) {
     if (test.CheckBlock != pc)
       continue;
-    const auto taken = mLocationTaken(test.Location);
-    if (!taken.has_value())
-      return;
+    bool owned = false;
+    if (test.By == SaveTestBy::Location) {
+      const auto taken = mLocationTaken ? mLocationTaken(test.Location) : std::nullopt;
+      if (!taken.has_value())
+        return;
+      owned = *taken;
+    } else {
+      if (!mRewardsShuffled || !mRewardsShuffled())
+        return;
+      owned = test.By == SaveTestBy::DungeonBeaten &&
+              (Read16(memory, kSaveContext + test.EventOffset) & test.EventMask) != 0U;
+    }
     const std::uint32_t address = kSaveContext + test.Offset;
     const std::uint32_t value = test.Size == 1U   ? Read8(memory, address)
                                 : test.Size == 2U ? Read16(memory, address)
                                                   : Read32(memory, address);
-    ShowInSave(address, test.Size, SaveTestValue(test, value, *taken), memory);
+    ShowInSave(address, test.Size, SaveTestValue(test, value, owned), memory);
     return;
   }
 }

@@ -125,6 +125,8 @@ std::vector<LocationKey> TokenKeys(std::span<const std::uint8_t> gsFlags);
 // The song a teacher's location (a delayed song key) gives in the game, as
 // the item table names it; nothing for other keys.
 std::optional<std::string_view> TeacherSong(const LocationKey &key);
+// The reward a dungeon reward's location (a temple key) gives in the game.
+std::optional<std::string_view> DungeonReward(const LocationKey &key);
 
 std::string Describe(const LocationKey &key);
 

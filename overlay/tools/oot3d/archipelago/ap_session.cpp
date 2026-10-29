@@ -391,14 +391,16 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
   // The Great Fairies' spells and the Light Arrow cutscene are ordinary
   // locations of the seed: once its placements are known, the game's own item
   // becomes a recovery heart and the location's item comes from the server.
-  // Saria's gift (shuffle_ocarinas) the same. The dungeon rewards hold their
-  // own item with the supported options and stay as they are. A Gold
-  // Skulltula token's location is replaced the same way when the seed
-  // shuffles it (it is reported from the save's gsFlags, WatchTokens).
+  // Saria's gift (shuffle_ocarinas) the same. A Gold Skulltula token's
+  // location is replaced the same way when the seed shuffles it (it is
+  // reported from the save's gsFlags, WatchTokens).
   // A song teacher gives his own song. Where the seed placed another item
   // (shuffled songs), Link learns nothing there (a recovery heart) and the
   // location's item comes from the server.
-  if (const auto song = TeacherSong(key)) {
+  // A dungeon reward's location (a blue warp, a sage, Rauru) gives its own
+  // reward the same way: shuffled, it becomes a recovery heart.
+  const auto own = TeacherSong(key).has_value() ? TeacherSong(key) : DungeonReward(key);
+  if (own.has_value()) {
     if (!mSidecar.has_value() || !mLocations.has_value() || !mSlot.has_value())
       return std::nullopt;
     const auto id = mLocations->Find(key, nullptr);
@@ -406,7 +408,7 @@ std::optional<std::uint8_t> Session::ReplaceDirectGive(const LocationKey &key,
     if (placement == mSidecar->Placements.end())
       return std::nullopt;
     if (placement->second.Player == mSlot->Slot && mItems.has_value() &&
-        mItems->Name(placement->second.Item) == *song)
+        mItems->Name(placement->second.Item) == *own)
       return std::nullopt;
     return kItemRecoveryHeart;
   }
@@ -449,6 +451,11 @@ std::optional<bool> Session::LocationTaken(const LocationKey &key) const {
   if (!id.has_value() || mSidecar->Placements.count(*id) == 0U)
     return std::nullopt;
   return mSidecar->ReportedLocations.count(*id) != 0U || mServerChecked.count(*id) != 0U;
+}
+
+bool Session::RewardsShuffled() const {
+  std::lock_guard lock(mMutex);
+  return mSidecar.has_value() && mWorld.DungeonRewardsShuffled;
 }
 
 bool Session::Receiving() const {
